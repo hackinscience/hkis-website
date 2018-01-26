@@ -1,0 +1,12 @@
+{% extends "hkis/base.html" %}
+{% load i18n %}
+
+{% block container %}
+<div class="row">
+    <div class="col-md-6 offset-md-3">
+    <h1>Registration complete</h1>
+       <p>{% trans "You are now registered. Activation email sent. Check your mailbox." %}</p>
+        <a href="/">Back</a>
+    </div>
+</div>
+{% endblock %}
