@@ -5,6 +5,7 @@ class Exercise(models.Model):
     title = models.CharField(max_length=255)
     check = models.TextField()
     solution = models.TextField()
+    wording = models.TextField()
 
 class Answer(models.Model):
     exercise = models.ForeignKey(Exercise,

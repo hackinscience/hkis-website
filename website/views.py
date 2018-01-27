@@ -6,6 +6,7 @@ from django.contrib import messages
 from django.urls import reverse
 from django.shortcuts import render
 from django.contrib.auth.models import User
+from django.views.generic.detail import DetailView
 from django.views.generic.edit import UpdateView
 from django.views.generic.list import ListView
 from website.models import Exercise
@@ -40,3 +41,7 @@ class ExerciseListView(ListView, LoginRequiredMixin):
             else:
                 context['todo'].append(obj)
         return context
+
+class ExerciseDetailView(DetailView, LoginRequiredMixin):
+    model = Exercise
+    template_name = 'hkis/exercise.html'
