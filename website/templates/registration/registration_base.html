@@ -1,0 +1,10 @@
+{% extends "hkis/base.html" %}
+{% load i18n %}
+{% block container %}
+<div class="row">
+    <div class="col-md-6 offset-md-3">
+        <h1>{% block title %}{% endblock %}</h1>
+        {% block content %}{% endblock %}
+    </div>
+</div>
+{% endblock %}

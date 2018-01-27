@@ -1,12 +1,15 @@
-{% extends "hkis/base.html" %}
+{% extends "registration/registration_base.html" %}
 {% load i18n %}
 
-{% block container %}
-<div class="row">
-    <div class="col-md-6 offset-md-3">
-    <h1>Activation complete</h1>
-       <p>{% trans "Your account is now activated." %}</p>
-       <a href="/">Back</a>
-    </div>
-</div>
+{% block title %}
+{% trans "Activation complete" %}
+{% endblock %}
+
+{% block content %}
+<p>
+{% blocktrans %}
+Thanks, activation complete!  You may now <a href="{% url 'auth_login' %}">login</a>
+using the username and password you set at registration.
+{% endblocktrans %}
+</p>
 {% endblock %}

@@ -4,7 +4,7 @@ verify_ssl = true
 
 [packages]
 Django = ">=2.0,<2.1"
-django-registration = { git = 'https://github.com/ubernostrum/django-registration/', ref = 'master', editable = true }
+django-registration-redux = ">=2.1,<2.2"
 "django-bootstrap4" = ">=0.0.5"
 
 [requires]
