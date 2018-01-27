@@ -1,0 +1,114 @@
+{% load i18n %}{% load static %}{% load bootstrap4 %}
+{% block body %}
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>HackInScience - Python course</title>
+
+    <!-- Bootstrap core -->
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+    {% bootstrap_jquery %}
+
+    <!-- Custom fonts for this template -->
+    <link href="{% static "font-awesome/css/font-awesome.min.css" %}" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css">
+    <link href='https://fonts.googleapis.com/css?family=Cabin:700' rel='stylesheet' type='text/css'>
+
+    <!-- Custom styles for this template -->
+    <link href="{% static "css/grayscale.min.css" %}" rel="stylesheet">
+
+  </head>
+
+  <body id="page-top">
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+      <div class="container">
+        <a class="navbar-brand js-scroll-trigger" href="#page-top">
+            <img src="{% static "img/logo_hackinscience.png" %}" width="20" height="20" alt="logo">
+            HackInScience</a>
+        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+          Menu
+          <i class="fa fa-bars"></i>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+              <a class="nav-link js-scroll-trigger" href="/">Home</a>
+            </li>
+            {% if user.is_authenticated %}
+            <li class="nav-item">
+              <a class="nav-link js-scroll-trigger" href="{% url 'dashboard' %}">Dashboard</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link js-scroll-trigger" href="{% url 'auth_logout' %}">Logout</a>
+            </li>
+            {% else %}
+            <li class="nav-item">
+              <a class="nav-link js-scroll-trigger" href="{% url 'auth_login' %}">Login</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link js-scroll-trigger" href="{% url 'registration_register' %}">Register</a>
+            </li>
+            {% endif %}
+
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Intro Header -->
+    <header class="masthead">
+        <div class="intro-body">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-8 mx-auto">
+                        <h1 class="brand-heading"><img src="{% static "img/logo_hackinscience.png" %}" width="190px"></h1>
+                        <p class="intro-text">One Week Immersion into Python Programming
+                        <br> From the 22nd to the 28th of January 2018, Paris. </p>
+                        <a href="#download" class="btn btn-circle js-scroll-trigger">
+                            <i class="fa fa-angle-double-down fa-2" aria-hidden="true"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Download Section -->
+    <section id="download" class="download-section content-section text-center">
+      <div class="container">
+        <div class="col-lg-8 mx-auto">
+          <h2>Registration Closed</h2>
+          <p>Registration period is now closed for the 2018 session. Feel free to contact us if needed.</p>
+          <a href="mailto:team@hackinscience.org" class="btn btn-default btn-lg">Contact Us</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+      <div class="container text-center">
+        <p>Copyright &copy; HackInScience 2018</p>
+      </div>
+    </footer>
+
+    <!-- Google Maps API Key - Use your own API key to enable the map feature. More information on the Google Maps API can be found at https://developers.google.com/maps/ -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCRngKslUGJTlibkQ3FkfTxj3Xss1UlZDA&sensor=false"></script>
+
+    <!-- Custom scripts for this template -->
+    <script src="{% static "js/grayscale.min.js" %}"></script>
+
+  </body>
+
+</html>
+
+{% endblock %}

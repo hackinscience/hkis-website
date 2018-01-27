@@ -1,11 +1,11 @@
-{% load i18n %}{% load staticfiles %}{% load bootstrap4 %}
+{% load i18n %}{% load static %}{% load bootstrap4 %}
 <!DOCTYPE html>
 <html lang="{{ LANGUAGE_CODE|default:"en-us" }}">
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-        <title>HackInScience | {% block title %}Welcome!{% endblock %}</title>
+        <title>HackInScience - {% block title %}Welcome!{% endblock %}</title>
         {% block stylesheets %}{% endblock %}
         {% block extrastyle %}{% endblock %}
         <link href="{% static "css/style.css" %}" />

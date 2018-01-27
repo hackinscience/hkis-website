@@ -14,12 +14,17 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
+from django.shortcuts import redirect
 from django.urls import path, include
-from website.views import dashboard_view, UpdateProfile
+from website.views import dashboard_view, UpdateProfile, index
+
+favicon_view = lambda request: redirect('/static/favicon.ico', permanent=True)
 
 urlpatterns = [
+    path('', index, name='index'),
     path('admin/', admin.site.urls),
     path('accounts/', include('registration.backends.default.urls')),
     path('dashboard/', dashboard_view, name='dashboard'),
+    path('favicon.ico', favicon_view),
     path('profile/<int:pk>', UpdateProfile.as_view(), name='profile'),
 ]
