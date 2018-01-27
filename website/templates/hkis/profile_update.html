@@ -1,0 +1,29 @@
+{% extends "hkis/layout.html" %}
+{% load i18n %}
+{% load staticfiles %}
+{% load bootstrap4 %}
+
+{% block container %}
+
+<div class="row">
+  <div class="col-md-6 offset-md-3">
+    <h1>Update Profile</h1>
+    <form action="" method="post" class="form">
+      {% csrf_token %}
+      {% bootstrap_form form %}
+      {% url 'auth_password_change' as password_change %}
+      <p>
+      {% blocktrans %}
+      <a href="{{ password_change }}">Change your password</a>
+      {% endblocktrans %}
+      </p>
+
+      {% buttons %}
+      <button type="submit" class="btn btn-primary btn-lg">{% trans "Update" %}</button>
+      {% endbuttons %}
+    </form>
+  </div>
+</div>
+
+
+{% endblock %}
