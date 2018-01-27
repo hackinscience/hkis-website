@@ -7,6 +7,8 @@ from django.urls import reverse
 from django.shortcuts import render
 from django.contrib.auth.models import User
 from django.views.generic.edit import UpdateView
+from django.views.generic.list import ListView
+from website.models import Exercise
 
 def index(request):
     return render(request, 'hkis/index.html')
@@ -23,3 +25,18 @@ class UpdateProfile(UpdateView, LoginRequiredMixin):
     def get_success_url(self):
         messages.info(self.request, "Profile updated")
         return reverse('profile', kwargs={'pk': self.request.user.id})
+
+class ExerciseListView(ListView, LoginRequiredMixin):
+    model = Exercise
+    template_name = 'hkis/exercises.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['done'] = []
+        context['todo'] = []
+        for obj in self.object_list:
+            if obj.answers.filter(is_valid=True):
+                context['done'].append(obj)
+            else:
+                context['todo'].append(obj)
+        return context

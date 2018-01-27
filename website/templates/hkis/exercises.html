@@ -1,0 +1,50 @@
+{% extends "hkis/layout.html" %}
+{% load i18n %}
+{% load staticfiles %}
+{% load bootstrap4 %}
+
+{% block body %}
+
+<div class="container">
+  <h1 style="margin-bottom: 30px;">Python exercises</h1>
+
+
+  <h2>Todo ({{ todo | length }})</h2>
+  <table class="table table-sm">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Title</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for exercise in todo %}
+      <tr>
+        <th scope="row"><a href="#">{{ exercise.id | stringformat:"03d" }}</a></th>
+        <th scope="row"><a href="#">{{ exercise.title }}</a></th>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <h2>Done ({{ done | length }})</h2>
+  <table class="table table-sm">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Title</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for exercise in done %}
+      <tr>
+        <th scope="row"><a href="#">{{ exercise.id | stringformat:"03d" }}</a></th>
+        <th scope="row"><a href="#">{{ exercise.title }}</a></th>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+
+
+{% endblock %}

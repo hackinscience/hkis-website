@@ -8,7 +8,8 @@ class Exercise(models.Model):
 
 class Answer(models.Model):
     exercise = models.ForeignKey(Exercise,
-            on_delete=models.CASCADE)
+            on_delete=models.CASCADE,
+            related_name="answers")
     user = models.ForeignKey(User,
             on_delete=models.CASCADE)
     source_code = models.TextField()
