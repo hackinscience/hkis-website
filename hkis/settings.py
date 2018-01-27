@@ -27,9 +27,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-SITE_ID=1
-
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -41,7 +38,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django.contrib.sites',
     'bootstrap4'
 ]
 
@@ -129,3 +125,4 @@ STATIC_URL = '/static/'
 # Django registration
 ACCOUNT_ACTIVATION_DAYS = 7
 REGISTRATION_DEFAULT_FROM_EMAIL = 'team@hackinscience.org'
+LOGIN_REDIRECT_URL = '/dashboard'

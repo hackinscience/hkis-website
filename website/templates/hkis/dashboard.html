@@ -1,0 +1,40 @@
+{% extends "hkis/layout.html" %}
+
+{% block body %}
+<div class="container">
+    <h1 class="bd-title">Categories</h1>
+    <div class="row">
+        <div class="col-md-4">
+            <h2>Python</h2>
+            <p>Python is a widely used general-purpose, high-level programming language. Its design philosophy emphasizes code readability, and its syntax allows programmers to express concepts in fewer lines of code than would be possible in languages such as C++ or Java...</p>
+            <p>
+            <a class="btn btn-primary" href="/exercise/" role="button">Exercices »</a>
+            <a class="btn btn-secondary" href="/courses/0" role="button">Courses »</a>
+            </p>
+        </div>
+        <div class="col-md-4">
+            <h2>C</h2>
+            <p>C is a general-purpose, imperative computer programming language, supporting structured programming, lexical variable scope and recursion, while a static type system prevents many unintended operations.</p>
+            <p>
+            <a class="btn btn-secondary disabled" href="#" role="button" aria-disabled="true">View details »</a>
+            </p>
+        </div>
+        <div class="col-md-4">
+            <h2>Shell script</h2>
+            <p>Default Command-line interpreter, for Unix operating systems.</p>
+            <p>
+            <a class="btn btn-secondary disabled" href="#" role="button" aria-disabled="true">View details »</a>
+            </p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <h2>Matlab</h2>
+            <p>MATLAB (matrix laboratory) is a multi-paradigm numerical computing environment and fourth-generation programming language.</p>
+            <p>
+            <a class="btn btn-secondary disabled" href="#" role="button" aria-disabled="true">View details »</a>
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}
