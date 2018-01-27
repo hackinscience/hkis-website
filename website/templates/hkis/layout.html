@@ -12,6 +12,7 @@
             </div>
         </a>
 
+        {% if user.is_authenticated %}
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav mr-auto">
@@ -31,6 +32,16 @@
                 </li>
             </ul>
         </div><!-- /.navbar-collapse -->
+        {% else %}
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav mr-auto"></ul>
+            <ul class="navbar-nav navbar-right">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'auth_login' %}" >Login</a>
+                </li>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+        {% endif %}
 </nav>
 {% endblock %}
 

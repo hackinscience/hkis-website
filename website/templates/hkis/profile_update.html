@@ -1,4 +1,4 @@
-{% extends "hkis/layout.html" %}
+{% extends "registration/registration_base.html" %}
 {% load i18n %}
 {% load staticfiles %}
 {% load bootstrap4 %}
@@ -8,6 +8,8 @@
 <div class="row">
   <div class="col-md-6 offset-md-3">
     <h1>Update Profile</h1>
+    {# Display django.contrib.messages as Bootstrap alerts #}
+    {% bootstrap_messages %}
     <form action="" method="post" class="form">
       {% csrf_token %}
       {% bootstrap_form form %}
