@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'bootstrap4',
     'django_markdown2',
     'django_ace',
+    'notifications'
 ]
 
 MIDDLEWARE = [

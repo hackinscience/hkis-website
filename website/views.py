@@ -47,6 +47,7 @@ class ExerciseView(DetailView, LoginRequiredMixin):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context['answers'] = self.object.answers.all().order_by("-id")
         context['answer_form'] = AnswerForm(initial={'exercise': self.object.id})
         return context
 

@@ -25,6 +25,7 @@ favicon_view = lambda request: redirect('/static/favicon.ico', permanent=True)
 urlpatterns = [
     path('', index, name='index'),
     path('admin/', admin.site.urls),
+    path('inbox/notifications/', include('notifications.urls', namespace='notifications')),
     path('accounts/', include('registration.backends.default.urls')),
     path('dashboard/', dashboard_view, name='dashboard'),
     path('exercises', ExerciseListView.as_view(), name='exercises'),

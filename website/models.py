@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.urls import reverse
+from notifications.signals import notify
+from django.db.models.signals import post_save
 
 class Exercise(models.Model):
     title = models.CharField(max_length=255)
@@ -24,3 +26,12 @@ class Answer(models.Model):
 
     def get_absolute_url(self):
         return reverse('exercise', args=[self.exercise.id])
+
+
+def new_answer(sender, instance, created, **kwargs):
+    if instance.is_corrected:
+        notify.send(instance,
+                recipient=instance.user,
+                verb=instance.correction_message)
+
+post_save.connect(new_answer, sender=Answer)
