@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     'bootstrap4',
     'django_markdown2',
     'django_ace',
-    'notifications'
+    'notifications',
+    'rest_framework'
 ]
 
 MIDDLEWARE = [
@@ -128,3 +129,10 @@ STATIC_URL = '/static/'
 ACCOUNT_ACTIVATION_DAYS = 7
 REGISTRATION_DEFAULT_FROM_EMAIL = 'team@hackinscience.org'
 LOGIN_REDIRECT_URL = '/dashboard'
+
+# Rest framework
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAdminUser',
+    )
+}
