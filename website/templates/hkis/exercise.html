@@ -1,16 +1,18 @@
 {% extends "hkis/layout.html" %}
-{% load i18n %}
-{% load static %}{% load md2 %}{% load bootstrap4 %}
+{% load i18n %}{% load static %}{% load md2 %}{% load bootstrap4 %}
+
 {% block body %}
 {{ answer_form.media }}
+<link href="{% static "css/pygments/default.css" %}" rel="stylesheet" type="text/css" />
 <div class="container">
   <a href="{% url "exercises" %}">
     Back
   </a>
 
+  <div style="margin-bottom: 25px;">
   {{ object.wording|markdown:"fenced-code-blocks" }}
+  </div>
 
-  <hr>
   <div class="row">
     <div class="col-md-8">
       <h2>Your Code</h2>

@@ -6,13 +6,14 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
         <title>HackInScience - {% block title %}Welcome!{% endblock %}</title>
-        {% block stylesheets %}{% endblock %}
-        {% block extrastyle %}{% endblock %}
-        <link href="{% static "css/pygments/default.css" %}" rel="stylesheet" type="text/css" />
-        {% block extrahead %}{% endblock %}
         {% bootstrap_css %}
         {% bootstrap_javascript %}
         {% bootstrap_jquery %}
+
+        <link href="{% static "css/hkis.css" %}" rel="stylesheet" type="text/css" />
+        {% block stylesheets %}{% endblock %}
+        {% block extrastyle %}{% endblock %}
+        {% block extrahead %}{% endblock %}
     </head>
     <body class="{% if is_popup %}popup {% endif %}{% block bodyclass %}{% endblock %}">
         {% block nav %}{% endblock %}
