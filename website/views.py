@@ -1,15 +1,14 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
-#from django.http import HttpResponse
-#from django.template import loader
 from django.urls import reverse
 from django.shortcuts import render
 from django.contrib.auth.models import User
 from django.views.generic.detail import DetailView
-from django.views.generic.edit import UpdateView
+from django.views.generic.edit import CreateView, UpdateView
 from django.views.generic.list import ListView
-from website.models import Exercise
+from website.models import Exercise, Answer
+from website.forms import AnswerForm
 
 def index(request):
     return render(request, 'hkis/index.html')
@@ -18,7 +17,7 @@ def index(request):
 def dashboard_view(request):
     return render(request, 'hkis/dashboard.html')
 
-class UpdateProfile(UpdateView, LoginRequiredMixin):
+class ProfileView(UpdateView, LoginRequiredMixin):
     model = User
     fields = ['username', 'email']
     template_name = 'hkis/profile_update.html'
@@ -42,6 +41,21 @@ class ExerciseListView(ListView, LoginRequiredMixin):
                 context['todo'].append(obj)
         return context
 
-class ExerciseDetailView(DetailView, LoginRequiredMixin):
+class ExerciseView(DetailView, LoginRequiredMixin):
     model = Exercise
     template_name = 'hkis/exercise.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['answer_form'] = AnswerForm(initial={'exercise': self.object.id})
+        return context
+
+
+class AnswerCreateView(CreateView):
+    model = Answer
+    form_class = AnswerForm
+    template_name = 'hkis/answer_form.html'
+
+    def form_valid(self, form):
+        form.cleaned_data['user'] = self.request.user
+        return super().form_valid(form)

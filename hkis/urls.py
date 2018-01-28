@@ -16,8 +16,8 @@ Including another URLconf
 from django.contrib import admin
 from django.shortcuts import redirect
 from django.urls import path, include
-from website.views import (dashboard_view, UpdateProfile, index, ExerciseListView,
-        ExerciseDetailView)
+from website.views import (dashboard_view, ProfileView, index, ExerciseListView,
+        ExerciseView, AnswerCreateView)
 
 
 favicon_view = lambda request: redirect('/static/favicon.ico', permanent=True)
@@ -29,6 +29,7 @@ urlpatterns = [
     path('dashboard/', dashboard_view, name='dashboard'),
     path('exercises', ExerciseListView.as_view(), name='exercises'),
     path('favicon.ico', favicon_view),
-    path('exercise/<int:pk>', ExerciseDetailView.as_view(), name='exercise'),
-    path('profile/<int:pk>', UpdateProfile.as_view(), name='profile'),
+    path('answer/create', AnswerCreateView.as_view(), name='answer-create'),
+    path('exercise/<int:pk>', ExerciseView.as_view(), name='exercise'),
+    path('profile/<int:pk>', ProfileView.as_view(), name='profile'),
 ]

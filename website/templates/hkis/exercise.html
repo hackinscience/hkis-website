@@ -2,6 +2,7 @@
 {% load i18n %}
 {% load static %}{% load md2 %}{% load bootstrap4 %}
 {% block body %}
+{{ answer_form.media }}
 <div class="container">
   <a href="{% url "exercises" %}">
     Back
@@ -13,6 +14,14 @@
   <div class="row">
     <div class="col-md-8">
       <h2>Your Code</h2>
+      <form action="{% url "answer-create" %}" method="post">{% csrf_token %}
+          {% for field in answer_form %}
+          <div class="fieldWrapper">
+              {{ field }}
+          </div>
+          {% endfor %}
+          <button class="btn btn-primary" type="submit">Submit your code</button>
+      </form>
     </div>
     <div class="col-md-4">
       <h2>Results</h2>
@@ -34,26 +43,4 @@
     </div>
   </div>
 </div>
-
-<script>
-  setInterval(function(){
-    $.get( "/exercise/{{ object.id }}/checkall", function( data ) {
-      var res = '<table class="table">';
-      data.forEach(function(element) {
-        res += '<tr>';
-        if (element[2] == null ){
-          res += '<td><img src="{% static "img/loading_anim.gif" %}" height="30"> Waiting for correction</td>';
-        } else {
-          element[2] = String(element[2]).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')
-          res += '<td><pre>' + element[2] + '</pre></td>';
-            }
-            res += '</tr>';
-          });
-          //res += data;
-          res += '</table';
-        $( ".result" ).html( res );
-        console.log( "Load was performed." );
-        })
-        }  , 5000);
-</script>
 {% endblock %}
