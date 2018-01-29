@@ -12,3 +12,4 @@ django-ace = ">=1.0.3, <1.1"
 django-notifications-hq = { git = 'https://github.com/merinos/django-notifications' }
 djangorestframework =">=3.7.7,<3.8"
 gunicorn = ">=19.7.1"
+psycopg2 = ">=2.7.3.2"
