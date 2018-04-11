@@ -15,7 +15,7 @@
       <tr>
         <th scope="row">
             <a href="{% url "exercise" exercise.id %}">
-                {{ exercise.id | stringformat:"03d" }} - # {{ exercise.title }}
+                {{ exercise.id | stringformat:"03d" }} - {{ exercise.title }}
             </a>
         </th>
       </tr>
