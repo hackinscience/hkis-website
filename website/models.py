@@ -10,6 +10,9 @@ class Exercise(models.Model):
     solution = models.TextField()
     wording = models.TextField()
 
+    def __str__(self):
+        return self.title
+
 class Answer(models.Model):
     exercise = models.ForeignKey(Exercise,
             on_delete=models.CASCADE,
