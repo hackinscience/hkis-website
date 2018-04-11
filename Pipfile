@@ -13,3 +13,4 @@ django-notifications-hq = { git = 'https://github.com/merinos/django-notificatio
 djangorestframework =">=3.7.7,<3.8"
 gunicorn = ">=19.7.1"
 psycopg2 = ">=2.7.3.2"
+django-filter = ">=1.1,<2"

@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'bootstrap4',
     'django_markdown2',
     'django_ace',
+    'django_filters',
     'notifications',
     'rest_framework'
 ]
@@ -134,7 +135,10 @@ LOGIN_REDIRECT_URL = '/dashboard'
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAdminUser',
-    )
+    ),
+    'DEFAULT_FILTER_BACKENDS': (
+        'django_filters.rest_framework.DjangoFilterBackend',
+    ),
 }
 
 try:
