@@ -15,6 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.shortcuts import redirect
+from django.conf import settings
 from django.urls import path, include
 from website.api import router
 from website.views import (dashboard_view, ProfileView, index, ExerciseListView,
@@ -37,3 +38,9 @@ urlpatterns = [
     path('exercise/<int:pk>', ExerciseView.as_view(), name='exercise'),
     path('profile/<int:pk>', ProfileView.as_view(), name='profile'),
 ]
+
+if settings.DEBUG:
+    import debug_toolbar
+    urlpatterns = [
+        path('__debug__/', include(debug_toolbar.urls)),
+    ] + urlpatterns
