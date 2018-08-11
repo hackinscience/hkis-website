@@ -18,4 +18,3 @@ pytz==2018.5
 six==1.11.0
 sqlparse==0.2.4
 Werkzeug==0.14.1
-gunicorn
