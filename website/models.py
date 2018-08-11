@@ -35,6 +35,7 @@ def new_answer(sender, instance, created, **kwargs):
     if instance.is_corrected:
         notify.send(instance,
                 recipient=instance.user,
-                verb=instance.correction_message)
+                verb="correction",
+                description=instance.correction_message)
 
 post_save.connect(new_answer, sender=Answer)
