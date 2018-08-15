@@ -19,3 +19,7 @@ pre {
     border: 1px solid #ccc;
     border-radius: 4px;
 }
+
+.intro-body {
+    background: radial-gradient(black, transparent 70%);
+}
