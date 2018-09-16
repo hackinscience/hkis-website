@@ -35,7 +35,7 @@ class ExerciseListView(LoginRequiredMixin, ListView):
         context['done'] = []
         context['todo'] = []
         for obj in self.object_list:
-            if obj.answers.filter(is_valid=True):
+            if obj.answers.filter(is_valid=True, user=self.request.user):
                 context['done'].append(obj)
             else:
                 context['todo'].append(obj)
@@ -47,8 +47,12 @@ class ExerciseView(LoginRequiredMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['answers'] = self.object.answers.all().order_by("-id")
-        context['answer_form'] = AnswerForm(initial={'exercise': self.object.id})
+        context['answers'] = self.object.answers.filter(user=self.request.user).order_by("-id")
+        try:
+            print(context['answers'][0])
+            context['answer_form'] = AnswerForm(initial={'exercise': context['answers'][0]})
+        except IndexError:
+            context['answer_form'] = AnswerForm()
         return context
 
 
