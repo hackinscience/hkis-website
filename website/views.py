@@ -50,13 +50,16 @@ class ExerciseView(LoginRequiredMixin, DetailView):
         context['answers'] = self.object.answers.filter(user=self.request.user).order_by("-id")
         try:
             print(context['answers'][0])
-            context['answer_form'] = AnswerForm(initial={'exercise': context['answers'][0]})
+            context['answer_form'] = AnswerForm(initial={
+                'exercise': self.object.id,
+                'source_code': context['answers'][0].source_code})
         except IndexError:
-            context['answer_form'] = AnswerForm()
+            context['answer_form'] = AnswerForm(initial={
+                'exercise': self.object.id})
         return context
 
 
-class AnswerCreateView(CreateView):
+class AnswerCreateView(LoginRequiredMixin, CreateView):
     model = Answer
     form_class = AnswerForm
     template_name = 'hkis/answer_form.html'
