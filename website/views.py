@@ -17,7 +17,7 @@ def index(request):
 def dashboard_view(request):
     return render(request, 'hkis/dashboard.html')
 
-class ProfileView(UpdateView, LoginRequiredMixin):
+class ProfileView(LoginRequiredMixin, UpdateView):
     model = User
     fields = ['username', 'email']
     template_name = 'hkis/profile_update.html'
@@ -26,7 +26,7 @@ class ProfileView(UpdateView, LoginRequiredMixin):
         messages.info(self.request, "Profile updated")
         return reverse('profile', kwargs={'pk': self.request.user.id})
 
-class ExerciseListView(ListView, LoginRequiredMixin):
+class ExerciseListView(LoginRequiredMixin, ListView):
     model = Exercise
     template_name = 'hkis/exercises.html'
 
@@ -41,7 +41,7 @@ class ExerciseListView(ListView, LoginRequiredMixin):
                 context['todo'].append(obj)
         return context
 
-class ExerciseView(DetailView, LoginRequiredMixin):
+class ExerciseView(LoginRequiredMixin, DetailView):
     model = Exercise
     template_name = 'hkis/exercise.html'
 
