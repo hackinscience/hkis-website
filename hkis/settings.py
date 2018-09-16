@@ -27,6 +27,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
+SERVER_EMAIL = 'team@hackinscience.org'
+
 # Application definition
 
 INSTALLED_APPS = [
