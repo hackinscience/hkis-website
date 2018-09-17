@@ -10,6 +10,9 @@ class Exercise(models.Model):
     solution = models.TextField()
     wording = models.TextField()
 
+    class Meta:
+        ordering = ["id"]
+
     def __str__(self):
         return self.title
 
