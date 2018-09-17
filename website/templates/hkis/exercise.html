@@ -6,10 +6,13 @@
 {{ answer_form.media }}
 <link href="{% static "css/pygments/default.css" %}" rel="stylesheet" type="text/css" />
 <div class="container">
-  <a href="{% url "exercises" %}">
-    Back
-  </a>
-
+  {% if next_id %}
+  <div class="float-right">
+    <a href="{% url "exercise" next_id %}">
+      next →
+    </a>
+  </div>
+  {% endif %}
   <div style="margin-bottom: 25px;">
   {{ object.wording|markdown:"fenced-code-blocks" }}
   </div>
@@ -68,4 +71,3 @@ function fill_answer(data) {
 {% register_notify_callbacks callbacks='fill_answer' refresh_period='5' fetch='50' %}
 {% endautoescape %}
 {% endblock %}
-

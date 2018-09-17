@@ -59,6 +59,10 @@ class ExerciseView(LoginRequiredMixin, DetailView):
         except IndexError:
             context['answer_form'] = AnswerForm(initial={
                 'exercise': self.object.id})
+        try:
+            context["next_id"] = Exercise.objects.filter(id__gt=self.object.id).order_by('id')[0].id
+        except IndexError:
+            context["next_id"] = None
         return context
 
 
