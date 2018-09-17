@@ -8,35 +8,30 @@
 <div class="container">
   <h1>Python exercises</h1>
 
-  <h2>Todo ({{ todo | length }})</h2>
-  <table class="table table-sm table-bordered table-hover table-striped records_list">
+  <table class="table table-sm table-bordered table-hover records_list">
     <tbody>
-      {% for exercise in todo %}
+      {% for exercise in exercises %}
       <tr>
-        <th scope="row">
+        <td scope="row">
             <a href="{% url "exercise" exercise.id %}">
-                {{ exercise.id | stringformat:"03d" }} - {{ exercise.title }}
+              <div class="float-left">
+                {% if exercise.done %}
+                <span class="good h3"> ✓ </span>
+                {% else %}
+                <span class="bad h3"> ✗ </span>
+                {% endif %}
+              </div>
+              <div class="float-left">
+                <h5>{{ exercise.title }}</h5>
+                {{ exercise.lead }}
+              </div>
             </a>
-        </th>
+        </td>
       </tr>
       {% endfor %}
     </tbody>
   </table>
 
-  <h2>Done ({{ done | length }})</h2>
-  <table class="table table-sm table-bordered table-hover table-striped records_list">
-    <tbody>
-      {% for exercise in done %}
-      <tr>
-          <th scope="row">
-            <a href="{% url "exercise" exercise.id %}">
-              {{ exercise.id | stringformat:"03d" }} - # {{ exercise.title }}
-            </a>
-          </th>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
 
 
 

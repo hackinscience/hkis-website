@@ -23,3 +23,24 @@ pre {
 .intro-body {
     background: radial-gradient(black, transparent 70%);
 }
+
+a {
+    color: #24292e;
+}
+
+a:hover {
+    color: #0366d6;
+    text-decoration: none;
+}
+
+.table-hover tbody tr:hover {
+  background-color: rgba(0, 0, 0, 0.03);
+}
+
+span.good {
+    color: #28a745;
+}
+
+span.bad {
+    color: #cb2431;
+}

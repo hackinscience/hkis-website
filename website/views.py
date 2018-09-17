@@ -32,13 +32,16 @@ class ExerciseListView(LoginRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['done'] = []
-        context['todo'] = []
-        for obj in self.object_list:
-            if obj.answers.filter(is_valid=True, user=self.request.user):
-                context['done'].append(obj)
-            else:
-                context['todo'].append(obj)
+        def _get_lead(wording):
+            try:
+                return [line for line in wording.split("\n") if 'Introduces' in line][0]
+            except IndexError:
+                return ""
+        context['exercises'] = [{'id': exercise.id,
+                                 'title': exercise.title,
+                                 'lead': _get_lead(exercise.wording),
+                                 'done': bool(exercise.answers.filter(is_valid=True, user=self.request.user))}
+                                for exercise in self.object_list]
         return context
 
 class ExerciseView(LoginRequiredMixin, DetailView):
