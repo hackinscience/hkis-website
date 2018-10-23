@@ -18,29 +18,36 @@ from django.shortcuts import redirect
 from django.conf import settings
 from django.urls import path, include
 from website.api import router
-from website.views import (dashboard_view, ProfileView, index, ExerciseListView,
-        ExerciseView, AnswerCreateView)
+from website.views import (
+    dashboard_view,
+    ProfileView,
+    index,
+    ExerciseListView,
+    ExerciseView,
+    AnswerCreateView,
+)
 
 
-favicon_view = lambda request: redirect('/static/favicon.ico', permanent=True)
+favicon_view = lambda request: redirect("/static/favicon.ico", permanent=True)
 
 urlpatterns = [
-    path('', index, name='index'),
-    path('admin/', admin.site.urls),
-    path('api/', include(router.urls)),
-    path('api-auth/', include('rest_framework.urls')),
-    path('inbox/notifications/', include('notifications.urls', namespace='notifications')),
-    path('accounts/', include('registration.backends.default.urls')),
-    path('dashboard/', dashboard_view, name='dashboard'),
-    path('exercises', ExerciseListView.as_view(), name='exercises'),
-    path('favicon.ico', favicon_view),
-    path('answer/create', AnswerCreateView.as_view(), name='answer-create'),
-    path('exercise/<int:pk>', ExerciseView.as_view(), name='exercise'),
-    path('profile/<int:pk>', ProfileView.as_view(), name='profile'),
+    path("", index, name="index"),
+    path("admin/", admin.site.urls),
+    path("api/", include(router.urls)),
+    path("api-auth/", include("rest_framework.urls")),
+    path(
+        "inbox/notifications/", include("notifications.urls", namespace="notifications")
+    ),
+    path("accounts/", include("registration.backends.default.urls")),
+    path("dashboard/", dashboard_view, name="dashboard"),
+    path("exercises", ExerciseListView.as_view(), name="exercises"),
+    path("favicon.ico", favicon_view),
+    path("answer/create", AnswerCreateView.as_view(), name="answer-create"),
+    path("exercise/<int:pk>", ExerciseView.as_view(), name="exercise"),
+    path("profile/<int:pk>", ProfileView.as_view(), name="profile"),
 ]
 
 if settings.DEBUG:
     import debug_toolbar
-    urlpatterns = [
-        path('__debug__/', include(debug_toolbar.urls)),
-    ] + urlpatterns
+
+    urlpatterns = [path("__debug__/", include(debug_toolbar.urls))] + urlpatterns
