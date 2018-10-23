@@ -1,0 +1,6 @@
+black
+pylint
+pylint-django
+flake8
+mypy
+tox
