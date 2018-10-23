@@ -27,7 +27,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
 
-SERVER_EMAIL = "team@hackinscience.org"
+SERVER_EMAIL = "team@example.com"
 
 # Application definition
 
@@ -166,7 +166,7 @@ STATIC_URL = "/static/"
 
 # Django registration
 ACCOUNT_ACTIVATION_DAYS = 7
-REGISTRATION_DEFAULT_FROM_EMAIL = "team@hackinscience.org"
+REGISTRATION_DEFAULT_FROM_EMAIL = "team@example.com"
 LOGIN_REDIRECT_URL = "/dashboard"
 
 # Rest framework
