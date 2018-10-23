@@ -7,8 +7,9 @@
 
 {% block content %}
 <p>
+{% url 'auth_login' as auth_login_url %}
 {% blocktrans %}
-Thanks, activation complete!  You may now <a href="{% url 'auth_login' %}">login</a>
+Thanks, activation complete!  You may now <a href="{{ auth_login_url }}">login</a>
 using the username and password you set at registration.
 {% endblocktrans %}
 </p>
