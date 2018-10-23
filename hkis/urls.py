@@ -25,6 +25,8 @@ from website.views import (
     ExerciseListView,
     ExerciseView,
     AnswerCreateView,
+    StatsDetailView,
+    StatsListView,
 )
 
 
@@ -45,6 +47,8 @@ urlpatterns = [
     path("answer/create", AnswerCreateView.as_view(), name="answer-create"),
     path("exercise/<int:pk>", ExerciseView.as_view(), name="exercise"),
     path("profile/<int:pk>", ProfileView.as_view(), name="profile"),
+    path("stats/", StatsListView.as_view(), name="stats"),
+    path("stats/<int:pk>", StatsDetailView.as_view(), name="stats"),
 ]
 
 if settings.DEBUG:

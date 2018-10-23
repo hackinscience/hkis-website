@@ -1,0 +1,23 @@
+{% extends "hkis/layout.html" %}
+
+{% block body %}
+<h2>{{ object.name }}</h2>
+<table>
+  {% for username, answers in stats %}
+  <tr>
+    <td>
+      {{ username }}
+    </td>
+    <td>
+    {% for answer in answers %}
+      {% if answer.3 > 0 %}
+        <span class="good">✓</span>
+      {% else %}
+        <span class="bad">✗</span>
+      {% endif %}
+    {% endfor %}
+    </td>
+  </tr>
+  {% endfor %}
+</table>
+{% endblock %}

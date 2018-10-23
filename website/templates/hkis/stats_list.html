@@ -1,0 +1,10 @@
+{% extends "hkis/layout.html" %}
+
+{% block body %}
+<h2>Groups</h2>
+<ul>
+  {% for group in object_list %}
+  <li><a href="{% url "stats" group.pk %}">{{ group.name }}</a></li>
+  {% endfor %}
+</ul>
+{% endblock %}

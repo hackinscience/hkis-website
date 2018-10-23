@@ -1,7 +1,11 @@
+from itertools import groupby
+
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.models import Group
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib import messages
 from django.urls import reverse
+from django.db import connection
 from django.shortcuts import render
 from django.contrib.auth.models import User
 from django.views.generic.detail import DetailView
@@ -93,3 +97,51 @@ class AnswerCreateView(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         form.cleaned_data["user"] = self.request.user
         return super().form_valid(form)
+
+
+class StatsListView(UserPassesTestMixin, ListView):
+    template_name = "hkis/stats_list.html"
+    model = Group
+
+    def test_func(self):
+        return self.request.user.is_superuser
+
+
+class StatsDetailView(UserPassesTestMixin, DetailView):
+    template_name = "hkis/stats_detail.html"
+    model = Group
+
+    def test_func(self):
+        return self.request.user.is_superuser
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        with connection.cursor() as cursor:
+            cursor.execute(
+                """
+                WITH user_exercises AS (
+                    SELECT auth_user.id user_id,
+                           auth_user.username username,
+                           website_exercise.id exercise_id
+                      FROM auth_user, website_exercise, auth_user_groups
+                     WHERE auth_user.id = auth_user_groups.user_id AND
+                           auth_user_groups.group_id = %s)
+                SELECT user_exercises.user_id,
+                       user_exercises.username,
+                       user_exercises.exercise_id,
+                       COUNT(website_answer.id)
+                FROM user_exercises
+                LEFT JOIN website_answer ON (
+                    website_answer.exercise_id = user_exercises.exercise_id AND
+                    website_answer.user_id = user_exercises.user_id AND
+                    website_answer.is_valid = true)
+                GROUP BY user_exercises.user_id, user_exercises.username, user_exercises.exercise_id
+                ORDER BY user_exercises.username, user_exercises.exercise_id
+            """,
+                [context["object"].id],
+            )
+            context["stats"] = [
+                (key, list(value))
+                for key, value in groupby(cursor.fetchall(), lambda x: x[1])
+            ]
+        return context
