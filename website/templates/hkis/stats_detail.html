@@ -11,7 +11,7 @@
     <td>
     {% for answer in answers %}
       <a href="{% url "exercise" answer.exercice_id %}">
-      {% if answer.is_valid > 0 %}
+      {% if answer.is_valid %}
         <span class="good">✓</span>
       {% else %}
         <span class="bad">✗</span>
