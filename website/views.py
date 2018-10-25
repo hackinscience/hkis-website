@@ -6,6 +6,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib import messages
 from django.urls import reverse
 from django.db import connection
+from django.db.models import Count, Q
 from django.shortcuts import render
 from django.contrib.auth.models import User
 from django.views.generic.detail import DetailView
@@ -116,32 +117,16 @@ class StatsDetailView(UserPassesTestMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        with connection.cursor() as cursor:
-            cursor.execute(
-                """
-                WITH user_exercises AS (
-                    SELECT auth_user.id user_id,
-                           auth_user.username username,
-                           website_exercise.id exercise_id
-                      FROM auth_user, website_exercise, auth_user_groups
-                     WHERE auth_user.id = auth_user_groups.user_id AND
-                           auth_user_groups.group_id = %s)
-                SELECT user_exercises.user_id,
-                       user_exercises.username,
-                       user_exercises.exercise_id,
-                       COUNT(website_answer.id)
-                FROM user_exercises
-                LEFT JOIN website_answer ON (
-                    website_answer.exercise_id = user_exercises.exercise_id AND
-                    website_answer.user_id = user_exercises.user_id AND
-                    website_answer.is_valid = true)
-                GROUP BY user_exercises.user_id, user_exercises.username, user_exercises.exercise_id
-                ORDER BY user_exercises.username, user_exercises.exercise_id
-            """,
-                [context["object"].id],
-            )
-            context["stats"] = [
-                (key, list(value))
-                for key, value in groupby(cursor.fetchall(), lambda x: x[1])
+        context["stats"] = {
+            user.username: [
+                {"is_valid": exercice.nb_valid_anwser > 0, "exercice_id": exercice.id}
+                for exercice in Exercise.objects.annotate(
+                    nb_valid_anwser=Count(
+                        "answers",
+                        filter=Q(answers__is_valid=True) & Q(answers__user_id=user.id),
+                    )
+                ).all()
             ]
+            for user in User.objects.filter(groups=context["object"])
+        }
         return context

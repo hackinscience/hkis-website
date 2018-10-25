@@ -3,15 +3,15 @@
 {% block body %}
 <h2>{{ object.name }}</h2>
 <table>
-  {% for username, answers in stats %}
+  {% for username, answers in stats.items %}
   <tr>
     <td>
       {{ username }}
     </td>
     <td>
     {% for answer in answers %}
-      <a href="{% url "exercise" answer.2 %}">
-      {% if answer.3 > 0 %}
+      <a href="{% url "exercise" answer.exercice_id %}">
+      {% if answer.is_valid > 0 %}
         <span class="good">✓</span>
       {% else %}
         <span class="bad">✗</span>
