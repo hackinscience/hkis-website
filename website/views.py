@@ -73,7 +73,6 @@ class ExerciseView(LoginRequiredMixin, DetailView):
             user=self.request.user
         ).order_by("-id")
         try:
-            print(context["answers"][0])
             context["answer_form"] = AnswerForm(
                 initial={
                     "exercise": self.object.id,
