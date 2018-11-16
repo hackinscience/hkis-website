@@ -6,6 +6,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib import messages
 from django.urls import reverse
 from django.db import connection
+from django.http import HttpResponse
 from django.db.models import Count, Q
 from django.shortcuts import render
 from django.contrib.auth.models import User
@@ -97,7 +98,8 @@ class AnswerCreateView(LoginRequiredMixin, CreateView):
 
     def form_valid(self, form):
         form.cleaned_data["user"] = self.request.user
-        return super().form_valid(form)
+        super().form_valid(form)
+        return HttpResponse("OK")
 
 
 class StatsListView(UserPassesTestMixin, ListView):

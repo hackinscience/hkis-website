@@ -35,13 +35,13 @@ class Answer(models.Model):
 
 
 def cb_new_answer(sender, instance, created, **kwargs):
-    if instance.is_corrected:
-        notify.send(
-            instance,
-            recipient=instance.user,
-            verb="correction",
-            description=instance.correction_message,
-        )
+    notify.send(
+        instance.exercise,
+        recipient=instance.user,
+        verb="correction",
+        description=instance.correction_message,
+        target=instance,
+    )
 
 
 post_save.connect(cb_new_answer, sender=Answer)

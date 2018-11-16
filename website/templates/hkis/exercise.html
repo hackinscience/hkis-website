@@ -21,7 +21,8 @@
   <div class="row">
     <div class="col-md-8">
       <h2>Your Code</h2>
-      <form action="{% url "answer-create" %}" method="post">{% csrf_token %}
+      <iframe name="submit_code" style="display: none;"></iframe>
+      <form action="{% url "answer-create" %}" method="post" target="submit_code">{% csrf_token %}
           {% for field in answer_form %}
           <div class="fieldWrapper">
               {{ field }}
@@ -33,17 +34,15 @@
     <div class="col-md-4">
       <h2>Results</h2>
       <div id="answers-result" class="result">
-        <table  class="table">
+        <table id="answer-table" class="table">
           {% for answer in answers %}
+          <tr><td id="td-{{ answer.id }}">
           {% if not answer.is_corrected %}
-          <tr>
-            <td id="td-{{ answer.id }}"><img src="{% static "img/loading_anim.gif" %}" height=30> Waiting for correction</td>
-          </tr>
+            <img src="{% static "img/loading_anim.gif" %}" height=30> Waiting for correction
           {% else %}
-          <tr>
-            <td><pre>{{ answer.correction_message }}</pre></td>
-          </tr>
+            <pre>{{ answer.correction_message }}</pre>
           {% endif %}
+          </td></tr>
           {% endfor %}
         </table>
       </div>
@@ -53,22 +52,30 @@
 {% autoescape off %}
 <script src="{% static 'notifications/notify.js' %}" type="text/javascript"></script>
 <script>
-function fill_answer(data) {
-    var result = document.getElementById("answers-result");
-    if (result && data.unread_count > 0) {
-        for (var i=0; i < data.unread_list.length; i++) {
-            var msg = data.unread_list[i];
-            var elem = document.getElementById("td-".concat(msg.actor_object_id));
-            if (elem) {
-                elem.innerHTML = "<pre>" + msg.description + "</pre>";
-                var xhttp = new XMLHttpRequest();
-                xhttp.open("GET", "/inbox/notifications/delete/" + msg.slug + "/", true);
-                xhttp.send();
-            }
-        }
+  function fill_answer(data) {
+      var result = document.getElementById("answers-result");
+      if (!result || data.unread_count == 0)
+          return;
+      for (var i=data.unread_list.length - 1; i >= 0; i--) {
+          var msg = data.unread_list[i];
+          if (msg.actor_object_id != "{{ object.id }}")
+              continue;
+          var elem = document.getElementById("td-".concat(msg.target_object_id));
+          if (elem) {
+              if (msg.description != "") {
+                  elem.innerHTML = "<pre>" + msg.description + "</pre>";
+              }
+          } else {
+              var answer_table = document.getElementById("answer-table");
+              var html = '<tr><td id="td-'.concat(msg.target_object_id).concat('"><img src="{% static "img/loading_anim.gif" %}" height=30> Waiting for correction</td> </tr>');
+              $("#answer-table tr:first").before(html);
+          }
+          var xhttp = new XMLHttpRequest();
+          xhttp.open("GET", "/inbox/notifications/delete/" + msg.slug + "/", true);
+          xhttp.send();
     }
 }
 </script>
-{% register_notify_callbacks callbacks='fill_answer' refresh_period='5' fetch='50' %}
+{% register_notify_callbacks callbacks='fill_answer' refresh_period='3' fetch='50' %}
 {% endautoescape %}
 {% endblock %}
