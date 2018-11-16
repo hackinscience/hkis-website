@@ -68,7 +68,10 @@
           } else {
               var answer_table = document.getElementById("answer-table");
               var html = '<tr><td id="td-'.concat(msg.target_object_id).concat('"><img src="{% static "img/loading_anim.gif" %}" height=30> Waiting for correction</td> </tr>');
-              $("#answer-table tr:first").before(html);
+              if ($("#answer-table tr:first").length)
+                  $("#answer-table tr:first").before(html);
+              else
+                  $("#answer-table").append(html);
           }
           var xhttp = new XMLHttpRequest();
           xhttp.open("GET", "/inbox/notifications/delete/" + msg.slug + "/", true);
