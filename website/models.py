@@ -30,6 +30,9 @@ class Answer(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     corrected_at = models.DateTimeField(blank=True, null=True)
 
+    def __str__(self):
+        return "{} on {}".format(self.user.username, self.exercise.title)
+
     def get_absolute_url(self):
         return reverse("exercise", args=[self.exercise.id])
 

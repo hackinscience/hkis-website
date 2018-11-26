@@ -1,8 +1,44 @@
 from django.contrib.auth.models import User, Group
+from rest_framework import permissions
 from rest_framework import routers
 from rest_framework import serializers
 from rest_framework import viewsets
 from website.models import Answer, Exercise
+
+
+class AdminOrReadOnly(permissions.BasePermission):
+    def has_permission(self, request, view):
+        if request.user and request.user.is_staff:
+            return True
+        return request.method in permissions.SAFE_METHODS
+
+
+class AnswerPermission(permissions.BasePermission):
+    """
+    Object-level permission to only allow answers to be:
+    - Created by anyone, but not modified.
+    - Seen (read-only) by their owners only.
+    - Staff is root and can see everything.
+    """
+
+    def has_permission(self, request, view):
+        """Authenticated users can create (POST) but not edit.
+        """
+        if request.user.is_staff:
+            return True
+        if request.method == "POST" and request.user.is_authenticated:
+            # Logged in user can answer.
+            return True
+        if request.method in permissions.SAFE_METHODS:
+            return True
+        return False
+
+    def has_object_permission(self, request, view, obj):
+        """Users can only see their own answers, can't even modify them.
+        """
+        if request.user.is_staff:
+            return True
+        return obj.user == request.user and request.method in permissions.SAFE_METHODS
 
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
@@ -17,10 +53,24 @@ class GroupSerializer(serializers.HyperlinkedModelSerializer):
         fields = ("url", "name")
 
 
-class AnswerSerializer(serializers.HyperlinkedModelSerializer):
+class StaffAnswerSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Answer
         fields = "__all__"
+
+
+class PublicAnswerSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Answer
+        fields = "__all__"
+        read_only_fields = (
+            "user",
+            "is_corrected",
+            "is_valid",
+            "correction_message",
+            "created_at",
+            "corrected_at",
+        )
 
 
 class ExerciseSerializer(serializers.HyperlinkedModelSerializer):
@@ -30,22 +80,38 @@ class ExerciseSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class UserViewSet(viewsets.ModelViewSet):
+    permission_classes = [permissions.IsAdminUser]
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
 
 class GroupViewSet(viewsets.ModelViewSet):
+    permission_classes = [permissions.IsAdminUser]
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
 
 
 class AnswerViewSet(viewsets.ModelViewSet):
+    permission_classes = [AnswerPermission]
     queryset = Answer.objects.all()
-    serializer_class = AnswerSerializer
     filter_fields = ("is_corrected",)
+
+    def get_queryset(self):
+        if self.request.user.is_staff:
+            return super().get_queryset()
+        return super().get_queryset().filter(user=self.request.user)
+
+    def get_serializer_class(self):
+        if self.request.user.is_staff:
+            return StaffAnswerSerializer
+        return PublicAnswerSerializer
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
 
 
 class ExerciseViewSet(viewsets.ModelViewSet):
+    permission_classes = [AdminOrReadOnly]
     queryset = Exercise.objects.all()
     serializer_class = ExerciseSerializer
 

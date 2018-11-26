@@ -7,5 +7,9 @@ class ExerciseAdmin(admin.ModelAdmin):
     list_display = ("id", "title")
 
 
-admin.site.register(Answer)
+class AnswerAdmin(admin.ModelAdmin):
+    readonly_fields = ("user",)
+
+
+admin.site.register(Answer, AnswerAdmin)
 admin.site.register(Exercise, ExerciseAdmin)
