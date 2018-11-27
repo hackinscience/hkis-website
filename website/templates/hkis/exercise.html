@@ -21,14 +21,13 @@
   <div class="row">
     <div class="col-md-8">
       <h2>Your Code</h2>
-      <iframe name="submit_code" style="display: none;"></iframe>
-      <form action="{% url "answer-create" %}" method="post" target="submit_code">{% csrf_token %}
+      <form action="/api/answers/" method="post" onsubmit="AJAXSubmit(this); return false;">{% csrf_token %}
           {% for field in answer_form %}
           <div class="fieldWrapper">
               {{ field }}
           </div>
           {% endfor %}
-          <button class="btn btn-primary" type="submit">Submit your code</button>
+          <button id="submit_answer" class="btn btn-primary" type="submit">Submit your code</button>
       </form>
     </div>
     <div class="col-md-4">

@@ -75,7 +75,7 @@ class ExerciseView(LoginRequiredMixin, DetailView):
         try:
             context["answer_form"] = AnswerForm(
                 initial={
-                    "exercise": self.object.id,
+                    "exercise": "/api/exercises/{}/".format(self.object.id),
                     "source_code": context["answers"][0].source_code,
                 }
             )
