@@ -74,17 +74,25 @@
         }
     }
 
+    function websocket_connect(ws_location) {
+        var ws = new WebSocket(ws_location);
+        ws.onmessage = function(e) {
+            var data = JSON.parse(e.data);
+            console.log("WebSocket recv:", data);
+            fill_answer(data.answer, data.is_corrected, data.correction_message);
+        };
+        ws.onclose = function() {
+            ws = null;
+            // Try to reconnect in 5 seconds
+            setTimeout(function(){websocket_connect(ws_location)}, 5000);
+        };
+    }
+
     var ws_protocol = window.location.protocol == "http:" ? "ws:" : "wss:";
 
-    var chatSocket = new WebSocket(
-        ws_protocol + '//' + window.location.host +
-        '/ws/answers/' + {{ user.id }} + '/' + {{object.id}} + '/');
+    websocket_connect(ws_protocol + "//" + window.location.host +
+        "/ws/answers/" + {{ user.id }} + "/" + {{object.id}} + "/");
 
-    chatSocket.onmessage = function(e) {
-        var data = JSON.parse(e.data);
-        console.log("WebSocket recv:", data);
-        fill_answer(data.answer, data.is_corrected, data.correction_message);
-    };
 })();
 </script>
 {% endautoescape %}
