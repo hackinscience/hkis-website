@@ -73,10 +73,16 @@ class PublicAnswerSerializer(serializers.HyperlinkedModelSerializer):
         )
 
 
-class ExerciseSerializer(serializers.HyperlinkedModelSerializer):
+class StaffExerciseSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Exercise
         fields = "__all__"
+
+
+class PublicExerciseSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Exercise
+        fields = ("url", "title", "wording")
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -113,7 +119,11 @@ class AnswerViewSet(viewsets.ModelViewSet):
 class ExerciseViewSet(viewsets.ModelViewSet):
     permission_classes = [AdminOrReadOnly]
     queryset = Exercise.objects.all()
-    serializer_class = ExerciseSerializer
+
+    def get_serializer_class(self):
+        if self.request.user.is_staff:
+            return StaffExerciseSerializer
+        return PublicExerciseSerializer
 
 
 router = routers.DefaultRouter()
