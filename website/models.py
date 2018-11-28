@@ -11,9 +11,10 @@ class Exercise(models.Model):
     check = models.TextField()
     solution = models.TextField()
     wording = models.TextField()
+    position = models.FloatField(default=0)
 
     class Meta:
-        ordering = ["id"]
+        ordering = ["position"]
 
     def __str__(self):
         return self.title
