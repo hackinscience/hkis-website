@@ -83,7 +83,7 @@
     chatSocket.onmessage = function(e) {
         var data = JSON.parse(e.data);
         console.log("WebSocket recv:", data);
-        fill_answer(data.answer, data.is_corrected, data.message);
+        fill_answer(data.answer, data.is_corrected, data.correction_message);
     };
 })();
 </script>
