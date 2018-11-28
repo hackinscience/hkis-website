@@ -4,7 +4,7 @@ from website.models import Answer, Exercise
 
 class ExerciseAdmin(admin.ModelAdmin):
     readonly_fields = ("id",)
-    list_display = ("id", "title")
+    list_display = ("position", "title")
 
 
 class AnswerAdmin(admin.ModelAdmin):
