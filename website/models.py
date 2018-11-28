@@ -1,8 +1,9 @@
+from asgiref.sync import async_to_sync
 from django.db import models
 from django.contrib.auth.models import User
 from django.urls import reverse
 from django.db.models.signals import post_save
-from notifications.signals import notify
+from channels.layers import get_channel_layer
 
 
 class Exercise(models.Model):
@@ -38,12 +39,18 @@ class Answer(models.Model):
 
 
 def cb_new_answer(sender, instance, created, **kwargs):
-    notify.send(
-        instance.exercise,
-        recipient=instance.user,
-        verb="correction",
-        description=instance.correction_message,
-        target=instance,
+    group = "answers.{}.{}".format(instance.user.id, instance.exercise.id)
+
+    channel_layer = get_channel_layer()
+    async_to_sync(channel_layer.group_send)(
+        group,
+        {
+            "type": "correction",
+            "exercise": instance.exercise.id,
+            "correction_message": instance.correction_message,
+            "answer": instance.id,
+            "is_corrected": instance.is_corrected,
+        },
     )
 
 

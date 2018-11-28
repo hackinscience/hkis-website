@@ -1,6 +1,6 @@
 {% extends "hkis/layout.html" %}
 {% load hkis_extra %}
-{% load i18n static md2 bootstrap4 notifications_tags %}
+{% load i18n static md2 bootstrap4 %}
 {% block body %}
 
 
@@ -21,14 +21,13 @@
   <div class="row">
     <div class="col-md-8">
       <h2>Your Code</h2>
-      <iframe name="submit_code" style="display: none;"></iframe>
-      <form action="{% url "answer-create" %}" method="post" target="submit_code">{% csrf_token %}
+      <form action="/api/answers/" method="post" onsubmit="document.getElementById('submit_answer').setAttribute('disabled', true); AJAXSubmit(this); return false;">{% csrf_token %}
           {% for field in answer_form %}
           <div class="fieldWrapper">
               {{ field }}
           </div>
           {% endfor %}
-          <button class="btn btn-primary" type="submit">Submit your code</button>
+          <button id="submit_answer" class="btn btn-primary" type="submit">Submit your code</button>
       </form>
     </div>
     <div class="col-md-4">
@@ -50,35 +49,41 @@
   </div>
 </div>
 {% autoescape off %}
-<script src="{% static 'notifications/notify.js' %}" type="text/javascript"></script>
 <script>
-  function fill_answer(data) {
-      var result = document.getElementById("answers-result");
-      if (!result || data.unread_count == 0)
-          return;
-      for (var i=data.unread_list.length - 1; i >= 0; i--) {
-          var msg = data.unread_list[i];
-          if (msg.actor_object_id != "{{ object.id }}")
-              continue;
-          var elem = document.getElementById("td-".concat(msg.target_object_id));
-          if (elem) {
-              if (msg.description != "") {
-                  elem.innerHTML = "<pre>" + msg.description + "</pre>";
-              }
-          } else {
-              var answer_table = document.getElementById("answer-table");
-              var html = '<tr><td id="td-'.concat(msg.target_object_id).concat('"><img src="{% static "img/loading_anim.gif" %}" height=30> Waiting for correction</td> </tr>');
-              if ($("#answer-table tr:first").length)
-                  $("#answer-table tr:first").before(html);
-              else
-                  $("#answer-table").append(html);
-          }
-          var xhttp = new XMLHttpRequest();
-          xhttp.open("GET", "/inbox/notifications/delete/" + msg.slug + "/", true);
-          xhttp.send();
+
+(function() {
+    function fill_answer(answer_id, is_corrected, message) {
+        var result = document.getElementById("answers-result");
+        if (!result)
+            return;
+        var elem = document.getElementById("td-".concat(answer_id));
+        if (!elem) {
+            var answer_table = document.getElementById("answer-table");
+            var html = '<tr><td id="td-'.concat(answer_id).concat('">…</td> </tr>');
+            if ($("#answer-table tr:first").length)
+                $("#answer-table tr:first").before(html);
+            else
+                $("#answer-table").append(html);
+            elem = document.getElementById("td-".concat(answer_id));
+        }
+        if (is_corrected) {
+            elem.innerHTML = "<pre>" + message + "</pre>";
+            document.getElementById('submit_answer').removeAttribute('disabled');
+        } else {
+            elem.innerHTML = '<img src="{% static "img/loading_anim.gif" %}" height=30> Waiting for correction';
+        }
     }
-}
+
+    var chatSocket = new WebSocket(
+        'ws://' + window.location.host +
+        '/ws/answers/' + {{ user.id }} + '/' + {{object.id}} + '/');
+
+    chatSocket.onmessage = function(e) {
+        var data = JSON.parse(e.data);
+        console.log("WebSocket recv:", data);
+        fill_answer(data.answer, data.is_corrected, data.message);
+    };
+})();
 </script>
-{% register_notify_callbacks callbacks='fill_answer' refresh_period='3' fetch='50' %}
 {% endautoescape %}
 {% endblock %}

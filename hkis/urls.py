@@ -37,9 +37,6 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/", include(router.urls)),
     path("api-auth/", include("rest_framework.urls")),
-    path(
-        "inbox/notifications/", include("notifications.urls", namespace="notifications")
-    ),
     path("accounts/", include("registration.backends.default.urls")),
     path("dashboard/", dashboard_view, name="dashboard"),
     path("exercises", ExerciseListView.as_view(), name="exercises"),

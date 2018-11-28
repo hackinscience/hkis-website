@@ -44,10 +44,10 @@ INSTALLED_APPS = [
     "django_markdown2",
     "django_ace",
     "django_filters",
-    "notifications",
     "rest_framework",
     "django_extensions",
     "debug_toolbar",
+    "channels",
 ]
 
 MIDDLEWARE = [
@@ -175,6 +175,15 @@ REST_FRAMEWORK = {
     "DEFAULT_FILTER_BACKENDS": ("django_filters.rest_framework.DjangoFilterBackend",),
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.LimitOffsetPagination",
     "PAGE_SIZE": 100,
+}
+
+ASGI_APPLICATION = "hkis.routing.application"
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {"hosts": [("127.0.0.1", 6379)]},
+    }
 }
 
 try:
