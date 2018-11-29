@@ -128,7 +128,7 @@ class StatsDetailView(UserPassesTestMixin, DetailView):
                         "answers",
                         filter=Q(answers__is_valid=True) & Q(answers__user_id=user.id),
                     )
-                ).all()
+                ).order_by("position")
             ]
             for user in User.objects.filter(groups=context["object"])
         }
