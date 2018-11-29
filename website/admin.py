@@ -41,6 +41,8 @@ class ExerciseAdmin(admin.ModelAdmin):
 class AnswerAdmin(admin.ModelAdmin):
     readonly_fields = ("user", "created_at", "corrected_at")
     list_display = ("user", "exercise", "is_valid", "created_at", "is_corrected")
+    list_filter = ("is_corrected", "is_valid")
+    search_fields = ("user__username",)
 
 
 admin.site.register(Answer, AnswerAdmin)
