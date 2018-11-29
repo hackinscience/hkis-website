@@ -12,10 +12,12 @@
     {% for answer in answers %}
     <td>
       <a href="{% url "exercise" answer.exercice_id %}">
-      {% if answer.is_valid %}
-        <span class="good">✓</span>
-      {% else %}
-        <span class="bad">✗</span>
+      {% if answer.is_tried %}
+          {% if answer.is_valid %}
+            <span class="good">✓</span>
+          {% else %}
+            <span class="bad">✗</span>
+          {% endif %}
       {% endif %}
       </a>
     </td>

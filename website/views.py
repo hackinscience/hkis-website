@@ -122,12 +122,17 @@ class StatsDetailView(UserPassesTestMixin, DetailView):
         context = super().get_context_data(**kwargs)
         context["stats"] = {
             user.username: [
-                {"is_valid": exercice.nb_valid_anwser > 0, "exercice_id": exercice.id}
+                {
+                    "is_tried": exercice.nb_anwser > 0,
+                    "is_valid": exercice.nb_valid_anwser > 0,
+                    "exercice_id": exercice.id,
+                }
                 for exercice in Exercise.objects.annotate(
+                    nb_anwser=Count("answers", filter=Q(answers__user_id=user.id)),
                     nb_valid_anwser=Count(
                         "answers",
                         filter=Q(answers__is_valid=True) & Q(answers__user_id=user.id),
-                    )
+                    ),
                 ).order_by("position")
             ]
             for user in User.objects.filter(groups=context["object"])
