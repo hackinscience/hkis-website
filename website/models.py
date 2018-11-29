@@ -11,6 +11,7 @@ class Exercise(models.Model):
     check = models.TextField()
     solution = models.TextField()
     wording = models.TextField()
+    initial_solution = models.TextField(default="#!/usr/bin/env python3\n\n")
     position = models.FloatField(default=0)
 
     class Meta:

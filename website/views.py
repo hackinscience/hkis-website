@@ -69,18 +69,17 @@ class ExerciseView(LoginRequiredMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["answers"] = self.object.answers.filter(
+        context["answers"] = answers = self.object.answers.filter(
             user=self.request.user
         ).order_by("-id")
-        try:
-            context["answer_form"] = AnswerForm(
-                initial={
-                    "exercise": "/api/exercises/{}/".format(self.object.id),
-                    "source_code": context["answers"][0].source_code,
-                }
-            )
-        except IndexError:
-            context["answer_form"] = AnswerForm(initial={"exercise": self.object.id})
+        context["answer_form"] = AnswerForm(
+            initial={
+                "exercise": "/api/exercises/{}/".format(self.object.id),
+                "source_code": answers[0].source_code
+                if answers
+                else context["exercise"].initial_solution,
+            }
+        )
         try:
             context["next_id"] = (
                 Exercise.objects.filter(position__gt=self.object.position)
