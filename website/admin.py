@@ -24,7 +24,7 @@ class AdminExerciseForm(forms.ModelForm):
 
 class ExerciseAdmin(admin.ModelAdmin):
     readonly_fields = ("id",)
-    list_display = ("position", "title")
+    list_display = ("title", "position")
     form = AdminExerciseForm
 
 
