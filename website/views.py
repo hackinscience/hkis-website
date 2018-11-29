@@ -83,7 +83,7 @@ class ExerciseView(LoginRequiredMixin, DetailView):
             context["answer_form"] = AnswerForm(initial={"exercise": self.object.id})
         try:
             context["next_id"] = (
-                Exercise.objects.filter(id__gt=self.object.position)
+                Exercise.objects.filter(position__gt=self.object.position)
                 .order_by("position")[0]
                 .id
             )
