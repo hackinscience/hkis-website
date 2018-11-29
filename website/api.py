@@ -81,7 +81,7 @@ class StaffSnippetSerializer(serializers.HyperlinkedModelSerializer):
 
 class PublicSnippetSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
-        model = Answer
+        model = Snippet
         fields = "__all__"
         read_only_fields = ("user", "created_at", "executed_at", "output")
 
