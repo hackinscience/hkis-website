@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib import admin
 from django_ace import AceWidget
-from website.models import Answer, Exercise
+from website.models import Answer, Exercise, Snippet
 from website.forms import AnswerForm
 
 
@@ -45,5 +45,12 @@ class AnswerAdmin(admin.ModelAdmin):
     search_fields = ("user__username",)
 
 
+class SnippetAdmin(admin.ModelAdmin):
+    readonly_fields = ("user", "created_at", "executed_at")
+    list_display = ("user", "created_at", "executed_at")
+    search_fields = ("user__username",)
+
+
 admin.site.register(Answer, AnswerAdmin)
 admin.site.register(Exercise, ExerciseAdmin)
+admin.site.register(Snippet, SnippetAdmin)

@@ -21,12 +21,12 @@
             console.log("AJAX response:", this.responseText);
         }
 
-        function AJAXSubmit (oFormElement) {
-            if (!oFormElement.action) { return; }
+        function AJAXSubmit (oFormElement, action) {
+            if (!oFormElement.action && !action) { return; }
             var oReq = new XMLHttpRequest();
             oReq.onload = ajaxSuccess;
             if (oFormElement.method.toLowerCase() === "post") {
-                oReq.open("post", oFormElement.action);
+                oReq.open("post", action === undefined ? oFormElement.action : action);
                 oReq.send(new FormData(oFormElement));
             } else {
                 var oField, sFieldType, nFile, sSearch = "";

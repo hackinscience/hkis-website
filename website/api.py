@@ -3,7 +3,7 @@ from rest_framework import permissions
 from rest_framework import routers
 from rest_framework import serializers
 from rest_framework import viewsets
-from website.models import Answer, Exercise
+from website.models import Answer, Exercise, Snippet
 
 
 class AdminOrReadOnly(permissions.BasePermission):
@@ -73,6 +73,19 @@ class PublicAnswerSerializer(serializers.HyperlinkedModelSerializer):
         )
 
 
+class StaffSnippetSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Snippet
+        fields = "__all__"
+
+
+class PublicSnippetSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Answer
+        fields = "__all__"
+        read_only_fields = ("user", "created_at", "executed_at", "output")
+
+
 class StaffExerciseSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Exercise
@@ -116,6 +129,29 @@ class AnswerViewSet(viewsets.ModelViewSet):
         serializer.save(user=self.request.user)
 
 
+class SnippetViewSet(viewsets.ModelViewSet):
+    permission_classes = [AnswerPermission]  # Snippets are like answers: Create only.
+    queryset = Snippet.objects.all()
+    filter_fields = ("executed_at",)
+
+    def get_queryset(self):
+        if self.request.user.is_staff:
+            queryset = super().get_queryset()
+            executed_at = self.request.query_params.get("executed_at__isnull", None)
+            if executed_at is not None:
+                queryset = queryset.filter(executed_at__isnull=True)
+            return queryset
+        return super().get_queryset().filter(user=self.request.user)
+
+    def get_serializer_class(self):
+        if self.request.user.is_staff:
+            return StaffSnippetSerializer
+        return PublicSnippetSerializer
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+
 class ExerciseViewSet(viewsets.ModelViewSet):
     permission_classes = [AdminOrReadOnly]
     queryset = Exercise.objects.all()
@@ -128,6 +164,7 @@ class ExerciseViewSet(viewsets.ModelViewSet):
 
 router = routers.DefaultRouter()
 router.register(r"answers", AnswerViewSet)
+router.register(r"snippets", SnippetViewSet)
 router.register(r"exercises", ExerciseViewSet)
 router.register(r"groups", GroupViewSet)
 router.register(r"users", UserViewSet)
