@@ -8,16 +8,26 @@ from website.forms import AnswerForm
 class AdminExerciseForm(forms.ModelForm):
     class Meta:
         model = Exercise
-        fields = "__all__"
+        fields = (
+            "title",
+            "position",
+            "wording",
+            "initial_solution",
+            "check",
+            "solution",
+        )
         widgets = {
             "solution": AceWidget(
-                mode="python", theme="twilight", width="800px", height="400px"
+                mode="python", theme="twilight", width="100%", height="400px"
             ),
             "check": AceWidget(
-                mode="python", theme="twilight", width="800px", height="400px"
+                mode="python", theme="twilight", width="100%", height="400px"
             ),
             "wording": AceWidget(
-                mode="markdown", theme="twilight", width="800px", height="400px"
+                mode="markdown", theme="twilight", width="100%", height="800px"
+            ),
+            "initial_solution": AceWidget(
+                mode="markdown", theme="twilight", width="100%", height="400px"
             ),
         }
 
