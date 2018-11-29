@@ -53,6 +53,13 @@
 <script>
 
 (function() {
+    function append_to_answer_table(html) {
+        if ($("#answer-table tr:first").length)
+            $("#answer-table tr:first").before(html);
+        else
+            $("#answer-table").append(html);
+    }
+
     function fill_answer(answer_id, is_corrected, message) {
         var result = document.getElementById("answers-result");
         if (!result)
@@ -60,11 +67,7 @@
         var elem = document.getElementById("td-".concat(answer_id));
         if (!elem) {
             var answer_table = document.getElementById("answer-table");
-            var html = '<tr><td id="td-'.concat(answer_id).concat('">…</td> </tr>');
-            if ($("#answer-table tr:first").length)
-                $("#answer-table tr:first").before(html);
-            else
-                $("#answer-table").append(html);
+            append_to_answer_table('<tr><td id="td-'.concat(answer_id).concat('">…</td> </tr>'));
             elem = document.getElementById("td-".concat(answer_id));
         }
         if (is_corrected) {
@@ -75,12 +78,32 @@
         }
     }
 
+    function fill_snippet(id, output) {
+        var result = document.getElementById("answers-result");
+        if (!result)
+            return;
+        var elem = document.getElementById("td-snippet-".concat(id));
+        if (!elem) {
+            var answer_table = document.getElementById("answer-table");
+            append_to_answer_table('<tr><td id="td-snippet-'.concat(id).concat('">…</td> </tr>'));
+            elem = document.getElementById("td-snippet-".concat(id));
+        }
+        if (output) {
+            elem.innerHTML = "<pre>" + output + "</pre>";
+        } else {
+            elem.innerHTML = '<img src="{% static "img/loading_anim.gif" %}" height=30> Waiting for test run';
+        }
+    }
+
     function websocket_connect(ws_location) {
         var ws = new WebSocket(ws_location);
         ws.onmessage = function(e) {
             var data = JSON.parse(e.data);
             console.log("WebSocket recv:", data);
-            fill_answer(data.answer, data.is_corrected, data.correction_message);
+            if (data.type == "snippet")
+                fill_snippet(data.id, data.output)
+            if (data.type == "correction")
+                fill_answer(data.answer, data.is_corrected, data.correction_message);
         };
         ws.onclose = function() {
             ws = null;
