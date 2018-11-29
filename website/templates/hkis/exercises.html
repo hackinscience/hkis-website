@@ -12,8 +12,8 @@
     <tbody>
       {% for exercise in exercises %}
       <tr>
-        <td scope="row">
-            <a href="{% url "exercise" exercise.id %}">
+        <td scope="row" onclick="location.href='{% url "exercise" exercise.id %}'">
+            <a href="{% url "exercise" exercise.id %}" class="text-dark">
               <div class="float-left">
                 {% if exercise.done %}
                 <span class="good h3"> ✓ </span>
