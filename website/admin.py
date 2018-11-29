@@ -27,7 +27,7 @@ class AdminExerciseForm(forms.ModelForm):
                 mode="markdown", theme="twilight", width="100%", height="800px"
             ),
             "initial_solution": AceWidget(
-                mode="markdown", theme="twilight", width="100%", height="400px"
+                mode="python", theme="twilight", width="100%", height="400px"
             ),
         }
 
