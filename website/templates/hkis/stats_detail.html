@@ -1,6 +1,7 @@
 {% extends "hkis/layout.html" %}
 
 {% block body %}
+<div class="container">
 <h2>{{ object.name }}</h2>
 <table>
   {% for username, answers in stats.items %}
@@ -8,8 +9,8 @@
     <td>
       {{ username }}
     </td>
-    <td>
     {% for answer in answers %}
+    <td>
       <a href="{% url "exercise" answer.exercice_id %}">
       {% if answer.is_valid %}
         <span class="good">✓</span>
@@ -17,9 +18,10 @@
         <span class="bad">✗</span>
       {% endif %}
       </a>
-    {% endfor %}
     </td>
+    {% endfor %}
   </tr>
   {% endfor %}
 </table>
+<div class="container">
 {% endblock %}
