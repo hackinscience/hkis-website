@@ -9,7 +9,7 @@ class AnswerForm(forms.ModelForm):
         fields = ["source_code", "exercise"]
         widgets = {
             "source_code": AceWidget(
-                mode="python", theme="twilight", width="600px", height="400px"
+                mode="python", theme="twilight", width="100%", height="400px"
             ),
             "exercise": forms.HiddenInput(),
         }
