@@ -188,6 +188,8 @@ CHANNEL_LAYERS = {
     }
 }
 
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTOCOL", "https")
+
 try:
     from local_settings import *
 except ImportError:
