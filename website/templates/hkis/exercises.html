@@ -13,20 +13,18 @@
       {% for exercise in exercises %}
       <tr onclick="location.href='{% url "exercise" exercise.id %}'">
         <td>
-            <a href="{% url "exercise" exercise.id %}">
-              <h5>{{ exercise.title }}</h5>
-            </a>
-            {{ exercise.lead }}
+          <a href="{% url "exercise" exercise.id %}">
+            <h5>{{ exercise.title }}</h5>
+          </a>
+          {{ exercise.lead }}
         </td>
         <td scope="row">
             {% if exercise.tried %}
               {% if exercise.done %}
-                <span class="good h3"> ✓ </span>
+                <span class="good h3">✓</span>
               {% else %}
-                <span class="bad h3"> ✗ </span>
+                <span class="bad h3">✗</span>
               {% endif %}
-            {% else %}
-              <span class="bad h3">   </span>
             {% endif %}
         </td>
       </tr>
