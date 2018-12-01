@@ -6,7 +6,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib import messages
 from django.urls import reverse
 from django.db import connection
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.db.models import Count, Q
 from django.shortcuts import render
 from django.contrib.auth.models import User
@@ -18,6 +18,8 @@ from website.forms import AnswerForm
 
 
 def index(request):
+    if request.user.is_authenticated:
+        return HttpResponseRedirect(reverse("exercises"))
     return render(request, "hkis/index.html")
 
 
@@ -40,6 +42,17 @@ class ExerciseListView(LoginRequiredMixin, ListView):
     model = Exercise
     template_name = "hkis/exercises.html"
 
+    def get_queryset(self):
+        self.queryset = Exercise.objects.annotate(
+            tried=Count("answers", filter=Q(answers__user_id=self.request.user.id)),
+            succeeded=Count(
+                "answers",
+                filter=Q(answers__user_id=self.request.user.id)
+                & Q(answers__is_valid=True),
+            ),
+        )
+        return super().get_queryset()
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
@@ -54,9 +67,8 @@ class ExerciseListView(LoginRequiredMixin, ListView):
                 "id": exercise.id,
                 "title": exercise.title,
                 "lead": _get_lead(exercise.wording),
-                "done": bool(
-                    exercise.answers.filter(is_valid=True, user=self.request.user)
-                ),
+                "tried": exercise.tried > 0,
+                "done": exercise.succeeded > 0,
             }
             for exercise in self.object_list
         ]

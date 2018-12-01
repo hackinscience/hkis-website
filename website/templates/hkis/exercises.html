@@ -8,24 +8,26 @@
 <div class="container">
   <h1>Python exercises</h1>
 
-  <table class="table table-sm table-bordered table-hover records_list">
+  <table class="table table-sm table-hover records_list">
     <tbody>
       {% for exercise in exercises %}
-      <tr>
-        <td scope="row" onclick="location.href='{% url "exercise" exercise.id %}'">
-            <a href="{% url "exercise" exercise.id %}" class="text-dark">
-              <div class="float-left">
-                {% if exercise.done %}
-                <span class="good h3"> ✓ </span>
-                {% else %}
-                <span class="bad h3"> ✗ </span>
-                {% endif %}
-              </div>
-              <div class="float-left">
-                <h5>{{ exercise.title }}</h5>
-                {{ exercise.lead }}
-              </div>
+      <tr onclick="location.href='{% url "exercise" exercise.id %}'">
+        <td>
+            <a href="{% url "exercise" exercise.id %}">
+              <h5>{{ exercise.title }}</h5>
             </a>
+            {{ exercise.lead }}
+        </td>
+        <td scope="row">
+            {% if exercise.tried %}
+              {% if exercise.done %}
+                <span class="good h3"> ✓ </span>
+              {% else %}
+                <span class="bad h3"> ✗ </span>
+              {% endif %}
+            {% else %}
+              <span class="bad h3">   </span>
+            {% endif %}
         </td>
       </tr>
       {% endfor %}

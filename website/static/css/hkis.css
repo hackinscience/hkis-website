@@ -1,9 +1,11 @@
 h1 {
     margin-bottom: 25px;
+    color: #444;
 }
 
 h2 {
     margin-bottom: 15px;
+    color: #444;
 }
 
 pre {
@@ -34,4 +36,12 @@ span.good {
 
 span.bad {
     color: #cb2431;
+}
+
+a {
+    color: #3776ab;
+}
+
+body {
+    background-color: #F9F9F9;
 }

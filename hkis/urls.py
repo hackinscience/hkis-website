@@ -39,7 +39,7 @@ urlpatterns = [
     path("api-auth/", include("rest_framework.urls")),
     path("accounts/", include("registration.backends.default.urls")),
     path("dashboard/", dashboard_view, name="dashboard"),
-    path("exercises", ExerciseListView.as_view(), name="exercises"),
+    path("exercises/", ExerciseListView.as_view(), name="exercises"),
     path("favicon.ico", favicon_view),
     path("answer/create", AnswerCreateView.as_view(), name="answer-create"),
     path("exercise/<int:pk>", ExerciseView.as_view(), name="exercise"),
