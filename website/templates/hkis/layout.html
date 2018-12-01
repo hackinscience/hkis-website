@@ -34,6 +34,9 @@
     </ul>
     <ul class="navbar-nav navbar-right">
       <li class="nav-item">
+        <a class="nav-link" href="{% url 'about' %}" >About</a>
+      </li>
+      <li class="nav-item">
         <a class="nav-link" href="{% url 'auth_logout' %}" >Log out</a>
       </li>
     </ul>
@@ -43,11 +46,15 @@
     <ul class="navbar-nav mr-auto"></ul>
     <ul class="navbar-nav navbar-right">
       <li class="nav-item">
+        <a class="nav-link" href="{% url 'about' %}" >About</a>
+      </li>
+      <li class="nav-item">
         <a class="nav-link" href="{% url 'auth_login' %}" >Login</a>
       </li>
     </ul>
   </div><!-- /.navbar-collapse -->
   {% endif %}
+
 </nav>
 {% endblock %}
 

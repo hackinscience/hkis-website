@@ -1,0 +1,66 @@
+{% extends "hkis/layout.html" %}
+{% load hkis_extra %}
+{% load i18n static bootstrap4 %}
+{% block body %}
+
+
+<div class="container">
+  <h1>About Hackinscience</h1>
+  <h2>The team</h2>
+  <table class="table">
+    <tr>
+      <td width=200>
+        <h4>Jérôme Schneider</h4>
+        <img width=200 height=200 src="{% static "img/jerome-schneider.jpg" %}">
+        <p>Profesionnal Python programmer with 10+ years of experience.</p>
+      </td>
+      <td width=200>
+        <h4>Antoine Angot</h4>
+        <img width=200 height=200 src="{% static "img/antoine-angot.jpg" %}">
+        <p> Former CS teacher at FdV Licence, <a href="https://lean.fr">Lean.fr</a>.</p>
+      </td>
+      <td width=200>
+        <h4>Julien Palard</h4>
+        <img width=200 height=200 src="{% static "img/julien-palard.jpg" %}">
+        <p class="text-center">
+          CPython core developer, independent Python trainer, <a href="https://mdk.fr">mdk.fr</a>.
+        </p>
+      </td>
+      <td width=200>
+        <h4>Antoine Mazières</h4>
+        <img src="{% static "img/antoine-mazieres.jpg" %}">
+        <p class="text-center">
+          Postdoctoral Researcher at Centre Marc Bloch.
+        </p>
+      </td>
+    </tr>
+  </table>
+
+  <h2>Hackinscience, the online platform</h2>
+  <p>
+    The Hackinscience platform is
+    an <a href="http://framagit.org/hackinscience/">open-source</a>
+    exercise repository we created for the physical yearly course at
+    the CRI. It remains opened the whole year, and everyone can use it
+    to help in teaching or learning Python.
+  </p>
+
+  <h2>Hackinscience, the Python course at CRI</h2>
+  <p>
+    The Hackinscience week at <a href="https://cri-paris.org">le
+    CRI</a> is one-week intensive Python course. Check the cri-events
+    platform for the next session. We choose Python as this language
+    is appreciated and ubiquitous when speaking of datascience or
+    machine learning, and also a well appreciated language to start in
+    programming.
+  </p>
+  <p>
+    Hackinscience is intense: It spans over seven days (monday to
+    sunday) and 12h per day (9 AM to 9 PM), our goal is to make you
+    autonomous in Python so you can continue learning and start using
+    it right after this week.
+  </p>
+
+</div>
+
+{% endblock %}
