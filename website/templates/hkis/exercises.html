@@ -14,7 +14,7 @@
       <tr onclick="location.href='{% url "exercise" exercise.id %}'">
         <td>
           <a href="{% url "exercise" exercise.id %}">
-            <h5>{{ exercise.title }}</h5>
+            <h5>{{ exercise.number }}. {{ exercise.title }}</h5>
           </a>
           {{ exercise.lead }}
         </td>
