@@ -10,6 +10,7 @@ class AdminExerciseForm(forms.ModelForm):
         model = Exercise
         fields = (
             "title",
+            "slug",
             "position",
             "wording",
             "initial_solution",

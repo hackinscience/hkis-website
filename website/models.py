@@ -5,10 +5,12 @@ from django.urls import reverse
 from django.utils.timezone import now
 from django.db.models.signals import post_save
 from channels.layers import get_channel_layer
+from django_extensions.db.fields import AutoSlugField
 
 
 class Exercise(models.Model):
     title = models.CharField(max_length=255)
+    slug = AutoSlugField(populate_from=['title'], editable=True)
     check = models.TextField()
     solution = models.TextField()
     wording = models.TextField()
