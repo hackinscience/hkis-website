@@ -11,9 +11,9 @@
   <table class="table table-sm table-hover records_list">
     <tbody>
       {% for exercise in exercises %}
-      <tr onclick="if (!event.ctrlKey){location.href='{% url "exercise" exercise.id %}';}">
+      <tr onclick="if (!event.ctrlKey){location.href='{% url "exercise" exercise.slug %}';}">
         <td>
-          <a href="{% url "exercise" exercise.id %}">
+          <a href="{% url "exercise" exercise.slug %}">
             <h5>{{ exercise.number }}. {{ exercise.title }}</h5>
           </a>
           {{ exercise.lead }}

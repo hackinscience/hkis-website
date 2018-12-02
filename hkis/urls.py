@@ -42,7 +42,7 @@ urlpatterns = [
     path("exercises/", ExerciseListView.as_view(), name="exercises"),
     path("favicon.ico", favicon_view),
     path("answer/create", AnswerCreateView.as_view(), name="answer-create"),
-    path("exercise/<int:pk>", ExerciseView.as_view(), name="exercise"),
+    path("exercises/<slug:slug>", ExerciseView.as_view(), name="exercise"),
     path("profile/<int:pk>", ProfileView.as_view(), name="profile"),
     path("stats/", StatsListView.as_view(), name="stats"),
     path("stats/<int:pk>", StatsDetailView.as_view(), name="stats"),

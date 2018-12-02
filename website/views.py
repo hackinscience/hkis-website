@@ -64,9 +64,8 @@ class ExerciseListView(LoginRequiredMixin, ListView):
 
         context["exercises"] = [
             {
+                **vars(exercise),
                 "number": i + 1,
-                "id": exercise.id,
-                "title": exercise.title,
                 "lead": _get_lead(exercise.wording),
                 "tried": exercise.tried > 0,
                 "done": exercise.succeeded > 0,
