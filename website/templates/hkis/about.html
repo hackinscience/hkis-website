@@ -1,0 +1,62 @@
+{% extends "hkis/layout.html" %}
+{% load hkis_extra %}
+{% load i18n static bootstrap4 %}
+{% block body %}
+
+<div class="container">
+  <h1>About Hackinscience</h1>
+  <h2>The team</h2>
+  <div class="row">
+    <div class="col">
+      <h4>Antoine Angot</h4>
+      <img src="{% static "img/antoine-angot.jpg" %}">
+      <p> Former CS teacher at FdV Licence, <a href="https://lean.fr">lean.fr</a>.</p>
+    </div>
+    <div class="col">
+      <h4>Antoine Mazières</h4>
+      <img src="{% static "img/antoine-mazieres.jpg" %}">
+      <p>
+        Postdoctoral Researcher at Centre Marc Bloch, <a href="https://antonomase.fr/">antonomase.fr</a>.
+      </p>
+    </div>
+    <div class="col">
+      <h4>Julien Palard</h4>
+      <img src="{% static "img/julien-palard.jpg" %}">
+      <p>
+        CPython core developer, independent Python trainer, <a href="https://mdk.fr">mdk.fr</a>.
+      </p>
+    </div>
+    <div class="col">
+      <h4>Jérôme Schneider</h4>
+      <img src="{% static "img/jerome-schneider.jpg" %}">
+      <p>Profesionnal Python programmer with 10+ years of experience.</p>
+    </div>
+  </div>
+  <h2>Hackinscience, the online platform</h2>
+  <p>
+    The Hackinscience platform is
+    an <a href="http://framagit.org/hackinscience/">open-source</a>
+    exercise repository we created for the physical yearly course at
+    the CRI. It remains opened the whole year, and everyone can use it
+    to help in teaching or learning Python.
+  </p>
+
+  <h2>Hackinscience, the Python course at CRI</h2>
+  <p>
+    The Hackinscience week at <a href="https://cri-paris.org">le
+    CRI</a> is one-week intensive Python course. Check the cri-events
+    platform for the next session. We choose Python as this language
+    is appreciated and ubiquitous when speaking of datascience or
+    machine learning, and also a well appreciated language to start in
+    programming.
+  </p>
+  <p>
+    Hackinscience is intense: It spans over seven days (monday to
+    sunday) and 12h per day (9 AM to 9 PM), our goal is to make you
+    autonomous in Python so you can continue learning and start using
+    it right after this week.
+  </p>
+
+</div>
+
+{% endblock %}

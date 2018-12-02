@@ -24,6 +24,7 @@ from website.views import (
     index,
     ExerciseListView,
     ExerciseView,
+    about,
     AnswerCreateView,
     StatsDetailView,
     StatsListView,
@@ -34,6 +35,7 @@ favicon_view = lambda request: redirect("/static/favicon.ico", permanent=True)
 
 urlpatterns = [
     path("", index, name="index"),
+    path("about/", about, name="about"),
     path("admin/", admin.site.urls),
     path("api/", include(router.urls)),
     path("api-auth/", include("rest_framework.urls")),

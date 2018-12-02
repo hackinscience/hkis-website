@@ -23,6 +23,10 @@ def index(request):
     return render(request, "hkis/index.html")
 
 
+def about(request):
+    return render(request, "hkis/about.html")
+
+
 @login_required
 def dashboard_view(request):
     return render(request, "hkis/dashboard.html")
