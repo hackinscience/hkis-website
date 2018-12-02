@@ -7,9 +7,9 @@
 {{ answer_form.media }}
 <link href="{% static "css/pygments/default.css" %}" rel="stylesheet" type="text/css" />
 <div class="container">
-  {% if next_id %}
+  {% if next %}
   <div class="float-right">
-    <a class="btn btn-primary" href="{% url "exercise" next_id %}">
+    <a class="btn btn-primary" href="{% url "exercise" next %}">
       Next →
     </a>
   </div>

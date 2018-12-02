@@ -98,13 +98,13 @@ class ExerciseView(LoginRequiredMixin, DetailView):
             }
         )
         try:
-            context["next_id"] = (
+            context["next"] = (
                 Exercise.objects.filter(position__gt=self.object.position)
                 .order_by("position")[0]
-                .id
+                .slug
             )
         except IndexError:
-            context["next_id"] = None
+            context["next"] = None
         return context
 
 
