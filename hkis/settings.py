@@ -91,6 +91,7 @@ LOGGING = {
     },
     "loggers": {
         "django": {"handlers": ["console", "mail_admins"], "level": "INFO"},
+        "website": {"handlers": ["console"], "level": "INFO"},
         "django.server": {
             "handlers": ["django.server"],
             "level": "INFO",

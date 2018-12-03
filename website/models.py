@@ -1,3 +1,4 @@
+import logging
 from asgiref.sync import async_to_sync
 from django.db import models
 from django.contrib.auth.models import User
@@ -6,6 +7,9 @@ from django.utils.timezone import now
 from django.db.models.signals import post_save
 from channels.layers import get_channel_layer
 from django_extensions.db.fields import AutoSlugField
+
+
+logger = logging.getLogger(__name__)
 
 
 class Exercise(models.Model):
@@ -69,7 +73,7 @@ def cb_new_answer(sender, instance, created, **kwargs):
 
 def cb_new_snippet(sender, instance, created, **kwargs):
     group = "snippets.{}".format(instance.user.id)
-
+    logger.info("New snippet notification for user %s", instance.user.id)
     snippet = {"type": "snippet", "id": instance.id, "output": instance.output}
 
     if instance.executed_at:
