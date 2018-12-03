@@ -78,7 +78,7 @@
         }
     }
 
-    function fill_snippet(id, output) {
+    function fill_snippet(id, executed_at, output) {
         var result = document.getElementById("answers-result");
         if (!result)
             return;
@@ -88,7 +88,7 @@
             append_to_answer_table('<tr><td id="td-snippet-'.concat(id).concat('">…</td> </tr>'));
             elem = document.getElementById("td-snippet-".concat(id));
         }
-        if (output) {
+        if (executed_at !== undefined) {
             elem.innerHTML = "<pre>" + output + "</pre>";
         } else {
             elem.innerHTML = '<img src="{% static "img/loading_anim.gif" %}" height=30> Waiting for test run';
@@ -101,7 +101,7 @@
             var data = JSON.parse(e.data);
             console.log("WebSocket recv:", data);
             if (data.type == "snippet")
-                fill_snippet(data.id, data.output)
+                fill_snippet(data.id, data.executed_at, data.output)
             if (data.type == "correction")
                 fill_answer(data.answer, data.is_corrected, data.correction_message);
         };

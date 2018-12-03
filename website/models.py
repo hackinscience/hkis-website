@@ -31,11 +31,6 @@ class Snippet(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     executed_at = models.DateTimeField(blank=True, null=True)
 
-    def save(self, *args, **kwargs):
-        if self.pk is not None and not self.executed_at:
-            self.executed_at = now()
-        super().save(*args, **kwargs)
-
 
 class Answer(models.Model):
     exercise = models.ForeignKey(
@@ -75,10 +70,13 @@ def cb_new_answer(sender, instance, created, **kwargs):
 def cb_new_snippet(sender, instance, created, **kwargs):
     group = "snippets.{}".format(instance.user.id)
 
+    snippet = {"type": "snippet", "id": instance.id, "output": instance.output}
+
+    if instance.executed_at:
+        snippet["executed_at"] = instance.executed_at.isoformat()
+
     channel_layer = get_channel_layer()
-    async_to_sync(channel_layer.group_send)(
-        group, {"type": "snippet", "id": instance.id, "output": instance.output}
-    )
+    async_to_sync(channel_layer.group_send)(group, snippet)
 
 
 post_save.connect(cb_new_answer, sender=Answer)
