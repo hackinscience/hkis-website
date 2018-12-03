@@ -11,7 +11,7 @@
     </td>
     {% for answer in answers %}
     <td>
-      <a href="{% url "exercise" answer.exercice_id %}">
+      <a href="{% url "exercise" answer.slug %}">
       {% if answer.is_tried %}
           {% if answer.is_valid %}
             <span class="good">✓</span>

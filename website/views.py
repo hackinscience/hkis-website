@@ -148,7 +148,7 @@ class StatsDetailView(UserPassesTestMixin, DetailView):
                         {
                             "is_tried": exercice.nb_anwser > 0,
                             "is_valid": exercice.nb_valid_anwser > 0,
-                            "exercice_id": exercice.id,
+                            "slug": exercice.slug,
                         }
                         for exercice in Exercise.objects.annotate(
                             nb_anwser=Count(
