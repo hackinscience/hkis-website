@@ -27,7 +27,7 @@
               {{ field }}
           </div>
           {% endfor %}
-          <a href="#" class="btn btn-primary" onclick="AJAXSubmit(document.getElementById('answer_form'), '/api/snippets/'); return false;">Test your code</a>
+          <button id="submit_snippet" class="btn btn-primary" onclick="AJAXSubmit(document.getElementById('answer_form'), '/api/snippets/'); this.setAttribute('disabled', true); return false;">Test your code</button>
           <button id="submit_answer" class="btn btn-primary" type="submit">Save and submit your code</button>
       </form>
     </div>
@@ -71,7 +71,11 @@
             elem = document.getElementById("td-".concat(answer_id));
         }
         if (is_corrected) {
-            elem.innerHTML = "<pre>" + message + "</pre>";
+            var pre = document.createElement("pre");
+            var content = document.createTextNode(message);
+            pre.appendChild(content);
+            while (elem.firstChild) elem.removeChild(elem.firstChild);
+            elem.appendChild(pre);
             document.getElementById('submit_answer').removeAttribute('disabled');
         } else {
             elem.innerHTML = '<img src="{% static "img/loading_anim.gif" %}" height=30> Waiting for correction';
@@ -89,7 +93,12 @@
             elem = document.getElementById("td-snippet-".concat(id));
         }
         if (executed_at !== undefined) {
-            elem.innerHTML = "<pre>" + output + "</pre>";
+            var pre = document.createElement("pre");
+            var content = document.createTextNode(output);
+            pre.appendChild(content);
+            while (elem.firstChild) elem.removeChild(elem.firstChild);
+            elem.appendChild(pre);
+            document.getElementById("submit_snippet").removeAttribute('disabled');
         } else {
             elem.innerHTML = '<img src="{% static "img/loading_anim.gif" %}" height=30> Waiting for test run';
         }
