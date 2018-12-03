@@ -1,3 +1,4 @@
+from collections import OrderedDict
 from itertools import groupby
 
 from django.contrib.auth.decorators import login_required
@@ -139,23 +140,31 @@ class StatsDetailView(UserPassesTestMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["stats"] = {
-            user.username: [
-                {
-                    "is_tried": exercice.nb_anwser > 0,
-                    "is_valid": exercice.nb_valid_anwser > 0,
-                    "exercice_id": exercice.id,
-                }
-                for exercice in Exercise.objects.annotate(
-                    nb_anwser=Count("answers", filter=Q(answers__user_id=user.id)),
-                    nb_valid_anwser=Count(
-                        "answers",
-                        filter=Q(answers__is_valid=True) & Q(answers__user_id=user.id),
-                    ),
-                ).order_by("position")
+        context["stats"] = OrderedDict(
+            [
+                (
+                    user.username,
+                    [
+                        {
+                            "is_tried": exercice.nb_anwser > 0,
+                            "is_valid": exercice.nb_valid_anwser > 0,
+                            "exercice_id": exercice.id,
+                        }
+                        for exercice in Exercise.objects.annotate(
+                            nb_anwser=Count(
+                                "answers", filter=Q(answers__user_id=user.id)
+                            ),
+                            nb_valid_anwser=Count(
+                                "answers",
+                                filter=Q(answers__is_valid=True)
+                                & Q(answers__user_id=user.id),
+                            ),
+                        ).order_by("position")
+                    ],
+                )
+                for user in User.objects.filter(groups=context["object"]).order_by(
+                    "username"
+                )
             ]
-            for user in User.objects.filter(groups=context["object"]).order_by(
-                "username"
-            )
-        }
+        )
         return context
