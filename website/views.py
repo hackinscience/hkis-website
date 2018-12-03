@@ -134,7 +134,7 @@ class StatsDetailView(UserPassesTestMixin, DetailView):
     def test_func(self):
         return (
             self.request.user.is_superuser
-            or request.user.groups.filter(name="prof").exists()
+            or self.request.user.groups.filter(name="prof").exists()
         )
 
     def get_context_data(self, **kwargs):
