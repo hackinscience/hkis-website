@@ -154,6 +154,8 @@ class StatsDetailView(UserPassesTestMixin, DetailView):
                     ),
                 ).order_by("position")
             ]
-            for user in User.objects.filter(groups=context["object"])
+            for user in User.objects.filter(groups=context["object"]).order_by(
+                "username"
+            )
         }
         return context
