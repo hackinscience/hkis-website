@@ -10,7 +10,7 @@ from django_extensions.db.fields import AutoSlugField
 
 class Exercise(models.Model):
     title = models.CharField(max_length=255)
-    slug = AutoSlugField(populate_from=['title'], editable=True)
+    slug = AutoSlugField(populate_from=["title"], editable=True)
     check = models.TextField()
     solution = models.TextField()
     wording = models.TextField()
@@ -32,7 +32,7 @@ class Snippet(models.Model):
     executed_at = models.DateTimeField(blank=True, null=True)
 
     def save(self, *args, **kwargs):
-        if self.output and not self.executed_at:
+        if self.pk is not None and not self.executed_at:
             self.executed_at = now()
         super().save(*args, **kwargs)
 
