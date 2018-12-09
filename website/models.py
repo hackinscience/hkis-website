@@ -24,6 +24,9 @@ class Exercise(models.Model):
     class Meta:
         ordering = ["position"]
 
+    def get_absolute_url(self):
+        return reverse("exercise", args=[self.slug])
+
     def __str__(self):
         return self.title
 
@@ -52,7 +55,7 @@ class Answer(models.Model):
         return "{} on {}".format(self.user.username, self.exercise.title)
 
     def get_absolute_url(self):
-        return reverse("exercise", args=[self.exercise.id])
+        return reverse("exercise", args=[self.exercise.slug])
 
 
 def cb_new_answer(sender, instance, created, **kwargs):
