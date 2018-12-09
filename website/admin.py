@@ -3,6 +3,8 @@ from django.contrib import admin
 from django_ace import AceWidget
 from website.models import Answer, Exercise, Snippet
 from website.forms import AnswerForm
+from registration.admin import RegistrationAdmin
+from registration.models import RegistrationProfile
 
 
 class AdminExerciseForm(forms.ModelForm):
@@ -52,6 +54,13 @@ class SnippetAdmin(admin.ModelAdmin):
     search_fields = ("user__username",)
 
 
+class MyRegistrationAdmin(RegistrationAdmin):
+    list_display = RegistrationAdmin.list_display + ("activated",)
+
+
 admin.site.register(Answer, AnswerAdmin)
 admin.site.register(Exercise, ExerciseAdmin)
 admin.site.register(Snippet, SnippetAdmin)
+
+admin.site.unregister(RegistrationProfile)
+admin.site.register(RegistrationProfile, MyRegistrationAdmin)
