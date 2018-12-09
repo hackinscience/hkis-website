@@ -5,6 +5,8 @@ from website.models import Answer, Exercise, Snippet
 from website.forms import AnswerForm
 from registration.admin import RegistrationAdmin
 from registration.models import RegistrationProfile
+from django.contrib.auth.admin import UserAdmin
+from django.contrib.auth.models import User
 
 
 class AdminExerciseForm(forms.ModelForm):
@@ -58,9 +60,16 @@ class MyRegistrationAdmin(RegistrationAdmin):
     list_display = RegistrationAdmin.list_display + ("activated",)
 
 
+class MyUserAdmin(UserAdmin):
+    list_display = UserAdmin.list_display + ("date_joined",)
+
+
 admin.site.register(Answer, AnswerAdmin)
 admin.site.register(Exercise, ExerciseAdmin)
 admin.site.register(Snippet, SnippetAdmin)
 
 admin.site.unregister(RegistrationProfile)
 admin.site.register(RegistrationProfile, MyRegistrationAdmin)
+
+admin.site.unregister(User)
+admin.site.register(User, MyUserAdmin)
