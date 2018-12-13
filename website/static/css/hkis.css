@@ -22,8 +22,8 @@ pre {
     border-radius: 4px;
 }
 
-.intro-body {
-    background: radial-gradient(black, transparent 70%);
+.black-grad {
+    background: radial-gradient(farthest-corner, black, transparent 70%);
 }
 
 .table-hover tbody tr:hover {

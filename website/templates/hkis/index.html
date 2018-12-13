@@ -4,41 +4,39 @@
 {% block title %}Python course{% endblock %}
 
 {% block stylesheets %}
-    <!-- Custom fonts for this template -->
-    <link href="{% static "font-awesome/css/font-awesome.min.css" %}" rel="stylesheet" type="text/css">
-    <link href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css">
-    <link href='https://fonts.googleapis.com/css?family=Cabin:700' rel='stylesheet' type='text/css'>
-
-    <!-- Custom styles for this template -->
-    <link href="{% static "css/grayscale.css" %}" rel="stylesheet">
-
-    <link href="{% static "css/hkis.css" %}" rel="stylesheet">
+    <style type="text/css">
+    body{
+        background:url({% static "img/intro-bg.jpg" %}) no-repeat center center fixed;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        background-size: cover;
+        -o-background-size: cover;
+        font-family:Lora,'Helvetica Neue',Helvetica,Arial,sans-serif;
+        position:relative;
+        width:100%;
+        height:100%;
+        color:#fff;
+    }
+    </style>
 {% endblock %}
 
-{% block body %}
-    <!-- Intro Header -->
-    <header class="masthead">
-        <div class="intro-body">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-8 mx-auto">
-                        <h1 class="brand-heading"><img src="{% static "img/logo_hackinscience.png" %}" width="190px"></h1>
-                        <p class="intro-text">
-                          Hackinscience 2019 registration are open!!!
-                          <br/>
-                          From january 21 to january 27, at <a style="color: #999999" href="https://cri-paris.org">cri-paris.org</a>.
-                          Register your <a style="color: #999999" href="https://www.eventbrite.fr/e/billets-hackinscience-2019-50308918329">(free) hackinscience tickets now</a>.<br/>
-                          More informations on <a style="color: #999999" href="https://events.cri-paris.org/e/322">CRI-events</a>.
-                        </p>
-<!--                        <a href="#download" class="btn btn-circle js-scroll-trigger">
-                            <i class="fa fa-angle-double-down fa-2" aria-hidden="true"></i>
-                        </a> -->
-                    </div>
-                </div>
-            </div>
-        </div>
-    </header>
-    <!-- Custom scripts for this template -->
-    <script src="{% static "js/grayscale.min.js" %}"></script>
-
+{% block container %}
+<div class="row mt-5">
+    <div class="mx-auto">
+        <img class="align-self-center mr-3" src="{% static "img/logo_hackinscience.png" %}" width="190px">
+    </div>
+</div>
+<div class="black-grad row mt-5">
+    <div class="mx-auto">
+        <p class="lead text-center py-5">
+          Hackinscience 2019 registration are open!!!
+          <br/>
+          From january 21 to january 27, at <a style="color: #999999" href="https://cri-paris.org">cri-paris.org</a>.
+          <br/>
+          Register your <a style="color: #999999" href="https://www.eventbrite.fr/e/billets-hackinscience-2019-50308918329">(free) hackinscience tickets now</a>.
+          <br/>
+          More informations on <a style="color: #999999" href="https://events.cri-paris.org/e/322">CRI-events</a>.
+        </p>
+    </div>
+</div>
 {% endblock %}
