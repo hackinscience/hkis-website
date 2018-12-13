@@ -25,7 +25,6 @@ from website.views import (
     ExerciseListView,
     ExerciseView,
     about,
-    AnswerCreateView,
     StatsDetailView,
     StatsListView,
 )
@@ -43,7 +42,6 @@ urlpatterns = [
     path("dashboard/", dashboard_view, name="dashboard"),
     path("exercises/", ExerciseListView.as_view(), name="exercises"),
     path("favicon.ico", favicon_view),
-    path("answer/create", AnswerCreateView.as_view(), name="answer-create"),
     path("exercises/<slug:slug>", ExerciseView.as_view(), name="exercise"),
     path("profile/<int:pk>", ProfileView.as_view(), name="profile"),
     path("stats/", StatsListView.as_view(), name="stats"),

@@ -109,17 +109,6 @@ class ExerciseView(LoginRequiredMixin, DetailView):
         return context
 
 
-class AnswerCreateView(LoginRequiredMixin, CreateView):
-    model = Answer
-    form_class = AnswerForm
-    template_name = "hkis/answer_form.html"
-
-    def form_valid(self, form):
-        form.cleaned_data["user"] = self.request.user
-        super().form_valid(form)
-        return HttpResponse("OK")
-
-
 class StatsListView(UserPassesTestMixin, ListView):
     template_name = "hkis/stats_list.html"
     model = Group

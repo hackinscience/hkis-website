@@ -13,10 +13,3 @@ class AnswerForm(forms.ModelForm):
             ),
             "exercise": forms.HiddenInput(),
         }
-
-    def save(self, commit=True):
-        instance = super(AnswerForm, self).save(commit=False)
-        instance.user = self.cleaned_data["user"]
-        if commit:
-            instance.save()
-        return instance
