@@ -3,35 +3,32 @@
 {% load static %}
 {% load bootstrap4 %}
 
-{% block body %}
+{% block container %}
 
-<div class="container">
-  <h1>Python exercises</h1>
+<h1>Python exercises</h1>
 
-  <table class="table table-sm table-hover records_list">
-    <tbody>
-      {% for exercise in exercises %}
-      <tr onclick="if (!event.ctrlKey){location.href='{% url "exercise" exercise.slug %}';}">
-        <td>
-          <a href="{% url "exercise" exercise.slug %}">
-            <h5>{{ exercise.number }}. {{ exercise.title }}</h5>
-          </a>
-          {{ exercise.lead }}
-        </td>
-        <td scope="row">
-            {% if exercise.tried %}
-              {% if exercise.done %}
-                <span class="good h3">✓</span>
-              {% else %}
-                <span class="bad h3">✗</span>
-              {% endif %}
+<table class="table table-sm table-hover records_list">
+  <tbody>
+    {% for exercise in exercises %}
+    <tr onclick="if (!event.ctrlKey){location.href='{% url "exercise" exercise.slug %}';}">
+      <td>
+        <a href="{% url "exercise" exercise.slug %}">
+          <h5>{{ exercise.number }}. {{ exercise.title }}</h5>
+        </a>
+        {{ exercise.lead }}
+      </td>
+      <td scope="row">
+          {% if exercise.tried %}
+            {% if exercise.done %}
+              <span class="good h3">✓</span>
+            {% else %}
+              <span class="bad h3">✗</span>
             {% endif %}
-        </td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
-</div>
-
+          {% endif %}
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
 
 {% endblock %}

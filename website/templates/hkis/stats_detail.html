@@ -1,7 +1,6 @@
 {% extends "hkis/layout.html" %}
 
-{% block body %}
-<div class="container">
+{% block container %}
 <h2>{{ object.name }}</h2>
 <table>
   {% for username, answers in stats.items %}
@@ -25,5 +24,4 @@
   </tr>
   {% endfor %}
 </table>
-<div class="container">
 {% endblock %}

@@ -49,14 +49,12 @@
         </script>
 
     </head>
-    <body class="{% if is_popup %}popup {% endif %}{% block bodyclass %}{% endblock %}">
+    <body id="page-top" class="{% if is_popup %}popup {% endif %}{% block bodyclass %}{% endblock %}">
         {% block nav %}{% endblock %}
         {% block body %}
-        {% endblock %}
         <div class="container" style="margin-top: 25px;">
             {% block container %}{% endblock container %}
         </div>
-        {% block form_row %}{% endblock %}
+        {% endblock %}
     </body>
-
 </html>
