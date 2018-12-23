@@ -14,7 +14,6 @@ django-bootstrap4==0.0.6
 django-debug-toolbar==1.9.1
 django-extensions==2.1.0
 django-filter==2.0.0
-django-markdown2==0.3.1
 django-model-utils==3.1.2
 django-registration-redux==2.4
 djangorestframework==3.8.2
@@ -24,7 +23,7 @@ hyperlink==18.0.0
 idna==2.7
 incremental==17.5.0
 jsonfield==2.0.2
-markdown2==2.3.5
+markdown==3.0.1
 msgpack==0.5.6
 psycopg2==2.7.5
 Pygments==2.2.0

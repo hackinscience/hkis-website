@@ -1,10 +1,10 @@
 {% extends "hkis/layout.html" %}
 {% load hkis_extra %}
-{% load i18n static md2 bootstrap4 %}
+{% load i18n static bootstrap4 %}
 {% block title %}{{ object.title }}{% endblock %}
 
-{% block stylesheet %}
-<link href="{% static "css/pygments/default.css" %}" rel="stylesheet" type="text/css" />
+{% block stylesheets %}
+<link href="{% static "css/codehilite.css" %}" rel="stylesheet" type="text/css" />
 {% endblock %}
 {% block container %}
 {{ answer_form.media }}
@@ -16,7 +16,7 @@
 </div>
 {% endif %}
 <div style="margin-bottom: 25px;">
-{{ object.wording|markdown:"fenced-code-blocks"|trash_fix_code_in_a|i18n_doc_links:LANGUAGE_CODE }}
+{{ object.wording|markdown|md_to_bootstrap|i18n_doc_links:LANGUAGE_CODE }}
 </div>
 
 <div class="row">

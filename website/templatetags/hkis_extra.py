@@ -1,14 +1,18 @@
 from django import template
+from django.utils.safestring import mark_safe
+
+import markdown
 
 register = template.Library()
 
 
 @register.filter(is_safe=True)
-def trash_fix_code_in_a(value):
-    """This is temporarily trash-fixing
-    https://github.com/trentm/python-markdown2/issues/259
+def md_to_bootstrap(value):
+    """This replaces some markdown css classes to bootstrap classes.
     """
-    return value.replace("&lt;code&gt;", "<code>").replace("&lt;/code&gt;", "</code>")
+    return value.replace(
+        'class="admonition warning"', 'class="alert alert-warning"'
+    ).replace("admonition-title", "alert-heading")
 
 
 @register.filter(is_safe=True)
@@ -19,3 +23,14 @@ def i18n_doc_links(value, language):
     if language == "fr":
         return value.replace("https://docs.python.org/", "https://docs.python.org/fr/")
     return value
+
+
+@register.filter(name="markdown", is_safe=True)
+def markdown_filter(value):
+    """Processes the given value as Markdown.
+    Syntax::
+        {{ value|markdown }}
+    """
+    return mark_safe(
+        markdown.markdown(value, extensions=["fenced_code", "codehilite", "admonition"])
+    )
