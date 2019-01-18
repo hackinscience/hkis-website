@@ -19,6 +19,7 @@ from django.conf import settings
 from django.urls import path, include
 from website.api import router
 from website.views import (
+    chat,
     dashboard_view,
     ProfileView,
     index,
@@ -46,6 +47,7 @@ urlpatterns = [
     path("profile/<int:pk>", ProfileView.as_view(), name="profile"),
     path("stats/", StatsListView.as_view(), name="stats"),
     path("stats/<int:pk>", StatsDetailView.as_view(), name="stats"),
+    path("chat/", chat, name="chat"),
 ]
 
 if settings.DEBUG:
