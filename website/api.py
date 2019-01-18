@@ -156,6 +156,12 @@ class ExerciseViewSet(viewsets.ModelViewSet):
     permission_classes = [AdminOrReadOnly]
     queryset = Exercise.objects.all()
 
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        if self.request.user.is_staff:
+            return queryset
+        return queryset.filter(is_published=True)
+
     def get_serializer_class(self):
         if self.request.user.is_staff:
             return StaffExerciseSerializer

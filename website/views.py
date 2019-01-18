@@ -52,7 +52,7 @@ class ExerciseListView(LoginRequiredMixin, ListView):
     template_name = "hkis/exercises.html"
 
     def get_queryset(self):
-        self.queryset = Exercise.objects.annotate(
+        self.queryset = Exercise.objects.filter(is_published=True).annotate(
             tried=Count("answers", filter=Q(answers__user_id=self.request.user.id)),
             succeeded=Count(
                 "answers",
