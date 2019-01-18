@@ -16,6 +16,7 @@ class Exercise(models.Model):
     title = models.CharField(max_length=255)
     slug = AutoSlugField(populate_from=["title"], editable=True)
     check = models.TextField()
+    is_published = models.BooleanField(default=False)
     solution = models.TextField()
     wording = models.TextField()
     initial_solution = models.TextField(default="#!/usr/bin/env python3\n\n")
