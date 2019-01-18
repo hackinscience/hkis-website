@@ -1,6 +1,6 @@
 {% extends "hkis/layout.html" %}
 {% load static bootstrap4 %}
 {% block title %}Chat{% endblock %}
-{% block container %}
-<iframe src="https://kiwi.freenode.net/?nick={% if user.username %}{{ user.username }}{% else %}hackinscience?{% endif %}#hackinscience" style="border:0; width:100%; height:450px;"></iframe>
+{% block body %}
+<iframe src="https://kiwi.freenode.net/?nick={% if user.username %}{{ user.username }}{% else %}hackinscience?{% endif %}#hackinscience" style="border:0; width:100%; position: absolute; top: 0px; padding-top: 56px; height: 100%"></iframe>
 {% endblock %}
