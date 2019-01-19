@@ -115,7 +115,7 @@ class GroupViewSet(viewsets.ModelViewSet):
 class AnswerViewSet(viewsets.ModelViewSet):
     permission_classes = [AnswerPermission]
     queryset = Answer.objects.all()
-    filter_fields = ("is_corrected", "is_valid")
+    filterset_fields = ("is_corrected", "is_valid", "user")
 
     def get_queryset(self):
         if self.request.user.is_staff:
@@ -134,7 +134,7 @@ class AnswerViewSet(viewsets.ModelViewSet):
 class SnippetViewSet(viewsets.ModelViewSet):
     permission_classes = [AnswerPermission]  # Snippets are like answers: Create only.
     queryset = Snippet.objects.all()
-    filter_fields = ("executed_at",)
+    filterset_fields = ("executed_at",)
 
     def get_queryset(self):
         if self.request.user.is_staff:
