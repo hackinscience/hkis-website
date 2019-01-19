@@ -115,7 +115,7 @@ class GroupViewSet(viewsets.ModelViewSet):
 class AnswerViewSet(viewsets.ModelViewSet):
     permission_classes = [AnswerPermission]
     queryset = Answer.objects.all()
-    filter_fields = ("is_corrected",)
+    filter_fields = ("is_corrected", "is_valid")
 
     def get_queryset(self):
         if self.request.user.is_staff:
