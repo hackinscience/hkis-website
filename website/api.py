@@ -1,4 +1,6 @@
 from django.contrib.auth.models import User, Group
+from django_filters import rest_framework as filters
+import django_filters
 from rest_framework import permissions
 from rest_framework import routers
 from rest_framework import serializers
@@ -112,10 +114,18 @@ class GroupViewSet(viewsets.ModelViewSet):
     serializer_class = GroupSerializer
 
 
+class AnswerFilter(filters.FilterSet):
+    username = django_filters.CharFilter(field_name="user__username")
+
+    class Meta:
+        model = Answer
+        fields = ("is_corrected", "is_valid", "user")
+
+
 class AnswerViewSet(viewsets.ModelViewSet):
     permission_classes = [AnswerPermission]
     queryset = Answer.objects.all()
-    filterset_fields = ("is_corrected", "is_valid", "user")
+    filterset_class = AnswerFilter
 
     def get_queryset(self):
         if self.request.user.is_staff:
