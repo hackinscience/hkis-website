@@ -4,7 +4,7 @@ async-timeout==3.0.1
 attrs==18.2.0
 autobahn==18.11.2
 Automat==0.7.0
-channels==2.1.5
+channels==2.1.6
 channels-redis==2.3.3
 constantly==15.1.0
 daphne==2.2.4
