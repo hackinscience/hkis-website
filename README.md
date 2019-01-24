@@ -4,8 +4,10 @@
 pip install -r requirements.txt
 ./manage.py migrate
 ./manage.py createsuperuser
-./manage.py runserver_plus
+./manage.py runserver
 ```
+
+Install and run a redis server.
 
 You'll maybe need a moulinette running too, currently in the
 for_django branch of the moulinette, install firejail, and start it using:
