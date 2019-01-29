@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib import admin
 from django_ace import AceWidget
-from website.models import Answer, Exercise, Snippet
+from website.models import Answer, Exercise, Snippet, Lesson
 from website.forms import AnswerForm
 from registration.admin import RegistrationAdmin
 from registration.models import RegistrationProfile
@@ -38,10 +38,27 @@ class AdminExerciseForm(forms.ModelForm):
         }
 
 
+class AdminLessonForm(forms.ModelForm):
+    class Meta:
+        model = Lesson
+        fields = ("title", "slug", "is_published", "position", "content")
+        widgets = {
+            "content": AceWidget(
+                mode="markdown", theme="twilight", width="100%", height="800px"
+            )
+        }
+
+
 class ExerciseAdmin(admin.ModelAdmin):
     readonly_fields = ("id",)
     list_display = ("title", "slug", "is_published", "position")
     form = AdminExerciseForm
+
+
+class LessonAdmin(admin.ModelAdmin):
+    readonly_fields = ("id",)
+    list_display = ("title", "slug", "is_published", "position")
+    form = AdminLessonForm
 
 
 class AnswerAdmin(admin.ModelAdmin):
@@ -67,6 +84,7 @@ class MyUserAdmin(UserAdmin):
 
 admin.site.register(Answer, AnswerAdmin)
 admin.site.register(Exercise, ExerciseAdmin)
+admin.site.register(Lesson, LessonAdmin)
 admin.site.register(Snippet, SnippetAdmin)
 
 admin.site.unregister(RegistrationProfile)

@@ -58,6 +58,21 @@ class Answer(models.Model):
     def get_absolute_url(self):
         return reverse("exercise", args=[self.exercise.slug])
 
+class Lesson(models.Model):
+    title = models.CharField(max_length=255)
+    slug = AutoSlugField(populate_from=["title"], editable=True)
+    content = models.TextField()
+    is_published = models.BooleanField(default=False)
+    position = models.FloatField(default=0)
+
+    class Meta:
+        ordering = ["position"]
+
+    def get_absolute_url(self):
+        return reverse("lesson", args=[self.slug])
+
+    def __str__(self):
+        return self.title
 
 def cb_new_answer(sender, instance, created, **kwargs):
     group = "answers.{}.{}".format(instance.user.id, instance.exercise.id)

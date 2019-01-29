@@ -1,5 +1,13 @@
 # How to contribute
 
+
+## Requirements
+
+This project requires Python 3.6 at least.
+
+
+## Install
+
 ```
 pip install -r requirements.txt
 ./manage.py migrate

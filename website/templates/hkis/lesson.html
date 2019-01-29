@@ -1,0 +1,18 @@
+{% extends "hkis/layout.html" %}
+{% load hkis_extra %}
+{% load i18n static bootstrap4 %}
+{% block title %}{{ object.title }}{% endblock %}
+
+{% block stylesheets %}
+<link href="{% static "css/codehilite.css" %}" rel="stylesheet" type="text/css" />
+{% endblock %}
+{% block container %}
+{% if next %}
+<div class="float-right">
+  <a class="btn btn-primary" href="{% url "lesson" next %}">
+    Next →
+  </a>
+</div>
+{% endif %}
+{{ object.content|markdown|md_to_bootstrap }}
+{% endblock %}
