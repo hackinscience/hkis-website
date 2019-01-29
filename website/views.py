@@ -32,6 +32,18 @@ def about(request):
     return render(request, "hkis/about.html")
 
 
+def team(request):
+    return render(request, "hkis/team.html")
+
+
+def events(request):
+    return render(request, "hkis/events.html")
+
+
+def privacy(request):
+    return render(request, "hkis/privacy.html")
+
+
 @login_required
 def dashboard_view(request):
     return render(request, "hkis/dashboard.html")
@@ -45,6 +57,7 @@ class ProfileView(LoginRequiredMixin, UpdateView):
     def get_success_url(self):
         messages.info(self.request, "Profile updated")
         return reverse("profile", kwargs={"pk": self.request.user.id})
+
 
 class ExerciseListView(LoginRequiredMixin, ListView):
     model = Exercise
@@ -111,6 +124,7 @@ class ExerciseView(LoginRequiredMixin, DetailView):
             context["next"] = None
         return context
 
+
 class LessonListView(LoginRequiredMixin, ListView):
     model = Lesson
     template_name = "hkis/lessons.html"
@@ -123,10 +137,7 @@ class LessonListView(LoginRequiredMixin, ListView):
         context = super().get_context_data(**kwargs)
 
         context["lessons"] = [
-            {
-                **vars(lesson),
-                "number": i + 1,
-            }
+            {**vars(lesson), "number": i + 1}
             for i, lesson in enumerate(self.object_list)
         ]
         return context

@@ -1,0 +1,34 @@
+{% extends "hkis/layout.html" %}
+{% load hkis_extra %}
+{% load i18n static bootstrap4 %}
+{% block container %}
+
+<h1>About Hackinscience</h1>
+<h2>The team</h2>
+<div class="row">
+  <div class="col">
+    <h4>Antoine Angot</h4>
+    <img src="{% static "img/antoine-angot.jpg" %}">
+    <p> Former CS teacher at FdV Licence, <a href="https://lean.fr">lean.fr</a>.</p>
+  </div>
+  <div class="col">
+    <h4>Antoine Mazières</h4>
+    <img src="{% static "img/antoine-mazieres.jpg" %}">
+    <p>
+      Postdoctoral Researcher at Centre Marc Bloch, <a href="https://antonomase.fr/">antonomase.fr</a>.
+    </p>
+  </div>
+  <div class="col">
+    <h4>Julien Palard</h4>
+    <img src="{% static "img/julien-palard.jpg" %}">
+    <p>
+      CPython core developer, independent Python trainer, <a href="https://mdk.fr">mdk.fr</a>.
+    </p>
+  </div>
+  <div class="col">
+    <h4>Jérôme Schneider</h4>
+    <img src="{% static "img/jerome-schneider.jpg" %}">
+    <p>Profesionnal Python programmer with 10+ years of experience.</p>
+  </div>
+</div>
+{% endblock %}

@@ -29,7 +29,10 @@ from website.views import (
     about,
     chat,
     dashboard_view,
+    events,
     index,
+    privacy,
+    team,
 )
 
 
@@ -38,6 +41,9 @@ favicon_view = lambda request: redirect("/static/favicon.ico", permanent=True)
 urlpatterns = [
     path("", index, name="index"),
     path("about/", about, name="about"),
+    path("team/", team, name="team"),
+    path("events/", events, name="events"),
+    path("privacy/", privacy, name="privacy"),
     path("admin/", admin.site.urls),
     path("api/", include(router.urls)),
     path("api-auth/", include("rest_framework.urls")),
