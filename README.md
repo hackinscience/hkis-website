@@ -3,9 +3,10 @@
 
 ## Requirements
 
-This project requires python 3.5 at least.
+This project requires Python 3.6 at least.
 
-## Install 
+
+## Install
 
 ```
 pip install -r requirements.txt
