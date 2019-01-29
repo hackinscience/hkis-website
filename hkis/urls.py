@@ -42,12 +42,14 @@ urlpatterns = [
     path("accounts/", include("registration.backends.default.urls")),
     path("dashboard/", dashboard_view, name="dashboard"),
     path("exercises/", ExerciseListView.as_view(), name="exercises"),
-    path("favicon.ico", favicon_view),
     path("exercises/<slug:slug>", ExerciseView.as_view(), name="exercise"),
+    path("favicon.ico", favicon_view),
     path("profile/<int:pk>", ProfileView.as_view(), name="profile"),
     path("stats/", StatsListView.as_view(), name="stats"),
     path("stats/<int:pk>", StatsDetailView.as_view(), name="stats"),
     path("chat/", chat, name="chat"),
+    path("lessons/", LessonListView.as_view(), name="lesson"),
+    path("lessons/<slug:slug>", LessonView.as_view(), name="lesson"),
 ]
 
 if settings.DEBUG:

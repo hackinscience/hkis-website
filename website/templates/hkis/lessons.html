@@ -1,0 +1,35 @@
+{% extends "hkis/layout.html" %}
+{% load i18n %}
+{% load static %}
+{% load bootstrap4 %}
+{% block title %}Python course{% endblock %}
+
+{% block container %}
+
+<h1>Python lessons</h1>
+
+<table class="table table-sm table-hover records_list">
+  <tbody>
+    {% for lesson in lessons %}
+    <tr onclick="if (!event.ctrlKey){location.href='{% url "lesson" lesson.slug %}';}">
+      <td>
+        <a href="{% url "lesson" lesson.slug %}">
+          <h5>{{ lesson.number }}. {{ lesson.title }}</h5>
+        </a>
+        {{ lesson.lead }}
+      </td>
+      <td scope="row">
+          {% if lesson.tried %}
+            {% if lesson.done %}
+              <span class="good h3">✓</span>
+            {% else %}
+              <span class="bad h3">✗</span>
+            {% endif %}
+          {% endif %}
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% endblock %}

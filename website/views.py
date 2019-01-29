@@ -14,7 +14,7 @@ from django.contrib.auth.models import User
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView
 from django.views.generic.list import ListView
-from website.models import Exercise, Answer
+from website.models import Exercise, Answer, Lesson
 from website.forms import AnswerForm
 
 
@@ -45,7 +45,6 @@ class ProfileView(LoginRequiredMixin, UpdateView):
     def get_success_url(self):
         messages.info(self.request, "Profile updated")
         return reverse("profile", kwargs={"pk": self.request.user.id})
-
 
 class ExerciseListView(LoginRequiredMixin, ListView):
     model = Exercise
@@ -112,6 +111,43 @@ class ExerciseView(LoginRequiredMixin, DetailView):
             context["next"] = None
         return context
 
+class LessonListView(LoginRequiredMixin, ListView):
+    model = Lesson
+    template_name = "hkis/lessons.html"
+
+    def get_queryset(self):
+        self.queryset = Lesson.objects.filter(is_published=True)
+        return super().get_queryset()
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        context["lessons"] = [
+            {
+                **vars(lesson),
+                "number": i + 1,
+            }
+            for i, lesson in enumerate(self.object_list)
+        ]
+        return context
+
+
+class LessonView(LoginRequiredMixin, DetailView):
+    model = Lesson
+    template_name = "hkis/lesson.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        try:
+            context["next"] = (
+                Lesson.objects.filter(position__gt=self.object.position)
+                .order_by("position")[0]
+                .slug
+            )
+        except IndexError:
+            context["next"] = None
+        return context
+
 
 class StatsListView(UserPassesTestMixin, ListView):
     template_name = "hkis/stats_list.html"
@@ -143,7 +179,7 @@ class StatsDetailView(UserPassesTestMixin, DetailView):
                             "is_valid": exercice.nb_valid_anwser > 0,
                             "slug": exercice.slug,
                         }
-                        for exercice in Exercise.objects.annotate(
+                        for exercice in Lesson.objects.annotate(
                             nb_anwser=Count(
                                 "answers", filter=Q(answers__user_id=user.id)
                             ),
