@@ -16,16 +16,6 @@
         <a href="{% url "lesson" lesson.slug %}">
           <h5>{{ lesson.number }}. {{ lesson.title }}</h5>
         </a>
-        {{ lesson.lead }}
-      </td>
-      <td scope="row">
-          {% if lesson.tried %}
-            {% if lesson.done %}
-              <span class="good h3">✓</span>
-            {% else %}
-              <span class="bad h3">✗</span>
-            {% endif %}
-          {% endif %}
       </td>
     </tr>
     {% endfor %}

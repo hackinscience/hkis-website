@@ -7,7 +7,6 @@
 <link href="{% static "css/codehilite.css" %}" rel="stylesheet" type="text/css" />
 {% endblock %}
 {% block container %}
-{{ answer_form.media }}
 {% if next %}
 <div class="float-right">
   <a class="btn btn-primary" href="{% url "lesson" next %}">
@@ -15,118 +14,5 @@
   </a>
 </div>
 {% endif %}
-<div style="margin-bottom: 25px;">
-{{ object.wording|markdown|md_to_bootstrap|i18n_doc_links:LANGUAGE_CODE }}
-</div>
-
-<div class="row">
-  <div class="col-md-8">
-    <h2>{{ lesson.title }}</h2>
-    <form id="answer_form" action="/api/answers/" method="post" onsubmit="document.getElementById('submit_answer').setAttribute('disabled', true); AJAXSubmit(this); return false;">{% csrf_token %}
-        {% for field in answer_form %}
-        <div class="fieldWrapper">
-            {{ field }}
-        </div>
-        {% endfor %}
-        <button id="submit_snippet" class="btn btn-primary" onclick="AJAXSubmit(document.getElementById('answer_form'), '/api/snippets/'); this.setAttribute('disabled', true); return false;">Run your code</button>
-        <button id="submit_answer" class="btn btn-primary" type="submit">Save and submit your code</button>
-    </form>
-  </div>
-  <div class="col-md-4">
-    <h2>Results</h2>
-    <div id="answers-result" class="result">
-      <table id="answer-table" class="table">
-        {% for answer in answers %}
-        <tr><td id="td-{{ answer.id }}">
-        {% if not answer.is_corrected %}
-          <img src="{% static "img/loading_anim.gif" %}" height=30> Waiting for correction
-        {% else %}
-          <pre>{{ answer.correction_message }}</pre>
-        {% endif %}
-        </td></tr>
-        {% endfor %}
-      </table>
-    </div>
-  </div>
-</div>
-{% autoescape off %}
-<script>
-
-(function() {
-    function append_to_answer_table(html) {
-        if ($("#answer-table tr:first").length)
-            $("#answer-table tr:first").before(html);
-        else
-            $("#answer-table").append(html);
-    }
-
-    function fill_answer(answer_id, is_corrected, message) {
-        var result = document.getElementById("answers-result");
-        if (!result)
-            return;
-        var elem = document.getElementById("td-".concat(answer_id));
-        if (!elem) {
-            var answer_table = document.getElementById("answer-table");
-            append_to_answer_table('<tr><td id="td-'.concat(answer_id).concat('">…</td> </tr>'));
-            elem = document.getElementById("td-".concat(answer_id));
-        }
-        if (is_corrected) {
-            var pre = document.createElement("pre");
-            var content = document.createTextNode(message);
-            pre.appendChild(content);
-            while (elem.firstChild) elem.removeChild(elem.firstChild);
-            elem.appendChild(pre);
-            document.getElementById('submit_answer').removeAttribute('disabled');
-        } else {
-            elem.innerHTML = '<img src="{% static "img/loading_anim.gif" %}" height=30> Waiting for correction';
-        }
-    }
-
-    function fill_snippet(id, executed_at, output) {
-        var result = document.getElementById("answers-result");
-        if (!result)
-            return;
-        var elem = document.getElementById("td-snippet-".concat(id));
-        if (!elem) {
-            var answer_table = document.getElementById("answer-table");
-            append_to_answer_table('<tr><td id="td-snippet-'.concat(id).concat('">…</td> </tr>'));
-            elem = document.getElementById("td-snippet-".concat(id));
-        }
-        if (executed_at !== undefined) {
-            var pre = document.createElement("pre");
-            var content = document.createTextNode(output);
-            pre.appendChild(content);
-            while (elem.firstChild) elem.removeChild(elem.firstChild);
-            elem.appendChild(pre);
-            document.getElementById("submit_snippet").removeAttribute('disabled');
-        } else {
-            elem.innerHTML = '<img src="{% static "img/loading_anim.gif" %}" height=30> Waiting for test run';
-        }
-    }
-
-    function websocket_connect(ws_location) {
-        var ws = new WebSocket(ws_location);
-        ws.onmessage = function(e) {
-            var data = JSON.parse(e.data);
-            console.log("WebSocket recv:", data);
-            if (data.type == "snippet")
-                fill_snippet(data.id, data.executed_at, data.output)
-            if (data.type == "correction")
-                fill_answer(data.answer, data.is_corrected, data.correction_message);
-        };
-        ws.onclose = function() {
-            ws = null;
-            // Try to reconnect in 5 seconds
-            setTimeout(function(){websocket_connect(ws_location)}, 5000);
-        };
-    }
-
-    var ws_protocol = window.location.protocol == "http:" ? "ws:" : "wss:";
-
-    websocket_connect(ws_protocol + "//" + window.location.host +
-        "/ws/answers/" + {{ user.id }} + "/" + {{object.id}} + "/");
-
-})();
-</script>
-{% endautoescape %}
+{{ object.content|markdown|md_to_bootstrap }}
 {% endblock %}

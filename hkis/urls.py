@@ -19,15 +19,17 @@ from django.conf import settings
 from django.urls import path, include
 from website.api import router
 from website.views import (
-    chat,
-    dashboard_view,
-    ProfileView,
-    index,
     ExerciseListView,
     ExerciseView,
-    about,
+    LessonListView,
+    LessonView,
+    ProfileView,
     StatsDetailView,
     StatsListView,
+    about,
+    chat,
+    dashboard_view,
+    index,
 )
 
 
