@@ -37,6 +37,19 @@ class AdminExerciseForm(forms.ModelForm):
             ),
         }
 
+class AnswerExerciseForm(forms.ModelForm):
+    class Meta:
+        model = Answer
+        exclude = tuple()
+        widgets = {
+            "source_code": AceWidget(
+                mode="python", theme="twilight", width="100%", height="400px"
+            ),
+            "correction_message": AceWidget(
+                mode="markdown", theme="twilight", width="100%", height="400px"
+            ),
+        }
+
 
 class AdminLessonForm(forms.ModelForm):
     class Meta:
@@ -66,6 +79,7 @@ class AnswerAdmin(admin.ModelAdmin):
     list_display = ("user", "exercise", "is_valid", "created_at", "is_corrected")
     list_filter = ("is_corrected", "is_valid")
     search_fields = ("user__username",)
+    form = AnswerExerciseForm
 
 
 class SnippetAdmin(admin.ModelAdmin):
