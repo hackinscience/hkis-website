@@ -190,7 +190,7 @@ class StatsDetailView(UserPassesTestMixin, DetailView):
                             "is_valid": exercice.nb_valid_anwser > 0,
                             "slug": exercice.slug,
                         }
-                        for exercice in Lesson.objects.annotate(
+                        for exercice in Exercise.objects.annotate(
                             nb_anwser=Count(
                                 "answers", filter=Q(answers__user_id=user.id)
                             ),
