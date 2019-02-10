@@ -169,7 +169,7 @@ class StatsListView(UserPassesTestMixin, ListView):
         return super().get_queryset()
 
     def test_func(self):
-        return self.request.user.groups.filter(name="prof").exists()
+        return self.request.user.has_perm("website.view_answer")
 
 
 class StatsDetailView(UserPassesTestMixin, DetailView):
@@ -178,7 +178,7 @@ class StatsDetailView(UserPassesTestMixin, DetailView):
 
     def test_func(self):
         return (
-            self.request.user.groups.filter(name="prof").exists()
+            self.request.user.has_perm("website.view_answer")
             and self.get_object() in self.request.user.groups.all()
         )
 

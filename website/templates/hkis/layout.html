@@ -25,10 +25,12 @@
       <li class ="nav-item">
         <a class="nav-link" href="{% url 'profile' user.id %}">Profile</a>
       </li>
-      {% if user.is_staff %}
+      {% if perms.website.view_answer %}
       <li class="nav-item">
         <a class="nav-link" href="{% url 'stats' %}">Stats</a>
       </li>
+      {% endif %}
+      {% if user.is_staff %}
       <li class="nav-item">
         <a class="nav-link" href="{% url 'admin:index' %}">Admin</a>
       </li>

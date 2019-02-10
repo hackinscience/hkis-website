@@ -3,7 +3,6 @@ from asgiref.sync import async_to_sync
 from django.db import models
 from django.contrib.auth.models import User
 from django.urls import reverse
-from django.utils.timezone import now
 from django.db.models.signals import post_save
 from channels.layers import get_channel_layer
 from django_extensions.db.fields import AutoSlugField
@@ -58,6 +57,7 @@ class Answer(models.Model):
     def get_absolute_url(self):
         return reverse("exercise", args=[self.exercise.slug])
 
+
 class Lesson(models.Model):
     title = models.CharField(max_length=255)
     slug = AutoSlugField(populate_from=["title"], editable=True)
@@ -73,6 +73,7 @@ class Lesson(models.Model):
 
     def __str__(self):
         return self.title
+
 
 def cb_new_answer(sender, instance, created, **kwargs):
     group = "answers.{}.{}".format(instance.user.id, instance.exercise.id)
