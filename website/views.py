@@ -164,8 +164,12 @@ class StatsListView(UserPassesTestMixin, ListView):
     template_name = "hkis/stats_list.html"
     model = Group
 
+    def get_queryset(self):
+        self.queryset = self.request.user.groups.all()
+        return super().get_queryset()
+
     def test_func(self):
-        return self.request.user.is_superuser
+        return self.request.user.groups.filter(name="prof").exists()
 
 
 class StatsDetailView(UserPassesTestMixin, DetailView):
@@ -174,8 +178,8 @@ class StatsDetailView(UserPassesTestMixin, DetailView):
 
     def test_func(self):
         return (
-            self.request.user.is_superuser
-            or self.request.user.groups.filter(name="prof").exists()
+            self.request.user.groups.filter(name="prof").exists()
+            and self.get_object() in self.request.user.groups.all()
         )
 
     def get_context_data(self, **kwargs):

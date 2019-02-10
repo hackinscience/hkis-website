@@ -4,7 +4,9 @@
 <h2>Groups</h2>
 <ul>
   {% for group in object_list %}
+  {% if group.name != "prof" %}
   <li><a href="{% url "stats" group.pk %}">{{ group.name }}</a></li>
+  {% endif %}
   {% endfor %}
 </ul>
 {% endblock %}
