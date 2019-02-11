@@ -6,53 +6,36 @@
 {% block stylesheets %}
 <link href="{% static "css/codehilite.css" %}" rel="stylesheet" type="text/css" />
 {% endblock %}
-{% block container %}
-{{ answer_form.media }}
-{% if next %}
-<div class="float-right">
-  <a class="btn btn-primary" href="{% url "exercise" next %}">
-    Next →
-  </a>
-</div>
-{% endif %}
-<div style="margin-bottom: 25px;">
-{{ object.wording|markdown|md_to_bootstrap|i18n_doc_links:LANGUAGE_CODE }}
-</div>
 
-<div class="row">
-  <div class="col-md-8">
-    <h2>Your Code</h2>
-    <form id="answer_form" action="/api/answers/" method="post" onsubmit="document.getElementById('submit_answer').setAttribute('disabled', true); AJAXSubmit(this); return false;">{% csrf_token %}
-        {% for field in answer_form %}
-        <div class="fieldWrapper">
-            {{ field }}
-        </div>
-        {% endfor %}
-        <button id="submit_snippet" class="btn btn-primary" onclick="AJAXSubmit(document.getElementById('answer_form'), '/api/snippets/'); this.setAttribute('disabled', true); return false;">Run your code</button>
-        <button id="submit_answer" class="btn btn-primary" type="submit">Save and submit your code</button>
-    </form>
-  </div>
-  <div class="col-md-4">
-    <h2>Results</h2>
-    <div id="answers-result" class="result">
-      <table id="answer-table" class="table">
-        {% for answer in answers %}
-        <tr><td id="td-{{ answer.id }}">
-        {% if not answer.is_corrected %}
-          <img src="{% static "img/loading_anim.gif" %}" height=30> Waiting for correction
-        {% else %}
-          <pre>{{ answer.correction_message }}</pre>
-        {% endif %}
-        </td></tr>
-        {% endfor %}
-      </table>
-    </div>
-  </div>
-</div>
+{% block extrahead %}
 {% autoescape off %}
 <script>
+    function change_share_button(answer_id) {
+        var btn = document.getElementById("btn-".concat(answer_id));
+        if (!btn)
+            return;
+        btn.innerHTML = "Solution shared!";
+        btn.disabled = true;
+        btn.className = 'btn btn-secondary btn-sm';
+    }
 
-(function() {
+    function shared_answer(answer_id, is_shared, csrf_token) {
+        var data = {
+            "is_shared": is_shared,
+        };
+        var xhr = new XMLHttpRequest();
+        xhr.open('PATCH', "/api/answers/".concat(answer_id, "/"), false);
+        xhr.setRequestHeader("Content-type", "application/json");
+        xhr.setRequestHeader("cache-control", "no-cache");
+        xhr.setRequestHeader("X-CSRFToken", csrf_token);
+        xhr.onreadystatechange = function () {
+          if(xhr.readyState === 4 && xhr.status === 200) {
+              change_share_button(answer_id);
+          }
+        };
+        xhr.send(JSON.stringify(data));
+    }
+
     function append_to_answer_table(html) {
         if ($("#answer-table tr:first").length)
             $("#answer-table tr:first").before(html);
@@ -60,7 +43,7 @@
             $("#answer-table").append(html);
     }
 
-    function fill_answer(answer_id, is_corrected, message) {
+    function fill_answer(answer_id, is_corrected, is_valid, message) {
         var result = document.getElementById("answers-result");
         if (!result)
             return;
@@ -71,11 +54,23 @@
             elem = document.getElementById("td-".concat(answer_id));
         }
         if (is_corrected) {
-            var pre = document.createElement("pre");
+            var div = document.createElement("div");
             var content = document.createTextNode(message);
-            pre.appendChild(content);
+            var button = document.createElement("button")
+            button.type = 'button'
+            button.setAttribute('id', 'btn-'.concat(answer_id));
+            button.className = 'btn btn-primary btn-sm'
+            button.innerHTML = 'Share it with other students !'
+            button.addEventListener("click", function() {
+                shared_answer(answer_id, true, "{{ csrf_token }}");
+            });
+            div.className = "result-box";
+            div.appendChild(content);
+            if (is_valid) {
+                div.appendChild(button);
+            }
             while (elem.firstChild) elem.removeChild(elem.firstChild);
-            elem.appendChild(pre);
+            elem.appendChild(div);
             document.getElementById('submit_answer').removeAttribute('disabled');
         } else {
             elem.innerHTML = '<img src="{% static "img/loading_anim.gif" %}" height=30> Waiting for correction';
@@ -112,7 +107,7 @@
             if (data.type == "snippet")
                 fill_snippet(data.id, data.executed_at, data.output)
             if (data.type == "correction")
-                fill_answer(data.answer, data.is_corrected, data.correction_message);
+                fill_answer(data.answer, data.is_corrected, data.is_valid, data.correction_message);
         };
         ws.onclose = function() {
             ws = null;
@@ -125,8 +120,102 @@
 
     websocket_connect(ws_protocol + "//" + window.location.host +
         "/ws/answers/" + {{ user.id }} + "/" + {{object.id}} + "/");
-
-})();
 </script>
 {% endautoescape %}
+{% endblock %}
+{% block container %}
+{{ answer_form.media }}
+{% if next %}
+<div class="float-right">
+  <a class="btn btn-primary" href="{% url "exercise" next %}">
+    Next →
+  </a>
+</div>
+{% endif %}
+<div style="margin-bottom: 25px;">
+{{ object.wording|markdown|md_to_bootstrap|i18n_doc_links:LANGUAGE_CODE }}
+</div>
+
+<div class="row">
+  <div class="col-md-8">
+    <h2>Your Code</h2>
+    <form id="answer_form" action="/api/answers/" method="post" onsubmit="document.getElementById('submit_answer').setAttribute('disabled', true); AJAXSubmit(this); return false;">{% csrf_token %}
+        {% for field in answer_form %}
+        <div class="fieldWrapper">
+            {{ field }}
+        </div>
+        {% endfor %}
+        <button id="submit_snippet" class="btn btn-primary" onclick="AJAXSubmit(document.getElementById('answer_form'), '/api/snippets/'); this.setAttribute('disabled', true); return false;">Run your code</button>
+        <button id="submit_answer" class="btn btn-primary" type="submit">Save and submit your code</button>
+    </form>
+    {% if solutions %}
+    <h2 style="margin-top: 20px;">Other students solutions</h2>
+    <ul class="nav nav-tabs" id="other-solutions" role="tablist">
+        {% for solution in solutions %}
+        <li class="nav-item">
+            <a class="nav-link{% if forloop.counter == 1 %} active{% endif %}" id="sol-{{forloop.counter}}-tab" data-toggle="tab" href="#sol-{{forloop.counter}}" role="tab" aria-controls="sol-{{forloop.counter}}" aria-selected="{% if forloop.counter == 1 %}true{% else %}false{% endif %}">
+                {{ forloop.counter }}
+            </a>
+        </li>
+        {% endfor %}
+    </ul>
+    <div class="tab-content" id="solutions">
+        {% for solution in solutions %}
+        <div class="tab-pane fade{% if forloop.counter == 1 %} show active{% endif %}" id="sol-{{forloop.counter}}" role="tabpanel" aria-labelledby="sol-{{forloop.counter}}-tab"><pre>{{ solution.source_code }}</pre></div>
+        {% endfor %}
+    </div>
+    {% endif %}
+  </div>
+  <div class="col-md-4">
+    <h2>Results</h2>
+    <div id="answers-result" class="result">
+      <table id="answer-table" class="table">
+        {% for answer in answers %}
+        <tr><td id="td-{{ answer.id }}">
+        {% if not answer.is_corrected %}
+          <img src="{% static "img/loading_anim.gif" %}" height=30> Waiting for correction
+        {% else %}
+        <div class="result-box">
+          {{ answer.correction_message }}
+          {% if answer.is_valid %}
+           {% if answer.is_shared %}
+           <button id="btn-{{ answer.id }}" type="button" class="btn btn-secondary btn-sm" disabled>
+               Solution shared!
+           </button>
+           {% else %}
+           <button id="btn-{{ answer.id }}" type="button" class="btn btn-primary btn-sm" onclick="shared_answer('{{ answer.id }}', true, '{{ csrf_token }}')">
+               Share it with other students!
+           </button>
+           {% endif %}
+           <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal-{{ answer.id }}">
+                View code
+           </button>
+           <!-- Modal -->
+           <div class="modal fade" id="modal-{{ answer.id }}" tabindex="-1" role="dialog" aria-labelledby="{{ answer.name }} solution" aria-hidden="true">
+               <div class="modal-dialog modal-lg" role="document">
+                   <div class="modal-content">
+                       <div class="modal-header">
+                           <h5 class="modal-title" id="exampleModalLongTitle">{{ object.title }} solution</h5>
+                           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                               <span aria-hidden="true">&times;</span>
+                           </button>
+                       </div>
+                       <div class="modal-body">
+                           <pre>{{ answer.source_code }}</pre>
+                       </div>
+                       <div class="modal-footer">
+                           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                       </div>
+                   </div>
+               </div>
+           </div>
+          {% endif %}
+        </div>
+        {% endif %}
+        </td></tr>
+        {% endfor %}
+      </table>
+    </div>
+  </div>
+</div>
 {% endblock %}

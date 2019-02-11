@@ -1,12 +1,15 @@
+
+import django_filters
+
+from asgiref.sync import async_to_sync
 from django.contrib.auth.models import User, Group
 from django_filters import rest_framework as filters
-import django_filters
+from channels.layers import get_channel_layer
 from rest_framework import permissions
 from rest_framework import routers
 from rest_framework import serializers
 from rest_framework import viewsets
 from website.models import Answer, Exercise, Snippet
-
 
 class AdminOrReadOnly(permissions.BasePermission):
     def has_permission(self, request, view):
@@ -30,19 +33,29 @@ class AnswerPermission(permissions.BasePermission):
             return False
         if request.user.is_staff:
             return True
-        if request.method == "POST" and request.user.is_authenticated:
-            # Logged in user can answer.
-            return True
+        if request.user.is_authenticated:
+            UPDATE_ALLOWS_FIELD = ["is_shared"]
+            if request.method == "POST":
+                # Logged in user can answer and update their answer
+                return True
+            elif request.method == "PATCH":
+                # We authorized patch only if the field is authorized
+                for key in request.data.keys():
+                    if key not in UPDATE_ALLOWS_FIELD:
+                        return False
+                return True
         if request.method in permissions.SAFE_METHODS:
             return True
         return False
 
     def has_object_permission(self, request, view, obj):
-        """Users can only see their own answers, can't even modify them.
+        """Users can only see and modify own answers
         """
         if request.user.is_staff:
             return True
-        return obj.user == request.user and request.method in permissions.SAFE_METHODS
+        elif request.user.is_authenticated and obj.user == request.user:
+            return True
+        return False
 
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
@@ -127,6 +140,21 @@ class AnswerViewSet(viewsets.ModelViewSet):
     queryset = Answer.objects.all()
     filterset_class = AnswerFilter
 
+    def cb_new_answer(self, instance):
+        group = "answers.{}.{}".format(instance.user.id, instance.exercise.id)
+        channel_layer = get_channel_layer()
+        async_to_sync(channel_layer.group_send)(
+            group,
+            {
+                "type": "correction",
+                "exercise": instance.exercise.id,
+                "correction_message": instance.correction_message,
+                "answer": instance.id,
+                "is_corrected": instance.is_corrected,
+                "is_valid": instance.is_valid
+            },
+        )
+
     def get_queryset(self):
         if self.request.user.is_staff:
             return super().get_queryset()
@@ -137,9 +165,14 @@ class AnswerViewSet(viewsets.ModelViewSet):
             return StaffAnswerSerializer
         return PublicAnswerSerializer
 
-    def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+    def perform_update(self, serializer):
+        instance = serializer.save()
+        if 'is_corrected' in serializer.validated_data:
+            self.cb_new_answer(instance)
 
+    def perform_create(self, serializer):
+        instance = serializer.save(user=self.request.user)
+        self.cb_new_answer(instance)
 
 class SnippetViewSet(viewsets.ModelViewSet):
     permission_classes = [AnswerPermission]  # Snippets are like answers: Create only.

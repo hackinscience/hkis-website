@@ -114,6 +114,12 @@ class ExerciseView(LoginRequiredMixin, DetailView):
                 else context["exercise"].initial_solution,
             }
         )
+        context["solutions"] = []
+        if any(answer.is_valid for answer in answers):
+            context["solutions"] = Answer.objects.filter(
+                    exercise__pk=self.object.id,
+                    is_valid=True,
+                    is_shared=True).exclude(user=self.request.user)
         try:
             context["next"] = (
                 Exercise.objects.filter(position__gt=self.object.position)
