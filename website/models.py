@@ -47,6 +47,7 @@ class Answer(models.Model):
     source_code = models.TextField()
     is_corrected = models.BooleanField(default=False)
     is_valid = models.BooleanField(default=False)
+    is_shared = models.BooleanField(default=False)
     correction_message = models.TextField(default="", blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     corrected_at = models.DateTimeField(blank=True, null=True)
@@ -75,22 +76,6 @@ class Lesson(models.Model):
         return self.title
 
 
-def cb_new_answer(sender, instance, created, **kwargs):
-    group = "answers.{}.{}".format(instance.user.id, instance.exercise.id)
-
-    channel_layer = get_channel_layer()
-    async_to_sync(channel_layer.group_send)(
-        group,
-        {
-            "type": "correction",
-            "exercise": instance.exercise.id,
-            "correction_message": instance.correction_message,
-            "answer": instance.id,
-            "is_corrected": instance.is_corrected,
-        },
-    )
-
-
 def cb_new_snippet(sender, instance, created, **kwargs):
     group = "snippets.{}".format(instance.user.id)
     logger.info("New snippet notification for user %s", instance.user.id)
@@ -103,5 +88,4 @@ def cb_new_snippet(sender, instance, created, **kwargs):
     async_to_sync(channel_layer.group_send)(group, snippet)
 
 
-post_save.connect(cb_new_answer, sender=Answer)
 post_save.connect(cb_new_snippet, sender=Snippet)

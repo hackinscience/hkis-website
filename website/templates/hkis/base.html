@@ -14,7 +14,6 @@
         <link href="{% static "css/hkis.css" %}" rel="stylesheet" type="text/css" />
         {% block stylesheets %}{% endblock %}
         {% block extrastyle %}{% endblock %}
-        {% block extrahead %}{% endblock %}
         <script>
         "use strict";
 
@@ -48,6 +47,7 @@
             }
         }
         </script>
+        {% block extrahead %}{% endblock %}
 
     </head>
     <body id="page-top" class="{% if is_popup %}popup {% endif %}{% block bodyclass %}{% endblock %}">
