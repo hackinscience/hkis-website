@@ -117,9 +117,8 @@ class ExerciseView(LoginRequiredMixin, DetailView):
         context["solutions"] = []
         if any(answer.is_valid for answer in answers):
             context["solutions"] = Answer.objects.filter(
-                    exercise__pk=self.object.id,
-                    is_valid=True,
-                    is_shared=True).exclude(user=self.request.user)
+                exercise__pk=self.object.id, is_valid=True, is_shared=True
+            ).exclude(user=self.request.user)
         try:
             context["next"] = (
                 Exercise.objects.filter(position__gt=self.object.position)
@@ -212,9 +211,9 @@ class StatsDetailView(UserPassesTestMixin, DetailView):
                         ).order_by("position")
                     ],
                 )
-                for user in User.objects.filter(groups=context["object"]).order_by(
-                    "username"
-                )
+                for user in User.objects.filter(groups=context["object"])
+                .exclude(groups__name="prof")
+                .order_by("username")
             ]
         )
         return context
