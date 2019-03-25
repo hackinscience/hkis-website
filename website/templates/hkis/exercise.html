@@ -55,6 +55,7 @@
         }
         if (is_corrected) {
             var div = document.createElement("div");
+            var pre = document.createElement("pre");
             var content = document.createTextNode(message);
             var button = document.createElement("button")
             button.type = 'button'
@@ -65,7 +66,8 @@
                 shared_answer(answer_id, true, "{{ csrf_token }}");
             });
             div.className = "result-box";
-            div.appendChild(content);
+            pre.appendChild(content)
+            div.appendChild(pre);
             if (is_valid) {
                 div.appendChild(button);
             }
@@ -176,7 +178,7 @@
           <img src="{% static "img/loading_anim.gif" %}" height=30> Waiting for correction
         {% else %}
         <div class="result-box">
-          {{ answer.correction_message }}
+          <pre>{{ answer.correction_message }}</pre>
           {% if answer.is_valid %}
            {% if answer.is_shared %}
            <button id="btn-{{ answer.id }}" type="button" class="btn btn-secondary btn-sm" disabled>
