@@ -40,3 +40,7 @@ a {
 body {
     background-color: #F9F9F9;
 }
+
+.fieldWrapper .django-ace-editor {
+    font-size: 16px;
+}
