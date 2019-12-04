@@ -1,0 +1,19 @@
+channels
+channels-redis
+
+django>=2.2.0,<3
+django-ace
+django-bootstrap4
+django-debug-toolbar
+django-extensions
+django-filter
+django-model-utils
+django-registration-redux
+djangorestframework
+
+gunicorn
+markdown
+psycopg2
+pygments
+
+six>1.11  # Temporarily pinned just so we can also install pylint in dev.
