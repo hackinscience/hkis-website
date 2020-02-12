@@ -14,6 +14,7 @@ class AnswerForm(forms.ModelForm):
                 width="100%",
                 height="400px",
                 fontsize="16px",
+                toolbar=False,
             ),
             "exercise": forms.HiddenInput(),
         }

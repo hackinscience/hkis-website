@@ -20,7 +20,7 @@ click==7.0                # via black, pip-tools
 constantly==15.1.0
 cryptography==2.8
 daphne==2.4.0
-django-ace==1.0.6
+django-ace==1.0.7
 django-bootstrap4==0.0.6
 django-debug-toolbar==2.1
 django-extensions==2.1.0
