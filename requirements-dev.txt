@@ -48,7 +48,6 @@ packaging==19.2           # via tox
 pathspec==0.6.0           # via black
 pip-tools==4.3.0
 pluggy==0.13.1            # via tox
-psycopg2==2.8.4
 py==1.8.0                 # via tox
 pyasn1-modules==0.2.7
 pyasn1==0.4.8

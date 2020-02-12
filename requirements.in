@@ -13,7 +13,6 @@ djangorestframework
 
 gunicorn
 markdown
-psycopg2
 pygments
 
 six>1.11  # Temporarily pinned just so we can also install pylint in dev.
