@@ -53,7 +53,7 @@
     <body id="page-top" class="{% if is_popup %}popup {% endif %}{% block bodyclass %}{% endblock %}">
         {% block nav %}{% endblock %}
         {% block body %}
-        <div class="container" style="margin-top: 25px;">
+        <div class="container-fluid" style="margin-top: 25px;">
             {% block container %}{% endblock container %}
             <footer class="pt-4 my-md-5 pt-md-5 border-top">
               <div class="row">
@@ -84,5 +84,10 @@
             </footer>
         </div>
         {% endblock %}
+        <script>
+          $(function () {
+              $('[data-toggle="tooltip"]').tooltip()
+          })
+        </script>
     </body>
 </html>

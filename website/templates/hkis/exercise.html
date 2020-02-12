@@ -57,19 +57,26 @@
             var div = document.createElement("div");
             var pre = document.createElement("pre");
             var content = document.createTextNode(message);
-            var button = document.createElement("button")
-            button.type = 'button'
-            button.setAttribute('id', 'btn-'.concat(answer_id));
-            button.className = 'btn btn-primary btn-sm'
-            button.innerHTML = 'Share it with other students !'
-            button.addEventListener("click", function() {
+            var button_share = document.createElement("button")
+            button_share.type = 'button'
+            button_share.setAttribute('id', 'btn-'.concat(answer_id));
+            button_share.className = 'btn btn-secondary btn-sm'
+            button_share.innerHTML = 'Share it with other students !'
+            button_share.addEventListener("click", function() {
                 shared_answer(answer_id, true, "{{ csrf_token }}");
             });
+            var button_next = document.createElement("a")
+            button_next.className = 'btn btn-primary btn-sm'
+            button_next.innerHTML = 'Next'
+            button_next.href = "{% url "exercise" next %}"
+
             div.className = "result-box";
             pre.appendChild(content)
             div.appendChild(pre);
             if (is_valid) {
-                div.appendChild(button);
+                div.appendChild(button_share);
+                div.appendChild(document.createTextNode(" "));
+                div.appendChild(button_next);
             }
             while (elem.firstChild) elem.removeChild(elem.firstChild);
             elem.appendChild(div);
@@ -129,7 +136,7 @@
 {{ answer_form.media }}
 {% if next %}
 <div class="float-right">
-  <a class="btn btn-primary" href="{% url "exercise" next %}">
+  <a class="btn btn-secondary" href="{% url "exercise" next %}">
     Next →
   </a>
 </div>
@@ -139,7 +146,7 @@
 </div>
 
 <div class="row">
-  <div class="col-md-8">
+  <div class="col-md-6">
     <h2>Your Code</h2>
     <form id="answer_form" action="/api/answers/" method="post" onsubmit="document.getElementById('submit_answer').setAttribute('disabled', true); AJAXSubmit(this); return false;">{% csrf_token %}
         {% for field in answer_form %}
@@ -147,8 +154,25 @@
             {{ field }}
         </div>
         {% endfor %}
-        <button id="submit_snippet" class="btn btn-primary" onclick="AJAXSubmit(document.getElementById('answer_form'), '/api/snippets/'); this.setAttribute('disabled', true); return false;">Run your code</button>
-        <button id="submit_answer" class="btn btn-primary" type="submit">Save and submit your code</button>
+        <button
+          data-toggle="tooltip"
+          data-placement="bottom"
+          data-delay="500"
+          title="Use this to execute your code, so you can try things."
+          id="submit_snippet" class="btn btn-secondary"
+          onclick="AJAXSubmit(document.getElementById('answer_form'), '/api/snippets/'); this.setAttribute('disabled', true); return false;">
+          Run
+        </button>
+        <button
+          id="submit_answer"
+          data-toggle="tooltip"
+          data-placement="bottom"
+          data-delay="500"
+          title="This runs automated tests to verify your implementation (also saves your code)."
+          class="btn btn-primary"
+          type="submit">
+          Submit for validation
+        </button>
     </form>
     {% if solutions %}
     <h2 style="margin-top: 20px;">Other students solutions</h2>
@@ -168,7 +192,7 @@
     </div>
     {% endif %}
   </div>
-  <div class="col-md-4">
+  <div class="col-md-6">
     <h2>Results</h2>
     <div id="answers-result" class="result">
       <table id="answer-table" class="table">
@@ -181,15 +205,15 @@
           <pre>{{ answer.correction_message }}</pre>
           {% if answer.is_valid %}
            {% if answer.is_shared %}
-           <button id="btn-{{ answer.id }}" type="button" class="btn btn-secondary btn-sm" disabled>
+           <button id="btn-{{ answer.id }}" type="button" class="btn btn-secondary btn-sm" disabled>
                Solution shared!
            </button>
            {% else %}
-           <button id="btn-{{ answer.id }}" type="button" class="btn btn-primary btn-sm" onclick="shared_answer('{{ answer.id }}', true, '{{ csrf_token }}')">
+           <button id="btn-{{ answer.id }}" type="button" class="btn btn-secondary btn-sm" onclick="shared_answer('{{ answer.id }}', true, '{{ csrf_token }}')">
                Share it with other students!
            </button>
            {% endif %}
-           <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal-{{ answer.id }}">
+           <button type="button" class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#modal-{{ answer.id }}">
                 View code
            </button>
            <!-- Modal -->
