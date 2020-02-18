@@ -24,10 +24,6 @@ def index(request):
     return render(request, "hkis/index.html")
 
 
-def chat(request):
-    return render(request, "hkis/chat.html")
-
-
 def about(request):
     return render(request, "hkis/about.html")
 

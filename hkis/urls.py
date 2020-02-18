@@ -27,7 +27,6 @@ from website.views import (
     StatsDetailView,
     StatsListView,
     about,
-    chat,
     dashboard_view,
     events,
     index,
@@ -55,7 +54,6 @@ urlpatterns = [
     path("profile/<int:pk>", ProfileView.as_view(), name="profile"),
     path("stats/", StatsListView.as_view(), name="stats"),
     path("stats/<int:pk>", StatsDetailView.as_view(), name="stats"),
-    path("chat/", chat, name="chat"),
     path("lessons/", LessonListView.as_view(), name="lesson"),
     path("lessons/<slug:slug>", LessonView.as_view(), name="lesson"),
 ]
