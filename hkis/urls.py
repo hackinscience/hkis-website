@@ -46,7 +46,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/", include(router.urls)),
     path("api-auth/", include("rest_framework.urls")),
-    path("accounts/", include("registration.backends.default.urls")),
+    path("accounts/", include("registration.backends.simple.urls")),
     path("dashboard/", dashboard_view, name="dashboard"),
     path("exercises/", ExerciseListView.as_view(), name="exercises"),
     path("exercises/<slug:slug>", ExerciseView.as_view(), name="exercise"),
