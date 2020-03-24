@@ -167,6 +167,7 @@ USE_TZ = True
 STATIC_URL = "/static/"
 
 # Django registration
+ACCOUNT_ACTIVATION_DAYS = 7
 LOGIN_REDIRECT_URL = "/exercises/"
 LOGOUT_REDIRECT_URL = "/"
 
