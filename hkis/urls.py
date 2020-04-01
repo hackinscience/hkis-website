@@ -27,6 +27,7 @@ from website.views import (
     StatsDetailView,
     StatsListView,
     about,
+    helppage,
     dashboard_view,
     events,
     index,
@@ -40,6 +41,7 @@ favicon_view = lambda request: redirect("/static/favicon.ico", permanent=True)
 urlpatterns = [
     path("", index, name="index"),
     path("about/", about, name="about"),
+    path("help/", helppage, name="help"),
     path("team/", team, name="team"),
     path("events/", events, name="events"),
     path("privacy/", privacy, name="privacy"),

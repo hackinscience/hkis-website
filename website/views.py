@@ -28,6 +28,10 @@ def about(request):
     return render(request, "hkis/about.html")
 
 
+def helppage(request):
+    return render(request, "hkis/help.html")
+
+
 def team(request):
     return render(request, "hkis/team.html")
 
