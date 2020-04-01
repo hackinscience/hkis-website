@@ -152,7 +152,7 @@ INTERNAL_IPS = {"127.0.0.1"}
 LANGUAGE_CODE = "en-us"
 LANGUAGES = [("fr", "Français"), ("en", "English")]
 
-TIME_ZONE = "UTC"
+TIME_ZONE = "Europe/Paris"
 
 USE_I18N = True
 
