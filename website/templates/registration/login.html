@@ -3,7 +3,7 @@
 {% load staticfiles %}
 {% load bootstrap4 %}
 
-{% block title %}{% trans "Login" %}{% endblock %}
+{% block title %}{% trans "Sign in to Hackinscience" %}{% endblock %}
 
 {% block content %}
 {% url 'auth_password_reset' as auth_pwd_reset_url %}
@@ -17,14 +17,18 @@
 <p>
 {% blocktrans %}
 <a href="{{ auth_pwd_reset_url }}">Forgot your password?</a>
-<a href="{{ register_url }}">Need an account?</a>
 {% endblocktrans %}
 </p>
 
 {% buttons %}
-<button type="submit" class="btn btn-primary">{% trans "Login" %}</button>
+<button type="submit" class="btn btn-primary">{% trans "Sign in" %}</button>
 {% endbuttons %}
 <input type="hidden" name="next" value="{{ next }}" />
 </form>
 
+
+<p>
+New to Hackinscience? <a href="{{ register_url }}">Create an account.</a>
+
+</p>
 {% endblock %}
