@@ -37,10 +37,10 @@
     }
 
     function append_to_answer_table(html) {
-        if ($("#answer-table tr:first").length)
-            $("#answer-table tr:first").before(html);
+        if (document.querySelectorAll("#answer-table tr").length)
+            document.querySelectorAll("#answer-table tr")[0].insertAdjacentHTML('beforebegin', html);
         else
-            $("#answer-table").append(html);
+            document.querySelectorAll("#answer-table")[0].insertAdjacentHTML('afterbegin', html);
     }
 
     function fill_answer(answer_id, is_corrected, is_valid, message) {
