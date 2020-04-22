@@ -1,7 +1,5 @@
 {% extends "registration/registration_base.html" %}
-{% load i18n %}
-{% load staticfiles %}
-{% load bootstrap4 %}
+{% load i18n staticfiles crispy_forms_tags %}
 
 {% block title %}{% trans "Sign in to Hackinscience" %}{% endblock %}
 
@@ -12,7 +10,7 @@
 
 <form method="post" action="." class="form">
 {% csrf_token %}
-{% bootstrap_form form layout='inline' %}
+{{ form|crispy }}
 
 <p>
 {% blocktrans %}
@@ -20,15 +18,13 @@
 {% endblocktrans %}
 </p>
 
-{% buttons %}
 <button type="submit" class="btn btn-primary">{% trans "Sign in" %}</button>
-{% endbuttons %}
 <input type="hidden" name="next" value="{{ next }}" />
 </form>
 
-
+<br/>
 <p>
 New to Hackinscience? <a href="{{ register_url }}">Create an account.</a>
-
 </p>
+
 {% endblock %}

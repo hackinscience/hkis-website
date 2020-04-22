@@ -1,28 +1,28 @@
 {% extends "registration/registration_base.html" %}
-{% load i18n %}
-{% load staticfiles %}
-{% load bootstrap4 %}
+{% load i18n staticfiles crispy_forms_tags %}
 {% block title %}Profile{% endblock %}
 {% block container %}
 
 <div class="row">
   <div class="col-md-6 offset-md-3">
     <h1>Update Profile</h1>
-    {# Display django.contrib.messages as Bootstrap alerts #}
-    {% bootstrap_messages %}
+    {% if messages %}
+    <ul class="messages">
+      {% for message in messages %}
+      <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+      {% endfor %}
+    </ul>
+    {% endif %}
     <form action="" method="post" class="form">
       {% csrf_token %}
-      {% bootstrap_form form %}
+      {{ form|crispy }}
       {% url 'auth_password_change' as password_change %}
       <p>
       {% blocktrans %}
       <a href="{{ password_change }}">Change your password</a>
       {% endblocktrans %}
       </p>
-
-      {% buttons %}
       <button type="submit" class="btn btn-primary btn-lg">{% trans "Update" %}</button>
-      {% endbuttons %}
     </form>
   </div>
 </div>

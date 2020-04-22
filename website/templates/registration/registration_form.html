@@ -1,16 +1,12 @@
 {% extends "registration/registration_base.html" %}
-{% load i18n %}
-{% load staticfiles %}
-{% load bootstrap4 %}
+{% load i18n staticfiles crispy_forms_tags %}
 
 {% block title %}{% trans "Register" %}{% endblock %}
 {% block content %}
 <form action="." method="post" class="form">
     {% csrf_token %}
-    {% bootstrap_form form layout='inline' %}
-    {% buttons %}
-      <button type="submit" class="btn btn-primary">{% trans "Submit" %}</button>
-    {% endbuttons %}
+    {{ form|crispy }}
+    <button type="submit" class="btn btn-primary">{% trans "Submit" %}</button>
     <a href="/">Back</a>
 </form>
 {% endblock %}

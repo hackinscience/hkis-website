@@ -3,8 +3,8 @@ channels-redis
 
 django>=2.2.0,<3
 django-ace
-django-bootstrap4
 django-debug-toolbar
+django-crispy-forms
 django-extensions
 django-filter
 django-model-utils
