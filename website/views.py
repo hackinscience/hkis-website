@@ -118,7 +118,7 @@ class ExerciseView(LoginRequiredMixin, DetailView):
         if any(answer.is_valid for answer in answers):
             context["solutions"] = Answer.objects.filter(
                 exercise__pk=self.object.id, is_valid=True, is_shared=True
-            )
+            ).order_by("-created_at")
         try:
             context["next"] = (
                 Exercise.objects.filter(position__gt=self.object.position)
