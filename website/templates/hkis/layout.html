@@ -12,8 +12,8 @@
         HackInScience
     </div>
   </a>
-  {% if user.is_authenticated %}
   <div class="collapse navbar-collapse" id="navbarNav">
+  {% if user.is_authenticated %}
     <ul class="navbar-nav mr-auto">
       <li class="nav-item">
         <a class="nav-link" href="{% url 'exercises' %}">Exercises</a>
@@ -37,9 +37,7 @@
         <a class="nav-link" href="{% url 'auth_logout' %}">Log out</a>
       </li>
     </ul>
-  </div><!-- /.navbar-collapse -->
   {% else %}
-  <div class="collapse navbar-collapse" id="navbarNav">
     <ul class="navbar-nav mr-auto"></ul>
     <ul class="navbar-nav navbar-right">
       <li class="nav-item">
@@ -49,8 +47,8 @@
         <a class="nav-link" href="{% url 'auth_login' %}">Sign in</a>
       </li>
     </ul>
-  </div><!-- /.navbar-collapse -->
   {% endif %}
+  </div><!-- /.navbar-collapse -->
   <!-- Collect the nav links, forms, and other content for toggling -->
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
