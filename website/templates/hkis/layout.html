@@ -13,41 +13,40 @@
     </div>
   </a>
   <div class="collapse navbar-collapse" id="navbarNav">
-  {% if user.is_authenticated %}
     <ul class="navbar-nav mr-auto">
-      <li class="nav-item">
-        <a class="nav-link" href="{% url 'exercises' %}">Exercises</a>
-      </li>
-      <li class ="nav-item">
-        <a class="nav-link" href="{% url 'profile' user.id %}">Profile</a>
-      </li>
-      {% if perms.website.view_answer %}
-      <li class="nav-item">
-        <a class="nav-link" href="{% url 'stats' %}">Stats</a>
-      </li>
-      {% endif %}
-      {% if user.is_staff %}
-      <li class="nav-item">
-        <a class="nav-link" href="{% url 'admin:index' %}">Admin</a>
-      </li>
+      {% if user.is_authenticated %}
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'exercises' %}">Exercises</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'profile' user.id %}">Profile</a>
+        </li>
+        {% if perms.website.view_answer %}
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'stats' %}">Stats</a>
+          </li>
+        {% endif %}
+        {% if user.is_staff %}
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'admin:index' %}">Admin</a>
+          </li>
+        {% endif %}
       {% endif %}
     </ul>
     <ul class="navbar-nav navbar-right">
-      <li class="nav-item">
-        <a class="nav-link" href="{% url 'auth_logout' %}">Log out</a>
-      </li>
+      {% if user.is_authenticated %}
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'auth_logout' %}">Log out</a>
+        </li>
+      {% else %}
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'about' %}">About</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'auth_login' %}">Sign in</a>
+        </li>
+      {% endif %}
     </ul>
-  {% else %}
-    <ul class="navbar-nav mr-auto"></ul>
-    <ul class="navbar-nav navbar-right">
-      <li class="nav-item">
-        <a class="nav-link" href="{% url 'about' %}">About</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="{% url 'auth_login' %}">Sign in</a>
-      </li>
-    </ul>
-  {% endif %}
   </div><!-- /.navbar-collapse -->
   <!-- Collect the nav links, forms, and other content for toggling -->
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
