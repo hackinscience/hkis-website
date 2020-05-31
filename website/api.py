@@ -1,4 +1,3 @@
-
 import django_filters
 
 from asgiref.sync import async_to_sync
@@ -10,6 +9,7 @@ from rest_framework import routers
 from rest_framework import serializers
 from rest_framework import viewsets
 from website.models import Answer, Exercise, Snippet
+
 
 class AdminOrReadOnly(permissions.BasePermission):
     def has_permission(self, request, view):
@@ -151,7 +151,7 @@ class AnswerViewSet(viewsets.ModelViewSet):
                 "correction_message": instance.correction_message,
                 "answer": instance.id,
                 "is_corrected": instance.is_corrected,
-                "is_valid": instance.is_valid
+                "is_valid": instance.is_valid,
             },
         )
 
@@ -167,12 +167,13 @@ class AnswerViewSet(viewsets.ModelViewSet):
 
     def perform_update(self, serializer):
         instance = serializer.save()
-        if 'is_corrected' in serializer.validated_data:
+        if "is_corrected" in serializer.validated_data:
             self.cb_new_answer(instance)
 
     def perform_create(self, serializer):
         instance = serializer.save(user=self.request.user)
         self.cb_new_answer(instance)
+
 
 class SnippetViewSet(viewsets.ModelViewSet):
     permission_classes = [AnswerPermission]  # Snippets are like answers: Create only.
