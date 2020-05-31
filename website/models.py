@@ -18,7 +18,7 @@ class Exercise(models.Model):
     is_published = models.BooleanField(default=False)
     solution = models.TextField()
     wording = models.TextField()
-    initial_solution = models.TextField(default="#!/usr/bin/env python3\n\n")
+    initial_solution = models.TextField(blank=True)
     position = models.FloatField(default=0)
 
     class Meta:
