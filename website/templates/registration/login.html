@@ -12,12 +12,6 @@
 {% csrf_token %}
 {{ form|crispy }}
 
-<p>
-{% blocktrans %}
-<a href="{{ auth_pwd_reset_url }}">Forgot your password?</a>
-{% endblocktrans %}
-</p>
-
 <button type="submit" class="btn btn-primary">{% trans "Sign in" %}</button>
 <input type="hidden" name="next" value="{{ next }}" />
 </form>

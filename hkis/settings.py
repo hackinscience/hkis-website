@@ -170,6 +170,7 @@ STATIC_URL = "/static/"
 
 # Django registration
 ACCOUNT_ACTIVATION_DAYS = 7
+REGISTRATION_FORM = "website.forms.HkisRegistrationForm"
 LOGIN_REDIRECT_URL = "/exercises/"
 LOGOUT_REDIRECT_URL = "/"
 

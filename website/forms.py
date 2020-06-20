@@ -1,5 +1,7 @@
 from django import forms
+from django.utils.translation import ugettext_lazy as _
 from django_ace import AceWidget
+from registration.forms import RegistrationForm
 from website.models import Answer
 
 
@@ -18,3 +20,7 @@ class AnswerForm(forms.ModelForm):
             ),
             "exercise": forms.HiddenInput(),
         }
+
+
+class HkisRegistrationForm(RegistrationForm):
+    email = forms.EmailField(label=_("E-mail (optional)"), required=False)
