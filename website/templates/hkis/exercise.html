@@ -70,6 +70,11 @@
             button_next.innerHTML = 'Next'
             button_next.href = "{% url "exercise" next %}"
 
+            var button_help = document.createElement("a")
+            button_help.className = 'btn btn-secondary btn-sm'
+            button_help.innerHTML = 'Help'
+            button_help.href = "{% url 'help' %}"
+
             div.className = "result-box";
             pre.appendChild(content)
             div.appendChild(pre);
@@ -77,6 +82,9 @@
                 div.appendChild(button_share);
                 div.appendChild(document.createTextNode(" "));
                 div.appendChild(button_next);
+            }
+            else {
+                div.appendChild(button_help);
             }
             while (elem.firstChild) elem.removeChild(elem.firstChild);
             elem.appendChild(div);
@@ -187,7 +195,7 @@
     {% endif %}
   </div>
   <div class="col-md-6">
-    <h2>Results (Need <a target=_blank href="{% url 'help' %}"> help</a>?)</h2>
+    <h2>Results</h2>
     <div id="answers-result" class="result">
       <table id="answer-table" class="table">
         {% for answer in answers %}
