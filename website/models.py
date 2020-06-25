@@ -52,6 +52,9 @@ class Answer(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     corrected_at = models.DateTimeField(blank=True, null=True)
 
+    def short_correction_message(self):
+        return self.correction_message.split("\n")[:1][:100]
+
     def __str__(self):
         return "{} on {}".format(self.user.username, self.exercise.title)
 

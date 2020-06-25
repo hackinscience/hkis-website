@@ -37,6 +37,7 @@ class AdminExerciseForm(forms.ModelForm):
             ),
         }
 
+
 class AnswerExerciseForm(forms.ModelForm):
     class Meta:
         model = Answer
@@ -76,7 +77,14 @@ class LessonAdmin(admin.ModelAdmin):
 
 class AnswerAdmin(admin.ModelAdmin):
     readonly_fields = ("user", "created_at", "corrected_at")
-    list_display = ("user", "exercise", "is_valid", "created_at", "is_corrected")
+    list_display = (
+        "__str__",
+        "short_correction_message",
+        "is_valid",
+        "is_corrected",
+        "is_shared",
+        "created_at",
+    )
     list_filter = ("is_corrected", "is_valid", "is_shared")
     search_fields = ("user__username",)
     form = AnswerExerciseForm
