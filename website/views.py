@@ -8,7 +8,7 @@ from django.contrib import messages
 from django.urls import reverse
 from django.db import connection
 from django.http import HttpResponse, HttpResponseRedirect
-from django.db.models import Count, Q
+from django.db.models import Count, Q, Max
 from django.shortcuts import render
 from django.contrib.auth.models import User
 from django.views.generic.detail import DetailView
@@ -197,9 +197,13 @@ class StatsDetailView(UserPassesTestMixin, DetailView):
                         {
                             "is_tried": exercice.nb_anwser > 0,
                             "is_valid": exercice.nb_valid_anwser > 0,
+                            "last_answer": exercice.last_answer,
                             "slug": exercice.slug,
                         }
                         for exercice in Exercise.objects.annotate(
+                            last_answer=Max(
+                                "answers__pk", filter=Q(answers__user_id=user.id)
+                            ),
                             nb_anwser=Count(
                                 "answers", filter=Q(answers__user_id=user.id)
                             ),
