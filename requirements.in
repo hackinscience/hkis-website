@@ -1,7 +1,7 @@
 channels
 channels-redis
 
-django>=2.2.0,<3
+django
 django-ace
 django-debug-toolbar
 django-crispy-forms
@@ -14,5 +14,3 @@ djangorestframework
 gunicorn
 markdown
 pygments
-
-six>1.11  # Temporarily pinned just so we can also install pylint in dev.
