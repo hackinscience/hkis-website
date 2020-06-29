@@ -1,4 +1,6 @@
 Pipfile.lock
+to_translate.py
+exercises/
 
 # Created by https://www.gitignore.io/api/python,django
 

@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-06-29 21:39+0200\n"
-"PO-Revision-Date: 2020-06-29 21:43+0200\n"
+"POT-Creation-Date: 2020-06-29 22:52+0200\n"
+"PO-Revision-Date: 2020-06-29 22:53+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -17,10 +17,6 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-
-#: templates/admin/base_site.html:3
-msgid "Django site admin"
-msgstr "Admin Django"
 
 #: website/forms.py:26
 msgid "E-mail (optional)"
@@ -32,9 +28,58 @@ msgstr "E-mail (facultatif)"
 msgid "Submit"
 msgstr "Envoyer"
 
-#: website/templates/hkis/exercise.html:158
+#: website/templates/hkis/exercise.html:70
+msgid "Next"
+msgstr "Suivant"
+
+#: website/templates/hkis/exercise.html:75
+msgid "Help"
+msgstr "Aide"
+
+#: website/templates/hkis/exercise.html:93
+msgid "Waiting for correction"
+msgstr "En attente de correction…"
+
+#: website/templates/hkis/exercise.html:115
+msgid "Waiting for test run"
+msgstr "En attente d'exécution…"
+
+#: website/templates/hkis/exercise.html:159
 msgid "Your Code"
 msgstr "Votre code"
+
+#: website/templates/hkis/exercise.html:173
+msgid "Run"
+msgstr "Exécuter"
+
+#: website/templates/hkis/exercise.html:183
+msgid "Submit for validation"
+msgstr "Envoi pour valiation"
+
+#: website/templates/hkis/exercise.html:187
+msgid "Other students solutions"
+msgstr "Les solutions partagées"
+
+#: website/templates/hkis/exercise.html:190
+#, python-format
+msgid "%(username)s on %(date)s"
+msgstr "%(username)s le %(date)s"
+
+#: website/templates/hkis/exercise.html:199
+msgid "Results"
+msgstr "Résultats"
+
+#: website/templates/hkis/exercise.html:212
+msgid "Solution shared!"
+msgstr "Solution partagée ! Merci !"
+
+#: website/templates/hkis/exercise.html:216
+msgid "Share it with other students!"
+msgstr "Partagez votre solution avec les autres !"
+
+#: website/templates/hkis/exercise.html:220
+msgid "View code"
+msgstr "Voir le code"
 
 #: website/templates/hkis/profile_update.html:21
 #, python-format
@@ -126,3 +171,9 @@ msgstr "S'enregistrer"
 #: website/templates/registration/resend_activation_form.html:4
 msgid "Resend Activation Email"
 msgstr ""
+
+#~ msgid "%(solution.user.username)s on %(solution.created_at.date)s"
+#~ msgstr "%(solution.user.username)s le %(solution.created_at.date)s"
+
+#~ msgid "Django site admin"
+#~ msgstr "Admin Django"
