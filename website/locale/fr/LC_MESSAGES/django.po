@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-06-29 22:52+0200\n"
-"PO-Revision-Date: 2020-06-29 22:53+0200\n"
+"PO-Revision-Date: 2020-06-29 23:31+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -42,7 +42,7 @@ msgstr "En attente de correction…"
 
 #: website/templates/hkis/exercise.html:115
 msgid "Waiting for test run"
-msgstr "En attente d'exécution…"
+msgstr "Exécution en attente…"
 
 #: website/templates/hkis/exercise.html:159
 msgid "Your Code"
