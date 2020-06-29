@@ -21,6 +21,17 @@ class Exercise(models.Model):
     initial_solution = models.TextField(blank=True)
     position = models.FloatField(default=0)
 
+    def clean_fields(self, exclude=None):
+        """Clean windows-style newlines, maybe inserted by Ace editor, or
+        other users.
+        """
+        if "check" not in exclude:
+            self.check = self.check.replace("\r\n", "\n")
+        if "solution" not in exclude:
+            self.solution = self.solution.replace("\r\n", "\n")
+        if "wording" not in exclude:
+            self.wording = self.wording.replace("\r\n", "\n")
+
     class Meta:
         ordering = ["position"]
 

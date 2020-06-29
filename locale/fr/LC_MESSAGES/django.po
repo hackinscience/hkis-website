@@ -1,0 +1,128 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-06-29 21:39+0200\n"
+"PO-Revision-Date: 2020-06-29 21:43+0200\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: templates/admin/base_site.html:3
+msgid "Django site admin"
+msgstr "Admin Django"
+
+#: website/forms.py:26
+msgid "E-mail (optional)"
+msgstr "E-mail (facultatif)"
+
+#: website/templates/hkis/answer_form.html:8
+#: website/templates/registration/registration_form.html:9
+#: website/templates/registration/resend_activation_form.html:10
+msgid "Submit"
+msgstr "Envoyer"
+
+#: website/templates/hkis/exercise.html:158
+msgid "Your Code"
+msgstr "Votre code"
+
+#: website/templates/hkis/profile_update.html:21
+#, python-format
+msgid ""
+"\n"
+"      <a href=\"%(password_change)s\">Change your password</a>\n"
+"      "
+msgstr ""
+"\n"
+"      <a href=\"%(password_change)s\">Changer de mot de passe</a>\n"
+"      "
+
+#: website/templates/hkis/profile_update.html:25
+msgid "Update"
+msgstr "Mettre à jour"
+
+#: website/templates/registration/activation_complete.html:5
+msgid "Activation complete"
+msgstr "Activation réussie"
+
+#: website/templates/registration/activation_complete.html:11
+#, python-format
+msgid ""
+"\n"
+"Thanks, activation complete!  You may now <a href=\"%(auth_login_url)s"
+"\">login</a>\n"
+"using the username and password you set at registration.\n"
+msgstr ""
+
+#: website/templates/registration/activation_email.txt:3
+#, python-format
+msgid ""
+"\n"
+"You have asked to register an account at %(site.name)s.\n"
+"If this wasn't you, please ignore this email\n"
+"and your address will be removed from our records.\n"
+"\n"
+"To activate this account, please click the following link within the next\n"
+"%(expiration_days)s days:\n"
+"\n"
+msgstr ""
+
+#: website/templates/registration/activation_email.txt:13
+msgid ""
+"\n"
+"Sincerely,\n"
+"\n"
+"HackInScience team\n"
+msgstr ""
+
+#: website/templates/registration/activation_email_subject.txt:1
+msgid "Account activation for"
+msgstr ""
+
+#: website/templates/registration/login.html:4
+msgid "Sign in to Hackinscience"
+msgstr "Se connecter à Hackinscience"
+
+#: website/templates/registration/login.html:15
+msgid "Sign in"
+msgstr "Connexion"
+
+#: website/templates/registration/password_change_form.html:4
+#: website/templates/registration/password_change_form.html:8
+msgid "Change password"
+msgstr "Changer de mot de passe"
+
+#: website/templates/registration/password_reset_confirm.html:10
+msgid "Confirm password reset"
+msgstr "Confirmer le changement de mot de passe"
+
+#: website/templates/registration/password_reset_confirm.html:14
+msgid "Enter your new password below to reset your password:"
+msgstr "Entrez votre nouveau mot de passe ci-dessous pour le réinitialiser"
+
+#: website/templates/registration/password_reset_confirm.html:18
+msgid "Set password"
+msgstr "Changer le mot de passe"
+
+#: website/templates/registration/password_reset_form.html:4
+#: website/templates/registration/password_reset_form.html:10
+msgid "Reset password"
+msgstr "Réinitiation de mot de passe"
+
+#: website/templates/registration/registration_form.html:4
+msgid "Register"
+msgstr "S'enregistrer"
+
+#: website/templates/registration/resend_activation_form.html:4
+msgid "Resend Activation Email"
+msgstr ""
