@@ -10,6 +10,7 @@ from django.db import connection
 from django.http import HttpResponse, HttpResponseRedirect
 from django.db.models import Count, Q, Max
 from django.shortcuts import render
+from django.utils.translation import gettext
 from django.contrib.auth.models import User
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView
@@ -115,6 +116,7 @@ class ExerciseView(LoginRequiredMixin, DetailView):
             }
         )
         context["solutions"] = []
+        context["object"].wording = gettext(context["object"].wording)
         if any(answer.is_valid for answer in answers):
             context["solutions"] = Answer.objects.filter(
                 exercise__pk=self.object.id, is_valid=True, is_shared=True

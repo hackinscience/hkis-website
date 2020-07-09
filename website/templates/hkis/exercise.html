@@ -150,8 +150,7 @@
 </div>
 {% endif %}
 <div style="margin-bottom: 25px;">
-{% trans object.wording as wording %}
-{{ wording|markdown|md_to_bootstrap|i18n_doc_links:LANGUAGE_CODE }}
+{{ object.wording|safe|markdown|md_to_bootstrap|i18n_doc_links:LANGUAGE_CODE }}
 </div>
 
 <div class="row">
