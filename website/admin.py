@@ -92,7 +92,7 @@ class AnswerAdmin(admin.ModelAdmin):
 
 class SnippetAdmin(admin.ModelAdmin):
     readonly_fields = ("user", "created_at", "executed_at")
-    list_display = ("user", "created_at", "executed_at")
+    list_display = ("user", "short_input", "short_output", "created_at", "executed_at")
     search_fields = ("user__username",)
 
 

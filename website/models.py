@@ -49,6 +49,12 @@ class Snippet(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     executed_at = models.DateTimeField(blank=True, null=True)
 
+    def short_input(self):
+        return self.source_code.split("\n")[:1][:100]
+
+    def short_output(self):
+        return self.output.split("\n")[:1][:100]
+
 
 class Answer(models.Model):
     exercise = models.ForeignKey(
