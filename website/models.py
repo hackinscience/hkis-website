@@ -1,6 +1,7 @@
 import logging
 from asgiref.sync import async_to_sync
 from django.db import models
+from django.db.models import Count, Q
 from django.contrib.auth.models import User
 from django.urls import reverse
 from django.db.models.signals import post_save
@@ -9,6 +10,24 @@ from django_extensions.db.fields import AutoSlugField
 
 
 logger = logging.getLogger(__name__)
+
+
+class ExerciseQuerySet(models.QuerySet):
+    def with_global_stats(self):
+        return self.annotate(
+            tries=Count("answers__user", distinct=True),
+            successes=Count(
+                "answers__user", filter=Q(answers__is_valid=True), distinct=True
+            ),
+        )
+
+    def with_user_stats(self, user):
+        return self.annotate(
+            user_tries=Count("answers", filter=Q(answers__user=user)),
+            user_successes=Count(
+                "answers", filter=Q(answers__user=user) & Q(answers__is_valid=True),
+            ),
+        )
 
 
 class Exercise(models.Model):
@@ -20,6 +39,7 @@ class Exercise(models.Model):
     wording = models.TextField()
     initial_solution = models.TextField(blank=True)
     position = models.FloatField(default=0)
+    objects = ExerciseQuerySet.as_manager()
 
     def clean_fields(self, exclude=None):
         """Clean windows-style newlines, maybe inserted by Ace editor, or

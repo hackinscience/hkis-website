@@ -65,32 +65,34 @@ class ExerciseListView(LoginRequiredMixin, ListView):
     template_name = "hkis/exercises.html"
 
     def get_queryset(self):
-        self.queryset = Exercise.objects.filter(is_published=True).annotate(
-            tried=Count("answers", filter=Q(answers__user_id=self.request.user.id)),
-            succeeded=Count(
-                "answers",
-                filter=Q(answers__user_id=self.request.user.id)
-                & Q(answers__is_valid=True),
-            ),
+        return (
+            super()
+            .get_queryset()
+            .with_global_stats()
+            .with_user_stats(self.request.user)
         )
-        return super().get_queryset()
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
         def _get_lead(wording):
-            try:
-                return [line for line in wording.split("\n") if "Introduces" in line][0]
-            except IndexError:
-                return ""
+            found = False
+            for line in wording.split("\n"):
+                if line.startswith("##"):
+                    found = True
+                    continue
+                if line and found:
+                    return line
+            return ""
 
         context["exercises"] = [
             {
                 **vars(exercise),
                 "number": i + 1,
                 "lead": _get_lead(exercise.wording),
-                "tried": exercise.tried > 0,
-                "done": exercise.succeeded > 0,
+                "tried": exercise.user_tries > 0,
+                "done": exercise.user_successes > 0,
+                "pct_tried": 100 * exercise.successes / (exercise.tries + 1),
             }
             for i, exercise in enumerate(self.object_list)
         ]

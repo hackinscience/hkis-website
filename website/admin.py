@@ -64,8 +64,33 @@ class AdminLessonForm(forms.ModelForm):
 
 
 class ExerciseAdmin(admin.ModelAdmin):
+    def get_queryset(self, request):
+        return super().get_queryset(request).with_global_stats()
+
     readonly_fields = ("id",)
-    list_display = ("title", "slug", "is_published", "position")
+    list_display = (
+        "title",
+        "slug",
+        "is_published",
+        "position",
+        "tries",
+        "successes",
+    )
+
+    def tries(self, obj):
+        """Without this, I'm getting:
+
+        (admin.E108) The value of 'list_display[4]' refers to 'tries',
+        which is not a callable, an attribute of 'ExerciseAdmin', or
+        an attribute or method on 'website.Exercise'.
+
+        Maybe the system check don't see my get_queryset?
+        """
+        return obj.tries
+
+    def successes(self, obj):
+        return obj.successes
+
     form = AdminExerciseForm
 
 
