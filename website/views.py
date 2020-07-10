@@ -68,6 +68,7 @@ class ExerciseListView(LoginRequiredMixin, ListView):
         return (
             super()
             .get_queryset()
+            .filter(is_published=True)
             .with_global_stats()
             .with_user_stats(self.request.user)
         )
