@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-06-29 22:52+0200\n"
-"PO-Revision-Date: 2020-06-29 23:31+0200\n"
+"PO-Revision-Date: 2020-07-14 23:55+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -54,7 +54,7 @@ msgstr "Exécuter"
 
 #: website/templates/hkis/exercise.html:183
 msgid "Submit for validation"
-msgstr "Envoi pour valiation"
+msgstr "Envoi pour validation"
 
 #: website/templates/hkis/exercise.html:187
 msgid "Other students solutions"

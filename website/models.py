@@ -1,13 +1,15 @@
 import logging
+
 from asgiref.sync import async_to_sync
+from channels.layers import get_channel_layer
+from django.contrib.auth.models import User
 from django.db import models
 from django.utils.text import Truncator
 from django.db.models import Count, Q
-from django.contrib.auth.models import User
-from django.urls import reverse
 from django.db.models.signals import post_save
-from channels.layers import get_channel_layer
+from django.urls import reverse
 from django_extensions.db.fields import AutoSlugField
+from rest_framework import serializers
 
 
 logger = logging.getLogger(__name__)
@@ -119,16 +121,25 @@ class Lesson(models.Model):
         return self.title
 
 
-def cb_new_snippet(sender, instance, created, **kwargs):
-    group = "snippets.{}".format(instance.user.id)
-    logger.info("New snippet notification for user %s", instance.user.id)
-    snippet = {"type": "snippet", "id": instance.id, "output": instance.output}
+class AnswerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Answer
+        fields = "__all__"
 
-    if instance.executed_at:
-        snippet["executed_at"] = instance.executed_at.isoformat()
 
+class SnippetSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Snippet
+        fields = "__all__"
+
+
+def cb_new_answer(sender, instance, created, **kwargs):
+    group = f"user.{instance.user.id}.ex.{instance.exercise.id}"
     channel_layer = get_channel_layer()
-    async_to_sync(channel_layer.group_send)(group, snippet)
+    message = AnswerSerializer(instance).data
+    message["type"] = "answer.update"
+    logger.info("New answer notification for user %s", instance.user.id)
+    async_to_sync(channel_layer.group_send)(group, message)
 
 
-post_save.connect(cb_new_snippet, sender=Snippet)
+post_save.connect(cb_new_answer, sender=Answer)

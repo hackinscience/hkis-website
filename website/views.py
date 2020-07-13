@@ -1,19 +1,17 @@
 from collections import OrderedDict
-from itertools import groupby
 
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import Group
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib import messages
 from django.urls import reverse
-from django.db import connection
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponseRedirect
 from django.db.models import Count, Q, Max
 from django.shortcuts import render
 from django.utils.translation import gettext
 from django.contrib.auth.models import User
 from django.views.generic.detail import DetailView
-from django.views.generic.edit import CreateView, UpdateView
+from django.views.generic.edit import UpdateView
 from django.views.generic.list import ListView
 from website.models import Exercise, Answer, Lesson
 from website.forms import AnswerForm

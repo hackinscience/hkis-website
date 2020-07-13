@@ -33,6 +33,7 @@ SERVER_EMAIL = "team@example.com"
 
 INSTALLED_APPS = [
     "website",
+    "moulinette",
     "registration",
     "django.contrib.admin",
     "django.contrib.auth",
@@ -76,7 +77,11 @@ LOGGING = {
         }
     },
     "handlers": {
-        "console": {"level": "INFO", "class": "logging.StreamHandler"},
+        "console": {
+            "level": "INFO",
+            "class": "logging.StreamHandler",
+            "formatter": "django.server",
+        },
         "django.server": {
             "level": "INFO",
             "class": "logging.StreamHandler",
@@ -89,8 +94,8 @@ LOGGING = {
         },
     },
     "loggers": {
+        "": {"handlers": ["console"], "level": "INFO"},
         "django": {"handlers": ["console", "mail_admins"], "level": "INFO"},
-        "website": {"handlers": ["console"], "level": "INFO"},
         "django.server": {
             "handlers": ["django.server"],
             "level": "INFO",
@@ -194,6 +199,9 @@ CHANNEL_LAYERS = {
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTOCOL", "https")
 
 LOCALE_PATHS = [BASE_DIR + "/locale/"]
+
+CELERY_BROKER_URL = "redis://localhost:6379/0"
+CELERY_RESULT_BACKEND = CELERY_BROKER_URL
 
 try:
     from local_settings import *

@@ -104,12 +104,15 @@
             append_to_answer_table('<tr><td id="td-snippet-'.concat(id).concat('">…</td> </tr>'));
             elem = document.getElementById("td-snippet-".concat(id));
         }
-        if (executed_at !== undefined) {
+        if (executed_at) {
             var pre = document.createElement("pre");
+            var div = document.createElement("div");
+            div.className = "result-box";
+            div.appendChild(pre);
             var content = document.createTextNode(output);
             pre.appendChild(content);
             while (elem.firstChild) elem.removeChild(elem.firstChild);
-            elem.appendChild(pre);
+            elem.appendChild(div);
             document.getElementById("submit_snippet").removeAttribute('disabled');
         } else {
             elem.innerHTML = '<img src="{% static "img/loading_anim.gif" %}" height=30> {% trans "Waiting for test run" %}';
@@ -117,26 +120,52 @@
     }
 
     function websocket_connect(ws_location) {
-        var ws = new WebSocket(ws_location);
-        ws.onmessage = function(e) {
+        console.log("Trying to open WebSocket connection.");
+        window.ws = new WebSocket(ws_location);
+        window.ws.onmessage = function(e) {
             var data = JSON.parse(e.data);
             console.log("WebSocket recv:", data);
-            if (data.type == "snippet")
+            if (data.type == "snippet.update")
                 fill_snippet(data.id, data.executed_at, data.output)
-            if (data.type == "correction")
-                fill_answer(data.answer, data.is_corrected, data.is_valid, data.correction_message);
+            if (data.type == "answer.update")
+                fill_answer(data.id, data.is_corrected, data.is_valid, data.correction_message);
         };
-        ws.onclose = function() {
-            ws = null;
-            // Try to reconnect in 5 seconds
+        window.ws.onerror = function() {
+            console.log("WebSocket error.");
+        };
+        window.ws.onopen = function() {
+            console.log("WebSocket opened.");
+        };
+        window.ws.onclose = function() {
+            console.log("WebSocket closed, will retry to connect in 5s");
             setTimeout(function(){websocket_connect(ws_location)}, 5000);
         };
+    }
+
+    function ws_submit_answer(form) {
+        document.getElementById('submit_answer').setAttribute('disabled', true);
+        setTimeout(function(){document.getElementById('submit_answer').removeAttribute('disabled');}, 1000);
+
+        var message = {"type": "answer", "source_code": form["source_code"].value};
+        console.log("WebSocket send answer", message);
+        window.ws.send(JSON.stringify(message));
+
+    }
+
+    function ws_submit_snippet(form) {
+        document.getElementById('submit_snippet').setAttribute('disabled', true);
+        setTimeout(function(){document.getElementById('submit_snippet').removeAttribute('disabled');}, 1000);
+
+        var message = {"type": "snippet", "source_code": form["source_code"].value};
+        console.log("WebSocket send snippet", message);
+        window.ws.send(JSON.stringify(message));
+
     }
 
     var ws_protocol = window.location.protocol == "http:" ? "ws:" : "wss:";
 
     websocket_connect(ws_protocol + "//" + window.location.host +
-        "/ws/answers/" + {{ user.id }} + "/" + {{object.id}} + "/");
+        "/ws/exercises/" + {{object.id}} + "/");
 </script>
 {% endautoescape %}
 {% endblock %}
@@ -156,29 +185,31 @@
 <div class="row">
   <div class="col-md-6">
     <h2>{% trans "Your Code" %}</h2>
-    <form id="answer_form" action="/api/answers/" method="post" onsubmit="document.getElementById('submit_answer').setAttribute('disabled', true); AJAXSubmit(this); return false;">{% csrf_token %}
+    <form id="answer_form" action="#" onsubmit="return false;" method="post">{% csrf_token %}
         {% for field in answer_form %}
         <div class="fieldWrapper">
             {{ field }}
         </div>
         {% endfor %}
         <button
+          id="submit_snippet"
+          class="btn btn-secondary"
           data-toggle="tooltip"
           data-placement="bottom"
           data-delay="500"
           title="Use this to execute your code, so you can try things."
-          id="submit_snippet" class="btn btn-secondary"
-          onclick="AJAXSubmit(document.getElementById('answer_form'), '/api/snippets/'); this.setAttribute('disabled', true); return false;">
+          onclick="ws_submit_snippet(this.form); return false;">
           {% trans "Run" %}
         </button>
         <button
           id="submit_answer"
+          class="btn btn-primary"
           data-toggle="tooltip"
           data-placement="bottom"
           data-delay="500"
           title="This runs automated tests to verify your implementation (also saves your code)."
-          class="btn btn-primary"
-          type="submit">
+          type="submit"
+          onclick="ws_submit_answer(this.form); return false;">
           {% trans "Submit for validation" %}
         </button>
     </form>
