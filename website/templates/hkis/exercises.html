@@ -24,8 +24,9 @@
         <a href="{% url "exercise" exercise.slug %}">
           <h5>{{ exercise.number }}. {{ exercise.title }}</h5>
         </a>
-        <h6>Solved by {{ exercise.successes }} ({{ exercise.pct_tried|floatformat }}%)</h6>
         {{ exercise.lead }}
+        <br />
+        <i>Solved by {{ exercise.successes }} ({{ exercise.pct_tried|floatformat }}%)</i>
       </td>
     </tr>
     {% endfor %}
