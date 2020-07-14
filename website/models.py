@@ -1,6 +1,7 @@
 import logging
 from asgiref.sync import async_to_sync
 from django.db import models
+from django.utils.text import Truncator
 from django.db.models import Count, Q
 from django.contrib.auth.models import User
 from django.urls import reverse
@@ -93,7 +94,9 @@ class Answer(models.Model):
         return self.correction_message.split("\n")[:1][:100]
 
     def __str__(self):
-        return "{} on {}".format(self.user.username, self.exercise.title)
+        return "{} on {}".format(
+            Truncator(self.user.username).chars(30), self.exercise.title
+        )
 
     def get_absolute_url(self):
         return reverse("exercise", args=[self.exercise.slug])
