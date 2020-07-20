@@ -35,10 +35,6 @@ def team(request):
     return render(request, "hkis/team.html")
 
 
-def events(request):
-    return render(request, "hkis/events.html")
-
-
 def privacy(request):
     return render(request, "hkis/privacy.html")
 
