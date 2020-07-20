@@ -21,9 +21,6 @@
         <li class="nav-item">
           <a class="nav-link" href="{% url 'profile' user.id %}">Profile</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'help' %}">Help</a>
-        </li>
         {% if perms.website.view_answer %}
           <li class="nav-item">
             <a class="nav-link" href="{% url 'stats' %}">Stats</a>
@@ -35,6 +32,9 @@
           </li>
         {% endif %}
       {% endif %}
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'help' %}">Help</a>
+      </li>
     </ul>
     <ul class="navbar-nav navbar-right">
       {% if user.is_authenticated %}
