@@ -44,6 +44,19 @@ def db_get_exercise(exercise_id: int):
 
 
 @database_sync_to_async
+def db_find_uncorrected(answer_id: int, user: User) -> dict:
+    try:
+        answer = Answer.objects.get(id=answer_id, user=user, is_corrected=False)
+        return {
+            "check": answer.exercise.check,
+            "source_code": answer.source_code,
+            "id": answer.id,
+        }
+    except Answer.DoesNotExist:
+        return None
+
+
+@database_sync_to_async
 def db_update_answer(answer_id: int, is_valid: bool, correction_message: str):
     answer = Answer.objects.get(id=answer_id)
     answer.correction_message = correction_message
@@ -83,10 +96,24 @@ class ExerciseConsumer(AsyncJsonWebsocketConsumer):
     async def receive_json(self, content):
         if content["type"] == "answer":
             asyncio.create_task(self.answer(content))
+        if content["type"] == "recorrect":
+            asyncio.create_task(self.recorrect(content))
         elif content["type"] == "snippet":
             asyncio.create_task(self.snippet(content))
         else:
             self.log("Unknown message received", json.dumps(content))
+
+    async def recorrect(self, answer):
+        self.log("Restarting correction for an answer")
+        uncorrected = await db_find_uncorrected(answer["id"], self.scope["user"])
+        if not uncorrected:
+            return
+        self.log("Send answer to moulinette")
+        is_valid, message = await check_answer(
+            {"check": uncorrected["check"], "source_code": uncorrected["source_code"],}
+        )
+        self.log("Got result from moulinette")
+        await db_update_answer(uncorrected["id"], is_valid, message)
 
     async def answer(self, answer):
         self.log("Receive answer from browser")
@@ -98,7 +125,7 @@ class ExerciseConsumer(AsyncJsonWebsocketConsumer):
             {"check": answer_obj.exercise.check, "source_code": answer_obj.source_code}
         )
         self.log("Got result from moulinette")
-        answer_obj = await db_update_answer(answer_obj.id, is_valid, message)
+        await db_update_answer(answer_obj.id, is_valid, message)
 
     async def answer_update(self, answer):
         self.log("Receive answer update from DB")

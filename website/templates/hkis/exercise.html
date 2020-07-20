@@ -135,6 +135,11 @@
         };
         window.ws.onopen = function() {
             console.log("WebSocket opened.");
+            document.querySelectorAll("td.answer-cell").forEach(function(answer) {
+                if (answer.dataset.isCorrected == "True") return ;
+                console.log("Need to correct answer number", answer.dataset.answerId);
+                window.ws.send(JSON.stringify({"type": "recorrect", "id": Number(answer.dataset.answerId)}));
+            });
         };
         window.ws.onclose = function() {
             console.log("WebSocket closed, will retry to connect in 5s");
@@ -164,8 +169,9 @@
 
     var ws_protocol = window.location.protocol == "http:" ? "ws:" : "wss:";
 
-    websocket_connect(ws_protocol + "//" + window.location.host +
-        "/ws/exercises/" + {{object.id}} + "/");
+    window.addEventListener('DOMContentLoaded', function (event) {
+        websocket_connect(ws_protocol + "//" + window.location.host + "/ws/exercises/" + {{object.id}} + "/");
+    });
 </script>
 {% endautoescape %}
 {% endblock %}
@@ -230,7 +236,7 @@
     <div id="answers-result" class="result">
       <table id="answer-table" class="table">
         {% for answer in answers %}
-        <tr><td id="td-{{ answer.id }}">
+        <tr><td id="td-{{ answer.id }}" data-answer-id="{{ answer.id }}" data-is-corrected="{{ answer.is_corrected }}" class="answer-cell">
         {% if not answer.is_corrected %}
           <img src="{% static "img/loading_anim.gif" %}" height=30> Waiting for correction
         {% else %}
