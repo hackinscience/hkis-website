@@ -117,7 +117,7 @@ def check_answer_task(answer: dict):
             )
             if prof_proc.returncode == 255:
                 return False, "Checker timed out, look for infinite loops maybe?"
-            if prof_proc.returncode != 0:
+            if prof_proc.returncode != 0 or stdout:
                 return False, stdout
             return True, congrats()
         except TimeoutExpired:
