@@ -115,9 +115,7 @@ class ExerciseView(LoginRequiredMixin, DetailView):
         context["solutions"] = []
         context["object"].wording = gettext(context["object"].wording)
         if any(answer.is_valid for answer in answers):
-            context["solutions"] = Answer.objects.filter(
-                exercise__pk=self.object.id, is_valid=True, is_shared=True
-            ).order_by("-created_at")
+            context["solutions"] = Answer.objects.shared(exercise_id=self.object.id)
         try:
             context["next"] = (
                 Exercise.objects.filter(position__gt=self.object.position)

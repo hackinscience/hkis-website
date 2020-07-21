@@ -3,6 +3,7 @@ from datetime import timedelta
 
 from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
+from django.conf import settings
 from django.contrib.auth.models import User
 from django.db import models
 from django.db.models import Count, Q
@@ -98,6 +99,16 @@ class Snippet(models.Model):
         return self.output.split("\n")[:1][:100]
 
 
+class AnswerQuerySet(models.QuerySet):
+    def shared(self, exercise_id):
+        queryset = self.filter(
+            exercise__pk=exercise_id, is_valid=True, is_shared=True
+        ).order_by("-created_at")
+        if settings.DATABASES[self.db]["ENGINE"].endswith("postgresql"):
+            queryset = queryset.distinct("source_code")
+        return queryset
+
+
 class Answer(models.Model):
     exercise = models.ForeignKey(
         Exercise, on_delete=models.CASCADE, related_name="answers"
@@ -110,6 +121,7 @@ class Answer(models.Model):
     correction_message = models.TextField(default="", blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     corrected_at = models.DateTimeField(blank=True, null=True)
+    objects = AnswerQuerySet.as_manager()
 
     def short_correction_message(self):
         return self.correction_message.split("\n")[:1][:100]
