@@ -1,0 +1,31 @@
+{% extends "hkis/layout.html" %}
+{% load hkis_extra %}
+{% load i18n static %}
+{% block title %}{{ object.title }}{% endblock %}
+
+{% block stylesheets %}
+<link href="{% static "css/codehilite.css" %}" rel="stylesheet" type="text/css" />
+{% endblock %}
+{% block container %}
+
+<link href="{% static "django_ace/widget.css" %}" type="text/css" media="screen" rel="stylesheet">
+<script type="text/javascript" src="{% static "django_ace/ace/ace.js" %}"></script>
+<script type="text/javascript" src="{% static "django_ace/widget.js" %}"></script>
+<script type="text/javascript" src="{% static "django_ace/ace/mode-python.js" %}"></script>
+<script type="text/javascript" src="{% static "django_ace/ace/theme-twilight.js" %}"></script>
+
+{% if solutions %}
+  <h1 {{ object.title }} </h1>
+  <h2 style="margin-top: 20px;">{% trans "Shared solutions" %}</h2>
+  <div id="solutions">
+    {% for solution in solutions %}
+      <h3>{% blocktrans with username=solution.user.username date=solution.created_at.date %}{{ username }} on {{ date }}{% endblocktrans %}</h3>
+      <div class="django-ace-editor">
+        <div class="django-ace-widget loading" data-fontsize="16px" data-mode="python" data-showinvisibles="false" data-showprintmargin="true" data-theme="twilight" data-usesofttabs="true" style="width:100%; height:400px"><div></div>
+        </div>
+        <textarea name="source_code" cols="40" rows="10" id="id_source_code_{{ forloop.counter }}">{{ solution.source_code }}</textarea>
+      </div>
+    {% endfor %}
+  </div>
+{% endif %}
+{% endblock %}

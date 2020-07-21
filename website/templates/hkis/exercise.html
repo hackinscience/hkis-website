@@ -82,6 +82,7 @@
                 div.appendChild(button_share);
                 div.appendChild(document.createTextNode(" "));
                 div.appendChild(button_next);
+                document.getElementById("solution_link").removeAttribute("style");
             }
             else {
                 div.appendChild(button_help);
@@ -219,20 +220,14 @@
           {% trans "Submit for validation" %}
         </button>
     </form>
-    {% if solutions %}
-    <h2 style="margin-top: 20px;">{% trans "Other students solutions" %}</h2>
-    <div id="solutions">
-      {% for solution in solutions %}
-      <h3>{% blocktrans with username=solution.user.username date=solution.created_at.date %}{{ username }} on {{ date }}{% endblocktrans %}</h3>
-          <div class="django-ace-editor"><div class="django-ace-widget loading" data-fontsize="16px" data-mode="python" data-showinvisibles="false" data-showprintmargin="true" data-theme="twilight" data-usesofttabs="true" style="width:100%; height:400px"><div></div></div>
-              <textarea name="source_code" cols="40" rows="10" id="id_source_code_{{ forloop.counter }}">{{ solution.source_code }}</textarea>
-          </div>
-        {% endfor %}
-    </div>
-    {% endif %}
   </div>
   <div class="col-md-6">
-    <h2>{% trans "Results" %}</h2>
+    <h2>{% trans "Results" %}
+      <span id="solution_link" {% if not is_valid %} style="display: none" {% endif %}>
+        {% url "solutions" object.slug as solutions_url %}
+        ({% blocktrans %}<a href={{ solutions_url }}>{{ solutions_qty}} shared solutions</a>{% endblocktrans %})
+      </span>
+    </h2>
     <div id="answers-result" class="result">
       <table id="answer-table" class="table">
         {% for answer in answers %}

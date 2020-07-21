@@ -112,9 +112,35 @@ class ExerciseView(LoginRequiredMixin, DetailView):
                 else context["exercise"].initial_solution,
             }
         )
-        context["solutions"] = []
         context["object"].wording = gettext(context["object"].wording)
-        if any(answer.is_valid for answer in answers):
+        context["is_valid"] = bool(
+            self.object.answers.filter(user=self.request.user, is_valid=True)
+        )
+        context["solutions_qty"] = len(
+            Answer.objects.filter(
+                exercise__pk=self.object.id, is_valid=True, is_shared=True
+            )
+        )
+
+        try:
+            context["next"] = (
+                Exercise.objects.filter(position__gt=self.object.position)
+                .order_by("position")[0]
+                .slug
+            )
+        except IndexError:
+            context["next"] = None
+        return context
+
+
+class SolutionView(LoginRequiredMixin, DetailView):
+    model = Exercise
+    template_name = "hkis/solutions.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["solutions"] = []
+        if self.object.answers.filter(user=self.request.user, is_valid=True):
             context["solutions"] = Answer.objects.filter(
                 exercise__pk=self.object.id, is_valid=True, is_shared=True
             ).order_by("-created_at")
