@@ -62,6 +62,9 @@ class ProfileView(LoginRequiredMixin, UpdateView):
         context["submit_qty"] = sum(
             exercise.user_tries for exercise in context["exercises"]
         )
+        context["rank"] = self.request.user.userstats.rank
+        context["participants"] = User.objects.count()
+
         return context
 
     def dispatch(self, request, pk, *args, **kwargs):

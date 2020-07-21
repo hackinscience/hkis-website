@@ -62,6 +62,7 @@ class UserStatsQuerySet(models.QuerySet):
 class UserStats(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     points = models.FloatField(default=0)  # Computed sum of solved exercise positions.
+    rank = models.PositiveIntegerField(blank=True, null=True)
     objects = UserStatsQuerySet.as_manager()
 
     def recompute(self):
@@ -70,6 +71,8 @@ class UserStats(models.Model):
             for exercise in Exercise.objects.with_user_stats(user=self.user)
             if exercise.user_successes
         )
+        self.save()
+        self.rank = UserStats.objects.filter(points__gt=self.points).count() + 1
         self.save()
 
 
