@@ -13,7 +13,7 @@ from django.contrib.auth.models import User
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import UpdateView
 from django.views.generic.list import ListView
-from website.models import Exercise, Answer, Lesson
+from website.models import Exercise, Answer
 from website.forms import AnswerForm
 
 
@@ -121,41 +121,6 @@ class ExerciseView(LoginRequiredMixin, DetailView):
         try:
             context["next"] = (
                 Exercise.objects.filter(position__gt=self.object.position)
-                .order_by("position")[0]
-                .slug
-            )
-        except IndexError:
-            context["next"] = None
-        return context
-
-
-class LessonListView(LoginRequiredMixin, ListView):
-    model = Lesson
-    template_name = "hkis/lessons.html"
-
-    def get_queryset(self):
-        self.queryset = Lesson.objects.filter(is_published=True)
-        return super().get_queryset()
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-
-        context["lessons"] = [
-            {**vars(lesson), "number": i + 1}
-            for i, lesson in enumerate(self.object_list)
-        ]
-        return context
-
-
-class LessonView(LoginRequiredMixin, DetailView):
-    model = Lesson
-    template_name = "hkis/lesson.html"
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        try:
-            context["next"] = (
-                Lesson.objects.filter(position__gt=self.object.position)
                 .order_by("position")[0]
                 .slug
             )

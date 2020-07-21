@@ -21,8 +21,6 @@ from website.api import router
 from website.views import (
     ExerciseListView,
     ExerciseView,
-    LessonListView,
-    LessonView,
     ProfileView,
     StatsDetailView,
     StatsListView,
@@ -54,8 +52,6 @@ urlpatterns = [
     path("profile/<int:pk>", ProfileView.as_view(), name="profile"),
     path("stats/", StatsListView.as_view(), name="stats"),
     path("stats/<int:pk>", StatsDetailView.as_view(), name="stats"),
-    path("lessons/", LessonListView.as_view(), name="lesson"),
-    path("lessons/<slug:slug>", LessonView.as_view(), name="lesson"),
 ]
 
 if settings.DEBUG:
