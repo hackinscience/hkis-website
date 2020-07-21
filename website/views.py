@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import Group
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib import messages
+from django.core.exceptions import PermissionDenied
 from django.urls import reverse
 from django.http import HttpResponseRedirect
 from django.db.models import Count, Q, Max
@@ -44,6 +45,15 @@ class ProfileView(LoginRequiredMixin, UpdateView):
     model = User
     fields = ["username", "email"]
     template_name = "hkis/profile_update.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
+
+    def dispatch(self, request, pk, *args, **kwargs):
+        if pk != request.user.pk:
+            raise PermissionDenied
+        return super().dispatch(request, *args, pk=pk, **kwargs)
 
     def get_success_url(self):
         messages.info(self.request, "Profile updated")
