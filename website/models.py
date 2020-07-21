@@ -1,13 +1,15 @@
 import logging
+from datetime import timedelta
 
 from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
 from django.contrib.auth.models import User
 from django.db import models
-from django.utils.text import Truncator
 from django.db.models import Count, Q
 from django.db.models.signals import post_save
 from django.urls import reverse
+from django.utils.text import Truncator
+from django.utils.timezone import now
 from django_extensions.db.fields import AutoSlugField
 from rest_framework import serializers
 
@@ -31,6 +33,14 @@ class ExerciseQuerySet(models.QuerySet):
                 "answers", filter=Q(answers__user=user) & Q(answers__is_valid=True),
             ),
         )
+
+    def with_weekly_stats(self):
+        return self.annotate(
+            last_week_tries=Count("answers__user", distinct=True),
+            last_week_successes=Count(
+                "answers__user", filter=Q(answers__is_valid=True), distinct=True
+            ),
+        ).filter(answers__created_at__gt=now() - timedelta(days=7))
 
 
 class Exercise(models.Model):

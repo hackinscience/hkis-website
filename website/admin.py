@@ -2,7 +2,6 @@ from django import forms
 from django.contrib import admin
 from django_ace import AceWidget
 from website.models import Answer, Exercise, Snippet, Lesson
-from website.forms import AnswerForm
 from registration.admin import RegistrationAdmin
 from registration.models import RegistrationProfile
 from django.contrib.auth.admin import UserAdmin
@@ -65,7 +64,7 @@ class AdminLessonForm(forms.ModelForm):
 
 class ExerciseAdmin(admin.ModelAdmin):
     def get_queryset(self, request):
-        return super().get_queryset(request).with_global_stats()
+        return super().get_queryset(request).with_weekly_stats()
 
     readonly_fields = ("id",)
     list_display = (
@@ -73,11 +72,11 @@ class ExerciseAdmin(admin.ModelAdmin):
         "slug",
         "is_published",
         "position",
-        "tries",
-        "successes",
+        "last_week_tries",
+        "last_week_successes",
     )
 
-    def tries(self, obj):
+    def last_week_tries(self, obj):
         """Without this, I'm getting:
 
         (admin.E108) The value of 'list_display[4]' refers to 'tries',
@@ -86,10 +85,10 @@ class ExerciseAdmin(admin.ModelAdmin):
 
         Maybe the system check don't see my get_queryset?
         """
-        return obj.tries
+        return obj.last_week_tries
 
-    def successes(self, obj):
-        return obj.successes
+    def last_week_successes(self, obj):
+        return obj.last_week_successes
 
     form = AdminExerciseForm
 
