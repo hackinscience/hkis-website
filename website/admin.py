@@ -70,12 +70,11 @@ class ExerciseAdmin(admin.ModelAdmin):
     readonly_fields = ("id",)
     list_display = (
         "title",
-        "slug",
-        "is_published",
         "position",
         "last_week_tries",
         "last_week_successes",
         "last_week_success_ratio",
+        "is_published",
     )
 
     def last_week_tries(self, obj):
