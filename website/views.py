@@ -139,9 +139,14 @@ class SolutionView(LoginRequiredMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context["my_answers"] = Answer.objects.filter(
+            exercise_id=self.object.id, user=self.request.user
+        )
         context["solutions"] = []
+        context["is_allowed_to_see_solutions"] = False
         already_seen = set()
         if self.object.answers.filter(user=self.request.user, is_valid=True):
+            context["is_allowed_to_see_solutions"] = True
             for solution in Answer.objects.filter(
                 exercise__pk=self.object.id, is_valid=True, is_shared=True
             ).order_by("created_at"):

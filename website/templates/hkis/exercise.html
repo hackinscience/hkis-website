@@ -10,32 +10,6 @@
 {% block extrahead %}
 {% autoescape off %}
 <script>
-    function change_share_button(answer_id) {
-        var btn = document.getElementById("btn-".concat(answer_id));
-        if (!btn)
-            return;
-        btn.innerHTML = "Solution shared!";
-        btn.disabled = true;
-        btn.className = 'btn btn-secondary btn-sm';
-    }
-
-    function shared_answer(answer_id, is_shared, csrf_token) {
-        var data = {
-            "is_shared": is_shared,
-        };
-        var xhr = new XMLHttpRequest();
-        xhr.open('PATCH', "/api/answers/".concat(answer_id, "/"), false);
-        xhr.setRequestHeader("Content-type", "application/json");
-        xhr.setRequestHeader("cache-control", "no-cache");
-        xhr.setRequestHeader("X-CSRFToken", csrf_token);
-        xhr.onreadystatechange = function () {
-          if(xhr.readyState === 4 && xhr.status === 200) {
-              change_share_button(answer_id);
-          }
-        };
-        xhr.send(JSON.stringify(data));
-    }
-
     function append_to_answer_table(html) {
         if (document.querySelectorAll("#answer-table tr").length)
             document.querySelectorAll("#answer-table tr")[0].insertAdjacentHTML('beforebegin', html);
@@ -57,14 +31,6 @@
             var div = document.createElement("div");
             var pre = document.createElement("pre");
             var content = document.createTextNode(message);
-            var button_share = document.createElement("button")
-            button_share.type = 'button'
-            button_share.setAttribute('id', 'btn-'.concat(answer_id));
-            button_share.className = 'btn btn-secondary btn-sm'
-            button_share.innerHTML = 'Share it with other students !'
-            button_share.addEventListener("click", function() {
-                shared_answer(answer_id, true, "{{ csrf_token }}");
-            });
             var button_next = document.createElement("a")
             button_next.className = 'btn btn-primary btn-sm'
             button_next.innerHTML = '{% trans "Next" %}'
@@ -78,8 +44,6 @@
             pre.appendChild(content)
             div.appendChild(pre);
             if (is_valid) {
-                div.appendChild(button_share);
-                div.appendChild(document.createTextNode(" "));
                 div.appendChild(button_next);
                 document.getElementById("solution_link").removeAttribute("style");
             }
