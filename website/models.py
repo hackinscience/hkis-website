@@ -36,11 +36,18 @@ class ExerciseQuerySet(models.QuerySet):
 
     def with_weekly_stats(self):
         return self.annotate(
-            last_week_tries=Count("answers__user", distinct=True),
-            last_week_successes=Count(
-                "answers__user", filter=Q(answers__is_valid=True), distinct=True
+            last_week_tries=Count(
+                "answers__user",
+                filter=Q(answers__created_at__gt=now() - timedelta(days=7)),
             ),
-        ).filter(answers__created_at__gt=now() - timedelta(days=7))
+            last_week_successes=Count(
+                "answers__user",
+                filter=Q(
+                    answers__is_valid=True,
+                    answers__created_at__gt=now() - timedelta(days=7),
+                ),
+            ),
+        )
 
 
 class Exercise(models.Model):
