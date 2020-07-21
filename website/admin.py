@@ -93,7 +93,7 @@ class ExerciseAdmin(admin.ModelAdmin):
 
     def last_week_success_ratio(self, obj):
         if obj.last_week_successes:
-            return f"{obj.last_week_tries / obj.last_week_successes:.0%}"
+            return f"{obj.last_week_successes / obj.last_week_tries:.0%}"
         else:
             return "ø"
 
