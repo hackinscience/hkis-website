@@ -23,6 +23,7 @@ To also run the moulinette, you'll need to install `firejail` and `redis` then r
 celery -A hkis worker
 ```
 
+
 ## Translations
 
 ```
@@ -42,8 +43,3 @@ $ cd locale/fr/LC_MESSAGES
 $ if [ -f django.po ] ; then msgmerge -U django.po django.pot; else cp django.pot django.po; fi
 # msgfmt django.po -o django.mo
 ```
-
-
-# TODO
-
-- In the exercise page, links to documentation should open in a new tab.
