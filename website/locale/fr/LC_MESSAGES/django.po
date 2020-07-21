@@ -3,16 +3,15 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-06-29 22:52+0200\n"
-"PO-Revision-Date: 2020-07-14 23:55+0200\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2020-07-21 20:31+0200\n"
+"PO-Revision-Date: 2020-07-21 20:35+0200\n"
+"Last-Translator: Julien Palard <julien@palard.fr>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
+"Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -24,31 +23,31 @@ msgstr "E-mail (facultatif)"
 
 #: website/templates/hkis/answer_form.html:8
 #: website/templates/registration/registration_form.html:9
-#: website/templates/registration/resend_activation_form.html:10
 msgid "Submit"
 msgstr "Envoyer"
 
-#: website/templates/hkis/exercise.html:70
+#: website/templates/hkis/exercise.html:36
+#: website/templates/hkis/exercise.html:147
 msgid "Next"
 msgstr "Suivant"
 
-#: website/templates/hkis/exercise.html:75
-msgid "Help"
-msgstr "Aide"
+#: website/templates/hkis/exercise.html:40
+msgid "Need help?"
+msgstr "Besoin d'aide ?"
 
-#: website/templates/hkis/exercise.html:93
+#: website/templates/hkis/exercise.html:57
 msgid "Waiting for correction"
 msgstr "En attente de correction…"
 
-#: website/templates/hkis/exercise.html:115
+#: website/templates/hkis/exercise.html:82
 msgid "Waiting for test run"
 msgstr "Exécution en attente…"
 
-#: website/templates/hkis/exercise.html:159
+#: website/templates/hkis/exercise.html:157
 msgid "Your Code"
 msgstr "Votre code"
 
-#: website/templates/hkis/exercise.html:173
+#: website/templates/hkis/exercise.html:172
 msgid "Run"
 msgstr "Exécuter"
 
@@ -56,30 +55,14 @@ msgstr "Exécuter"
 msgid "Submit for validation"
 msgstr "Envoi pour validation"
 
-#: website/templates/hkis/exercise.html:187
-msgid "Other students solutions"
-msgstr "Les solutions partagées"
-
-#: website/templates/hkis/exercise.html:190
-#, python-format
-msgid "%(username)s on %(date)s"
-msgstr "%(username)s le %(date)s"
-
-#: website/templates/hkis/exercise.html:199
+#: website/templates/hkis/exercise.html:188
 msgid "Results"
 msgstr "Résultats"
 
-#: website/templates/hkis/exercise.html:212
-msgid "Solution shared!"
-msgstr "Solution partagée ! Merci !"
-
-#: website/templates/hkis/exercise.html:216
-msgid "Share it with other students!"
-msgstr "Partagez votre solution avec les autres !"
-
-#: website/templates/hkis/exercise.html:220
-msgid "View code"
-msgstr "Voir le code"
+#: website/templates/hkis/exercise.html:191
+#, python-format
+msgid "<a href=%(solutions_url)s>%(solutions_qty)s shared solutions</a>"
+msgstr "<a href=%(solutions_url)s>%(solutions_qty)s solutions partagées</a>"
 
 #: website/templates/hkis/profile_update.html:21
 #, python-format
@@ -96,49 +79,54 @@ msgstr ""
 msgid "Update"
 msgstr "Mettre à jour"
 
-#: website/templates/registration/activation_complete.html:5
-msgid "Activation complete"
-msgstr "Activation réussie"
+#: website/templates/hkis/solutions.html:42
+msgid "Shared solutions"
+msgstr "Les solutions partagées"
 
-#: website/templates/registration/activation_complete.html:11
+#: website/templates/hkis/solutions.html:44
+msgid "(You're not allowed to see them until you resolved the exercise.)"
+msgstr "(Vous n'êtes pas autorisés à les voir tant que vous n'avez pas résolu l'exercice.)"
+
+#: website/templates/hkis/solutions.html:71
 #, python-format
-msgid ""
-"\n"
-"Thanks, activation complete!  You may now <a href=\"%(auth_login_url)s"
-"\">login</a>\n"
-"using the username and password you set at registration.\n"
-msgstr ""
+msgid "Solution shared by %(username)s on %(date)s:"
+msgstr "Solution partagée par %(username)s le %(date)s"
 
-#: website/templates/registration/activation_email.txt:3
+#: website/templates/hkis/solutions.html:83
+msgid "No solution shared yet :("
+msgstr "Aucun solution partagée pour le moment :("
+
+#: website/templates/hkis/solutions.html:86
+msgid "My answers"
+msgstr "Mes réponses"
+
+#: website/templates/hkis/solutions.html:88
+msgid "You haven't submitted anything for this exercise yet."
+msgstr "Vous n'avez pas envoyé de réponse pour cet exercice pour le moment."
+
+#: website/templates/hkis/solutions.html:113
 #, python-format
-msgid ""
-"\n"
-"You have asked to register an account at %(site.name)s.\n"
-"If this wasn't you, please ignore this email\n"
-"and your address will be removed from our records.\n"
-"\n"
-"To activate this account, please click the following link within the next\n"
-"%(expiration_days)s days:\n"
-"\n"
-msgstr ""
+msgid "Submited on %(date)s:"
+msgstr "Envoyé le %(date)s"
 
-#: website/templates/registration/activation_email.txt:13
-msgid ""
-"\n"
-"Sincerely,\n"
-"\n"
-"HackInScience team\n"
-msgstr ""
+#: website/templates/hkis/solutions.html:129
+msgid "Unshare it"
+msgstr "Annuler le partage"
 
-#: website/templates/registration/activation_email_subject.txt:1
-msgid "Account activation for"
-msgstr ""
+#: website/templates/hkis/solutions.html:136
+msgid "Share it with other students!"
+msgstr "Partagez votre solution avec les autres !"
 
 #: website/templates/registration/login.html:4
 msgid "Sign in to Hackinscience"
 msgstr "Se connecter à Hackinscience"
 
-#: website/templates/registration/login.html:15
+#: website/templates/registration/login.html:16
+#, fuzzy
+msgid "Forgot your password?"
+msgstr "Mot de passe oublié ?"
+
+#: website/templates/registration/login.html:19
 msgid "Sign in"
 msgstr "Connexion"
 
@@ -168,9 +156,14 @@ msgstr "Réinitiation de mot de passe"
 msgid "Register"
 msgstr "S'enregistrer"
 
-#: website/templates/registration/resend_activation_form.html:4
-msgid "Resend Activation Email"
-msgstr ""
+#~ msgid "Help"
+#~ msgstr "Aide"
+
+#~ msgid "View code"
+#~ msgstr "Voir le code"
+
+#~ msgid "Activation complete"
+#~ msgstr "Activation réussie"
 
 #~ msgid "%(solution.user.username)s on %(solution.created_at.date)s"
 #~ msgstr "%(solution.user.username)s le %(solution.created_at.date)s"
