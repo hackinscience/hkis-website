@@ -48,6 +48,20 @@ class ProfileView(LoginRequiredMixin, UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context["exercises"] = Exercise.objects.filter(
+            is_published=True
+        ).with_user_stats(self.request.user)
+        context["done_qty"] = len(
+            [ex for ex in context["exercises"] if ex.user_successes]
+        )
+        context["done_pct"] = (
+            f"{context['done_qty'] / len(context['exercises']):.0%}"
+            if context["exercises"]
+            else "ø"
+        )
+        context["submit_qty"] = sum(
+            exercise.user_tries for exercise in context["exercises"]
+        )
         return context
 
     def dispatch(self, request, pk, *args, **kwargs):
