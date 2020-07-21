@@ -123,14 +123,14 @@
         </div>
         <button id="btn-{{ solution.id }}-unshare"
                 type="button"
-                {% if solution.is_shared %}style="display: none"{% endif %}
+                {% if not solution.is_shared %}style="display: none"{% endif %}
                 class="btn btn-secondary btn-sm"
                 onclick="shared_answer('{{ solution.id }}', false, '{{ csrf_token }}')">
           {% trans "Unshare it" %}
         </button>
         <button id="btn-{{ solution.id }}-share"
                 type="button"
-                {% if not solution.is_shared %}style="display: none"{% endif %}
+                {% if solution.is_shared %}style="display: none"{% endif %}
                 class="btn btn-primary btn-sm"
                 onclick="shared_answer('{{ solution.id }}', true, '{{ csrf_token }}')">
           {% trans "Share it with other students!" %}
