@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-07-21 20:31+0200\n"
-"PO-Revision-Date: 2020-07-21 20:35+0200\n"
+"PO-Revision-Date: 2020-07-21 20:44+0200\n"
 "Last-Translator: Julien Palard <julien@palard.fr>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: fr\n"
@@ -33,7 +33,7 @@ msgstr "Suivant"
 
 #: website/templates/hkis/exercise.html:40
 msgid "Need help?"
-msgstr "Besoin d'aide ?"
+msgstr "Besoin d&#39;aide ?"
 
 #: website/templates/hkis/exercise.html:57
 msgid "Waiting for correction"
