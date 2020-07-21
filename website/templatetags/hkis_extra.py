@@ -10,9 +10,11 @@ register = template.Library()
 def md_to_bootstrap(value):
     """This replaces some markdown css classes to bootstrap classes.
     """
-    return value.replace(
-        'class="admonition warning"', 'class="alert alert-warning"'
-    ).replace("admonition-title", "alert-heading")
+    return (
+        value.replace('class="admonition warning"', 'class="alert alert-warning"')
+        .replace('class="admonition note"', 'class="alert alert-info"')
+        .replace("admonition-title", "alert-heading")
+    )
 
 
 @register.filter(is_safe=True)
