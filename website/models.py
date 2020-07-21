@@ -39,6 +39,7 @@ class ExerciseQuerySet(models.QuerySet):
             last_week_tries=Count(
                 "answers__user",
                 filter=Q(answers__created_at__gt=now() - timedelta(days=7)),
+                distinct=True,
             ),
             last_week_successes=Count(
                 "answers__user",
@@ -46,6 +47,7 @@ class ExerciseQuerySet(models.QuerySet):
                     answers__is_valid=True,
                     answers__created_at__gt=now() - timedelta(days=7),
                 ),
+                distinct=True,
             ),
         )
 

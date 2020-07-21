@@ -75,6 +75,7 @@ class ExerciseAdmin(admin.ModelAdmin):
         "position",
         "last_week_tries",
         "last_week_successes",
+        "last_week_success_ratio",
     )
 
     def last_week_tries(self, obj):
@@ -90,6 +91,12 @@ class ExerciseAdmin(admin.ModelAdmin):
 
     def last_week_successes(self, obj):
         return obj.last_week_successes
+
+    def last_week_success_ratio(self, obj):
+        if obj.last_week_successes:
+            return f"{obj.last_week_tries / obj.last_week_successes:.0%}"
+        else:
+            return "ø"
 
     form = AdminExerciseForm
 
