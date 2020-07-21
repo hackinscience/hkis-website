@@ -30,7 +30,8 @@ def db_store_correction(answer, is_valid, message):
 
 @database_sync_to_async
 def db_create_answer(exercise: Exercise, user: User, source_code):
-    return exercise.answers.create(source_code=source_code, user=user)
+    answer = exercise.answers.create(source_code=source_code, user=user)
+    return answer.id, answer.exercise.check
 
 
 @database_sync_to_async
@@ -117,15 +118,15 @@ class ExerciseConsumer(AsyncJsonWebsocketConsumer):
 
     async def answer(self, answer):
         self.log("Receive answer from browser")
-        answer_obj = await db_create_answer(
+        answer_id, exercise_check = await db_create_answer(
             self.exercise, self.scope["user"], answer["source_code"]
         )
         self.log("Send answer to moulinette")
         is_valid, message = await check_answer(
-            {"check": answer_obj.exercise.check, "source_code": answer_obj.source_code}
+            {"check": exercise_check, "source_code": answer["source_code"]}
         )
         self.log("Got result from moulinette")
-        await db_update_answer(answer_obj.id, is_valid, message)
+        await db_update_answer(answer_id, is_valid, message)
 
     async def answer_update(self, answer):
         self.log("Receive answer update from DB")
