@@ -1,3 +1,7 @@
+"""Run using:
+celery -A hkis worker
+"""
+
 import asyncio
 from functools import partial
 from random import choice

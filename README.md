@@ -17,13 +17,11 @@ pip install -r requirements.txt
 ./manage.py runserver
 ```
 
-Install and run a redis server.
+To also run the moulinette, you'll need to install `firejail` and `redis` then run:
 
-You'll maybe need a moulinette running too, currently in the
-for_django branch of the moulinette, install firejail, and start it using:
-
-    ./server.py http://127.0.0.1:8000/api/ --verbose --auth staff_login:staff_password
-
+```
+celery -A hkis worker
+```
 
 ## Translations
 
