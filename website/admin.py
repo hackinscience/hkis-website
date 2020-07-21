@@ -66,6 +66,7 @@ class ExerciseAdmin(admin.ModelAdmin):
     def get_queryset(self, request):
         return super().get_queryset(request).with_weekly_stats()
 
+    ordering = ("-is_published", "position")
     readonly_fields = ("id",)
     list_display = (
         "title",
