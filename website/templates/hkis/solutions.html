@@ -121,6 +121,7 @@
         <div class="result-box">
           <pre>{{ solution.correction_message }}</pre>
         </div>
+        {% if solution.is_valid %}
         <button id="btn-{{ solution.id }}-unshare"
                 type="button"
                 {% if not solution.is_shared %}style="display: none"{% endif %}
@@ -135,6 +136,7 @@
                 onclick="shared_answer('{{ solution.id }}', true, '{{ csrf_token }}')">
           {% trans "Share it with other students!" %}
         </button>
+        {% endif %}
       </div>
       {% endfor %}
   </div>
