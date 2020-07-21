@@ -1,11 +1,10 @@
 from django import forms
 from django.contrib import admin
-from django_ace import AceWidget
-from website.models import Answer, Exercise, Snippet
-from registration.admin import RegistrationAdmin
-from registration.models import RegistrationProfile
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User
+from django_ace import AceWidget
+
+from website.models import Answer, Exercise, Snippet
 
 
 class AdminExerciseForm(forms.ModelForm):
@@ -110,20 +109,19 @@ class SnippetAdmin(admin.ModelAdmin):
     search_fields = ("user__username",)
 
 
-class MyRegistrationAdmin(RegistrationAdmin):
-    list_display = RegistrationAdmin.list_display + ("activated",)
-
-
 class MyUserAdmin(UserAdmin):
-    list_display = UserAdmin.list_display + ("date_joined",)
+    list_display = UserAdmin.list_display + ("date_joined", "userstats_points")
+
+    def userstats_points(self, obj):
+        return obj.userstats.points
+
+    def get_queryset(self, request):
+        return super().get_queryset(request).select_related("userstats")
 
 
 admin.site.register(Answer, AnswerAdmin)
 admin.site.register(Exercise, ExerciseAdmin)
 admin.site.register(Snippet, SnippetAdmin)
-
-admin.site.unregister(RegistrationProfile)
-admin.site.register(RegistrationProfile, MyRegistrationAdmin)
 
 admin.site.unregister(User)
 admin.site.register(User, MyUserAdmin)

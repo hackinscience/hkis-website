@@ -52,6 +52,11 @@ class ExerciseQuerySet(models.QuerySet):
         )
 
 
+class UserStats(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    points = models.FloatField(default=0)  # Computed sum of solved exercise positions.
+
+
 class Exercise(models.Model):
     title = models.CharField(max_length=255)
     slug = AutoSlugField(populate_from=["title"], editable=True)
@@ -137,6 +142,13 @@ class SnippetSerializer(serializers.ModelSerializer):
 
 def cb_new_answer(sender, instance, created, **kwargs):
     group = f"user.{instance.user.id}.ex.{instance.exercise.id}"
+    if instance.is_valid:
+        user_stats, _ = UserStats.objects.get_or_create(user=instance.user)
+        user_stats.points = sum(
+            bool(exercise.user_successes)
+            for exercise in Exercise.objects.with_user_stats(user=instance.user)
+        )
+        user_stats.save()
     channel_layer = get_channel_layer()
     message = AnswerSerializer(instance).data
     message["type"] = "answer.update"
