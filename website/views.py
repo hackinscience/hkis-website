@@ -137,7 +137,7 @@ class SolutionView(LoginRequiredMixin, DetailView):
         context = super().get_context_data(**kwargs)
         context["my_answers"] = Answer.objects.filter(
             exercise_id=self.object.id, user=self.request.user
-        )
+        ).order_by("-created_at")
         context["solutions"] = []
         context["is_allowed_to_see_solutions"] = False
         already_seen = set()
