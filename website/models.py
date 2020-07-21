@@ -52,9 +52,25 @@ class ExerciseQuerySet(models.QuerySet):
         )
 
 
+class UserStatsQuerySet(models.QuerySet):
+    def recompute(self):
+        for user in User.objects.all():
+            user_stats, _ = UserStats.objects.get_or_create(user=user)
+            user_stats.recompute()
+
+
 class UserStats(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     points = models.FloatField(default=0)  # Computed sum of solved exercise positions.
+    objects = UserStatsQuerySet.as_manager()
+
+    def recompute(self):
+        self.points = sum(
+            exercise.position
+            for exercise in Exercise.objects.with_user_stats(user=self.user)
+            if exercise.user_successes
+        )
+        self.save()
 
 
 class Exercise(models.Model):
@@ -144,11 +160,7 @@ def cb_new_answer(sender, instance, created, **kwargs):
     group = f"user.{instance.user.id}.ex.{instance.exercise.id}"
     if instance.is_valid:
         user_stats, _ = UserStats.objects.get_or_create(user=instance.user)
-        user_stats.points = sum(
-            bool(exercise.user_successes)
-            for exercise in Exercise.objects.with_user_stats(user=instance.user)
-        )
-        user_stats.save()
+        user_stats.recompute()
     channel_layer = get_channel_layer()
     message = AnswerSerializer(instance).data
     message["type"] = "answer.update"
