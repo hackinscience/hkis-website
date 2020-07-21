@@ -111,6 +111,7 @@ class SnippetAdmin(admin.ModelAdmin):
 
 class MyUserAdmin(UserAdmin):
     list_display = UserAdmin.list_display + ("date_joined", "userstats_points")
+    ordering = ("-date_joined",)
 
     def userstats_points(self, obj):
         return obj.userstats.points
