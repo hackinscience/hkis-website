@@ -54,3 +54,8 @@ table#answer-table td {
 .result-box pre {
     margin-bottom: 0;
 }
+
+div.container-fluid {
+    margin-top: 25px;
+    margin-bottom: 25px;
+}

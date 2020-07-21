@@ -35,10 +35,6 @@ def team(request):
     return render(request, "hkis/team.html")
 
 
-def privacy(request):
-    return render(request, "hkis/privacy.html")
-
-
 @login_required
 def dashboard_view(request):
     return render(request, "hkis/dashboard.html")

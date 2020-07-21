@@ -29,7 +29,6 @@ from website.views import (
     helppage,
     dashboard_view,
     index,
-    privacy,
     team,
 )
 
@@ -41,7 +40,6 @@ urlpatterns = [
     path("about/", about, name="about"),
     path("help/", helppage, name="help"),
     path("team/", team, name="team"),
-    path("privacy/", privacy, name="privacy"),
     path("admin/", admin.site.urls),
     path("api/", include(router.urls)),
     path("api-auth/", include("rest_framework.urls")),

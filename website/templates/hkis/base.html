@@ -13,42 +13,18 @@
         {% block extrahead %}{% endblock %}
     </head>
     <body id="page-top" class="{% if is_popup %}popup {% endif %}{% block bodyclass %}{% endblock %}">
-        {% block nav %}{% endblock %}
-        {% block body %}
-        <div class="container-fluid" style="margin-top: 25px;">
-            {% block container %}{% endblock container %}
-            <footer class="pt-4 my-md-5 pt-md-5 border-top">
-              <div class="row">
-                <div class="col-6 col-md">
-                  <h5>Partners</h5>
-                  <ul class="list-unstyled text-small">
-                    <li><a class="text-muted" href="https://cri-paris.org">Center for Research and Interdisciplinarity</a></li>
-                    <li><a class="text-muted" href="https://www.parisdescartes.fr/">Université Paris Descartes</a></li>
-                  </ul>
-                </div>
-                <div class="col-6 col-md">
-                  <h5>Resources</h5>
-                  <ul class="list-unstyled text-small">
-                    <li><a class="text-muted" href="https://python.org/downloads/">Get Python</a></li>
-                    <li><a class="text-muted" href="https://docs.python.org">Python Documentation</a></li>
-                  </ul>
-                </div>
-                <div class="col-6 col-md">
-                  <h5>About</h5>
-                  <ul class="list-unstyled text-small">
-                    <li><a class="text-muted" href="{% url 'about' %}">Hackinscience</a></li>
-                    <li><a class="text-muted" href="{% url 'team' %}">Team</a></li>
-                    <li><a class="text-muted" href="{% url 'privacy' %}">Privacy</a></li>
-                  </ul>
-                </div>
-              </div>
-            </footer>
-        </div>
-        {% endblock %}
-        <script src="{% static "js/jquery-slim.min.js" %}"></script>
-        <script src="{% static "js/util.js" %}"></script>
-        <script src="{% static "js/collapse.js" %}"></script>
-        {% block extrajs %}
-        {% endblock %}
+      {% block nav %}
+      {% endblock %}
+      {% block body %}
+      <div class="container-fluid">
+        {% block container %}
+        {% endblock container %}
+      </div>
+      {% endblock %}
+      <script src="{% static "js/jquery-slim.min.js" %}"></script>
+      <script src="{% static "js/util.js" %}"></script>
+      <script src="{% static "js/collapse.js" %}"></script>
+      {% block extrajs %}
+      {% endblock %}
     </body>
 </html>
