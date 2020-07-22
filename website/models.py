@@ -78,6 +78,7 @@ class UserStats(models.Model):
 
 class Exercise(models.Model):
     title = models.CharField(max_length=255)
+    author = models.CharField(max_length=255, blank=True)
     slug = AutoSlugField(populate_from=["title"], editable=True)
     check = models.TextField()
     is_published = models.BooleanField(default=False)

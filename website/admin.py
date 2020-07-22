@@ -13,6 +13,7 @@ class AdminExerciseForm(forms.ModelForm):
         fields = (
             "title",
             "slug",
+            "author",
             "is_published",
             "position",
             "wording",
