@@ -59,8 +59,8 @@ class ExerciseQuerySet(models.QuerySet):
                 "answers__user",
                 filter=Q(
                     answers__is_valid=True,
-                    answers__created_at__lt=now() - timedelta(days=14),
-                    answers__created_at__gt=now() - timedelta(days=7),
+                    answers__created_at__gt=now() - timedelta(days=14),
+                    answers__created_at__lt=now() - timedelta(days=7),
                 ),
                 distinct=True,
             ),
