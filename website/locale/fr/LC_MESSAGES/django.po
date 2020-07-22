@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-07-21 20:31+0200\n"
-"PO-Revision-Date: 2020-07-21 20:44+0200\n"
+"POT-Creation-Date: 2020-07-22 09:00+0200\n"
+"PO-Revision-Date: 2020-07-22 09:02+0200\n"
 "Last-Translator: Julien Palard <julien@palard.fr>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: fr\n"
@@ -64,18 +64,41 @@ msgstr "Résultats"
 msgid "<a href=%(solutions_url)s>%(solutions_qty)s shared solutions</a>"
 msgstr "<a href=%(solutions_url)s>%(solutions_qty)s solutions partagées</a>"
 
-#: website/templates/hkis/profile_update.html:21
+#: website/templates/hkis/profile_update.html:8
+msgid "Profile"
+msgstr "Profil"
+
+#: website/templates/hkis/profile_update.html:9
+msgid "Statistics"
+msgstr "Statistiques"
+
+#: website/templates/hkis/profile_update.html:11
 #, python-format
 msgid ""
-"\n"
-"      <a href=\"%(password_change)s\">Change your password</a>\n"
-"      "
-msgstr ""
-"\n"
-"      <a href=\"%(password_change)s\">Changer de mot de passe</a>\n"
-"      "
+"You subscribed on %(date_joined)s, and sent %(submit_qty)s answers to the "
+"correction bot."
+msgstr "Vous avez rejoint hackinscience le %(date_joined)s, et envoyé %(submit_qty)s réponses à la moulinette de correction."
 
-#: website/templates/hkis/profile_update.html:25
+#: website/templates/hkis/profile_update.html:17
+#, python-format
+msgid ""
+"You resolved %(done_qty)s exercises, that's %(done_pct)s of all exercises."
+msgstr "Vous avez résolu %(done_qty)s exercices, c'est %(done_pct)s de tous les exercices."
+
+#: website/templates/hkis/profile_update.html:23
+#, python-format
+msgid "You're ranking %(rank)s over %(participants)s participants."
+msgstr "Vous êtes classé %(rank)s sur %(participants)s participants."
+
+#: website/templates/hkis/profile_update.html:27
+msgid "You're not ranked yet."
+msgstr "Vous n'êtes pas encore classé."
+
+#: website/templates/hkis/profile_update.html:32
+msgid "Pronal informations"
+msgstr "Informations personnelles"
+
+#: website/templates/hkis/profile_update.html:47
 msgid "Update"
 msgstr "Mettre à jour"
 
@@ -85,7 +108,9 @@ msgstr "Les solutions partagées"
 
 #: website/templates/hkis/solutions.html:44
 msgid "(You're not allowed to see them until you resolved the exercise.)"
-msgstr "(Vous n'êtes pas autorisés à les voir tant que vous n'avez pas résolu l'exercice.)"
+msgstr ""
+"(Vous n'êtes pas autorisés à les voir tant que vous n'avez pas résolu "
+"l'exercice.)"
 
 #: website/templates/hkis/solutions.html:71
 #, python-format
@@ -109,11 +134,11 @@ msgstr "Vous n'avez pas envoyé de réponse pour cet exercice pour le moment."
 msgid "Submited on %(date)s:"
 msgstr "Envoyé le %(date)s"
 
-#: website/templates/hkis/solutions.html:129
+#: website/templates/hkis/solutions.html:130
 msgid "Unshare it"
 msgstr "Annuler le partage"
 
-#: website/templates/hkis/solutions.html:136
+#: website/templates/hkis/solutions.html:137
 msgid "Share it with other students!"
 msgstr "Partagez votre solution avec les autres !"
 
@@ -122,7 +147,6 @@ msgid "Sign in to Hackinscience"
 msgstr "Se connecter à Hackinscience"
 
 #: website/templates/registration/login.html:16
-#, fuzzy
 msgid "Forgot your password?"
 msgstr "Mot de passe oublié ?"
 
@@ -155,6 +179,15 @@ msgstr "Réinitiation de mot de passe"
 #: website/templates/registration/registration_form.html:4
 msgid "Register"
 msgstr "S'enregistrer"
+
+#~ msgid ""
+#~ "\n"
+#~ "      <a href=\"%(password_change)s\">Change your password</a>\n"
+#~ "      "
+#~ msgstr ""
+#~ "\n"
+#~ "      <a href=\"%(password_change)s\">Changer de mot de passe</a>\n"
+#~ "      "
 
 #~ msgid "Help"
 #~ msgstr "Aide"

@@ -8,19 +8,23 @@
     <h1>{% trans "Profile" %}</h1>
     <h2>{% trans "Statistics" %}</h2>
     <p>
-      You subscribed on {{ user.date_joined }}, and sent {{ submit_qty }}
+      {% blocktrans with date_joined=user.date_joined trimmed %}
+      You subscribed on {{ date_joined }}, and sent {{ submit_qty }}
       answers to the correction bot.
+      {% endblocktrans %}
     </p>
     <p>
+      {% blocktrans trimmed %}
       You resolved {{ done_qty }} exercises, that's {{ done_pct }} of all exercises.
+      {% endblocktrans %}
     </p>
     <p>
       {% if rank is not None %}
-      {% blocktrans %}
+      {% blocktrans trimmed %}
         You're ranking {{ rank }} over {{ participants }} participants.
       {% endblocktrans %}
       {% else %}
-      {% blocktrans %}
+      {% blocktrans trimmed %}
         You're not ranked yet.
       {% endblocktrans %}
       {% endif %}
@@ -38,14 +42,10 @@
       {{ form|crispy }}
       {% url 'auth_password_change' as password_change %}
       <p>
-      {% blocktrans %}
-      <a href="{{ password_change }}">Change your password</a>
-      {% endblocktrans %}
+      <a href="{{ password_change }}">{trans "Change your password"}</a>
       </p>
       <button type="submit" class="btn btn-primary btn-lg">{% trans "Update" %}</button>
     </form>
   </div>
 </div>
-
-
 {% endblock %}
