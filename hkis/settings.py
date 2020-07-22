@@ -203,6 +203,75 @@ LOCALE_PATHS = [BASE_DIR + "/locale/"]
 CELERY_BROKER_URL = "redis://localhost:6379/0"
 CELERY_RESULT_BACKEND = CELERY_BROKER_URL
 
+ALLOWED_TAGS = [
+    # Bleach Defaults
+    "a",
+    "abbr",
+    "acronym",
+    "b",
+    "blockquote",
+    "code",
+    "em",
+    "i",
+    "li",
+    "ol",
+    "strong",
+    "ul",
+    # Custom Additions
+    "br",
+    "caption",
+    "cite",
+    "col",
+    "colgroup",
+    "dd",
+    "del",
+    "details",
+    "div",
+    "dl",
+    "dt",
+    "h1",
+    "h2",
+    "h3",
+    "h4",
+    "h5",
+    "h6",
+    "hr",
+    "img",
+    "p",
+    "pre",
+    "span",
+    "sub",
+    "summary",
+    "sup",
+    "table",
+    "tbody",
+    "td",
+    "th",
+    "thead",
+    "tr",
+    "tt",
+    "kbd",
+    "var",
+]
+
+ALLOWED_ATTRIBUTES = {
+    # Bleach Defaults
+    "a": ["href", "title"],
+    "abbr": ["title"],
+    "acronym": ["title"],
+    # Custom Additions
+    "*": ["id"],
+    "hr": ["class"],
+    "img": ["src", "width", "height", "alt", "align", "class"],
+    "span": ["class"],
+    "th": ["align"],
+    "td": ["align"],
+    "code": ["class"],
+    "p": ["align"],
+}
+
+ALLOWED_STYLES = []
+
 try:
     from local_settings import *
 except ImportError:

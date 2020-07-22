@@ -1,6 +1,8 @@
 from django import template
+from django.conf import settings
 from django.utils.safestring import mark_safe
 
+import bleach
 import markdown
 
 register = template.Library()
@@ -35,6 +37,24 @@ def markdown_filter(value):
     """
     return mark_safe(
         markdown.markdown(value, extensions=["fenced_code", "codehilite", "admonition"])
+    )
+
+
+@register.filter(name="safe_markdown", is_safe=True)
+def safe_markdown_filter(value):
+    """Processes the given value as Markdown and pass it to bleach.clean.
+    Syntax::
+        {{ value|safe_markdown }}
+    """
+    return mark_safe(
+        bleach.clean(
+            markdown.markdown(
+                value, extensions=["fenced_code", "codehilite", "admonition"]
+            ),
+            tags=settings.ALLOWED_TAGS,
+            attributes=settings.ALLOWED_ATTRIBUTES,
+            styles=settings.ALLOWED_STYLES,
+        )
     )
 
 
