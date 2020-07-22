@@ -22,24 +22,6 @@ def i18n_doc_links(value, language):
     return value
 
 
-@register.filter(name="safe_markdown", is_safe=True)
-def safe_markdown_filter(value):
-    """Processes the given value as Markdown and pass it to bleach.clean.
-    Syntax::
-        {{ value|safe_markdown }}
-    """
-    return mark_safe(
-        bleach.clean(
-            markdown.markdown(
-                value, extensions=["fenced_code", "codehilite", "admonition"]
-            ),
-            tags=settings.ALLOWED_TAGS,
-            attributes=settings.ALLOWED_ATTRIBUTES,
-            styles=settings.ALLOWED_STYLES,
-        )
-    )
-
-
 @register.tag(name="md")
 def do_markdownize(parser, token):
     nodelist = parser.parse(("endmd",))

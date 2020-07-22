@@ -213,7 +213,7 @@
               <img src="{% static "img/loading_anim.gif" %}" height=30> Waiting for correction
             {% else %}
               <div class="result-box">
-              {{ answer.correction_message|safe_markdown }}
+              {{ answer.correction_message|markdown_to_bootstrap }}
             </div>
             {% endif %}
           </td>
