@@ -1,7 +1,7 @@
 from collections import OrderedDict
 
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import Group
+from django.contrib.auth.models import Group, User
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib import messages
 from django.core.exceptions import PermissionDenied
@@ -127,9 +127,13 @@ class ExerciseView(LoginRequiredMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["LANGUAGE_CODE"] = self.request.LANGUAGE_CODE
-        context["answers"] = answers = self.object.answers.filter(
-            user=self.request.user
-        ).order_by("-id")
+        user = self.request.user
+        if self.request.user.is_superuser and self.request.GET.get("view_as"):
+            user = User.objects.get(id=self.request.GET.get("view_as"))
+            context["is_impersonating"] = user
+        context["answers"] = answers = self.object.answers.filter(user=user).order_by(
+            "-id"
+        )
         context["answer_form"] = AnswerForm(
             initial={
                 "exercise": "/api/exercises/{}/".format(self.object.id),
@@ -139,9 +143,7 @@ class ExerciseView(LoginRequiredMixin, DetailView):
             }
         )
         context["object"].wording = gettext(context["object"].wording)
-        context["is_valid"] = bool(
-            self.object.answers.filter(user=self.request.user, is_valid=True)
-        )
+        context["is_valid"] = bool(self.object.answers.filter(user=user, is_valid=True))
         context["solutions_qty"] = len(
             Answer.objects.filter(
                 exercise__pk=self.object.id, is_valid=True, is_shared=True

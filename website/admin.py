@@ -2,6 +2,8 @@ from django import forms
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User
+from django.urls import reverse
+from django.utils.safestring import mark_safe
 from django_ace import AceWidget
 
 from website.models import Answer, Exercise, Snippet
@@ -97,10 +99,18 @@ class AnswerAdmin(admin.ModelAdmin):
         "is_corrected",
         "is_shared",
         "created_at",
+        "see",
     )
     list_filter = ("is_corrected", "is_valid", "is_shared")
     search_fields = ("user__username",)
     form = AnswerExerciseForm
+
+    def get_queryset(self, request):
+        return super().get_queryset(request).select_related("user", "exercise")
+
+    def see(self, obj):
+        url = reverse("exercise", kwargs={"slug": obj.exercise.slug})
+        return mark_safe(f"<a href='{url}?view_as={obj.user.id}'>see</a>")
 
 
 class SnippetAdmin(admin.ModelAdmin):

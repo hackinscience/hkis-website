@@ -23,7 +23,6 @@ def main():
     username = input("Username: ")
     password = getpass()
     next_exercise_page = args.endpoint
-    root = Path("exercises")
     while next_exercise_page:
         exercises = requests.get(next_exercise_page, auth=(username, password)).json()
         if "results" not in exercises:
