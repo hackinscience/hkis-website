@@ -1,6 +1,7 @@
 import bleach
 from django.conf import settings
 import markdown
+from markdown.extensions.codehilite import CodeHiliteExtension
 
 
 def markdown_to_bootstrap(text):
@@ -12,7 +13,12 @@ def markdown_to_bootstrap(text):
     return (
         bleach.clean(
             markdown.markdown(
-                text, extensions=["fenced_code", "codehilite", "admonition"],
+                text,
+                extensions=[
+                    "fenced_code",
+                    CodeHiliteExtension(guess_lang=False),
+                    "admonition",
+                ],
             ),
             tags=settings.ALLOWED_TAGS,
             attributes=settings.ALLOWED_ATTRIBUTES,
