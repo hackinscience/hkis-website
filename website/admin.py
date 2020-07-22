@@ -79,9 +79,7 @@ class ExerciseAdmin(admin.ModelAdmin):
         if obj.prev_week_successes:
             prev_week_ratio = obj.prev_week_successes / obj.prev_week_tries
         if prev_week_ratio is not None and last_week_ratio is not None:
-            return (
-                f"{last_week_ratio:.0%} ({100*(last_week_ratio - prev_week_ratio):+})"
-            )
+            return f"{last_week_ratio:.0%} ({100*(last_week_ratio - prev_week_ratio):+.2f})"
         if last_week_ratio is not None:
             return f"{last_week_ratio:.0%}"
         else:
