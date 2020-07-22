@@ -264,6 +264,7 @@ ALLOWED_ATTRIBUTES = {
     "hr": ["class"],
     "img": ["src", "width", "height", "alt", "align", "class"],
     "span": ["class"],
+    "div": ["class"],
     "th": ["align"],
     "td": ["align"],
     "code": ["class"],
