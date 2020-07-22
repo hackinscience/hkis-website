@@ -1,15 +1,15 @@
 from django import template
-from django.conf import settings
 from django.utils.safestring import mark_safe
 from website.utils import markdown_to_bootstrap
 
-import bleach
 import markdown
 
 register = template.Library()
 
 
-register.filter("markdown_to_bootstrap", markdown_to_bootstrap, is_safe=True)
+@register.filter("markdown_to_bootstrap", is_safe=True)
+def _markdown_to_bootstrap(value):
+    return mark_safe(markdown_to_bootstrap(value))
 
 
 @register.filter(is_safe=True)
