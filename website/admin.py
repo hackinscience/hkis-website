@@ -60,29 +60,30 @@ class ExerciseAdmin(admin.ModelAdmin):
     list_display = (
         "title",
         "position",
-        "last_week_tries",
-        "last_week_successes",
-        "last_week_success_ratio",
+        "weekly_tries",
+        "weekly_successes",
+        "weekly_success_ratio",
         "is_published",
     )
 
-    def last_week_tries(self, obj):
-        """Without this, I'm getting:
+    def weekly_tries(self, obj):
+        return f"{obj.last_week_tries} ({obj.last_week_tries - obj.prev_week_tries:+})"
 
-        (admin.E108) The value of 'list_display[4]' refers to 'tries',
-        which is not a callable, an attribute of 'ExerciseAdmin', or
-        an attribute or method on 'website.Exercise'.
+    def weekly_successes(self, obj):
+        return f"{obj.last_week_successes} ({obj.last_week_successes - obj.prev_week_successes:+})"
 
-        Maybe the system check don't see my get_queryset?
-        """
-        return obj.last_week_tries
-
-    def last_week_successes(self, obj):
-        return obj.last_week_successes
-
-    def last_week_success_ratio(self, obj):
+    def weekly_success_ratio(self, obj):
+        last_week_ratio = prev_week_ratio = None
         if obj.last_week_successes:
-            return f"{obj.last_week_successes / obj.last_week_tries:.0%}"
+            last_week_ratio = obj.last_week_successes / obj.last_week_tries
+        if obj.prev_week_successes:
+            prev_week_ratio = obj.prev_week_successes / obj.prev_week_tries
+        if prev_week_ratio is not None and last_week_ratio is not None:
+            return (
+                f"{last_week_ratio:.0%} ({100*(last_week_ratio - prev_week_ratio):+})"
+            )
+        if last_week_ratio is not None:
+            return f"{last_week_ratio:.0%}"
         else:
             return "ø"
 

@@ -41,10 +41,25 @@ class ExerciseQuerySet(models.QuerySet):
                 filter=Q(answers__created_at__gt=now() - timedelta(days=7)),
                 distinct=True,
             ),
+            prev_week_tries=Count(
+                "answers__user",
+                filter=Q(answers__created_at__gt=now() - timedelta(days=14))
+                & Q(answers__created_at__lt=now() - timedelta(days=7)),
+                distinct=True,
+            ),
             last_week_successes=Count(
                 "answers__user",
                 filter=Q(
                     answers__is_valid=True,
+                    answers__created_at__gt=now() - timedelta(days=7),
+                ),
+                distinct=True,
+            ),
+            prev_week_successes=Count(
+                "answers__user",
+                filter=Q(
+                    answers__is_valid=True,
+                    answers__created_at__lt=now() - timedelta(days=14),
                     answers__created_at__gt=now() - timedelta(days=7),
                 ),
                 distinct=True,
