@@ -2,16 +2,15 @@ import asyncio
 import json
 import logging
 
-import bleach
 from channels.db import database_sync_to_async
 from channels.generic.websocket import AsyncJsonWebsocketConsumer
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.utils.timezone import now
-import markdown
 
 from moulinette.tasks import check_answer, run_snippet
 from website.models import Answer, Exercise, Snippet, SnippetSerializer
+from website.utils import markdown_to_bootstrap
 
 
 logger = logging.getLogger(__name__)
@@ -135,14 +134,8 @@ class ExerciseConsumer(AsyncJsonWebsocketConsumer):
 
     async def answer_update(self, answer):
         self.log("Receive answer update from DB")
-        answer["correction_message_html"] = bleach.clean(
-            markdown.markdown(
-                answer["correction_message"],
-                extensions=["fenced_code", "codehilite", "admonition"],
-            ),
-            tags=settings.ALLOWED_TAGS,
-            attributes=settings.ALLOWED_ATTRIBUTES,
-            styles=settings.ALLOWED_STYLES,
+        answer["correction_message_html"] = markdown_to_bootstrap(
+            answer["correction_message"]
         )
         await self.send_json(answer)
 

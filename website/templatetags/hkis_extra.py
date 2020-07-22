@@ -1,6 +1,7 @@
 from django import template
 from django.conf import settings
 from django.utils.safestring import mark_safe
+from website.utils import markdown_to_bootstrap
 
 import bleach
 import markdown
@@ -8,15 +9,7 @@ import markdown
 register = template.Library()
 
 
-@register.filter(is_safe=True)
-def md_to_bootstrap(value):
-    """This replaces some markdown css classes to bootstrap classes.
-    """
-    return (
-        value.replace('class="admonition warning"', 'class="alert alert-warning"')
-        .replace('class="admonition note"', 'class="alert alert-info"')
-        .replace("admonition-title", "alert-heading")
-    )
+register.filter("markdown_to_bootstrap", markdown_to_bootstrap, is_safe=True)
 
 
 @register.filter(is_safe=True)
@@ -27,17 +20,6 @@ def i18n_doc_links(value, language):
     if language == "fr":
         return value.replace("https://docs.python.org/", "https://docs.python.org/fr/")
     return value
-
-
-@register.filter(name="markdown", is_safe=True)
-def markdown_filter(value):
-    """Processes the given value as Markdown.
-    Syntax::
-        {{ value|markdown }}
-    """
-    return mark_safe(
-        markdown.markdown(value, extensions=["fenced_code", "codehilite", "admonition"])
-    )
 
 
 @register.filter(name="safe_markdown", is_safe=True)
