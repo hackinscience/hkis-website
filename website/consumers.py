@@ -99,7 +99,7 @@ class ExerciseConsumer(AsyncJsonWebsocketConsumer):
     async def receive_json(self, content):
         if content["type"] == "answer":
             asyncio.create_task(self.answer(content))
-        if content["type"] == "recorrect":
+        elif content["type"] == "recorrect":
             asyncio.create_task(self.recorrect(content))
         elif content["type"] == "snippet":
             asyncio.create_task(self.snippet(content))
@@ -113,7 +113,7 @@ class ExerciseConsumer(AsyncJsonWebsocketConsumer):
             return
         self.log("Send answer to moulinette")
         is_valid, message = await check_answer(
-            {"check": uncorrected["check"], "source_code": uncorrected["source_code"],}
+            {"check": uncorrected["check"], "source_code": uncorrected["source_code"]}
         )
         self.log("Got result from moulinette")
         await db_update_answer(uncorrected["id"], is_valid, message)
