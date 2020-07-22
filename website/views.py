@@ -62,7 +62,10 @@ class ProfileView(LoginRequiredMixin, UpdateView):
         context["submit_qty"] = sum(
             exercise.user_tries for exercise in context["exercises"]
         )
-        context["rank"] = self.request.user.userstats.rank
+        try:
+            context["rank"] = self.request.user.userstats.rank
+        except User.userstats.RelatedObjectDoesNotExist:
+            context["rank"] = None
         context["participants"] = User.objects.count()
 
         return context

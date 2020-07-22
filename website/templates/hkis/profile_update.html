@@ -15,7 +15,15 @@
       You resolved {{ done_qty }} exercises, that's {{ done_pct }} of all exercises.
     </p>
     <p>
-      You're ranking {{ rank }} over {{ participants }} participants.
+      {% if rank is not None %}
+      {% blocktrans %}
+        You're ranking {{ rank }} over {{ participants }} participants.
+      {% endblocktrans %}
+      {% else %}
+      {% blocktrans %}
+        You're not ranked yet.
+      {% endblocktrans %}
+      {% endif %}
     </p>
     <h2>{% trans "Pronal informations" %}</h2>
     {% if messages %}
