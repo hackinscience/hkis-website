@@ -1,16 +1,17 @@
 """Fetch exercises from hackinscience API.
 """
 
-import requests
+import argparse
 from getpass import getpass
 from pathlib import Path
 import json
 
-import argparse
+import requests
 
 
 def parse_args():
     parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--username")
     parser.add_argument("--password")
     parser.add_argument(
         "--endpoint", default="https://www.hackinscience.org/api/exercises/"
@@ -20,11 +21,15 @@ def parse_args():
 
 def main():
     args = parse_args()
-    username = input("Username: ")
-    password = getpass()
+    if not args.username:
+        args.username = input("Username: ")
+    if not args.password:
+        args.password = getpass()
     next_exercise_page = args.endpoint
     while next_exercise_page:
-        exercises = requests.get(next_exercise_page, auth=(username, password)).json()
+        exercises = requests.get(
+            next_exercise_page, auth=(args.username, args.password)
+        ).json()
         if "results" not in exercises:
             print(exercises)
             exit(1)
