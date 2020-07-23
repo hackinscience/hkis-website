@@ -116,8 +116,12 @@ def check_answer_task(answer: dict):
             env=firejail_env,
         )
         try:
-            stdout = prof_proc.communicate(timeout=40)[0].decode(
-                "UTF-8", "backslashreplace"
+            stdout = (
+                prof_proc.communicate(timeout=40)[0]
+                .decode("UTF-8", "backslashreplace")
+                .replace(  # Simplify tracebacks by hiding the temporary directory
+                    'File "' + os.path.expanduser("~/"), 'File "'
+                )
             )
             if prof_proc.returncode == 255:
                 return False, "Checker timed out, look for infinite loops maybe?"
