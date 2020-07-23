@@ -38,19 +38,26 @@ class ExerciseQuerySet(models.QuerySet):
         return self.annotate(
             last_week_tries=Count(
                 "answers__user",
-                filter=Q(answers__created_at__gt=now() - timedelta(days=7)),
+                filter=Q(
+                    answers__created_at__gt=now() - timedelta(days=7),
+                    answers__user__is_staff=False,
+                ),
                 distinct=True,
             ),
             prev_week_tries=Count(
                 "answers__user",
-                filter=Q(answers__created_at__gt=now() - timedelta(days=14))
-                & Q(answers__created_at__lt=now() - timedelta(days=7)),
+                filter=Q(
+                    answers__created_at__gt=now() - timedelta(days=14),
+                    answers__created_at__lt=now() - timedelta(days=7),
+                    answers__user__is_staff=False,
+                ),
                 distinct=True,
             ),
             last_week_successes=Count(
                 "answers__user",
                 filter=Q(
                     answers__is_valid=True,
+                    answers__user__is_staff=False,
                     answers__created_at__gt=now() - timedelta(days=7),
                 ),
                 distinct=True,
@@ -59,6 +66,7 @@ class ExerciseQuerySet(models.QuerySet):
                 "answers__user",
                 filter=Q(
                     answers__is_valid=True,
+                    answers__user__is_staff=False,
                     answers__created_at__gt=now() - timedelta(days=14),
                     answers__created_at__lt=now() - timedelta(days=7),
                 ),
