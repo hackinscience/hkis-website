@@ -4,7 +4,6 @@ import logging
 
 from channels.db import database_sync_to_async
 from channels.generic.websocket import AsyncJsonWebsocketConsumer
-from django.conf import settings
 from django.contrib.auth.models import User
 from django.utils.timezone import now
 
@@ -142,7 +141,7 @@ class ExerciseConsumer(AsyncJsonWebsocketConsumer):
     async def snippet(self, snippet):
         """Snippet runner does not listen for DB events: it awaits for the
         snippet to run and send the result to the caller, no channels
-        group involved.
+        group involved (it won't be sent to other browser tabs).
 
         Note it's a distinct task (started by receive_json) to avoid
         blocking this consumer.

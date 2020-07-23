@@ -10,7 +10,6 @@ from django.http import HttpResponseRedirect
 from django.db.models import Count, Q, Max
 from django.shortcuts import render
 from django.utils.translation import gettext
-from django.contrib.auth.models import User
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import UpdateView
 from django.views.generic.list import ListView
@@ -143,6 +142,10 @@ class ExerciseView(LoginRequiredMixin, DetailView):
             }
         )
         context["object"].wording = gettext(context["object"].wording)
+        try:
+            context["current_rank"] = self.request.user.userstats.rank
+        except User.userstats.RelatedObjectDoesNotExist:
+            context["current_rank"] = 999999
         context["is_valid"] = bool(self.object.answers.filter(user=user, is_valid=True))
         context["solutions_qty"] = len(
             Answer.objects.filter(

@@ -22,17 +22,17 @@
             document.querySelectorAll("#answer-table")[0].insertAdjacentHTML('afterbegin', html);
     }
 
-    function fill_answer(answer_id, is_corrected, is_valid, message) {
+    function fill_answer(answer) {
         var result = document.getElementById("answers-result");
         if (!result)
             return;
-        var elem = document.getElementById("td-".concat(answer_id));
+        var elem = document.getElementById("td-".concat(answer.id));
         if (!elem) {
             var answer_table = document.getElementById("answer-table");
-            append_to_answer_table('<tr><td id="td-'.concat(answer_id).concat('">…</td> </tr>'));
-            elem = document.getElementById("td-".concat(answer_id));
+            append_to_answer_table('<tr><td id="td-'.concat(answer.id).concat('">…</td> </tr>'));
+            elem = document.getElementById("td-".concat(answer.id));
         }
-        if (is_corrected) {
+        if (answer.is_corrected) {
             var div = document.createElement("div");
             var button_next = document.createElement("a")
             button_next.className = 'btn btn-primary btn-sm'
@@ -44,8 +44,12 @@
             button_help.href = "{% url 'help' %}"
 
             div.className = "result-box";
-            div.innerHTML = message;
-            if (is_valid) {
+            div.innerHTML = answer.correction_message_html;
+            if (answer.is_valid) {
+                if (answer.user_rank < {{ current_rank }})
+                    div.insertAdjacentHTML(
+                        'beforeend',
+                        '<div class="alert alert-success">Your new <a href="{% url 'profile' user.id %}">rank</a> is: '.concat(answer.user_rank).concat("</div>"));
                 div.appendChild(button_next);
                 document.getElementById("solution_link").removeAttribute("style");
             }
@@ -94,7 +98,7 @@
             if (data.type == "snippet.update")
                 fill_snippet(data.id, data.executed_at, data.output)
             if (data.type == "answer.update")
-                fill_answer(data.id, data.is_corrected, data.is_valid, data.correction_message_html);
+                fill_answer(data);
         };
         window.ws.onerror = function() {
             console.log("WebSocket error.");

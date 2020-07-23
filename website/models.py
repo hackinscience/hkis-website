@@ -185,11 +185,12 @@ class SnippetSerializer(serializers.ModelSerializer):
 
 def cb_new_answer(sender, instance, created, **kwargs):
     group = f"user.{instance.user.id}.ex.{instance.exercise.id}"
+    message = AnswerSerializer(instance).data
     if instance.is_valid:
         user_stats, _ = UserStats.objects.get_or_create(user=instance.user)
         user_stats.recompute()
+        message["user_rank"] = user_stats.rank
     channel_layer = get_channel_layer()
-    message = AnswerSerializer(instance).data
     message["type"] = "answer.update"
     logger.info("New answer notification for user %s", instance.user.id)
     async_to_sync(channel_layer.group_send)(group, message)
