@@ -110,7 +110,7 @@ class AnswerAdmin(admin.ModelAdmin):
 
     def see(self, obj):
         url = reverse("exercise", kwargs={"slug": obj.exercise.slug})
-        return mark_safe(f"<a href='{url}?view_as={obj.user.id}'>see</a>")
+        return mark_safe(f"<a target=_blank href='{url}?view_as={obj.user.id}'>see</a>")
 
 
 class SnippetAdmin(admin.ModelAdmin):
