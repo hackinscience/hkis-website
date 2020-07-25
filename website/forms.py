@@ -24,3 +24,4 @@ class AnswerForm(forms.ModelForm):
 
 class HkisRegistrationForm(RegistrationForm):
     email = forms.EmailField(label=_("E-mail (optional)"), required=False)
+    field_order = ["username", "password1", "password2", "email"]
