@@ -8,6 +8,8 @@ from markdown.extensions.codehilite import CodeHiliteExtension
 
 
 def _set_target(attrs, new=False):
+    if new:
+        return None  # Don't create new links.
     p = urlparse(attrs[(None, "href")])
     if p.netloc not in settings.INTERNAL_DOMAINS:
         attrs[(None, "target")] = "_blank"
