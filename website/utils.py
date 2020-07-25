@@ -1,7 +1,19 @@
+from functools import partial
+from urllib.parse import urlparse
+
 import bleach
 from django.conf import settings
 import markdown
 from markdown.extensions.codehilite import CodeHiliteExtension
+
+
+def _set_target(attrs, new=False):
+    p = urlparse(attrs[(None, "href")])
+    if p.netloc not in settings.INTERNAL_DOMAINS:
+        attrs[(None, "target")] = "_blank"
+    else:
+        attrs.pop((None, "target"), None)
+    return attrs
 
 
 def markdown_to_bootstrap(text):
@@ -11,7 +23,20 @@ def markdown_to_bootstrap(text):
      """
 
     return (
-        bleach.clean(
+        bleach.sanitizer.Cleaner(
+            tags=settings.ALLOWED_TAGS,
+            attributes=settings.ALLOWED_ATTRIBUTES,
+            styles=settings.ALLOWED_STYLES,
+            filters=[
+                partial(
+                    bleach.linkifier.LinkifyFilter,
+                    callbacks=[_set_target],
+                    skip_tags=["pre"],
+                    parse_email=False,
+                ),
+            ],
+        )
+        .clean(
             markdown.markdown(
                 text,
                 extensions=[
@@ -20,9 +45,6 @@ def markdown_to_bootstrap(text):
                     "admonition",
                 ],
             ),
-            tags=settings.ALLOWED_TAGS,
-            attributes=settings.ALLOWED_ATTRIBUTES,
-            styles=settings.ALLOWED_STYLES,
         )
         .replace('class="admonition warning"', 'class="alert alert-warning"')
         .replace('class="admonition note"', 'class="alert alert-info"')

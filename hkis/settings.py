@@ -29,6 +29,10 @@ ALLOWED_HOSTS = ["*"]
 
 SERVER_EMAIL = "team@example.com"
 
+# During conversion from markdown to html, links to outside INTERNAL_DOMAINS will
+# get a target=_blank.
+INTERNAL_DOMAINS = ["www.hackinscience.org"]
+
 # Application definition
 
 INSTALLED_APPS = [
