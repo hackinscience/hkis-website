@@ -37,13 +37,15 @@ def main():
         for exercise in exercises["results"]:
             path = Path("exercises") / exercise["slug"]
             path.mkdir(exist_ok=True, parents=True)
-            (path / "check.py").write_text(exercise["check"])
-            (path / "solution.py").write_text(exercise["solution"])
-            (path / "solution.py").write_text(exercise["solution"])
-            (path / "meta").write_text(json.dumps(exercise, indent=4))
-            (path / "wording.md").write_text(exercise["wording"])
             translatables.append(exercise["wording"])
             translatables.append(exercise["title"])
+            (path / "check.py").write_text(exercise["check"])
+            del exercise["check"]
+            (path / "solution.py").write_text(exercise["solution"])
+            del exercise["solution"]
+            (path / "wording.md").write_text(exercise["wording"])
+            del exercise["wording"]
+            (path / "meta").write_text(json.dumps(exercise, indent=4))
         next_exercise_page = exercises["next"]
     with open("to_translate.py", "w", encoding="UTF-8") as to_translate:
         for string in translatables:
