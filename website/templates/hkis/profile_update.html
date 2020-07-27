@@ -42,7 +42,7 @@
       {{ form|crispy }}
       {% url 'auth_password_change' as password_change %}
       <p>
-      <a href="{{ password_change }}">{trans "Change your password"}</a>
+      <a href="{{ password_change }}">{% trans "Change your password" %}</a>
       </p>
       <button type="submit" class="btn btn-primary btn-lg">{% trans "Update" %}</button>
     </form>
