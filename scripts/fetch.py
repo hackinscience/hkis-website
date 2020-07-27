@@ -19,6 +19,12 @@ def parse_args():
     return parser.parse_args()
 
 
+def fix_newline_at_end_of_file(text):
+    if text[-1] != "\n":
+        return text + "\n"
+    return text
+
+
 def main():
     args = parse_args()
     if not args.username:
@@ -39,11 +45,17 @@ def main():
             path.mkdir(exist_ok=True, parents=True)
             translatables.append(exercise["wording"])
             translatables.append(exercise["title"])
-            (path / "check.py").write_text(exercise["check"])
+            (path / "check.py").write_text(
+                fix_newline_at_end_of_file(exercise["check"])
+            )
             del exercise["check"]
-            (path / "solution.py").write_text(exercise["solution"])
+            (path / "solution.py").write_text(
+                fix_newline_at_end_of_file(exercise["solution"])
+            )
             del exercise["solution"]
-            (path / "wording.md").write_text(exercise["wording"])
+            (path / "wording.md").write_text(
+                fix_newline_at_end_of_file(exercise["wording"])
+            )
             del exercise["wording"]
             (path / "meta").write_text(json.dumps(exercise, indent=4))
         next_exercise_page = exercises["next"]
