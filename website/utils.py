@@ -1,4 +1,4 @@
-from functools import partial
+from functools import partial, lru_cache
 from urllib.parse import urlparse
 
 import bleach
@@ -21,6 +21,7 @@ def _set_target(attrs, new=False):
     return attrs
 
 
+@lru_cache(maxsize=8192)
 def markdown_to_bootstrap(text):
     """This convert markdown text to html, with two things:
     - Uses bleach.clean to remove unsafe things.
