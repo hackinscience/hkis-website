@@ -20,6 +20,8 @@ def parse_args():
 
 
 def fix_newline_at_end_of_file(text):
+    if not text:
+        return text
     if text[-1] != "\n":
         return text + "\n"
     return text
@@ -45,18 +47,11 @@ def main():
             path.mkdir(exist_ok=True, parents=True)
             translatables.append(exercise["wording"])
             translatables.append(exercise["title"])
-            (path / "check.py").write_text(
-                fix_newline_at_end_of_file(exercise["check"])
-            )
-            del exercise["check"]
-            (path / "solution.py").write_text(
-                fix_newline_at_end_of_file(exercise["solution"])
-            )
-            del exercise["solution"]
-            (path / "wording.md").write_text(
-                fix_newline_at_end_of_file(exercise["wording"])
-            )
-            del exercise["wording"]
+            for file in "check.py", "solution.py", "wording.md", "initial_solution.py":
+                (path / (file)).write_text(
+                    fix_newline_at_end_of_file(exercise[file.split(".")[0]])
+                )
+                del exercise[file.split(".")[0]]
             (path / "meta").write_text(json.dumps(exercise, indent=4))
         next_exercise_page = exercises["next"]
     with open("to_translate.py", "w", encoding="UTF-8") as to_translate:

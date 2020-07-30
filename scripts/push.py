@@ -31,12 +31,8 @@ def main():
         if args.only:
             if args.only not in meta["slug"]:
                 continue
-        with open(exercise / "wording.md") as f:
-            meta["wording"] = f.read()
-        with open(exercise / "check.py") as f:
-            meta["check"] = f.read()
-        with open(exercise / "solution.py") as f:
-            meta["solution"] = f.read()
+        for file in "check.py", "solution.py", "wording.md", "initial_solution.py":
+            meta[file.split(".")[0]] = (exercise / (file)).read_text()
         print("Uploading ", meta["title"])
         response = requests.put(
             meta["url"], json=meta, auth=(args.username, args.password)
