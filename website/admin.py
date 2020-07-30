@@ -102,7 +102,7 @@ class AnswerAdmin(admin.ModelAdmin):
         "see",
     )
     list_filter = ("is_corrected", "is_valid", "is_shared")
-    search_fields = ("user__username",)
+    search_fields = ("user__username", "exercise__title")
     form = AnswerExerciseForm
 
     def get_queryset(self, request):
