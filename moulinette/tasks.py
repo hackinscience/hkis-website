@@ -63,7 +63,9 @@ def run_snippet_task(source_code: str) -> str:
         )
         try:
             stdout = prof_proc.communicate(timeout=40)[0]
-            return stdout.decode("UTF-8", "backslashreplace")[:65_536]
+            return stdout.decode("UTF-8", "backslashreplace").replace(
+                "\u0000", r"\x00"
+            )[:65_536]
         except TimeoutExpired:
             prof_proc.kill()
             prof_proc.wait()
@@ -71,8 +73,7 @@ def run_snippet_task(source_code: str) -> str:
 
 
 def congrats():
-    """Generates a congratulation sentence.
-    """
+    """Generates a congratulation sentence."""
     return (
         choice(
             ["Congrats", "Nice job", "Well done", "Spot on", "Bravo", "Nice", "Good"]
@@ -94,8 +95,7 @@ def congrats():
 
 @shared_task
 def check_answer_task(answer: dict):
-    """Executed on Celery workers.
-    """
+    """Executed on Celery workers."""
     with tempfile.TemporaryDirectory(prefix="hkis") as tmpdir:
         with open(os.path.join(tmpdir, "check.py"), "w") as check_file:
             check_file.write(answer["check"])
@@ -119,10 +119,11 @@ def check_answer_task(answer: dict):
             stdout = (
                 prof_proc.communicate(timeout=40)[0]
                 .decode("UTF-8", "backslashreplace")
+                .replace("\u0000", r"\x00")
                 .replace(  # Simplify tracebacks by hiding the temporary directory
                     'File "' + os.path.expanduser("~/"), 'File "'
                 )
-            )
+            )[:65_536]
             if prof_proc.returncode == 255:
                 return False, "Checker timed out, look for infinite loops maybe?"
             if prof_proc.returncode != 0 or stdout:
