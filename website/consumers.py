@@ -85,6 +85,9 @@ class ExerciseConsumer(AsyncJsonWebsocketConsumer):
         logger.info("WebSocket (%s) %s: %s", self.group, message, str(args))
 
     async def connect(self):
+        if not self.scope["user"].id:
+            self.close()
+            return
         self.exercise = await db_get_exercise(
             self.scope["url_route"]["kwargs"]["exercise_id"]
         )
