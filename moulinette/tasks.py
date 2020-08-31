@@ -63,7 +63,7 @@ def run_snippet_task(source_code: str) -> str:
         )
         try:
             stdout = prof_proc.communicate(timeout=40)[0]
-            return stdout.decode("UTF-8", "backslashreplace")[:500_000]
+            return stdout.decode("UTF-8", "backslashreplace")[:65_536]
         except TimeoutExpired:
             prof_proc.kill()
             prof_proc.wait()
