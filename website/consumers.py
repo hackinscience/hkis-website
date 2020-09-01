@@ -81,11 +81,22 @@ def db_update_snippet(snippet_id: int, output: str):
 
 
 class ExerciseConsumer(AsyncJsonWebsocketConsumer):
+    def __init__(self, *args, **kwargs):
+        self.group = None
+        super().__init__(*args, **kwargs)
+
     def log(self, message, *args):
-        logger.info("WebSocket (%s) %s: %s", self.group, message, str(args))
+        if args:
+            message = message + ": " + str(args)
+        if self.group:
+            logger.info("WebSocket (%s) %s", self.group, message)
+        else:
+            logger.info("WebSocket %s", message)
 
     async def connect(self):
+        self.log("connect")
         if not self.scope["user"].id:
+            self.log("Unauthenticated user, dropping.")
             self.close()
             return
         self.exercise = await db_get_exercise(
@@ -93,12 +104,13 @@ class ExerciseConsumer(AsyncJsonWebsocketConsumer):
         )
         self.group = f"user.{self.scope['user'].id}.ex.{self.exercise.id}"
         await self.channel_layer.group_add(self.group, self.channel_name)
-        self.log("connect")
+        self.log("accept")
         await self.accept()
 
     async def disconnect(self, close_code):
-        await self.channel_layer.group_discard(self.group, self.channel_name)
         self.log("disconnect")
+        if self.group:
+            await self.channel_layer.group_discard(self.group, self.channel_name)
 
     async def receive_json(self, content):
         if content["type"] == "answer":
