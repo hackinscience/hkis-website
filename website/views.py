@@ -161,6 +161,14 @@ class ExerciseView(LoginRequiredMixin, DetailView):
             )
         except IndexError:
             context["next"] = None
+        try:
+            context["previous"] = (
+                Exercise.objects.filter(position__lt=self.object.position)
+                .order_by("-position")[0]
+                .slug
+            )
+        except IndexError:
+            context["previous"] = None
         return context
 
 

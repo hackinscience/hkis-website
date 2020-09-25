@@ -153,11 +153,18 @@
   </div>
 {% endif %}
 {{ answer_form.media }}
-{% if next %}
+{% if next or previous %}
 <div class="float-right">
+  {% if previous %}
+  <a class="btn btn-secondary" href="{% url "exercise" previous %}">
+    ← {% trans "Previous" %}
+  </a>
+  {% endif %}
+  {% if next %}
   <a class="btn btn-secondary" href="{% url "exercise" next %}">
     {% trans "Next" %} →
   </a>
+  {% endif %}
 </div>
 {% endif %}
 <div style="margin-bottom: 25px;">
