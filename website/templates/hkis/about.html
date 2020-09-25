@@ -2,96 +2,66 @@
 {% load hkis_extra %}
 {% load i18n static %}
 {% block container %}
-{% md %}
-# About Hackinscience
+{% url 'team' as team_url %}
 
-## Hackinscience, the online platform
+<h1>{% trans "About Hackinscience" %}</h1>
 
-The Hackinscience platform is a free, without ads, and open-source
-(<a href="http://framagit.org/hackinscience/">repo on framagit</a>)
-exercise platform, by a [team]({% url 'team' %}) of Python passionates.
+<h2>{% trans "Hackinscience, the online platform" %}</h2>
 
-We only rely on [your donations](https://liberapay.com/JulienPalard) to run
-this.
+<p>{% blocktrans %}The Hackinscience platform is a free, without ads, and open-source (<a href="http://framagit.org/hackinscience/">repo on framagit</a>) exercise platform, by a <a href="{{ team_url }}">team</a> of Python passionates.{% endblocktrans %}</p>
 
+<p>{% blocktrans %}We only rely on <a href="https://liberapay.com/JulienPalard">your donations</a> to run this.{% endblocktrans %}</p>
 
-## You're a teacher?
+<h2>{% trans "You're a teacher?" %}</h2>
 
-If you're a teacher and want to use hackinscience during your courses,
-you can ask by email at team at hackinscience dot org for a teacher
-account, we'll bind you to your class students so you can follow their
-individual progression.
+<p>{% trans "If you're a teacher and want to use hackinscience during your courses, you can ask by email at team at hackinscience dot org for a teacher account, we'll bind you to your class students so you can follow their individual progression." %}</p>
 
+<h2>{% trans "You'd like The Hackinscience Team for a class?" %}</h2>
 
-## You'd like The Hackinscience Team for a class?
+<p>{% trans "Good news, we teach Python too! Don't hesitate to drop us an email at team at hackinscience dot org and we'll discuss about it. We're based in Paris, France, but it may be OK for the team to move in other places, let's talk about it!" %}</p>
 
-Good news, we teach Python too! Don't hesitate to drop us an email at
-team at hackinscience dot org and we'll discuss about it. We're based
-in Paris, France, but it may be OK for the team to move in other
-places, let's talk about it!
+<h2>{% trans "Friendly Tracebacks in corrections" %}</h2>
 
+<p>{% trans "You may have spotted Python exceptions are often nicely explained, how do we do that?" %}</p>
 
-## Friendly Tracebacks in corrections
+<p>{% blocktrans %}We're using André Roberge's <a href="https://github.com/aroberge/friendly-traceback/">friendly-traceback</a>, a project which tries to understand what caused the exception, and explain it.{% endblocktrans %}</p>
 
-You may have spotted Python exceptions are often nicely explained, how
-do we do that?
+<p>{% blocktrans %}If you spot an exception that is not explained by <code>friendly-traceback</code>, which end up with "You might want to report this case to ...", don't hesitate to report the case to the given link, André is always very fast to implement the case and it will help many people, not only hackinscience users!{% endblocktrans %}</p>
 
-We're using André Roberge's
-[friendly-traceback](https://github.com/aroberge/friendly-traceback/),
-a project which tries to understand what caused the exception, and
-explain it.
+<p>{% blocktrans %}In the other hand if you spot a correction message that is not helpfull and does not give a link to <code>friendly-traceback</code>, please open an issue on <a href="framagit.org/hackinscience/hkis-website">hackinscience</a>'s issue tracker, as it's probably to be enhanced in our side.{% endblocktrans %}</p>
 
-If you spot an exception that is not explained by
-`friendly-traceback`, which end up with "You might want to report this
-case to ...", don't hesitate to report the case to the given link,
-André is always very fast to implement the case and it will help many
-people, not only hackinscience users!
+<h2>{% trans "Privacy" %}</h2>
 
-In the other hand if you spot a correction message that is not
-helpfull and does not give a link to `friendly-traceback`, please open
-an issue on [hackinscience](framagit.org/hackinscience/hkis-website)'s
-issue tracker, as it's probably to be enhanced in our side.
+<h3>{% trans "Personal informations" %}</h3>
 
+<p>{% trans "When registering and using the Hackinscience platform, we store some informations about you:" %}</p>
 
-## Privacy
+<ul>
+  <li>{% trans "Your username, maybe your email if you gave it at registration time." %}</li>
+  <li>{% trans "All the exercises you did, when you did them, what you submitted, what the bot answered." %}</li>
+</ul>
 
-### Personal informations
+<p>{% trans "Why do we store all your submissions?" %}</p>
 
-When registering and using the Hackinscience platform, we store some
-informations about you:
+<ul>
+  <li>{% trans "To display ✓ and ✗ marks near exercises so you know which one you succeeded and which one to do." %}</li>
+  <li>{% trans "So you can find them back tomorrow." %}</li>
+  <li>{% trans "Compute some statistics to spot which exercises are too hard to order them better or introduce intermediate/easier ones." %}</li>
+</ul>
 
-- Your username, maybe your email if you gave it at registration time.
-- All the exercises you did, when you did them, what you submitted, what the bot answered.
+<p>{% blocktrans %}If you want to correct an information we've got about you, delete it, or if you'd like all the data about you conveniently archived for offline reading, feel free to send a mail to <em>team at hackinscience dot org</em> or ask any member of <a href="{{ team_url }}">the team</a>.{% endblocktrans %}</p>
 
-Why do we store all your submissions?
+<h3>{% trans "Trackers, external analytics tools, advertising" %}</h3>
 
-- To display ✓ and ✗ marks near exercises so you know which one you
-  succeeded and which one to do.
-- So you can find them back tomorrow.
-- Compute some statistics to spot which exercises are too hard to order them better or
-  introduce intermediate/easier ones.
+<p>{% trans "We do not use any trackers, nor any advertising network, all our <code>css</code> and <code>js</code> are hosted by ourself (no CDN)." %}</p>
 
-If you want to correct an information we've got about you, delete
-it, or if you'd like all the data about you conveniently archived for
-offline reading, feel free to send a mail to *team at hackinscience dot org*
-or ask any member of [the team]({% url 'team' %}).
+<p>{% trans "If you read this, you probably don't like being tracked, there's two complimentary things you can do:" %}</p>
 
+<ul>
+  <li>{% blocktrans %}Enable the "Do Not Track" flag in your browser{% endblocktrans %}</li>
+  <li>{% blocktrans %}Install the <a href="https://fr.wikipedia.org/wiki/Privacy_Badger">Privacy Badger</a> browser extension from the <a href="https://fr.wikipedia.org/wiki/Electronic_Frontier_Foundation">Electronic Frontier Foundation</a>.{% endblocktrans %}</li>
+</ul>
 
-### Trackers, external analytics tools, advertising
+<p>{% trans "Pricavy Badger blocks advertisements and tracking cookies that do not respect the Do Not Track setting in a user's web browser." %}</p>
 
-We do not use any trackers, nor any advertising network, all our `css`
-and `js` are hosted by ourself (no CDN).
-
-If you read this, you probably don't like being tracked, there's two
-complimentary things you can do:
-
-- Enable the "Do Not Track" flag in your browser
-- Install the [Privacy Badger](https://fr.wikipedia.org/wiki/Privacy_Badger) browser
-  extension from the [Electronic Frontier
-  Foundation](https://fr.wikipedia.org/wiki/Electronic_Frontier_Foundation.
-
-Pricavy Badger blocks advertisements and tracking cookies that do not respect the
-Do Not Track setting in a user's web browser.
-
-{% endmd %}
 {% endblock %}

@@ -1,89 +1,77 @@
 {% extends "hkis/layout.html" %}
 {% load i18n static hkis_extra %}
 {% block container %}
-{% md %}
 
-# Getting help
+<h1>{% trans "Getting help" %}</h1>
 
-## Report a bug on hackinscience
+<h2>{% trans "Report a bug on hackinscience" %}</h2>
 
-If you found an issue in an exercise, or the website, please either:
+<p>{% trans "If you found an issue in an exercise, or the website, please either:" %}</p>
 
-- Fill a bug [in our bugtracker](https://framagit.org/hackinscience/hkis-website/issues).
-- Send me an email: [julien@palard.fr](mailto:julien@palard.fr).
+<ul>
+  <li>{% blocktrans %}Fill a bug <a href="https://framagit.org/hackinscience/hkis-website/issues">in our bugtracker</a>.{% endblocktrans %}</li>
+  <li>{% trans "Send me an email:" %} <a href="mailto:julien@palard.fr">julien@palard.fr</a>.</li>
+</ul>
 
+<h2>{% trans "Get help from the Python community" %}</h2>
 
-## Get help from the Python community
+<p>{% trans "The Python community is known to be friendly and welcoming, don't hesitate to ask for help! Most of us are using freenode IRC channels to talk." %}</p>
 
-The Python community is known to be friendly and welcoming, don't
-hesitate to ask for help! Most of us are using freenode IRC channels
-to talk.
+<h3>{% trans "How to connect to IRC?" %}</h3>
 
+<p>{% blocktrans %}There's a nice web client on: <a href="https://kiwi.freenode.net">https://kiwi.freenode.net</a>.{% endblocktrans %}</p>
 
-### How to connect to IRC?
+<p>{% blocktrans %}Pick a <code>Login</code> and a channel (see common Python IRC Channels below). If you don't have a NickServ account (or don't know what it is), don't check the "I have a password" box.{% endblocktrans %}</p>
 
-There's a nice web client on: [https://kiwi.freenode.net](https://kiwi.freenode.net).
+<h3>{% trans "How to ask a question?" %}</h3>
 
-Pick a `Login` and a channel (see common Python IRC Channels
-below). If you don't have a NickServ account (or don't know what it
-is), don't check the "I have a password" box.
+<p>{% trans "Don't ask to ask, just ask." %}</p>
 
+<p>{% trans "Be polite and respectfull." %}</p>
 
-### How to ask a question?
+<p>{% trans "Be patient too: We're not always watching our screens for new messages, it can take 15mn for someone to notice a new message, like when you send an email." %}</p>
 
-Don't ask to ask, just ask.
+<p>{% trans "The author of HackInScience is <code>mdk</code> on Freenode, on various channels but mainly on <code>#python-fr</code> (I'm French! I bake my own bread!), don't hesitate to prefix your question with <code>mdk:</code> so I notice it faster." %}</p>
 
-Be polite and respectfull.
+<h3>{% trans "IRC Channels" %}</h3>
 
-Be patient too: We're not always watching our screens for new
-messages, it can take 15mn for someone to notice a new message, like
-when you send an email.
+<p>{% trans "There's multiple channels related to Python on freenode, on different topics and different languages, mainly:" %}</p>
 
-The author of HackInScience is `mdk` on Freenode, on various channels
-but mainly on `#python-fr` (I'm French! I bake my own bread!), don't
-hesitate to prefix your question with `mdk: ` so I notice it faster.
+<ul>
+  <li><code>#python</code>: {% trans "the main one, but needs a freenode account" %}</li>
+</ul>
 
+<p>{% trans "And many variations around languages and topics:" %}</p>
 
-### IRC Channels
+<ul>
+  <li><code>##python-friendly</code>: {% trans "like #python, but friendlier." %}</li>
+  <li><code>##python.pl</code></li>
+  <li><code>#django-fr</code></li>
+  <li><code>#django</code></li>
+  <li><code>#djangocph</code>: {% trans "Copenhagen Django (and everything python/web related) Group" %}</li>
+  <li><code>#numpy</code></li>
+  <li><code>#pyar</code></li>
+  <li><code>#pydata</code></li>
+  <li><code>#python-br</code></li>
+  <li><code>#python-cs</code></li>
+  <li><code>#python-dk</code></li>
+  <li><code>#python-es</code></li>
+  <li><code>#python-fr</code></li>
+  <li><code>#python-hu</code></li>
+  <li><code>#python-india</code></li>
+  <li><code>#python-ir</code>: {% trans "Iranian Python Users Group" %}</li>
+  <li><code>#python-nl</code></li>
+  <li><code>#python-scotland</code></li>
+  <li><code>#python-uk</code></li>
+  <li><code>#python.de</code></li>
+  <li><code>#python.ie</code></li>
+  <li><code>#python.it</code></li>
+  <li><code>#python.pl</code></li>
+  <li><code>#python.tw</code></li>
+  <li><code>#scipy</code>: {% trans "Conversations about NumPy and SciPy" %}</li>
+  <li>...</li>
+</ul>
 
-There's multiple channels related to Python on freenode, on different
-topics and different languages, mainly:
+<p>{% trans "You channel is missing? Make a PR" %} → <a href="https://framagit.org/hackinscience/hkis-website">https://framagit.org/hackinscience/hkis-website</a>.</p>
 
-- `#python`: the main one, but needs a freenode account
-
-And many variations around languages and topics:
-
-- `##python-friendly`: like #python, but friendlier.
-- `##python.pl`
-- `#django-fr`
-- `#django`
-- `#djangocph`: Copenhagen Django (and everything python/web related) Group
-- `#numpy`
-- `#pyar`
-- `#pydata`
-- `#python-br`
-- `#python-cs`
-- `#python-dk`
-- `#python-es`
-- `#python-fr`
-- `#python-hu`
-- `#python-india`
-- `#python-ir`: Iranian Python Users Group
-- `#python-nl`
-- `#python-scotland`
-- `#python-uk`
-- `#python.de`
-- `#python.ie`
-- `#python.it`
-- `#python.pl`
-- `#python.tw`
-- `#scipy`: Conversations about NumPy and SciPy
-- ...
-
-You channel is missing? Make a PR →
-[https://framagit.org/hackinscience/hkis-website](https://framagit.org/hackinscience/hkis-website).
-
-
-
-{% endmd %}
 {% endblock %}
