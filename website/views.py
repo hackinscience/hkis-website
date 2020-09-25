@@ -79,7 +79,7 @@ class ProfileView(LoginRequiredMixin, UpdateView):
         return reverse("profile", kwargs={"pk": self.request.user.id})
 
 
-class ExerciseListView(LoginRequiredMixin, ListView):
+class ExerciseListView(ListView):
     model = Exercise
     template_name = "hkis/exercises.html"
 
@@ -119,7 +119,7 @@ class ExerciseListView(LoginRequiredMixin, ListView):
         return context
 
 
-class ExerciseView(LoginRequiredMixin, DetailView):
+class ExerciseView(DetailView):
     model = Exercise
     template_name = "hkis/exercise.html"
 
@@ -130,9 +130,12 @@ class ExerciseView(LoginRequiredMixin, DetailView):
         if self.request.user.is_superuser and self.request.GET.get("view_as"):
             user = User.objects.get(id=self.request.GET.get("view_as"))
             context["is_impersonating"] = user
-        context["answers"] = answers = self.object.answers.filter(user=user).order_by(
-            "-id"
-        )
+        if user.is_anonymous:
+            context["answers"] = answers = ()
+        else:
+            context["answers"] = answers = self.object.answers.filter(user=user).order_by(
+                "-id"
+            )
         context["answer_form"] = AnswerForm(
             initial={
                 "exercise": "/api/exercises/{}/".format(self.object.id),
@@ -143,10 +146,16 @@ class ExerciseView(LoginRequiredMixin, DetailView):
         )
         context["object"].wording = gettext(context["object"].wording)
         try:
-            context["current_rank"] = self.request.user.userstats.rank
+            if user.is_anonymous:
+                context["current_rank"] = 999999
+            else:
+                context["current_rank"] = self.request.user.userstats.rank
         except User.userstats.RelatedObjectDoesNotExist:
             context["current_rank"] = 999999
-        context["is_valid"] = bool(self.object.answers.filter(user=user, is_valid=True))
+        if user.is_anonymous:
+            context["is_valid"] = False
+        else:
+            context["is_valid"] = bool(self.object.answers.filter(user=user, is_valid=True))
         context["solutions_qty"] = len(
             Answer.objects.filter(
                 exercise__pk=self.object.id, is_valid=True, is_shared=True

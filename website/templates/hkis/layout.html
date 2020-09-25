@@ -14,10 +14,10 @@
   </a>
   <div class="collapse navbar-collapse" id="navbarNav">
     <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'exercises' %}">{% trans "Exercises" %}</a>
+      </li>
       {% if user.is_authenticated %}
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'exercises' %}">{% trans "Exercises" %}</a>
-        </li>
         <li class="nav-item">
           <a class="nav-link" href="{% url 'profile' user.id %}">{% trans "Profile" %}</a>
         </li>

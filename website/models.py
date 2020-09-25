@@ -5,14 +5,13 @@ from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
 from django.contrib.auth.models import User
 from django.db import models
-from django.db.models import Count, Q
+from django.db.models import Count, IntegerField, Value, Q
 from django.db.models.signals import post_save
 from django.urls import reverse
 from django.utils.text import Truncator
 from django.utils.timezone import now
 from django_extensions.db.fields import AutoSlugField
 from rest_framework import serializers
-
 
 logger = logging.getLogger(__name__)
 
@@ -27,6 +26,11 @@ class ExerciseQuerySet(models.QuerySet):
         )
 
     def with_user_stats(self, user):
+        if user.is_anonymous:
+            return self.annotate(
+                user_tries=Value(0, IntegerField()),
+                user_successes=Value(0, IntegerField()),
+            )
         return self.annotate(
             user_tries=Count("answers", filter=Q(answers__user=user)),
             user_successes=Count(

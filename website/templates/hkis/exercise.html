@@ -50,7 +50,11 @@
                 if (answer.user_rank < {{ current_rank }})
                     div.insertAdjacentHTML(
                         'beforeend',
-                        '<div class="alert alert-success">{% blocktrans %}Your new <a href="{{ profile_url }}">rank</a> is:{% endblocktrans %} '.concat(answer.user_rank).concat("</div>"));
+                        {% if user.is_authenticated %}
+                        '<div class="alert alert-success">{% blocktrans %}Your new <a href="{% url 'profile' user.id %}">rank</a> is:{% endblocktrans %} '.concat(answer.user_rank).concat("</div>"));
+                        {% else %}
+                        '<div class="alert alert-success"></div>');
+                        {% endif %}
                 div.appendChild(button_next);
                 document.getElementById("solution_link").removeAttribute("style");
             }
@@ -192,17 +196,19 @@
           onclick="ws_submit_snippet(this.form); return false;">
           {% trans "Run" %}
         </button>
-        <button
-          id="submit_answer"
-          class="btn btn-primary"
-          data-toggle="tooltip"
-          data-placement="bottom"
-          data-delay="500"
-          title="{% trans "This runs automated tests to verify your implementation (also saves your code)." %}"
-          type="submit"
-          onclick="ws_submit_answer(this.form); return false;">
-          {% trans "Submit for validation" %}
-        </button>
+        {% if user.is_authenticated %}
+          <button
+            id="submit_answer"
+            class="btn btn-primary"
+            data-toggle="tooltip"
+            data-placement="bottom"
+            data-delay="500"
+            title="{% trans "This runs automated tests to verify your implementation (also saves your code)." %}"
+            type="submit"
+            onclick="ws_submit_answer(this.form); return false;">
+            {% trans "Submit for validation" %}
+          </button>
+        {% endif %}
         {% endif %}
     </form>
   </div>
