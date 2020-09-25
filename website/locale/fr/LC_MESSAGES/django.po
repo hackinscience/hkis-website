@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-09-25 14:49+0200\n"
-"PO-Revision-Date: 2020-09-25 14:49+0200\n"
+"POT-Creation-Date: 2020-09-26 18:54+0200\n"
+"PO-Revision-Date: 2020-09-26 19:13+0200\n"
 "Last-Translator: Julien Palard <julien@palard.fr>\n"
 "Language-Team: \n"
 "Language: fr\n"
@@ -21,6 +21,242 @@ msgstr ""
 #: .\website\forms.py:26
 msgid "E-mail (optional)"
 msgstr "E-mail (facultatif)"
+
+#: .\website\templates\hkis\about.html:6 .\website\templates\hkis\team.html:6
+msgid "About Hackinscience"
+msgstr "À propos de Hackinscience"
+
+#: .\website\templates\hkis\about.html:8
+msgid "Hackinscience, the online platform"
+msgstr "Hackinscience, la plateforme en ligne"
+
+#: .\website\templates\hkis\about.html:12
+#, python-format
+msgid ""
+"The Hackinscience platform is a free, without ads, and open-source\n"
+"(<a href=\"http://framagit.org/hackinscience/\">repo on framagit</a>)\n"
+"exercise platform, by a [team](%(team_url)s) of Python passionates."
+msgstr ""
+"La plateforme Hackinscience est une plateforme d'entrainement libre, sans "
+"publicité et open-source\n"
+"(<a href=\"http://framagit.org/hackinscience/\">dépôt sur framagit</a>),\n"
+"par une [équipe](%(team_url)s) de passionés du langage Python."
+
+#: .\website\templates\hkis\about.html:16
+msgid ""
+"We only rely on [your donations](https://liberapay.com/JulienPalard) to run\n"
+"this."
+msgstr ""
+"Nous comptons uniquement sur [vos dons](https://liberapay.com/JulienPalard) "
+"pour maintenir\n"
+"ce site."
+
+#: .\website\templates\hkis\about.html:20
+msgid "You're a teacher?"
+msgstr "Vous êtes un-e professeur-e ?"
+
+#: .\website\templates\hkis\about.html:22
+msgid ""
+"If you're a teacher and want to use hackinscience during your courses,\n"
+"you can ask by email at team at hackinscience dot org for a teacher\n"
+"account, we'll bind you to your class students so you can follow their\n"
+"individual progression."
+msgstr ""
+"Si vous êtes un-e professeur-e et que vous souhaitez utiliser hackinscience "
+"pendant vos cours,\n"
+"vous pouvez demander un compte professeur par mail à team at hackinscience "
+"point org,\n"
+"nous vous rattacherons à vos étudiants de manière à ce que vous puissiez "
+"suivre leur\n"
+"progression individuelle."
+
+#: .\website\templates\hkis\about.html:28
+msgid "You'd like The Hackinscience Team for a class?"
+msgstr "Vous aimeriez avoir l'équipe Hackinscience pour un cours ?"
+
+#: .\website\templates\hkis\about.html:30
+msgid ""
+"Good news, we teach Python too! Don't hesitate to drop us an email at\n"
+"team at hackinscience dot org and we'll discuss about it. We're based\n"
+"in Paris, France, but it may be OK for the team to move in other\n"
+"places, let's talk about it!"
+msgstr ""
+"Bonne nouvelle, nous enseignons aussi le Python ! N'hésitez pas à nous "
+"laisser un mail\n"
+"à team at hackinscience point org et nous pourrons ne discuter. Nous sommes "
+"basés\n"
+"à Paris, France, mais il est peut-être possible à l'équipe de se déplacer "
+"dans d'autres\n"
+"lieux, parlons-en !"
+
+#: .\website\templates\hkis\about.html:36
+msgid "Friendly Tracebacks in corrections"
+msgstr "Explications améliorées dans les corrections"
+
+#: .\website\templates\hkis\about.html:38
+msgid ""
+"You may have spotted Python exceptions are often nicely explained, how\n"
+"do we do that?"
+msgstr ""
+"Vous avez peut-être remarqué que les exceptions Python trouvées sont\n"
+"souvent bien expliquées, comment faisons-nous ?"
+
+#: .\website\templates\hkis\about.html:41
+msgid ""
+"We're using André Roberge's\n"
+"[friendly-traceback](https://github.com/aroberge/friendly-traceback/),\n"
+"a project which tries to understand what caused the exception, and\n"
+"explain it."
+msgstr ""
+"Nous utilisons le [friendly-traceback](https://github.com/aroberge/friendly-"
+"traceback/) d'André Roberge,\n"
+"un projet qui essayes de comprendre ce qui a causé une exception, et\n"
+"de l'expliquer."
+
+#: .\website\templates\hkis\about.html:46
+msgid ""
+"If you spot an exception that is not explained by\n"
+"`friendly-traceback`, which end up with \"You might want to report this\n"
+"case to ...\", don't hesitate to report the case to the given link,\n"
+"André is always very fast to implement the case and it will help many\n"
+"people, not only hackinscience users!"
+msgstr ""
+"Si vous découvrez une exception non expliquée par\n"
+"`friendly-traceback`, qui finit par \"You might want to report this\n"
+"case to ...\", n'hésitez pas à rapporter le cas via le lien,\n"
+"André est toujours prompt à ajouter ce cas précis et cela aidera beaucoup\n"
+"d'auters personnes, pas seulement les utilisateurs de Hackinscience !"
+
+#: .\website\templates\hkis\about.html:52
+msgid ""
+"In the other hand if you spot a correction message that is not\n"
+"helpfull and does not give a link to `friendly-traceback`, please open\n"
+"an issue on [hackinscience](framagit.org/hackinscience/hkis-website)'s\n"
+"issue tracker, as it's probably to be enhanced in our side."
+msgstr ""
+"Par ailleurs, si vous découvrez un message de correction qui n'aide pas\n"
+"vraiment et ne fournit pas de lien vers `friendly-traceback`,\n"
+"merci d'ouvrir un ticket sur notre [gestionnaire de tickets](framagit.org/"
+"hackinscience/hkis-website),\n"
+"étant donné qu'il s'agit certainement d'une amélioration à faire de notre "
+"côté."
+
+#: .\website\templates\hkis\about.html:58
+msgid "Privacy"
+msgstr "Vie privée"
+
+#: .\website\templates\hkis\about.html:60
+msgid "Personal informations"
+msgstr "Informations personnelles"
+
+#: .\website\templates\hkis\about.html:62
+msgid ""
+"When registering and using the Hackinscience platform, we store some\n"
+"informations about you:"
+msgstr ""
+"Quand vous vous enregistrez et utilisez la plateforme Hackinscience,\n"
+"nous conservons certaines informations :"
+
+#: .\website\templates\hkis\about.html:65
+msgid "Your username, maybe your email if you gave it at registration time."
+msgstr ""
+"Votre nom d'utilisateur, et votre adresse mail si vous l'avez fournie à "
+"l'inscription."
+
+#: .\website\templates\hkis\about.html:66
+msgid ""
+"All the exercises you did, when you did them, what you submitted, what the "
+"bot answered."
+msgstr ""
+"Tous les exercices que vous faites, quand vous les faites, ce que vous avez "
+"soumis, et ce que le robot a répondu."
+
+#: .\website\templates\hkis\about.html:68
+msgid "Why do we store all your submissions?"
+msgstr "Pourquoi stockons-nous toutes les soumissions ?"
+
+#: .\website\templates\hkis\about.html:70
+msgid ""
+"To display ✓ and ✗ marks near exercises so you know which one you\n"
+"  succeeded and which one to do."
+msgstr ""
+"Afin d'afficher les signes ✓ et ✗ prêt des exercices, afin de vous indiquer "
+"lesquels\n"
+"  vous avez réussi et ceux encore à faire."
+
+#: .\website\templates\hkis\about.html:72
+msgid "So you can find them back tomorrow."
+msgstr "Afin que vous puissiez les retrouver plus tard."
+
+#: .\website\templates\hkis\about.html:73
+msgid ""
+"Compute some statistics to spot which exercises are too hard to order them "
+"better or\n"
+"  introduce intermediate/easier ones."
+msgstr ""
+"Pour calculer des statistiques afin de voir quels exercices sont trop durs "
+"pour\n"
+"  mieux les réordonner ou en ajouter des intermédiaires."
+
+#: .\website\templates\hkis\about.html:76
+#, python-format
+msgid ""
+"If you want to correct an information we've got about you, delete\n"
+"it, or if you'd like all the data about you conveniently archived for\n"
+"offline reading, feel free to send a mail to *team at hackinscience dot "
+"org*\n"
+"or ask any member of [the team](%(team_url)s)."
+msgstr ""
+"Si vous souhaitez corriger une information stockée sur vous, la supprimer,\n"
+"ou bien encore récupérer l'ensemble de vos données,\n"
+"envoyez un mail à \"team at hackinscience point org\"\n"
+"ou demandez à un membre de [l'équipe](%(team_url)s)."
+
+#: .\website\templates\hkis\about.html:82
+msgid "Trackers, external analytics tools, advertising"
+msgstr "Trackers, outils d'analyse externes, publicité"
+
+#: .\website\templates\hkis\about.html:84
+msgid ""
+"We do not use any trackers, nor any advertising network, all our `css`\n"
+"and `js` are hosted by ourself (no CDN)."
+msgstr ""
+"Nous n'utilisons pas de tracker, ni de réseau de publicité, tous nos "
+"fichiers `css`\n"
+"et `javascript` sont hébergés en interne (pas de CDN)."
+
+#: .\website\templates\hkis\about.html:87
+msgid ""
+"If you read this, you probably don't like being tracked, there's two\n"
+"complimentary things you can do:"
+msgstr ""
+"Si vous lisez ceci, vous n'aimez probablement pas être tracé,\n"
+"il y a deux choses supplémentaires que vous pouvez faire :"
+
+#: .\website\templates\hkis\about.html:90
+msgid "Enable the \"Do Not Track\" flag in your browser"
+msgstr "Activer l'option \"Do Not Track\" de voter navigateur"
+
+#: .\website\templates\hkis\about.html:91
+msgid ""
+"Install the [Privacy Badger](https://fr.wikipedia.org/wiki/Privacy_Badger) "
+"browser\n"
+"  extension from the [Electronic Frontier\n"
+"  Foundation](https://fr.wikipedia.org/wiki/Electronic_Frontier_Foundation)."
+msgstr ""
+"Installer l'extension de navigateur [Privacy Badger](https://fr.wikipedia."
+"org/wiki/Privacy_Badger)\n"
+"  de [l'Electronic Frontier\n"
+"  Foundation](https://fr.wikipedia.org/wiki/Electronic_Frontier_Foundation)."
+
+#: .\website\templates\hkis\about.html:95
+msgid ""
+"Pricavy Badger blocks advertisements and tracking cookies that do not "
+"respect the\n"
+"Do Not Track setting in a user's web browser."
+msgstr ""
+"Pricavy Badger bloque les publicités et les cookies de traçage qui ne "
+"respectent pas l'option Do Not Track."
 
 #: .\website\templates\hkis\answer_form.html:8
 #: .\website\templates\registration\registration_form.html:9
@@ -144,10 +380,9 @@ msgid "Results"
 msgstr "Résultats"
 
 #: .\website\templates\hkis\exercise.html:205
-#, fuzzy, python-format
-#| msgid "<a href=%(solutions_url)s>%(solutions_qty)s shared solutions</a>"
+#, python-format
 msgid "%(solutions_qty)s shared solutions"
-msgstr "<a href=%(solutions_url)s>%(solutions_qty)s solutions partagées</a>"
+msgstr "%(solutions_qty)s solutions partagées"
 
 #: .\website\templates\hkis\exercises.html:4
 msgid "Python exercises"
@@ -156,6 +391,144 @@ msgstr "Exercices Python"
 #: .\website\templates\hkis\exercises.html:29
 msgid "Solved by"
 msgstr "Résolu par"
+
+#: .\website\templates\hkis\help.html:6
+msgid "Getting help"
+msgstr "Obtenir de l'aide"
+
+#: .\website\templates\hkis\help.html:8
+msgid "Report a bug on hackinscience"
+msgstr "Signaler une erreur sur Hackinscience"
+
+#: .\website\templates\hkis\help.html:10
+msgid "If you found an issue in an exercise, or the website, please either:"
+msgstr ""
+"Si vous trouvez une erreur dans un exercice, ou sur le site web, merci de "
+"bien vouloir :"
+
+#: .\website\templates\hkis\help.html:12
+msgid ""
+"Fill a bug [in our bugtracker](https://framagit.org/hackinscience/hkis-"
+"website/issues)."
+msgstr ""
+"Reporter l'erreur [sur notre gestionnaire de bugs](https://framagit.org/"
+"hackinscience/hkis-website/issues)."
+
+#: .\website\templates\hkis\help.html:13
+msgid "Send me an email:"
+msgstr "M'envoyer un mail :"
+
+#: .\website\templates\hkis\help.html:16
+msgid "Get help from the Python community"
+msgstr "Obtenir de l'aide de la communauté Python"
+
+#: .\website\templates\hkis\help.html:18
+msgid ""
+"The Python community is known to be friendly and welcoming, don't\n"
+"hesitate to ask for help! Most of us are using freenode IRC channels\n"
+"to talk."
+msgstr ""
+"La communauté Python est connue pour être amicale et bienveillante, "
+"n'hésitez pas à demander de l'aide ! La plupart d'entre nous utilisons le "
+"réseau IRC freenode et ses canaux pour discuter."
+
+#: .\website\templates\hkis\help.html:23
+msgid "How to connect to IRC?"
+msgstr "Comment se connecter à IRC ?"
+
+#: .\website\templates\hkis\help.html:25
+msgid ""
+"There's a nice web client on: [https://kiwi.freenode.net](https://kiwi."
+"freenode.net)."
+msgstr ""
+"Il existe un bon client web sur : [https://kiwi.freenode.net](https://kiwi."
+"freenode.net)."
+
+#: .\website\templates\hkis\help.html:27
+msgid ""
+"Pick a `Login` and a channel (see common Python IRC Channels\n"
+"below). If you don't have a NickServ account (or don't know what it\n"
+"is), don't check the \"I have a password\" box."
+msgstr ""
+"Choisissez `un pseudonyme` et un canal (voir les canaux IRC Python usuels ci-"
+"dessous). Si vous n'avez pas de compte NickServ (ou ne savez pas ce que "
+"c'est), ne cochez pas la case à cocher \"I have a password\"."
+
+#: .\website\templates\hkis\help.html:32
+msgid "How to ask a question?"
+msgstr "Comment poser une question ?"
+
+#: .\website\templates\hkis\help.html:34
+msgid "Don't ask to ask, just ask."
+msgstr ""
+"Ne demandez pas si vous pouvez poser une question, posez votre question "
+"directement."
+
+#: .\website\templates\hkis\help.html:36
+msgid "Be polite and respectfull."
+msgstr "Soyez poli et respectueux."
+
+#: .\website\templates\hkis\help.html:38
+msgid ""
+"Be patient too: We're not always watching our screens for new\n"
+"messages, it can take 15mn for someone to notice a new message, like\n"
+"when you send an email."
+msgstr ""
+"Soyez également patient : Nous ne sommes pas toujours devant notre écran à "
+"attendre des nuveaux messages, cela peut prendre 15 minutes à quelqu'un de "
+"se rendre compte qu'il y a un message, comme lorsqu'on envoie un mail."
+
+#: .\website\templates\hkis\help.html:42
+msgid ""
+"The author of HackInScience is `mdk` on Freenode, on various channels\n"
+"but mainly on `#python-fr` (I'm French! I bake my own bread!), don't\n"
+"hesitate to prefix your question with `mdk: ` so I notice it faster."
+msgstr ""
+"L'auteur de HackInScience s'appelle `mdk` sur Freenode, il est présent sur "
+"beaucoup de canaux, mais principalement sur `#python-fr` (Je suis français ! "
+"Je fais mon propre pain !), n'hésitez pas à préfixer votre question par `mdk:"
+"` de manière à ce que je sois notifié plus rapidement."
+
+#: .\website\templates\hkis\help.html:47
+msgid "IRC Channels"
+msgstr "Canaux IRC"
+
+#: .\website\templates\hkis\help.html:49
+msgid ""
+"There's multiple channels related to Python on freenode, on different\n"
+"topics and different languages, mainly:"
+msgstr ""
+"Il existe une multitude de canaux de discussions liés au langage Python sur "
+"freenode, sur divers sujets et dans différentes langues, principalement :"
+
+#: .\website\templates\hkis\help.html:52
+msgid "the main one, but needs a freenode account"
+msgstr "le principal, mais nécessite un compte freenode"
+
+#: .\website\templates\hkis\help.html:54
+msgid "And many variations around languages and topics:"
+msgstr "Et beaucoup de variantes autant dans les sujets que dans les langues :"
+
+#: .\website\templates\hkis\help.html:56
+msgid "like #python, but friendlier."
+msgstr "comme #python, mais encore plus accueillant."
+
+#: .\website\templates\hkis\help.html:60
+msgid "Copenhagen Django (and everything python/web related) Group"
+msgstr ""
+"Groupe Django (et de tout ce qui est lié à Python et au web) de Copenhague"
+
+#: .\website\templates\hkis\help.html:71
+msgid "Iranian Python Users Group"
+msgstr "Groupe d'utilisateurs de Python iranien"
+
+#: .\website\templates\hkis\help.html:80
+msgid "Conversations about NumPy and SciPy"
+msgstr "Discussions à propose de NumPy et SciPy"
+
+#: .\website\templates\hkis\help.html:83
+msgid "You channel is missing? Make a PR →"
+msgstr "Votre canal n'est pas listé ? Faites une PR →"
 
 #: .\website\templates\hkis\index.html:4
 msgid "Python course"
@@ -307,10 +680,6 @@ msgstr "Partagez votre solution avec les autres !"
 #: .\website\templates\hkis\stats_list.html:5
 msgid "Groups"
 msgstr "Groupes"
-
-#: .\website\templates\hkis\team.html:6
-msgid "About Hackinscience"
-msgstr "À propos d'Hackinscience"
 
 #: .\website\templates\hkis\team.html:7
 msgid "The team"

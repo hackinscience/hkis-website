@@ -3,95 +3,97 @@
 {% load i18n static %}
 {% block container %}
 {% md %}
-# About Hackinscience
+# {% trans "About Hackinscience" %}
 
-## Hackinscience, the online platform
+## {% trans "Hackinscience, the online platform" %}
 
-The Hackinscience platform is a free, without ads, and open-source
+{% url 'team' as team_url %}
+
+{% blocktrans %}The Hackinscience platform is a free, without ads, and open-source
 (<a href="http://framagit.org/hackinscience/">repo on framagit</a>)
-exercise platform, by a [team]({% url 'team' %}) of Python passionates.
+exercise platform, by a [team]({{team_url}}) of Python passionates.{% endblocktrans %}
 
-We only rely on [your donations](https://liberapay.com/JulienPalard) to run
-this.
+{% blocktrans %}We only rely on [your donations](https://liberapay.com/JulienPalard) to run
+this.{% endblocktrans %}
 
 
-## You're a teacher?
+## {% blocktrans %}You're a teacher?{% endblocktrans %}
 
-If you're a teacher and want to use hackinscience during your courses,
+{% blocktrans %}If you're a teacher and want to use hackinscience during your courses,
 you can ask by email at team at hackinscience dot org for a teacher
 account, we'll bind you to your class students so you can follow their
-individual progression.
+individual progression.{% endblocktrans %}
 
 
-## You'd like The Hackinscience Team for a class?
+## {% blocktrans %}You'd like The Hackinscience Team for a class?{% endblocktrans %}
 
-Good news, we teach Python too! Don't hesitate to drop us an email at
+{% blocktrans %}Good news, we teach Python too! Don't hesitate to drop us an email at
 team at hackinscience dot org and we'll discuss about it. We're based
 in Paris, France, but it may be OK for the team to move in other
-places, let's talk about it!
+places, let's talk about it!{% endblocktrans %}
 
 
-## Friendly Tracebacks in corrections
+## {% blocktrans %}Friendly Tracebacks in corrections{% endblocktrans %}
 
-You may have spotted Python exceptions are often nicely explained, how
-do we do that?
+{% blocktrans %}You may have spotted Python exceptions are often nicely explained, how
+do we do that?{% endblocktrans %}
 
-We're using André Roberge's
+{% blocktrans %}We're using André Roberge's
 [friendly-traceback](https://github.com/aroberge/friendly-traceback/),
 a project which tries to understand what caused the exception, and
-explain it.
+explain it.{% endblocktrans %}
 
-If you spot an exception that is not explained by
+{% blocktrans %}If you spot an exception that is not explained by
 `friendly-traceback`, which end up with "You might want to report this
 case to ...", don't hesitate to report the case to the given link,
 André is always very fast to implement the case and it will help many
-people, not only hackinscience users!
+people, not only hackinscience users!{% endblocktrans %}
 
-In the other hand if you spot a correction message that is not
+{% blocktrans %}In the other hand if you spot a correction message that is not
 helpfull and does not give a link to `friendly-traceback`, please open
 an issue on [hackinscience](framagit.org/hackinscience/hkis-website)'s
-issue tracker, as it's probably to be enhanced in our side.
+issue tracker, as it's probably to be enhanced in our side.{% endblocktrans %}
 
 
-## Privacy
+## {% blocktrans %}Privacy{% endblocktrans %}
 
-### Personal informations
+### {% blocktrans %}Personal informations{% endblocktrans %}
 
-When registering and using the Hackinscience platform, we store some
-informations about you:
+{% blocktrans %}When registering and using the Hackinscience platform, we store some
+informations about you:{% endblocktrans %}
 
-- Your username, maybe your email if you gave it at registration time.
-- All the exercises you did, when you did them, what you submitted, what the bot answered.
+- {% blocktrans %}Your username, maybe your email if you gave it at registration time.{% endblocktrans %}
+- {% blocktrans %}All the exercises you did, when you did them, what you submitted, what the bot answered.{% endblocktrans %}
 
-Why do we store all your submissions?
+{% blocktrans %}Why do we store all your submissions?{% endblocktrans %}
 
-- To display ✓ and ✗ marks near exercises so you know which one you
-  succeeded and which one to do.
-- So you can find them back tomorrow.
-- Compute some statistics to spot which exercises are too hard to order them better or
-  introduce intermediate/easier ones.
+- {% blocktrans %}To display ✓ and ✗ marks near exercises so you know which one you
+  succeeded and which one to do.{% endblocktrans %}
+- {% blocktrans %}So you can find them back tomorrow.{% endblocktrans %}
+- {% blocktrans %}Compute some statistics to spot which exercises are too hard to order them better or
+  introduce intermediate/easier ones.{% endblocktrans %}
 
-If you want to correct an information we've got about you, delete
+{% blocktrans %}If you want to correct an information we've got about you, delete
 it, or if you'd like all the data about you conveniently archived for
 offline reading, feel free to send a mail to *team at hackinscience dot org*
-or ask any member of [the team]({% url 'team' %}).
+or ask any member of [the team]({{ team_url }}).{% endblocktrans %}
 
 
-### Trackers, external analytics tools, advertising
+### {% blocktrans %}Trackers, external analytics tools, advertising{% endblocktrans %}
 
-We do not use any trackers, nor any advertising network, all our `css`
-and `js` are hosted by ourself (no CDN).
+{% blocktrans %}We do not use any trackers, nor any advertising network, all our `css`
+and `js` are hosted by ourself (no CDN).{% endblocktrans %}
 
-If you read this, you probably don't like being tracked, there's two
-complimentary things you can do:
+{% blocktrans %}If you read this, you probably don't like being tracked, there's two
+complimentary things you can do:{% endblocktrans %}
 
-- Enable the "Do Not Track" flag in your browser
-- Install the [Privacy Badger](https://fr.wikipedia.org/wiki/Privacy_Badger) browser
+- {% blocktrans %}Enable the "Do Not Track" flag in your browser{% endblocktrans %}
+- {% blocktrans %}Install the [Privacy Badger](https://fr.wikipedia.org/wiki/Privacy_Badger) browser
   extension from the [Electronic Frontier
-  Foundation](https://fr.wikipedia.org/wiki/Electronic_Frontier_Foundation).
+  Foundation](https://fr.wikipedia.org/wiki/Electronic_Frontier_Foundation).{% endblocktrans %}
 
-Pricavy Badger blocks advertisements and tracking cookies that do not respect the
-Do Not Track setting in a user's web browser.
+{% blocktrans %}Pricavy Badger blocks advertisements and tracking cookies that do not respect the
+Do Not Track setting in a user's web browser.{% endblocktrans %}
 
 {% endmd %}
 {% endblock %}
