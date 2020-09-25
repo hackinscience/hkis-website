@@ -1,5 +1,5 @@
 {% extends 'hkis/base.html' %}
-{% load static %}
+{% load i18n static %}
 
 {% block nav %}
 
@@ -16,41 +16,41 @@
     <ul class="navbar-nav mr-auto">
       {% if user.is_authenticated %}
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'exercises' %}">Exercises</a>
+          <a class="nav-link" href="{% url 'exercises' %}">{% trans "Exercises" %}</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'profile' user.id %}">Profile</a>
+          <a class="nav-link" href="{% url 'profile' user.id %}">{% trans "Profile" %}</a>
         </li>
         {% if perms.website.view_answer %}
           <li class="nav-item">
-            <a class="nav-link" href="{% url 'stats' %}">Stats</a>
+            <a class="nav-link" href="{% url 'stats' %}">{% trans "Stats" %}</a>
           </li>
         {% endif %}
         {% if user.is_staff %}
           <li class="nav-item">
-            <a class="nav-link" href="{% url 'admin:index' %}">Admin</a>
+            <a class="nav-link" href="{% url 'admin:index' %}">{% trans "Admin" %}</a>
           </li>
         {% endif %}
       {% endif %}
       <li class="nav-item">
-        <a class="nav-link" href="{% url 'help' %}">Help</a>
+        <a class="nav-link" href="{% url 'help' %}">{% trans "Help" %}</a>
       </li>
     </ul>
     <ul class="navbar-nav navbar-right">
       <li class="nav-item">
-        <a class="nav-link" href="{% url 'about' %}">About</a>
+        <a class="nav-link" href="{% url 'about' %}">{% trans "About" %}</a>
       </li>
       <li class="nav-item">
         {% if user.is_authenticated %}
-          <a class="nav-link" href="{% url 'auth_logout' %}">Log out</a>
+          <a class="nav-link" href="{% url 'auth_logout' %}">{% trans "Log out" %}</a>
         {% else %}
-          <a class="nav-link" href="{% url 'auth_login' %}">Sign in</a>
+          <a class="nav-link" href="{% url 'auth_login' %}">{% trans "Sign in" %}</a>
         {% endif %}
       </li>
       <li class="nav-item">
         <a class="nav-link" href="https://liberapay.com/JulienPalard">
           <img height="24"
-               alt="Donate using Liberapay"
+               alt="{% trans "Donate using Liberapay" %}"
                src="{% static "img/liberapay.svg" %}">
         </a>
       </li>

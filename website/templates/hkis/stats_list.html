@@ -1,7 +1,8 @@
 {% extends "hkis/layout.html" %}
+{% load i18n %}
 {% block title %}Stats{% endblock %}
 {% block container %}
-<h2>Groups</h2>
+<h2>{% trans "Groups" %}</h2>
 <ul>
   {% for group in object_list %}
   {% if group.name != "prof" %}

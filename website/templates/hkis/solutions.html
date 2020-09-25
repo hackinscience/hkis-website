@@ -37,7 +37,7 @@
 
 {% block container %}
 
-<h1> Solutions for exercise: <a href="{% url "exercise" exercise.slug %}">{{ exercise.title }}</a></h1>
+<h1> {% trans "Solutions for exercise:" %} <a href="{% url "exercise" exercise.slug %}">{{ exercise.title }}</a></h1>
 
 <h2 style="margin-top: 20px;">{% trans "Shared solutions" %}</h2>
 {% if not is_allowed_to_see_solutions %}
