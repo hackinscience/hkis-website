@@ -14,6 +14,7 @@
 
 {% block extrahead %}
 {% autoescape off %}
+{% url 'profile' user.id as profile_url %}
 <script>
     function append_to_answer_table(html) {
         if (document.querySelectorAll("#answer-table tr").length)
@@ -49,7 +50,7 @@
                 if (answer.user_rank < {{ current_rank }})
                     div.insertAdjacentHTML(
                         'beforeend',
-                        '<div class="alert alert-success">Your new <a href="{% url 'profile' user.id %}">rank</a> is: '.concat(answer.user_rank).concat("</div>"));
+                        '<div class="alert alert-success">{% blocktrans %}Your new <a href="{{ profile_url }}">rank</a> is:{% endblocktrans %} '.concat(answer.user_rank).concat("</div>"));
                 div.appendChild(button_next);
                 document.getElementById("solution_link").removeAttribute("style");
             }
@@ -180,7 +181,7 @@
           data-toggle="tooltip"
           data-placement="bottom"
           data-delay="500"
-          title="Use this to execute your code, so you can try things."
+          title="{% trans "Use this to execute your code, so you can try things." %}"
           onclick="ws_submit_snippet(this.form); return false;">
           {% trans "Run" %}
         </button>
@@ -190,7 +191,7 @@
           data-toggle="tooltip"
           data-placement="bottom"
           data-delay="500"
-          title="This runs automated tests to verify your implementation (also saves your code)."
+          title="{% trans "This runs automated tests to verify your implementation (also saves your code)." %}"
           type="submit"
           onclick="ws_submit_answer(this.form); return false;">
           {% trans "Submit for validation" %}
@@ -201,8 +202,7 @@
   <div class="col-md-6">
     <h2>{% trans "Results" %}
       <span id="solution_link" {% if not is_valid %} style="display: none" {% endif %}>
-        {% url "solutions" object.slug as solutions_url %}
-        ({% blocktrans %}<a href={{ solutions_url }}>{{ solutions_qty}} shared solutions</a>{% endblocktrans %})
+        (<a href={% url "solutions" object.slug %}>{% blocktrans %}{{ solutions_qty}} shared solutions{% endblocktrans %}</a>)
       </span>
     </h2>
     <div id="answers-result" class="result">
@@ -214,7 +214,7 @@
               data-is-corrected="{{ answer.is_corrected }}"
               class="answer-cell">
             {% if not answer.is_corrected %}
-              <img src="{% static "img/loading_anim.gif" %}" height=30> Waiting for correction
+              <img src="{% static "img/loading_anim.gif" %}" height=30> {% trans "Waiting for correction" %}
             {% else %}
               <div class="result-box">
               {{ answer.correction_message|markdown_to_bootstrap }}

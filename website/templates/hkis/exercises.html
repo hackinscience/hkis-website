@@ -1,7 +1,7 @@
 {% extends "hkis/layout.html" %}
 {% load i18n %}
 {% load static %}
-{% block title %}Python exercises{% endblock %}
+{% block title %}{% trans "Python exercises" %}{% endblock %}
 
 {% block container %}
 
@@ -26,7 +26,7 @@
         </a>
         {{ exercise.lead }}
         <br />
-        <i>Solved by {{ exercise.successes }} ({{ exercise.pct_tried|floatformat }}%)</i>
+        <i>{% trans "Solved by" %} {{ exercise.successes }} ({{ exercise.pct_tried|floatformat }}%)</i>
       </td>
     </tr>
     {% endfor %}
