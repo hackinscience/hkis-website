@@ -95,15 +95,16 @@ class ExerciseConsumer(AsyncJsonWebsocketConsumer):
 
     async def connect(self):
         self.log("connect")
-        if not self.scope["user"].id:
+        if not self.scope["user"].is_anonymous and not self.scope["user"].id:
             self.log("Unauthenticated user, dropping.")
             self.close()
             return
         self.exercise = await db_get_exercise(
             self.scope["url_route"]["kwargs"]["exercise_id"]
         )
-        self.group = f"user.{self.scope['user'].id}.ex.{self.exercise.id}"
-        await self.channel_layer.group_add(self.group, self.channel_name)
+        if not self.scope["user"].is_anonymous:
+            self.group = f"user.{self.scope['user'].id}.ex.{self.exercise.id}"
+            await self.channel_layer.group_add(self.group, self.channel_name)
         self.log("accept")
         await self.accept()
 
