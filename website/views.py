@@ -156,6 +156,7 @@ class ExerciseView(LoginRequiredMixin, DetailView):
         try:
             context["next"] = (
                 Exercise.objects.filter(position__gt=self.object.position)
+                .filter(is_published=True)
                 .order_by("position")[0]
                 .slug
             )
