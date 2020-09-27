@@ -13,6 +13,7 @@ django-extensions
 django-filter
 django-model-utils
 django-registration-redux
+django-modeltranslation
 djangorestframework
 
 gunicorn

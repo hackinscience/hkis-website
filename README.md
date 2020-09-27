@@ -26,20 +26,13 @@ celery -A hkis worker
 
 ## Translations
 
+Templates are translated using django `makemessages` and `compilemessages` commands:
+
 ```
 $ django-admin makemessages -a
 # Edit the .po files
 $ django-admin compilemessages
 ```
 
-To translate exercises you'll need to fetch them via the API first:
-
-```
-$ pip install requests
-$ mkdir -p locale/fr/LC_MESSAGES/
-$ python scripts/fetch.py --endpoint https://www.hackinscience.org/api/exercises/
-$ python scripts/pygettext.py -o locale/fr/LC_MESSAGES/django.pot to_translate.py
-$ cd locale/fr/LC_MESSAGES
-$ if [ -f django.po ] ; then msgmerge -U django.po django.pot; else cp django.pot django.po; fi
-# msgfmt django.po -o django.mo
-```
+Exercises (title and wording) are translated via the admin (or the
+API), we use django-modeltranslation.

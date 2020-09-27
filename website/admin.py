@@ -6,6 +6,8 @@ from django.urls import reverse
 from django.utils.safestring import mark_safe
 from django_ace import AceWidget
 
+from modeltranslation.admin import TranslationAdmin
+
 from website.models import Answer, Exercise, Snippet
 
 
@@ -53,7 +55,7 @@ class AnswerExerciseForm(forms.ModelForm):
         }
 
 
-class ExerciseAdmin(admin.ModelAdmin):
+class ExerciseAdmin(TranslationAdmin):
     def get_queryset(self, request):
         return super().get_queryset(request).with_weekly_stats()
 

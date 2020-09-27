@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     "website",
     "moulinette",
     "registration",
+    "modeltranslation",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -161,7 +162,7 @@ INTERNAL_IPS = {"127.0.0.1"}
 # https://docs.djangoproject.com/en/2.0/topics/i18n/
 
 LANGUAGE_CODE = "en-us"
-LANGUAGES = [("fr", "Français"), ("en", "English")]
+LANGUAGES = [("en", "English"), ("fr", "Français")]
 
 TIME_ZONE = "Europe/Paris"
 

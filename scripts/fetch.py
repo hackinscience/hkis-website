@@ -41,12 +41,9 @@ def main():
         if "results" not in exercises:
             print(exercises)
             exit(1)
-        translatables = []
         for exercise in exercises["results"]:
             path = Path("exercises") / exercise["slug"]
             path.mkdir(exist_ok=True, parents=True)
-            translatables.append(exercise["wording"])
-            translatables.append(exercise["title"])
             for file in "check.py", "solution.py", "wording.md", "initial_solution.py":
                 (path / (file)).write_text(
                     fix_newline_at_end_of_file(exercise[file.split(".")[0]])
@@ -54,9 +51,6 @@ def main():
                 del exercise[file.split(".")[0]]
             (path / "meta").write_text(json.dumps(exercise, indent=4))
         next_exercise_page = exercises["next"]
-    with open("to_translate.py", "w", encoding="UTF-8") as to_translate:
-        for string in translatables:
-            to_translate.write(f"_({string!r})\n")
 
 
 if __name__ == "__main__":

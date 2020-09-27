@@ -26,8 +26,9 @@ django-debug-toolbar==2.2  # via -r requirements.in
 django-extensions==3.0.3  # via -r requirements.in
 django-filter==2.3.0      # via -r requirements.in
 django-model-utils==4.0.0  # via -r requirements.in
+django-modeltranslation==0.15.2  # via -r requirements.in
 django-registration-redux==2.8  # via -r requirements.in
-django==3.0.8             # via -r requirements.in, channels, django-ace, django-debug-toolbar, django-filter, django-model-utils, djangorestframework
+django==3.0.8             # via -r requirements.in, channels, django-ace, django-debug-toolbar, django-filter, django-model-utils, django-modeltranslation, djangorestframework
 djangorestframework==3.11.0  # via -r requirements.in
 future==0.18.2            # via celery
 gunicorn==20.0.4          # via -r requirements.in
@@ -49,7 +50,7 @@ pyparsing==2.4.7          # via packaging
 pytz==2020.1              # via celery, django
 redis==3.5.3              # via celery
 service-identity==18.1.0  # via twisted
-six==1.15.0               # via automat, bleach, cryptography, django-extensions, packaging, pyopenssl
+six==1.15.0               # via automat, bleach, cryptography, django-extensions, django-modeltranslation, packaging, pyopenssl
 sqlparse==0.3.1           # via django, django-debug-toolbar
 twisted[tls]==20.3.0      # via daphne
 txaio==20.4.1             # via autobahn
