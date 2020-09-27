@@ -1,7 +1,7 @@
 {% extends 'hkis/layout.html' %}
 {% load i18n static %}
 
-{% block title %}Python course{% endblock %}
+{% block title %}{% trans "Python course" %}{% endblock %}
 
 {% block stylesheets %}
     <style type="text/css">
@@ -29,12 +29,12 @@
 <div class="black-grad row mt-5">
     <div class="mx-auto">
         <p class="lead text-center py-5">
-          Hackinscience is an interactive Python exercise platform: <br/>
+          {% blocktrans %}Hackinscience is an interactive Python exercise platform: <br/>
           Write code, get instant feedback from our correction bot <br/>
-          with detailed information about what went wrong so you'll never get stuck.
+          with detailed information about what went wrong so you'll never get stuck.{% endblocktrans %}
           </br><br/>
-          <a class="btn btn-secondary" href="{% url 'auth_login' %}" role="button">Sign in</a>
-          <a class="btn btn-primary" href="{% url 'registration_register' %}" role="button">Sign up</a>
+          <a class="btn btn-secondary" href="{% url 'auth_login' %}" role="button">{% trans "Sign in" %}</a>
+          <a class="btn btn-primary" href="{% url 'registration_register' %}" role="button">{% trans "Sign up" %}</a>
           <br/>
         </p>
     </div>
