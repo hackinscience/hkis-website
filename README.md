@@ -29,9 +29,9 @@ celery -A hkis worker
 Templates are translated using django `makemessages` and `compilemessages` commands:
 
 ```
-$ django-admin makemessages -a
+$ ./manage.py makemessages --locale fr
 # Edit the .po files
-$ django-admin compilemessages
+$ ./manage.py compilemessages
 ```
 
 Exercises (title and wording) are translated via the admin (or the

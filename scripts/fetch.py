@@ -44,9 +44,18 @@ def main():
         for exercise in exercises["results"]:
             path = Path("exercises") / exercise["slug"]
             path.mkdir(exist_ok=True, parents=True)
-            for file in "check.py", "solution.py", "wording.md", "initial_solution.py":
+            for file in (
+                "check.py",
+                "solution.py",
+                "wording.md",
+                "wording_en.md",
+                "wording_fr.md",
+                "initial_solution.py",
+            ):
                 (path / (file)).write_text(
-                    fix_newline_at_end_of_file(exercise[file.split(".")[0]])
+                    fix_newline_at_end_of_file(exercise[file.split(".")[0]]).replace(
+                        "\r\n", "\n"
+                    )
                 )
                 del exercise[file.split(".")[0]]
             (path / "meta").write_text(json.dumps(exercise, indent=4))

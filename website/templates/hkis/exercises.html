@@ -7,10 +7,10 @@
 
 <h1>Python exercises</h1>
 
-<table class="table table-sm table-hover records_list">
+<table class="table table-sm table-hover table-responsive">
   <tbody>
     {% for exercise in exercises %}
-    <tr class="d-flex" onclick="if (!event.ctrlKey){location.href='{% url "exercise" exercise.slug %}';}">
+    <tr onclick="if (!event.ctrlKey){location.href='{% url "exercise" exercise.slug %}';}">
       <td scope="row" class="d-flex align-items-center">
           {% if exercise.tried %}
             {% if exercise.done %}
@@ -22,11 +22,11 @@
       </td>
       <td>
         <a href="{% url "exercise" exercise.slug %}">
-          <h5>{{ exercise.number }}. {{ exercise.title }}</h5>
+          <h5 style="display:inline">{{ exercise.number }}. {{ exercise.title }}</h5>
         </a>
-        {{ exercise.lead }}
-        <br />
-        <i>{% trans "Solved by" %} {{ exercise.successes }} ({{ exercise.pct_tried|floatformat }}%)</i>
+      </td>
+      <td>
+        <i>{% blocktrans with nb=exercise.successes %}Solved by {{ nb }}{% endblocktrans %}</i>
       </td>
     </tr>
     {% endfor %}
