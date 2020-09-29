@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-09-28 13:18+0200\n"
-"PO-Revision-Date: 2020-09-28 13:20+0200\n"
+"PO-Revision-Date: 2020-09-29 09:01+0200\n"
 "Last-Translator: Julien Palard <julien@palard.fr>\n"
 "Language-Team: \n"
 "Language: fr\n"
@@ -395,7 +395,7 @@ msgstr "Exercices Python"
 #: website/templates/hkis/exercises.html:29
 #, python-format
 msgid "Solved by %(nb)s"
-msgstr "Résolu %(nb) fois"
+msgstr "Résolu %(nb)s fois"
 
 #: website/templates/hkis/help.html:6
 msgid "Getting help"
