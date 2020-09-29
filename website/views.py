@@ -133,9 +133,9 @@ class ExerciseView(DetailView):
         if user.is_anonymous:
             context["answers"] = answers = ()
         else:
-            context["answers"] = answers = self.object.answers.filter(user=user).order_by(
-                "-id"
-            )
+            context["answers"] = answers = self.object.answers.filter(
+                user=user
+            ).order_by("-id")
         context["answer_form"] = AnswerForm(
             initial={
                 "exercise": "/api/exercises/{}/".format(self.object.id),
@@ -155,7 +155,9 @@ class ExerciseView(DetailView):
         if user.is_anonymous:
             context["is_valid"] = False
         else:
-            context["is_valid"] = bool(self.object.answers.filter(user=user, is_valid=True))
+            context["is_valid"] = bool(
+                self.object.answers.filter(user=user, is_valid=True)
+            )
         context["solutions_qty"] = len(
             Answer.objects.filter(
                 exercise__pk=self.object.id, is_valid=True, is_shared=True

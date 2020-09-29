@@ -10,6 +10,7 @@ from django.db.models.signals import post_save
 from django.urls import reverse
 from django.utils.text import Truncator
 from django.utils.timezone import now
+from django.utils import translation
 from django_extensions.db.fields import AutoSlugField
 from rest_framework import serializers
 
@@ -34,7 +35,8 @@ class ExerciseQuerySet(models.QuerySet):
         return self.annotate(
             user_tries=Count("answers", filter=Q(answers__user=user)),
             user_successes=Count(
-                "answers", filter=Q(answers__user=user) & Q(answers__is_valid=True),
+                "answers",
+                filter=Q(answers__user=user) & Q(answers__is_valid=True),
             ),
         )
 
@@ -137,7 +139,9 @@ class Exercise(models.Model):
 
 
 class Snippet(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, editable=False)
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, editable=False, blank=True, null=True
+    )
     source_code = models.TextField()
     output = models.TextField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)

@@ -39,7 +39,9 @@ def db_create_answer(exercise_id: int, user_id: int, source_code):
 
 @database_sync_to_async
 def db_create_snippet(user: User, source_code):
-    return Snippet.objects.create(source_code=source_code, user=user)
+    return Snippet.objects.create(
+        source_code=source_code, user=user if not user.is_anonymous else None
+    )
 
 
 @database_sync_to_async
