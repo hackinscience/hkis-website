@@ -39,7 +39,9 @@ def db_create_answer(exercise_id: int, user_id: int, source_code):
 
 @database_sync_to_async
 def db_create_snippet(user: User, source_code):
-    return Snippet.objects.create(source_code=source_code, user=user)
+    return Snippet.objects.create(
+        source_code=source_code, user=user if not user.is_anonymous else None
+    )
 
 
 @database_sync_to_async
@@ -95,15 +97,16 @@ class ExerciseConsumer(AsyncJsonWebsocketConsumer):
 
     async def connect(self):
         self.log("connect")
-        if not self.scope["user"].id:
+        if not self.scope["user"].is_anonymous and not self.scope["user"].id:
             self.log("Unauthenticated user, dropping.")
             self.close()
             return
         self.exercise = await db_get_exercise(
             self.scope["url_route"]["kwargs"]["exercise_id"]
         )
-        self.group = f"user.{self.scope['user'].id}.ex.{self.exercise.id}"
-        await self.channel_layer.group_add(self.group, self.channel_name)
+        if not self.scope["user"].is_anonymous:
+            self.group = f"user.{self.scope['user'].id}.ex.{self.exercise.id}"
+            await self.channel_layer.group_add(self.group, self.channel_name)
         self.log("accept")
         await self.accept()
 

@@ -47,10 +47,15 @@
             div.className = "result-box";
             div.innerHTML = answer.correction_message_html;
             if (answer.is_valid) {
-                if (answer.user_rank < {{ current_rank }})
-                    div.insertAdjacentHTML(
-                        'beforeend',
-                        '<div class="alert alert-success">{% blocktrans %}Your new <a href="{{ profile_url }}">rank</a> is:{% endblocktrans %} '.concat(answer.user_rank).concat("</div>"));
+                if (answer.user_rank < {{ current_rank }}) {
+                    {% if user.is_authenticated %}
+                    {% url 'profile' user.id as profile_url %}
+                    var message = '<div class="alert alert-success">{% blocktrans %}Your new <a href="{{ profile_url }}">rank</a> is: NEW_RANK{% endblocktrans %}</div>'.replace('NEW_RANK', answer.user_rank);
+                    {% else %}
+                    var message = '<div class="alert alert-success"></div>';
+                    {% endif %}
+                    div.insertAdjacentHTML('beforeend', message);
+                }
                 div.appendChild(button_next);
                 document.getElementById("solution_link").removeAttribute("style");
             }
@@ -192,17 +197,22 @@
           onclick="ws_submit_snippet(this.form); return false;">
           {% trans "Run" %}
         </button>
+        {% if not user.is_anonymous %}
         <button
           id="submit_answer"
           class="btn btn-primary"
           data-toggle="tooltip"
           data-placement="bottom"
           data-delay="500"
-          title="{% trans "This runs automated tests to verify your implementation (also saves your code)." %}"
+          title="This runs automated tests to verify your implementation (also saves your code)."
           type="submit"
           onclick="ws_submit_answer(this.form); return false;">
           {% trans "Submit for validation" %}
         </button>
+        {% else %}
+        <a class="btn btn-primary" href="{% url 'auth_login' %}" role="button">{% trans "Login to check your code and save your progress." %}</a>
+
+        {% endif %}
         {% endif %}
     </form>
   </div>

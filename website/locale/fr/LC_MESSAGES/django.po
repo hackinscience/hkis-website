@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-09-28 13:18+0200\n"
-"PO-Revision-Date: 2020-09-29 09:01+0200\n"
+"POT-Creation-Date: 2020-09-29 10:12+0200\n"
+"PO-Revision-Date: 2020-09-29 10:13+0200\n"
 "Last-Translator: Julien Palard <julien@palard.fr>\n"
 "Language-Team: \n"
 "Language: fr\n"
@@ -326,7 +326,7 @@ msgid ""
 msgstr ""
 
 #: website/templates/hkis/exercise.html:40
-#: website/templates/hkis/exercise.html:166
+#: website/templates/hkis/exercise.html:171
 #: website/templates/hkis/lesson.html:13
 msgid "Next"
 msgstr "Suivant"
@@ -337,53 +337,50 @@ msgstr "Besoin d&#39;aide ?"
 
 #: website/templates/hkis/exercise.html:53
 #, python-format
-msgid "Your new <a href=\"%(profile_url)s\">rank</a> is:"
-msgstr "Votre nouveau <a href=\"%(profile_url)s\">rang</a> est&nbsp;:"
+msgid "Your new <a href=\"%(profile_url)s\">rank</a> is: NEW_RANK"
+msgstr ""
+"Vous êtes maintenant classé <a href=\"%(profile_url)s\">NEW_RANKème</a>."
 
-#: website/templates/hkis/exercise.html:64
-#: website/templates/hkis/exercise.html:224
+#: website/templates/hkis/exercise.html:69
+#: website/templates/hkis/exercise.html:234
 msgid "Waiting for correction"
 msgstr "En attente de correction"
 
-#: website/templates/hkis/exercise.html:89
+#: website/templates/hkis/exercise.html:94
 msgid "Waiting for test run"
 msgstr "Exécution en attente"
 
-#: website/templates/hkis/exercise.html:161
+#: website/templates/hkis/exercise.html:166
 msgid "Previous"
-msgstr ""
+msgstr "Précédent"
 
-#: website/templates/hkis/exercise.html:177
+#: website/templates/hkis/exercise.html:182
 msgid "Your Code"
 msgstr "Votre code"
 
-#: website/templates/hkis/exercise.html:191
+#: website/templates/hkis/exercise.html:196
 msgid "Use this to execute your code, so you can try things."
 msgstr ""
 "Utilisez ce bouton pour exécuter votre code, cela vous permet de tester des "
 "choses."
 
-#: website/templates/hkis/exercise.html:193
+#: website/templates/hkis/exercise.html:198
 msgid "Run"
 msgstr "Exécuter"
 
-#: website/templates/hkis/exercise.html:201
-msgid ""
-"This runs automated tests to verify your implementation (also saves your "
-"code)."
-msgstr ""
-"Ce bouton lance des tests automatisés afin de vérifier votre code source (il "
-"sauve ausi votre solution)."
-
-#: website/templates/hkis/exercise.html:204
+#: website/templates/hkis/exercise.html:210
 msgid "Submit for validation"
 msgstr "Envoi pour validation"
 
-#: website/templates/hkis/exercise.html:210
+#: website/templates/hkis/exercise.html:213
+msgid "Login to check your code and save your progress."
+msgstr "Connectez-vous pour valider cet exercice et sauvegarder votre progression."
+
+#: website/templates/hkis/exercise.html:220
 msgid "Results"
 msgstr "Résultats"
 
-#: website/templates/hkis/exercise.html:212
+#: website/templates/hkis/exercise.html:222
 #, python-format
 msgid "%(solutions_qty)s shared solutions"
 msgstr "%(solutions_qty)s solutions partagées"
@@ -537,7 +534,7 @@ msgstr "Votre canal n'est pas listé ? Faites une PR →"
 
 #: website/templates/hkis/index.html:4
 msgid "Python course"
-msgstr ""
+msgstr "Cours de Python"
 
 #: website/templates/hkis/index.html:32
 msgid ""
@@ -562,7 +559,7 @@ msgstr "Connexion"
 msgid "Sign up"
 msgstr "Inscription"
 
-#: website/templates/hkis/layout.html:19
+#: website/templates/hkis/layout.html:18
 msgid "Exercises"
 msgstr "Exercices"
 
@@ -752,19 +749,8 @@ msgid "Register"
 msgstr "S'enregistrer"
 
 #~ msgid ""
-#~ "\n"
-#~ "      <a href=\"%(password_change)s\">Change your password</a>\n"
-#~ "      "
+#~ "This runs automated tests to verify your implementation (also saves your "
+#~ "code)."
 #~ msgstr ""
-#~ "\n"
-#~ "      <a href=\"%(password_change)s\">Changer de mot de passe</a>\n"
-#~ "      "
-
-#~ msgid "Activation complete"
-#~ msgstr "Activation réussie"
-
-#~ msgid "%(solution.user.username)s on %(solution.created_at.date)s"
-#~ msgstr "%(solution.user.username)s le %(solution.created_at.date)s"
-
-#~ msgid "Django site admin"
-#~ msgstr "Admin Django"
+#~ "Ce bouton lance des tests automatisés afin de vérifier votre code source "
+#~ "(il sauve ausi votre solution)."
