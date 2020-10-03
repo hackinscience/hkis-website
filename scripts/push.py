@@ -31,7 +31,14 @@ def main():
         if args.only:
             if args.only not in meta["slug"]:
                 continue
-        for file in "check.py", "solution.py", "wording.md", "initial_solution.py":
+        for file in (
+            "check.py",
+            "solution.py",
+            "wording.md",
+            "wording_fr.md",
+            "wording_en.md",
+            "initial_solution.py",
+        ):
             meta[file.split(".")[0]] = (exercise / (file)).read_text()
         print("Uploading ", meta["title"])
         response = requests.put(
