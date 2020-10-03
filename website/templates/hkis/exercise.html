@@ -143,10 +143,18 @@
 
     }
 
+    function ctrl_enter_handler(event) {
+        if (!event.ctrlKey) return;
+        if (event.code !== "Enter") return;
+        console.log("Sending via Ctrl-enter");
+        ws_submit_answer(document.getElementById("answer_form"));
+    }
+
     var ws_protocol = window.location.protocol == "http:" ? "ws:" : "wss:";
     {% if not is_impersonating %}
     window.addEventListener('DOMContentLoaded', function (event) {
         websocket_connect(ws_protocol + "//" + window.location.host + "/ws/exercises/" + {{object.id}} + "/");
+        document.addEventListener('keydown', ctrl_enter_handler);
     });
     {% endif %}
 </script>
