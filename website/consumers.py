@@ -97,10 +97,6 @@ class ExerciseConsumer(AsyncJsonWebsocketConsumer):
 
     async def connect(self):
         self.log("connect")
-        if not self.scope["user"].is_anonymous and not self.scope["user"].id:
-            self.log("Unauthenticated user, dropping.")
-            self.close()
-            return
         self.exercise = await db_get_exercise(
             self.scope["url_route"]["kwargs"]["exercise_id"]
         )
@@ -138,6 +134,18 @@ class ExerciseConsumer(AsyncJsonWebsocketConsumer):
         await db_update_answer(uncorrected["id"], is_valid, message)
 
     async def answer(self, answer):
+        if not self.scope["user"].id:
+            self.log("Unauthenticated user tries to submit an exercise, dropping.")
+            await self.send_json(
+                {
+                    "type": "answer.update",
+                    "is_corrected": True,
+                    "correction_message_html": """You're not logged-in.
+Please <a href=/accounts/login/>login</a> first.""",
+                    "is_valid": False,
+                }
+            )
+            return
         self.log("Receive answer from browser")
         answer_id, exercise_check = await db_create_answer(
             self.exercise.id, self.scope["user"].id, answer["source_code"]
