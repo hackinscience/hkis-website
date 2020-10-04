@@ -34,8 +34,9 @@
             elem = document.getElementById("td-".concat(answer.id));
         }
         if (answer.is_corrected) {
+            var answer_table = document.getElementById("answer-table");
             var div = document.createElement("div");
-            var button_next = document.createElement("a")
+            var button_next = document.createElement("a");
             button_next.className = 'btn btn-primary btn-sm'
             button_next.innerHTML = '{% trans "Next" %}'
             button_next.href = "{% url "exercise" next %}"
@@ -44,9 +45,9 @@
             button_help.innerHTML = '{% trans "Need help?" %}'
             button_help.href = "{% url 'help' %}"
 
-            div.className = "result-box";
             div.innerHTML = answer.correction_message_html;
             if (answer.is_valid) {
+                answer_table.rows[0].className = "table-success";
                 if (answer.user_rank < {{ current_rank }}) {
                     {% if user.is_authenticated %}
                     {% url 'profile' user.id as profile_url %}
@@ -60,6 +61,7 @@
                 document.getElementById("solution_link").removeAttribute("style");
             }
             else {
+                answer_table.rows[0].className = "table-danger";
                 div.appendChild(button_help);
             }
             while (elem.firstChild) elem.removeChild(elem.firstChild);
@@ -77,13 +79,12 @@
         var elem = document.getElementById("td-snippet-".concat(id));
         if (!elem) {
             var answer_table = document.getElementById("answer-table");
-            append_to_answer_table('<tr><td id="td-snippet-'.concat(id).concat('">…</td> </tr>'));
+            append_to_answer_table('<tr class="table-info"><td id="td-snippet-'.concat(id).concat('">…</td> </tr>'));
             elem = document.getElementById("td-snippet-".concat(id));
         }
         if (executed_at) {
             var pre = document.createElement("pre");
             var div = document.createElement("div");
-            div.className = "result-box";
             div.appendChild(pre);
             var content = document.createTextNode(output);
             pre.appendChild(content);
@@ -181,12 +182,14 @@
   {% endif %}
 </div>
 {% endif %}
-<div style="margin-bottom: 25px;">
-{{ object.wording|markdown_to_bootstrap|i18n_doc_links:LANGUAGE_CODE }}
+<div class="row col-md-8 offset-md-2">
+  <div class="style-info" style="margin-bottom: 25px;">
+  {{ object.wording|markdown_to_bootstrap|i18n_doc_links:LANGUAGE_CODE }}
+  </div>
 </div>
 
 <div class="row">
-  <div class="col-md-6">
+  <div class="col-md-6 style-info">
     <h2>{% trans "Your Code" %}</h2>
     <form id="answer_form" action="#" onsubmit="return false;" method="post">{% csrf_token %}
         {% for field in answer_form %}
@@ -224,7 +227,7 @@
         {% endif %}
     </form>
   </div>
-  <div class="col-md-6">
+  <div class="col-md-6 style-info">
     <h2>{% trans "Results" %}
       <span id="solution_link" {% if not is_valid %} style="display: none" {% endif %}>
         (<a href={% url "solutions" object.slug %}>{% blocktrans %}{{ solutions_qty}} shared solutions{% endblocktrans %}</a>)
@@ -233,7 +236,7 @@
     <div id="answers-result" class="result">
       <table id="answer-table" class="table">
         {% for answer in answers %}
-        <tr>
+        <tr class="{% if answer.is_valid %}table-success{%else%}table-danger{% endif %}">
           <td id="td-{{ answer.id }}"
               data-answer-id="{{ answer.id }}"
               data-is-corrected="{{ answer.is_corrected }}"
@@ -241,7 +244,7 @@
             {% if not answer.is_corrected %}
               <img src="{% static "img/loading_anim.gif" %}" height=30> {% trans "Waiting for correction" %}
             {% else %}
-              <div class="result-box">
+              <div>
               {{ answer.correction_message|markdown_to_bootstrap }}
             </div>
             {% endif %}
