@@ -68,3 +68,7 @@ pre {
     background-color: #f6f8fa;
     border-radius: 6px;
 }
+
+.align-center{
+    text-align: center;
+}
