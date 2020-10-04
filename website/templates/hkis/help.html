@@ -1,6 +1,9 @@
 {% extends "hkis/layout.html" %}
 {% load i18n static hkis_extra %}
 {% block container %}
+
+<div class="row">
+    <div class="col-md-8 offset-md-2">
 {% md %}
 
 # {% blocktrans %}Getting help{% endblocktrans %}
@@ -85,4 +88,7 @@ topics and different languages, mainly:{% endblocktrans %}
 
 
 {% endmd %}
+
+  </div>
+</div>
 {% endblock %}
