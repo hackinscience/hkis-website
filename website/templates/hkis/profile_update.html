@@ -4,8 +4,8 @@
 {% block container %}
 
 <div class="row">
-  <div class="col-md-6 offset-md-3">
-    <h1>{% trans "Profile" %}</h1>
+  <div class="col-md-8 offset-md-2">
+    <h1 class="align-center">{% trans "Profile" %}</h1>
     <h2>{% trans "Statistics" %}</h2>
     <p>
       {% blocktrans with date_joined=user.date_joined trimmed %}
@@ -30,22 +30,24 @@
       {% endif %}
     </p>
     <h2>{% trans "Pronal informations" %}</h2>
-    {% if messages %}
-    <ul class="messages">
-      {% for message in messages %}
-      <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-      {% endfor %}
-    </ul>
-    {% endif %}
-    <form action="" method="post" class="form">
-      {% csrf_token %}
-      {{ form|crispy }}
-      {% url 'auth_password_change' as password_change %}
-      <p>
-      <a href="{{ password_change }}">{% trans "Change your password" %}</a>
-      </p>
-      <button type="submit" class="btn btn-primary btn-lg">{% trans "Update" %}</button>
-    </form>
+    <div class="row">
+      <div class="col-md-6 ">
+        {% if messages %}
+          {% for message in messages %}
+          <div{% if message.tags %} class="alert alert-{{ message.tags }}"{% endif %}>{{ message }}</div>
+          {% endfor %}
+        {% endif %}
+        <form action="" method="post" class="form">
+          {% csrf_token %}
+          {{ form|crispy }}
+          {% url 'auth_password_change' as password_change %}
+          <p>
+          <a href="{{ password_change }}">{% trans "Change your password" %}</a>
+          </p>
+          <button type="submit" class="btn btn-success btn-lg">{% trans "Update" %}</button>
+        </form>
+      </div>
+    </div>
   </div>
 </div>
 {% endblock %}
