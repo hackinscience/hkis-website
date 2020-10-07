@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-09-29 10:12+0200\n"
+"POT-Creation-Date: 2020-10-03 22:52+0200\n"
 "PO-Revision-Date: 2020-09-29 10:13+0200\n"
 "Last-Translator: Julien Palard <julien@palard.fr>\n"
 "Language-Team: \n"
@@ -53,7 +53,7 @@ msgstr ""
 
 #: website/templates/hkis/about.html:20
 msgid "You're a teacher?"
-msgstr "Vous êtes un-e professeur-e ?"
+msgstr "Vous êtes un·e professeur·e ?"
 
 #: website/templates/hkis/about.html:22
 msgid ""
@@ -62,7 +62,7 @@ msgid ""
 "account, we'll bind you to your class students so you can follow their\n"
 "individual progression."
 msgstr ""
-"Si vous êtes un-e professeur-e et que vous souhaitez utiliser hackinscience "
+"Si vous êtes un·e professeur·e et que vous souhaitez utiliser hackinscience "
 "pendant vos cours,\n"
 "vous pouvez demander un compte professeur par mail à team at hackinscience "
 "point org,\n"
@@ -226,16 +226,20 @@ msgstr ""
 "et `javascript` sont hébergés en interne (pas de CDN)."
 
 #: website/templates/hkis/about.html:87
+#, fuzzy
+#| msgid ""
+#| "If you read this, you probably don't like being tracked, there's two\n"
+#| "complimentary things you can do:"
 msgid ""
 "If you read this, you probably don't like being tracked, there's two\n"
-"complimentary things you can do:"
+"complementary things you can do:"
 msgstr ""
 "Si vous lisez ceci, vous n'aimez probablement pas être tracé,\n"
 "il y a deux choses supplémentaires que vous pouvez faire :"
 
 #: website/templates/hkis/about.html:90
 msgid "Enable the \"Do Not Track\" flag in your browser"
-msgstr "Activer l'option \"Do Not Track\" de voter navigateur"
+msgstr "Activer l'option \"Do Not Track\" de votre navigateur"
 
 #: website/templates/hkis/about.html:91
 msgid ""
@@ -250,12 +254,17 @@ msgstr ""
 "  Foundation](https://fr.wikipedia.org/wiki/Electronic_Frontier_Foundation)."
 
 #: website/templates/hkis/about.html:95
+#, fuzzy
+#| msgid ""
+#| "Pricavy Badger blocks advertisements and tracking cookies that do not "
+#| "respect the\n"
+#| "Do Not Track setting in a user's web browser."
 msgid ""
-"Pricavy Badger blocks advertisements and tracking cookies that do not "
+"Privacy Badger blocks advertisements and tracking cookies that do not "
 "respect the\n"
 "Do Not Track setting in a user's web browser."
 msgstr ""
-"Pricavy Badger bloque les publicités et les cookies de traçage qui ne "
+"Privacy Badger bloque les publicités et les cookies de traçage qui ne "
 "respectent pas l'option Do Not Track."
 
 #: website/templates/hkis/answer_form.html:8
@@ -326,7 +335,7 @@ msgid ""
 msgstr ""
 
 #: website/templates/hkis/exercise.html:40
-#: website/templates/hkis/exercise.html:171
+#: website/templates/hkis/exercise.html:179
 #: website/templates/hkis/lesson.html:13
 msgid "Next"
 msgstr "Suivant"
@@ -342,7 +351,7 @@ msgstr ""
 "Vous êtes maintenant classé <a href=\"%(profile_url)s\">NEW_RANKème</a>."
 
 #: website/templates/hkis/exercise.html:69
-#: website/templates/hkis/exercise.html:234
+#: website/templates/hkis/exercise.html:242
 msgid "Waiting for correction"
 msgstr "En attente de correction"
 
@@ -350,37 +359,38 @@ msgstr "En attente de correction"
 msgid "Waiting for test run"
 msgstr "Exécution en attente"
 
-#: website/templates/hkis/exercise.html:166
+#: website/templates/hkis/exercise.html:174
 msgid "Previous"
 msgstr "Précédent"
 
-#: website/templates/hkis/exercise.html:182
+#: website/templates/hkis/exercise.html:190
 msgid "Your Code"
 msgstr "Votre code"
 
-#: website/templates/hkis/exercise.html:196
+#: website/templates/hkis/exercise.html:204
 msgid "Use this to execute your code, so you can try things."
 msgstr ""
 "Utilisez ce bouton pour exécuter votre code, cela vous permet de tester des "
 "choses."
 
-#: website/templates/hkis/exercise.html:198
+#: website/templates/hkis/exercise.html:206
 msgid "Run"
 msgstr "Exécuter"
 
-#: website/templates/hkis/exercise.html:210
+#: website/templates/hkis/exercise.html:218
 msgid "Submit for validation"
 msgstr "Envoi pour validation"
 
-#: website/templates/hkis/exercise.html:213
+#: website/templates/hkis/exercise.html:221
 msgid "Login to check your code and save your progress."
-msgstr "Connectez-vous pour valider cet exercice et sauvegarder votre progression."
+msgstr ""
+"Connectez-vous pour valider cet exercice et sauvegarder votre progression."
 
-#: website/templates/hkis/exercise.html:220
+#: website/templates/hkis/exercise.html:228
 msgid "Results"
 msgstr "Résultats"
 
-#: website/templates/hkis/exercise.html:222
+#: website/templates/hkis/exercise.html:230
 #, python-format
 msgid "%(solutions_qty)s shared solutions"
 msgstr "%(solutions_qty)s solutions partagées"
