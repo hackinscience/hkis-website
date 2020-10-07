@@ -5,32 +5,38 @@
 
 {% block container %}
 
-<h1>Python exercises</h1>
+<div class="row">
+  <div class="col-md-8 offset-md-2">
 
-<table class="table table-sm table-hover table-responsive">
-  <tbody>
-    {% for exercise in exercises %}
-    <tr onclick="if (!event.ctrlKey){location.href='{% url "exercise" exercise.slug %}';}">
-      <td scope="row" class="d-flex align-items-center">
-          {% if exercise.tried %}
-            {% if exercise.done %}
-              <span class="good">✓</span>
-            {% else %}
-              <span class="bad">✗</span>
-            {% endif %}
-          {% endif %}
-      </td>
-      <td>
-        <a href="{% url "exercise" exercise.slug %}">
-          <h5 style="display:inline">{{ exercise.number }}. {{ exercise.title }}</h5>
-        </a>
-      </td>
-      <td>
-        <i>{% blocktrans with nb=exercise.successes %}Solved by {{ nb }}{% endblocktrans %}</i>
-      </td>
-    </tr>
-    {% endfor %}
-  </tbody>
-</table>
+    <h1 class="align-center">Python exercises</h1>
+
+    <table class="table table-sm table-hover">
+      <tbody>
+        {% for exercise in exercises %}
+        <tr onclick="if (!event.ctrlKey){location.href='{% url "exercise" exercise.slug %}';}" class="{% if exercise.tried %}{% if exercise.done %}table-success{% else %}table-danger{% endif %}{% endif %}">
+          <td scope="row" class="d-flex align-items-center">
+              {% if exercise.tried %}
+                {% if exercise.done %}
+                  <span class="good">✓</span>
+                {% else %}
+                  <span class="bad">✗</span>
+                {% endif %}
+              {% endif %}
+          </td>
+          <td>
+            <a href="{% url "exercise" exercise.slug %}">
+              <h5 style="display:inline">{{ exercise.number }}. {{ exercise.title }}</h5>
+            </a>
+          </td>
+          <td>
+            <i>{% blocktrans with nb=exercise.successes %}Solved by {{ nb }}{% endblocktrans %}</i>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+  </div>
+</div>
 
 {% endblock %}
