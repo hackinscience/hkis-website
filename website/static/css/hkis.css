@@ -41,10 +41,6 @@ a {
     font-size: 16px;
 }
 
-table#answer-table td {
-    border: none;
-}
-
 .result-box pre {
     margin-bottom: 0;
 }
