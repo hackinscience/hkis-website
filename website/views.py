@@ -123,6 +123,10 @@ class ExerciseView(DetailView):
     model = Exercise
     template_name = "hkis/exercise.html"
 
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        return queryset.select_related("author")
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["LANGUAGE_CODE"] = self.request.LANGUAGE_CODE
