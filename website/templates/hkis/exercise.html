@@ -182,11 +182,13 @@
   {% endif %}
 </div>
 {% endif %}
-<div class="row col-md-8 offset-md-2">
-  <div class="style-info" style="margin-bottom: 25px;">
-    <h1>{{ object.title }}</h1>
+<div class="col-md-8 offset-md-2">
+  <div class="style-info">
+    <h1 class="exercise-title">{{ object.title }}</h1>
     <div class="signature">Created by {{ object.author.first_name }} {{object.author.last_name }}</div>
-    {{ object.wording|markdown_to_bootstrap|i18n_doc_links:LANGUAGE_CODE }}
+    <div class="instructions">
+      {{ object.wording|markdown_to_bootstrap|i18n_doc_links:LANGUAGE_CODE }}
+    </div>
   </div>
 </div>
 
