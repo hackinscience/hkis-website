@@ -13,6 +13,7 @@ def parse_args():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--username")
     parser.add_argument("--password")
+    parser.add_argument("--password-file")
     parser.add_argument(
         "--endpoint", default="https://www.hackinscience.org/api/exercises/"
     )
@@ -31,7 +32,9 @@ def main():
     args = parse_args()
     if not args.username:
         args.username = input("Username: ")
-    if not args.password:
+    if args.password_file:
+        args.password = Path(args.password_file).read_text().rstrip("\n")
+    elif not args.password:
         args.password = getpass()
     next_exercise_page = args.endpoint
     while next_exercise_page:
