@@ -107,6 +107,7 @@ def snippet_message(snippet: Snippet):
 
 class ExerciseConsumer(AsyncJsonWebsocketConsumer):
     def __init__(self, *args, **kwargs):
+        self.settings = {}
         super().__init__(*args, **kwargs)
 
     def log(self, message, *args):
@@ -132,6 +133,8 @@ class ExerciseConsumer(AsyncJsonWebsocketConsumer):
             asyncio.create_task(self.recorrect(content))
         elif content["type"] == "snippet":
             asyncio.create_task(self.snippet(content))
+        elif content["type"] == "settings":
+            self.settings = content["value"]
         else:
             self.log("Unknown message received", json.dumps(content))
 
@@ -155,7 +158,11 @@ class ExerciseConsumer(AsyncJsonWebsocketConsumer):
         await self.send_json(answer_message(answer))
         self.log("Send answer to moulinette")
         is_valid, message = await check_answer(
-            {"check": answer.exercise.check, "source_code": source_code}
+            {
+                "check": answer.exercise.check,
+                "source_code": source_code,
+                "language": self.settings.get("LANGUAGE_CODE", "en"),
+            }
         )
         self.log("Got result from moulinette")
         answer, rank = await db_update_answer(answer.id, is_valid, message)

@@ -8,6 +8,12 @@
         <title>HackInScience - {% block title %}{% trans "Welcome!" %}{% endblock %}</title>
         <link href="{% static "bootstrap.min.css" %}" rel="stylesheet">
         <link href="{% static "css/hkis.css" %}" rel="stylesheet" type="text/css" />
+        <script>
+          var HKIS_SETTINGS = {
+              {% get_current_language as LANGUAGE_CODE %}
+              LANGUAGE_CODE: "{{ LANGUAGE_CODE }}",
+          };
+        </script>
         {% block stylesheets %}{% endblock %}
         {% block extrastyle %}{% endblock %}
         {% block extrahead %}{% endblock %}

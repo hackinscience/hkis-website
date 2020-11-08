@@ -72,23 +72,55 @@ def run_snippet_task(source_code: str) -> str:
             return "Timed out after 20 seconds."
 
 
-def congrats():
+def congrats(language):
     """Generates a congratulation sentence."""
     return (
         choice(
-            ["Congrats", "Nice job", "Well done", "Spot on", "Bravo", "Nice", "Good"]
+            {
+                "en": [
+                    "Congrats",
+                    "Nice job",
+                    "Well done",
+                    "Spot on",
+                    "Bravo",
+                    "Nice",
+                    "Good",
+                ],
+                "fr": [
+                    "Bravo",
+                    "Bien joué",
+                    "Super",
+                    "Excellent",
+                    "Joli",
+                ],
+            }[language]
         )
-        + choice(["! ", "!! ", "!!! ", "! ! "])
         + choice(
-            [
-                "Your exercise is OK.",
-                "Right answer.",
-                "Good answer.",
-                "Correct answer.",
-                "Looks good to me!",
-                "Your answer is right.",
-                "Your answer is correct.",
-            ]
+            {
+                "en": ["! ", "!! ", "!!! ", "! ! "],
+                "fr": [" ! ", " !! ", " !!! ", " ! ! "],
+            }[language]
+        )
+        + choice(
+            {
+                "en": [
+                    "Your exercise is OK.",
+                    "Right answer.",
+                    "Good answer.",
+                    "Correct answer.",
+                    "Looks good to me!",
+                    "Your answer is right.",
+                    "Your answer is correct.",
+                ],
+                "fr": [
+                    "C'est juste.",
+                    "Bonne réponse.",
+                    "Correct.",
+                    "Ça me semble bon.",
+                    "C'est la bonne réponse.",
+                    "Excellente réponse.",
+                ],
+            }[language]
         )
     )
 
@@ -128,7 +160,7 @@ def check_answer_task(answer: dict):
                 return False, "Checker timed out, look for infinite loops maybe?"
             if prof_proc.returncode != 0 or stdout:
                 return False, stdout
-            return True, congrats()
+            return True, congrats(answer.get("language", "en"))
         except TimeoutExpired:
             prof_proc.kill()
             prof_proc.wait()

@@ -134,6 +134,7 @@
             unlock_button("submit_snippet");
             connected = true;
             fill_message("{% trans "Connected to correction server." %}", "success");
+            window.ws.send(JSON.stringify({type: "settings", value: HKIS_SETTINGS}));
             document.querySelectorAll("td.answer-cell").forEach(function(answer) {
                 if (answer.dataset.isCorrected == "True") return ;
                 console.log("Need to correct answer number", answer.dataset.answerId);
