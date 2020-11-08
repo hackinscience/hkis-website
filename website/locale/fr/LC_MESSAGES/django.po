@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-11-08 10:51+0100\n"
-"PO-Revision-Date: 2020-11-08 10:49+0100\n"
+"POT-Creation-Date: 2020-11-08 18:50+0100\n"
+"PO-Revision-Date: 2020-11-08 18:50+0100\n"
 "Last-Translator: Julien Palard <julien@palard.fr>\n"
 "Language-Team: \n"
 "Language: fr\n"
@@ -269,7 +269,7 @@ msgid "Welcome!"
 msgstr "Bienvenue !"
 
 #: website/templates/hkis/exercise.html:41
-#: website/templates/hkis/exercise.html:180
+#: website/templates/hkis/exercise.html:181
 #: website/templates/hkis/lesson.html:13
 msgid "Next"
 msgstr "Suivant"
@@ -278,36 +278,42 @@ msgstr "Suivant"
 msgid "Need help?"
 msgstr "Besoin d&#39;aide ?"
 
-#: website/templates/hkis/exercise.html:54
+#: website/templates/hkis/exercise.html:53
 #, python-format
 msgid "Your new <a href=\"%(profile_url)s\">rank</a> is: NEW_RANK"
 msgstr ""
 "Vous êtes maintenant classé <a href=\"%(profile_url)s\">NEW_RANKème</a>."
 
-#: website/templates/hkis/exercise.html:71
-#: website/templates/hkis/exercise.html:249
+#: website/templates/hkis/exercise.html:58
+#, python-format
+msgid ""
+"<a href=\"%(login_url)s\">Login</a> to backup your code and progression."
+msgstr "<a href=\"%(login_url)s\">Connectez-vous</a> pour sauvegarder votre code et votre progression."
+
+#: website/templates/hkis/exercise.html:72
+#: website/templates/hkis/exercise.html:245
 msgid "Waiting for correction"
 msgstr "En attente de correction"
 
-#: website/templates/hkis/exercise.html:95
+#: website/templates/hkis/exercise.html:96
 msgid "Waiting for test run"
 msgstr "Exécution en attente"
 
-#: website/templates/hkis/exercise.html:175
+#: website/templates/hkis/exercise.html:176
 msgid "Previous"
 msgstr "Précédent"
 
-#: website/templates/hkis/exercise.html:197
+#: website/templates/hkis/exercise.html:198
 msgid "Your Code"
 msgstr "Votre code"
 
-#: website/templates/hkis/exercise.html:211
+#: website/templates/hkis/exercise.html:212
 msgid "Use this to execute your code, so you can try things."
 msgstr ""
 "Utilisez ce bouton pour exécuter votre code, cela vous permet de tester des "
 "choses."
 
-#: website/templates/hkis/exercise.html:213
+#: website/templates/hkis/exercise.html:214
 msgid "Run"
 msgstr "Exécuter"
 
@@ -315,16 +321,11 @@ msgstr "Exécuter"
 msgid "Submit for validation"
 msgstr "Envoi pour validation"
 
-#: website/templates/hkis/exercise.html:228
-msgid "Login to check your code and save your progress."
-msgstr ""
-"Connectez-vous pour valider cet exercice et sauvegarder votre progression."
-
-#: website/templates/hkis/exercise.html:235
+#: website/templates/hkis/exercise.html:231
 msgid "Results"
 msgstr "Résultats"
 
-#: website/templates/hkis/exercise.html:237
+#: website/templates/hkis/exercise.html:233
 #, python-format
 msgid "%(solutions_qty)s shared solutions"
 msgstr "%(solutions_qty)s solutions partagées"
@@ -691,6 +692,10 @@ msgstr "Réinitiation de mot de passe"
 #: website/templates/registration/registration_form.html:4
 msgid "Register"
 msgstr "S'enregistrer"
+
+#~ msgid "Login to check your code and save your progress."
+#~ msgstr ""
+#~ "Connectez-vous pour valider cet exercice et sauvegarder votre progression."
 
 #~ msgid "Python"
 #~ msgstr "Python"

@@ -8,14 +8,14 @@ from django.contrib.auth.models import User
 from django.utils.timezone import now
 
 from moulinette.tasks import check_answer, run_snippet
-from website.models import Answer, Exercise, Snippet, SnippetSerializer
+from website.models import Answer, Exercise, Snippet, UserStats
 from website.utils import markdown_to_bootstrap
-
+from website.serializers import AnswerSerializer, SnippetSerializer
 
 logger = logging.getLogger(__name__)
 
 # Channels reminders:
-# - The following class is instanciated once per websocket connection
+# - The consumer class is instanciated once per websocket connection
 #   (once per browser tab), it's the lifespan of a what channels call a scope.
 # - Group can group together multiple scopes, usefull to send a
 #   message to all browser tabs of a given user at once for example.
@@ -70,7 +70,13 @@ def db_update_answer(answer_id: int, is_valid: bool, correction_message: str):
     answer.is_valid = is_valid
     answer.corrected_at = now()
     answer.save()
-    return answer
+    if answer.is_valid and answer.user_id:
+        user_stats, _ = UserStats.objects.get_or_create(user=answer.user)
+        user_stats.recompute()
+        rank = user_stats.rank
+    else:
+        rank = None
+    return answer, rank
 
 
 @database_sync_to_async
@@ -84,32 +90,23 @@ def db_update_snippet(snippet_id: int, output: str):
 
 class ExerciseConsumer(AsyncJsonWebsocketConsumer):
     def __init__(self, *args, **kwargs):
-        self.group = None
         super().__init__(*args, **kwargs)
 
     def log(self, message, *args):
         if args:
             message = message + ": " + str(args)
-        if self.group:
-            logger.info("WebSocket (%s) %s", self.group, message)
-        else:
-            logger.info("WebSocket %s", message)
+        logger.info("WebSocket %s", message)
 
     async def connect(self):
         self.log("connect")
         self.exercise = await db_get_exercise(
             self.scope["url_route"]["kwargs"]["exercise_id"]
         )
-        if not self.scope["user"].is_anonymous:
-            self.group = f"user.{self.scope['user'].id}.ex.{self.exercise.id}"
-            await self.channel_layer.group_add(self.group, self.channel_name)
         self.log("accept")
         await self.accept()
 
     async def disconnect(self, close_code):
         self.log("disconnect")
-        if self.group:
-            await self.channel_layer.group_discard(self.group, self.channel_name)
 
     async def receive_json(self, content):
         if content["type"] == "answer":
@@ -134,18 +131,6 @@ class ExerciseConsumer(AsyncJsonWebsocketConsumer):
         await db_update_answer(uncorrected["id"], is_valid, message)
 
     async def answer(self, answer):
-        if not self.scope["user"].id:
-            self.log("Unauthenticated user tries to submit an exercise, dropping.")
-            await self.send_json(
-                {
-                    "type": "answer.update",
-                    "is_corrected": True,
-                    "correction_message_html": """You're not logged-in.
-Please <a href=/accounts/login/>login</a> first.""",
-                    "is_valid": False,
-                }
-            )
-            return
         self.log("Receive answer from browser")
         answer_id, exercise_check = await db_create_answer(
             self.exercise.id, self.scope["user"].id, answer["source_code"]
@@ -155,14 +140,15 @@ Please <a href=/accounts/login/>login</a> first.""",
             {"check": exercise_check, "source_code": answer["source_code"]}
         )
         self.log("Got result from moulinette")
-        await db_update_answer(answer_id, is_valid, message)
-
-    async def answer_update(self, answer):
-        self.log("Receive answer update from DB")
-        answer["correction_message_html"] = markdown_to_bootstrap(
-            answer["correction_message"]
+        answer, rank = await db_update_answer(answer_id, is_valid, message)
+        message = AnswerSerializer(answer).data
+        if rank:
+            message["user_rank"] = rank
+        message["correction_message_html"] = markdown_to_bootstrap(
+            message["correction_message"]
         )
-        await self.send_json(answer)
+        message["type"] = "answer.update"
+        await self.send_json(message)
 
     async def snippet(self, snippet):
         """Snippet runner does not listen for DB events: it awaits for the

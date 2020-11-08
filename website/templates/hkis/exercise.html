@@ -48,13 +48,14 @@
             div.innerHTML = answer.correction_message_html;
             if (answer.is_valid) {
                 answer_table.rows[0].className = "table-success";
-                if (answer.user_rank < {{ current_rank }}) {
-                    {% if user.is_authenticated %}
+                if (answer.user && answer.user_rank < {{ current_rank }}) {
                     {% url 'profile' user.id as profile_url %}
                     var message = '<div class="alert alert-success">{% blocktrans %}Your new <a href="{{ profile_url }}">rank</a> is: NEW_RANK{% endblocktrans %}</div>'.replace('NEW_RANK', answer.user_rank);
-                    {% else %}
-                    var message = '<div class="alert alert-success"></div>';
-                    {% endif %}
+                    div.insertAdjacentHTML('beforeend', message);
+                }
+                if (!answer.user) {
+                    {% url 'auth_login' as login_url %}
+                    var message = '<div class="alert alert-warning">{% blocktrans %}<a href="{{ login_url }}">Login</a> to backup your code and progression.{% endblocktrans %}</div>';
                     div.insertAdjacentHTML('beforeend', message);
                 }
                 div.appendChild(button_next);
@@ -212,7 +213,6 @@
           onclick="ws_submit_snippet(this.form); return false;">
           {% trans "Run" %}
         </button>
-        {% if not user.is_anonymous %}
         <button
           id="submit_answer"
           class="btn btn-primary"
@@ -224,10 +224,6 @@
           onclick="ws_submit_answer(this.form); return false;">
           {% trans "Submit for validation" %}
         </button>
-        {% else %}
-        <a class="btn btn-primary" href="{% url 'auth_login' %}" role="button">{% trans "Login to check your code and save your progress." %}</a>
-
-        {% endif %}
         {% endif %}
     </form>
   </div>

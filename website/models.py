@@ -1,18 +1,13 @@
 import logging
 from datetime import timedelta
 
-from asgiref.sync import async_to_sync
-from channels.layers import get_channel_layer
 from django.contrib.auth.models import User
 from django.db import models
 from django.db.models import Count, IntegerField, Value, Q
-from django.db.models.signals import post_save
 from django.urls import reverse
 from django.utils.text import Truncator
 from django.utils.timezone import now
-from django.utils import translation
 from django_extensions.db.fields import AutoSlugField
-from rest_framework import serializers
 
 logger = logging.getLogger(__name__)
 
@@ -158,7 +153,9 @@ class Answer(models.Model):
     exercise = models.ForeignKey(
         Exercise, on_delete=models.CASCADE, related_name="answers"
     )
-    user = models.ForeignKey(User, on_delete=models.CASCADE, editable=False)
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, editable=False, null=True, blank=True
+    )
     source_code = models.TextField()
     is_corrected = models.BooleanField(default=False)
     is_valid = models.BooleanField(default=False)
@@ -172,36 +169,9 @@ class Answer(models.Model):
 
     def __str__(self):
         return "{} on {}".format(
-            Truncator(self.user.username).chars(30), self.exercise.title
+            Truncator(self.user.username if self.user else "Anon").chars(30),
+            self.exercise.title,
         )
 
     def get_absolute_url(self):
         return reverse("exercise", args=[self.exercise.slug])
-
-
-class AnswerSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Answer
-        fields = "__all__"
-
-
-class SnippetSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Snippet
-        fields = "__all__"
-
-
-def cb_new_answer(sender, instance, created, **kwargs):
-    group = f"user.{instance.user.id}.ex.{instance.exercise.id}"
-    message = AnswerSerializer(instance).data
-    if instance.is_valid:
-        user_stats, _ = UserStats.objects.get_or_create(user=instance.user)
-        user_stats.recompute()
-        message["user_rank"] = user_stats.rank
-    channel_layer = get_channel_layer()
-    message["type"] = "answer.update"
-    logger.info("New answer notification for user %s", instance.user.id)
-    async_to_sync(channel_layer.group_send)(group, message)
-
-
-post_save.connect(cb_new_answer, sender=Answer)
