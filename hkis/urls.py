@@ -27,13 +27,10 @@ from website.views import (
     StatsListView,
     about,
     helppage,
-    dashboard_view,
     index,
     team,
 )
 
-
-favicon_view = lambda request: redirect("/static/favicon.ico", permanent=True)
 
 urlpatterns = [
     path("", index, name="index"),
@@ -44,11 +41,12 @@ urlpatterns = [
     path("api/", include(router.urls)),
     path("api-auth/", include("rest_framework.urls")),
     path("accounts/", include("registration.backends.simple.urls")),
-    path("dashboard/", dashboard_view, name="dashboard"),
     path("exercises/", ExerciseListView.as_view(), name="exercises"),
     path("exercises/<slug:slug>", ExerciseView.as_view(), name="exercise"),
     path("exercises/<slug:slug>/solutions", SolutionView.as_view(), name="solutions"),
-    path("favicon.ico", favicon_view),
+    path(
+        "favicon.ico", lambda request: redirect("/static/favicon.ico", permanent=True)
+    ),
     path("profile/<int:pk>", ProfileView.as_view(), name="profile"),
     path("stats/", StatsListView.as_view(), name="stats"),
     path("stats/<int:pk>", StatsDetailView.as_view(), name="stats"),

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-11-08 10:45+0100\n"
+"POT-Creation-Date: 2020-11-08 10:51+0100\n"
 "PO-Revision-Date: 2020-11-08 10:49+0100\n"
 "Last-Translator: Julien Palard <julien@palard.fr>\n"
 "Language-Team: \n"
@@ -267,61 +267,6 @@ msgstr "Envoyer"
 #: website/templates/hkis/base.html:8
 msgid "Welcome!"
 msgstr "Bienvenue !"
-
-#: website/templates/hkis/dashboard.html:7
-msgid "Python"
-msgstr "Python"
-
-#: website/templates/hkis/dashboard.html:8
-msgid ""
-"Python is a widely used general-purpose, high-level programming language. "
-"Its design philosophy emphasizes code readability, and its syntax allows "
-"programmers to express concepts in fewer lines of code than would be "
-"possible in languages such as C++ or Java..."
-msgstr ""
-"Python est un langage de programmation de haut niveau à l'utilisation "
-"largement répandue. Sa philosophie la lecture du code source, et sa syntaxe "
-"permet aux développeurs d'exprimer des concepts en moins de lignes de code "
-"comparé à des langages comme le C++ ou le Java..."
-
-#: website/templates/hkis/dashboard.html:10
-msgid "Exercices"
-msgstr "Exercices"
-
-#: website/templates/hkis/dashboard.html:11
-msgid "Courses"
-msgstr "Cours"
-
-#: website/templates/hkis/dashboard.html:15
-msgid "C"
-msgstr "C"
-
-#: website/templates/hkis/dashboard.html:16
-msgid ""
-"C is a general-purpose, imperative computer programming language, supporting "
-"structured programming, lexical variable scope and recursion, while a static "
-"type system prevents many unintended operations."
-msgstr "C est un langage de programmation impératif généraliste, de bas niveau."
-
-#: website/templates/hkis/dashboard.html:18
-#: website/templates/hkis/dashboard.html:25
-#: website/templates/hkis/dashboard.html:34
-msgid "View details"
-msgstr "Voir le code"
-
-#: website/templates/hkis/dashboard.html:22
-msgid "Shell script"
-msgstr "Script Shell"
-
-#: website/templates/hkis/dashboard.html:23
-msgid "Default Command-line interpreter, for Unix operating systems."
-msgstr "Interpréteur en ligne de commande pour les systèmes Unix."
-
-#: website/templates/hkis/dashboard.html:32
-msgid ""
-"MATLAB (matrix laboratory) is a multi-paradigm numerical computing "
-"environment and fourth-generation programming language."
-msgstr ""
 
 #: website/templates/hkis/exercise.html:41
 #: website/templates/hkis/exercise.html:180
@@ -746,6 +691,45 @@ msgstr "Réinitiation de mot de passe"
 #: website/templates/registration/registration_form.html:4
 msgid "Register"
 msgstr "S'enregistrer"
+
+#~ msgid "Python"
+#~ msgstr "Python"
+
+#~ msgid ""
+#~ "Python is a widely used general-purpose, high-level programming language. "
+#~ "Its design philosophy emphasizes code readability, and its syntax allows "
+#~ "programmers to express concepts in fewer lines of code than would be "
+#~ "possible in languages such as C++ or Java..."
+#~ msgstr ""
+#~ "Python est un langage de programmation de haut niveau à l'utilisation "
+#~ "largement répandue. Sa philosophie la lecture du code source, et sa "
+#~ "syntaxe permet aux développeurs d'exprimer des concepts en moins de "
+#~ "lignes de code comparé à des langages comme le C++ ou le Java..."
+
+#~ msgid "Exercices"
+#~ msgstr "Exercices"
+
+#~ msgid "Courses"
+#~ msgstr "Cours"
+
+#~ msgid "C"
+#~ msgstr "C"
+
+#~ msgid ""
+#~ "C is a general-purpose, imperative computer programming language, "
+#~ "supporting structured programming, lexical variable scope and recursion, "
+#~ "while a static type system prevents many unintended operations."
+#~ msgstr ""
+#~ "C est un langage de programmation impératif généraliste, de bas niveau."
+
+#~ msgid "View details"
+#~ msgstr "Voir le code"
+
+#~ msgid "Shell script"
+#~ msgstr "Script Shell"
+
+#~ msgid "Default Command-line interpreter, for Unix operating systems."
+#~ msgstr "Interpréteur en ligne de commande pour les systèmes Unix."
 
 #~ msgid "Pronal informations"
 #~ msgstr "Informations personnelles"

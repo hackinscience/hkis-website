@@ -35,11 +35,6 @@ def team(request):
     return render(request, "hkis/team.html")
 
 
-@login_required
-def dashboard_view(request):
-    return render(request, "hkis/dashboard.html")
-
-
 class ProfileView(LoginRequiredMixin, UpdateView):
     model = User
     fields = ["username", "email"]
