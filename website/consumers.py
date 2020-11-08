@@ -34,7 +34,7 @@ def db_create_answer(exercise_id: int, user_id: int, source_code):
     answer = Exercise.objects.get(pk=exercise_id).answers.create(
         source_code=source_code, user_id=user_id
     )
-    return answer.id, answer.exercise.check
+    return answer
 
 
 @database_sync_to_async
@@ -88,6 +88,23 @@ def db_update_snippet(snippet_id: int, output: str):
     return snippet
 
 
+def answer_message(answer: Answer, rank: int = None) -> dict:
+    message = AnswerSerializer(answer).data
+    if rank:
+        message["user_rank"] = rank
+    message["correction_message_html"] = markdown_to_bootstrap(
+        message["correction_message"]
+    )
+    message["type"] = "answer.update"
+    return message
+
+
+def snippet_message(snippet: Snippet):
+    message = SnippetSerializer(snippet).data
+    message["type"] = "snippet.update"
+    return message
+
+
 class ExerciseConsumer(AsyncJsonWebsocketConsumer):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -110,7 +127,7 @@ class ExerciseConsumer(AsyncJsonWebsocketConsumer):
 
     async def receive_json(self, content):
         if content["type"] == "answer":
-            asyncio.create_task(self.answer(content))
+            asyncio.create_task(self.answer(content["source_code"]))
         elif content["type"] == "recorrect":
             asyncio.create_task(self.recorrect(content))
         elif content["type"] == "snippet":
@@ -130,17 +147,18 @@ class ExerciseConsumer(AsyncJsonWebsocketConsumer):
         self.log("Got result from moulinette")
         await db_update_answer(uncorrected["id"], is_valid, message)
 
-    async def answer(self, answer):
+    async def answer(self, source_code):
         self.log("Receive answer from browser")
-        answer_id, exercise_check = await db_create_answer(
-            self.exercise.id, self.scope["user"].id, answer["source_code"]
+        answer = await db_create_answer(
+            self.exercise.id, self.scope["user"].id, source_code
         )
+        await self.send_json(answer_message(answer))
         self.log("Send answer to moulinette")
         is_valid, message = await check_answer(
-            {"check": exercise_check, "source_code": answer["source_code"]}
+            {"check": answer.exercise.check, "source_code": source_code}
         )
         self.log("Got result from moulinette")
-        answer, rank = await db_update_answer(answer_id, is_valid, message)
+        answer, rank = await db_update_answer(answer.id, is_valid, message)
         message = AnswerSerializer(answer).data
         if rank:
             message["user_rank"] = rank

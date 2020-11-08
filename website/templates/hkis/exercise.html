@@ -67,7 +67,7 @@
             }
             while (elem.firstChild) elem.removeChild(elem.firstChild);
             elem.appendChild(div);
-            document.getElementById('submit_answer').removeAttribute('disabled');
+            unlock_button('submit_answer');
         } else {
             elem.innerHTML = '<img src="{% static "img/loading_anim.gif" %}" height=30> {% trans "Waiting for correction" %}';
         }
@@ -91,14 +91,32 @@
             pre.appendChild(content);
             while (elem.firstChild) elem.removeChild(elem.firstChild);
             elem.appendChild(div);
-            document.getElementById("submit_snippet").removeAttribute('disabled');
+            unlock_button('submit_answer');
         } else {
             elem.innerHTML = '<img src="{% static "img/loading_anim.gif" %}" height=30> {% trans "Waiting for test run" %}';
         }
     }
 
+    function fill_message(message, type) {
+        /* type in {"success", "danger", "warning", "info" } */
+        console.log("[" + type + "]" + message);
+        var answer_table = document.getElementById("answer-table");
+        if (!answer_table)
+            return;
+        var first_row = answer_table.getElementsByTagName("tr")[0];
+        var first_cell = null;
+        if (first_row)
+            first_cell = first_row.getElementsByTagName("td")[0];
+        var html = '<div class="alert alert-' + type + '">' + message + '</td> </tr>';
+        if (first_cell && !first_cell.id)
+            first_cell.innerHTML = html
+        else
+            append_to_answer_table('<tr><td>' + html + '</td></tr>');
+    }
+
     function websocket_connect(ws_location) {
-        console.log("Trying to open WebSocket connection.");
+        var connected = false;
+        fill_message("{% trans "Connecting to correction server…" %}", "info");
         window.ws = new WebSocket(ws_location);
         window.ws.onmessage = function(e) {
             var data = JSON.parse(e.data);
@@ -108,38 +126,55 @@
             if (data.type == "answer.update")
                 fill_answer(data);
         };
-        window.ws.onerror = function() {
-            console.log("WebSocket error.");
+        window.ws.onerror = function(event) {
+            console.error("WebSocket error observed:", event);
         };
         window.ws.onopen = function() {
-            console.log("WebSocket opened.");
+            unlock_button("submit_answer");
+            unlock_button("submit_snippet");
+            connected = true;
+            fill_message("{% trans "Connected to correction server." %}", "success");
             document.querySelectorAll("td.answer-cell").forEach(function(answer) {
                 if (answer.dataset.isCorrected == "True") return ;
                 console.log("Need to correct answer number", answer.dataset.answerId);
                 window.ws.send(JSON.stringify({"type": "recorrect", "id": Number(answer.dataset.answerId)}));
             });
         };
-        window.ws.onclose = function() {
-            console.log("WebSocket closed, will retry to connect in 5s");
+        window.ws.onclose = function(event) {
+            console.log("onclose", event);
+            if (connected)
+                fill_message("{% trans "Connection to correction server lost, will retry in 5s…" %}", "warning");
+            else
+                {% url 'help' as help_url %}
+                fill_message("{% trans "Cannot connect to correction server, will retry in 5s…" %}" + "<br/>" +
+                             "{% blocktrans %}(See the <a href='{{ help_url }}#FAQ'>FAQ</a> if it persists.){% endblocktrans %}", "warning");
             setTimeout(function(){websocket_connect(ws_location)}, 5000);
+            lock_button("submit_answer", 0);
+            lock_button("submit_snippet", 0);
         };
     }
 
     function ws_submit_answer(form) {
-        document.getElementById('submit_answer').setAttribute('disabled', true);
-        setTimeout(function(){document.getElementById('submit_answer').removeAttribute('disabled');}, 1000);
-
         var message = {"type": "answer", "source_code": form["source_code"].value};
+        lock_button("submit_answer", 1);
         console.log("WebSocket send answer", message);
         window.ws.send(JSON.stringify(message));
 
     }
 
-    function ws_submit_snippet(form) {
-        document.getElementById('submit_snippet').setAttribute('disabled', true);
-        setTimeout(function(){document.getElementById('submit_snippet').removeAttribute('disabled');}, 1000);
+    function unlock_button(button_id) {
+        document.getElementById(button_id).removeAttribute('disabled');
+    }
 
+    function lock_button(button_id, unlock_after_seconds) {
+        document.getElementById(button_id).setAttribute('disabled', true);
+        if (unlock_after_seconds)
+            setTimeout(function(){unlock_button(button_id);}, unlock_after_seconds * 1000);
+    }
+
+    function ws_submit_snippet(form) {
         var message = {"type": "snippet", "source_code": form["source_code"].value};
+        lock_button('submit_snippet', 1);
         console.log("WebSocket send snippet", message);
         window.ws.send(JSON.stringify(message));
 
@@ -204,6 +239,7 @@
         {% endfor %}
         {% if not is_impersonating %}
         <button
+          disabled
           id="submit_snippet"
           class="btn btn-secondary"
           data-toggle="tooltip"
@@ -214,6 +250,7 @@
           {% trans "Run" %}
         </button>
         <button
+          disabled
           id="submit_answer"
           class="btn btn-primary"
           data-toggle="tooltip"

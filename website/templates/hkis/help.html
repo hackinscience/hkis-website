@@ -89,6 +89,43 @@ topics and different languages, mainly:{% endblocktrans %}
 
 {% endmd %}
 
+
+<a id=FAQ /><h2>{% trans "Frequently Asked Questions" %}</h2>
+
+<div class="card mb-3">
+  <div class="card-body">
+  <h4 class="card-title">{% trans "Can't connect to correction server?" %}</h4>
+  <p class="card-text">{% md %}{% blocktrans %}
+If you have the correction server connection error, there's two main possibilities:
+
+Either your internet provider (or VPN, or ...) blocks
+[WebSockets](https://fr.wikipedia.org/wiki/WebSocket), in which case
+you should politely ask for them to update their blocking policy.
+
+Or my server is down (in which case you should not even be able to
+read this message).
+
+Anyway don't hesitate to open [an
+issue](https://framagit.org/hackinscience/hkis-website/issues) in the
+bug tracker, so I know.
+
+{% endblocktrans %}{% endmd %}</p>
+  </div>
+</div>
+
+<div class="card mb-3">
+  <div class="card-body">
+  <h4 class="card-title">{% trans "My question is not in the FAQ, how to add it?" %}</h4>
+  <p class="card-text">{% md %}{% blocktrans %}
+Ask me, I'll reply, and if it's frequently asked, I'll add it here.
+
+You can ask me using by opening [an issue](https://framagit.org/hackinscience/hkis-website/issues),
+or send me an email: [julien@palard.fr](mailto:julien@palard.fr).
+
+{% endblocktrans %}{% endmd %}</p>
+  </div>
+</div>
+
   </div>
 </div>
 {% endblock %}
