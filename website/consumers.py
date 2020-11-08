@@ -148,7 +148,8 @@ class ExerciseConsumer(AsyncJsonWebsocketConsumer):
             {"check": uncorrected["check"], "source_code": uncorrected["source_code"]}
         )
         self.log("Got result from moulinette")
-        await db_update_answer(uncorrected["id"], is_valid, message)
+        answer, rank = await db_update_answer(uncorrected["id"], is_valid, message)
+        await self.send_json(answer_message(answer, rank))
 
     async def answer(self, source_code):
         self.log("Receive answer from browser")
@@ -166,14 +167,7 @@ class ExerciseConsumer(AsyncJsonWebsocketConsumer):
         )
         self.log("Got result from moulinette")
         answer, rank = await db_update_answer(answer.id, is_valid, message)
-        message = AnswerSerializer(answer).data
-        if rank:
-            message["user_rank"] = rank
-        message["correction_message_html"] = markdown_to_bootstrap(
-            message["correction_message"]
-        )
-        message["type"] = "answer.update"
-        await self.send_json(message)
+        await self.send_json(answer_message(answer, rank))
 
     async def snippet(self, snippet):
         """Snippet runner does not listen for DB events: it awaits for the
@@ -187,13 +181,9 @@ class ExerciseConsumer(AsyncJsonWebsocketConsumer):
         snippet_obj = await db_create_snippet(
             self.scope["user"], snippet["source_code"]
         )
-        message = SnippetSerializer(snippet_obj).data
-        message["type"] = "snippet.update"
-        await self.send_json(message)
+        await self.send_json(snippet_message(snippet_obj))
         self.log("Sending snippet to runner")
         result = await run_snippet(snippet["source_code"])
         self.log("Got result from snippet runner")
         snippet_obj = await db_update_snippet(snippet_obj.id, result)
-        message = SnippetSerializer(snippet_obj).data
-        message["type"] = "snippet.update"
-        await self.send_json(message)
+        await self.send_json(snippet_message(snippet_obj))
