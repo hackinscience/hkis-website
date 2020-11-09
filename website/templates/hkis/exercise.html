@@ -275,7 +275,7 @@
   </div>
   <div class="col-md-4 style-info">
     <div id="answers-result" class="result">
-      <table id="answer-table" class="table">
+      <table id="answer-table" class="table" style="table-layout: fixed">
         {% for answer in answers %}
         <tr class="{% if answer.is_valid %}table-success{%else%}table-danger{% endif %}">
           <td id="td-{{ answer.id }}"
