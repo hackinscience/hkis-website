@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-11-08 22:37+0100\n"
-"PO-Revision-Date: 2020-11-08 22:50+0100\n"
+"POT-Creation-Date: 2020-11-09 09:36+0100\n"
+"PO-Revision-Date: 2020-11-09 09:44+0100\n"
 "Last-Translator: Julien Palard <julien@palard.fr>\n"
 "Language-Team: \n"
 "Language: fr\n"
@@ -269,7 +269,7 @@ msgid "Welcome!"
 msgstr "Bienvenue !"
 
 #: website/templates/hkis/exercise.html:41
-#: website/templates/hkis/exercise.html:216
+#: website/templates/hkis/exercise.html:217
 #: website/templates/hkis/lesson.html:13
 msgid "Next"
 msgstr "Suivant"
@@ -293,7 +293,7 @@ msgstr ""
 "votre progression."
 
 #: website/templates/hkis/exercise.html:72
-#: website/templates/hkis/exercise.html:282
+#: website/templates/hkis/exercise.html:283
 msgid "Waiting for correction"
 msgstr "En attente de correction"
 
@@ -309,46 +309,50 @@ msgstr "Connexion au serveur de correction en cours…"
 msgid "Connected to correction server."
 msgstr "Connecté au serveur de correction!"
 
-#: website/templates/hkis/exercise.html:146
+#: website/templates/hkis/exercise.html:147
 msgid "Connection to correction server lost, will retry in 5s…"
-msgstr "La connexion au serveur de correction a échouée. Nouvelle tentative dans 5s…"
-
-#: website/templates/hkis/exercise.html:149
-msgid "Cannot connect to correction server, will retry in 5s…"
-msgstr "Impossible de se connecter au serveur de correction. Nouvelle tentative dans 5s…"
+msgstr ""
+"La connexion au serveur de correction a échouée. Nouvelle tentative dans 5s…"
 
 #: website/templates/hkis/exercise.html:150
+msgid "Cannot connect to correction server, will retry in 5s…"
+msgstr ""
+"Impossible de se connecter au serveur de correction. Nouvelle tentative dans "
+"5s…"
+
+#: website/templates/hkis/exercise.html:151
 #, python-format
 msgid "(See the <a href='%(help_url)s#FAQ'>FAQ</a> if it persists.)"
-msgstr "(Consultez la <a href='%(help_url)s#FAQ'>FAQ</a> si le problème persiste.)"
+msgstr ""
+"(Consultez la <a href='%(help_url)s#FAQ'>FAQ</a> si le problème persiste.)"
 
-#: website/templates/hkis/exercise.html:211
+#: website/templates/hkis/exercise.html:212
 msgid "Previous"
 msgstr "Précédent"
 
-#: website/templates/hkis/exercise.html:233
+#: website/templates/hkis/exercise.html:234
 msgid "Your Code"
 msgstr "Votre code"
 
-#: website/templates/hkis/exercise.html:248
+#: website/templates/hkis/exercise.html:249
 msgid "Use this to execute your code, so you can try things."
 msgstr ""
 "Utilisez ce bouton pour exécuter votre code, cela vous permet de tester des "
 "choses."
 
-#: website/templates/hkis/exercise.html:250
+#: website/templates/hkis/exercise.html:251
 msgid "Run"
 msgstr "Exécuter"
 
-#: website/templates/hkis/exercise.html:262
+#: website/templates/hkis/exercise.html:263
 msgid "Submit for validation"
 msgstr "Envoi pour validation"
 
-#: website/templates/hkis/exercise.html:268
+#: website/templates/hkis/exercise.html:269
 msgid "Results"
 msgstr "Résultats"
 
-#: website/templates/hkis/exercise.html:270
+#: website/templates/hkis/exercise.html:271
 #, python-format
 msgid "%(solutions_qty)s shared solutions"
 msgstr "%(solutions_qty)s solutions partagées"
@@ -371,22 +375,17 @@ msgid "Report a bug on hackinscience"
 msgstr "Signaler une erreur sur Hackinscience"
 
 #: website/templates/hkis/help.html:13
-msgid "If you found an issue in an exercise, or the website, please either:"
-msgstr ""
-"Si vous trouvez une erreur dans un exercice, ou sur le site web, merci de "
-"bien vouloir :"
-
-#: website/templates/hkis/help.html:15
 msgid ""
-"Fill a bug [in our bugtracker](https://framagit.org/hackinscience/hkis-"
-"website/issues)."
+"If you found an issue in an exercise, or the website, please either:\n"
+"\n"
+"- Fill a bug [in our bugtracker](https://framagit.org/hackinscience/hkis-"
+"website/issues).\n"
+"- Send me an email: [julien@palard.fr](mailto:julien@palard.fr).\n"
 msgstr ""
-"Reporter l'erreur [sur notre gestionnaire de bugs](https://framagit.org/"
-"hackinscience/hkis-website/issues)."
-
-#: website/templates/hkis/help.html:16
-msgid "Send me an email:"
-msgstr "M'envoyer un mail :"
+"Si vous avez trouvé un bug sur le site, dans la moulinette de correction, ou n'importe où, vous pouvez soit :\n"
+"\n"
+"- Ouvrir [un ticket](https://framagit.org/hackinscience/hkis-website/issues).\n"
+"- M'en parler directement, je suis `mdk` sur [discuss.afpy.org](https://discuss.afpy.org), et sur freenode, ou par mail : [julien@palard.fr](mailto:julien@palard.fr).\n"
 
 #: website/templates/hkis/help.html:19
 msgid "Get help from the Python community"
@@ -395,120 +394,76 @@ msgstr "Obtenir de l'aide de la communauté Python"
 #: website/templates/hkis/help.html:21
 msgid ""
 "The Python community is known to be friendly and welcoming, don't\n"
-"hesitate to ask for help! Most of us are using freenode IRC channels\n"
-"to talk."
+"hesitate to ask for help!\n"
+"\n"
+"\n"
+"### Asking on a forum\n"
+"\n"
+"There's a Python forum at\n"
+"[discuss.python.org](https://discuss.python.org), feel free to ask\n"
+"your question in the `Users` category.\n"
+"\n"
+"\n"
+"### Asking in the chat\n"
+"\n"
+"You can ask in the `#python` channel of freenode, you can use\n"
+"[https://kiwi.freenode.net](https://kiwi.freenode.net) if you don't\n"
+"have an IRC client.\n"
+"\n"
+"\n"
+"### Asking by mail\n"
+"\n"
+"There's the\n"
+"[python-list](https://mail.python.org/mailman/listinfo/python-list)\n"
+"mailing list.\n"
+"\n"
+"\n"
+"### How to ask a question?\n"
+"\n"
+"Don't ask to ask, just ask.\n"
+"\n"
+"Be polite and respectfull.\n"
+"\n"
+"Don't ask for someone else to solve your exercise for you, it won't\n"
+"help you learn.\n"
+"\n"
 msgstr ""
-"La communauté Python est connue pour être amicale et bienveillante, "
-"n'hésitez pas à demander de l'aide ! La plupart d'entre nous utilisons le "
-"réseau IRC freenode et ses canaux pour discuter."
-
-#: website/templates/hkis/help.html:26
-msgid "How to connect to IRC?"
-msgstr "Comment se connecter à IRC ?"
-
-#: website/templates/hkis/help.html:28
-msgid ""
-"There's a nice web client on: [https://kiwi.freenode.net](https://kiwi."
-"freenode.net)."
-msgstr ""
-"Il existe un bon client web sur : [https://kiwi.freenode.net](https://kiwi."
-"freenode.net)."
-
-#: website/templates/hkis/help.html:30
-msgid ""
-"Pick a `Login` and a channel (see common Python IRC Channels\n"
-"below). If you don't have a NickServ account (or don't know what it\n"
-"is), don't check the \"I have a password\" box."
-msgstr ""
-"Choisissez `un pseudonyme` et un canal (voir les canaux IRC Python usuels ci-"
-"dessous). Si vous n'avez pas de compte NickServ (ou ne savez pas ce que "
-"c'est), ne cochez pas la case à cocher \"I have a password\"."
-
-#: website/templates/hkis/help.html:35
-msgid "How to ask a question?"
-msgstr "Comment poser une question ?"
-
-#: website/templates/hkis/help.html:37
-msgid "Don't ask to ask, just ask."
-msgstr ""
-"Ne demandez pas si vous pouvez poser une question, posez votre question "
-"directement."
-
-#: website/templates/hkis/help.html:39
-msgid "Be polite and respectfull."
-msgstr "Soyez poli et respectueux."
-
-#: website/templates/hkis/help.html:41
-msgid ""
-"Be patient too: We're not always watching our screens for new\n"
-"messages, it can take 15mn for someone to notice a new message, like\n"
-"when you send an email."
-msgstr ""
-"Soyez également patient : Nous ne sommes pas toujours devant notre écran à "
-"attendre des nuveaux messages, cela peut prendre 15 minutes à quelqu'un de "
-"se rendre compte qu'il y a un message, comme lorsqu'on envoie un mail."
-
-#: website/templates/hkis/help.html:45
-msgid ""
-"The author of HackInScience is `mdk` on Freenode, on various channels\n"
-"but mainly on `#python-fr` (I'm French! I bake my own bread!), don't\n"
-"hesitate to prefix your question with `mdk: ` so I notice it faster."
-msgstr ""
-"L'auteur de HackInScience s'appelle `mdk` sur Freenode, il est présent sur "
-"beaucoup de canaux, mais principalement sur `#python-fr` (Je suis français ! "
-"Je fais mon propre pain !), n'hésitez pas à préfixer votre question par `mdk:"
-"` de manière à ce que je sois notifié plus rapidement."
-
-#: website/templates/hkis/help.html:50
-msgid "IRC Channels"
-msgstr "Canaux IRC"
-
-#: website/templates/hkis/help.html:52
-msgid ""
-"There's multiple channels related to Python on freenode, on different\n"
-"topics and different languages, mainly:"
-msgstr ""
-"Il existe une multitude de canaux de discussions liés au langage Python sur "
-"freenode, sur divers sujets et dans différentes langues, principalement :"
-
-#: website/templates/hkis/help.html:55
-msgid "the main one, but needs a freenode account"
-msgstr "le principal, mais nécessite un compte freenode"
-
-#: website/templates/hkis/help.html:57
-msgid "And many variations around languages and topics:"
-msgstr "Et beaucoup de variantes autant dans les sujets que dans les langues :"
+"La communauté Python est connue pour être amicale et bienveillante,\n"
+"n'hésitez pas à demander de l'aide !\n"
+"\n"
+"### Demander sur un forum\n"
+"\n"
+"L'association Francophone Python, l'AFPy, a un forum :\n"
+"[discuss.afpy.org](https://discuss.afpy.org), n'hésitez pas à utiliser\n"
+"la catégorie \"Entraide\".\n"
+"\n"
+"\n"
+"### Demander sur un chat\n"
+"\n"
+"Vous pouvez demander de l'aide sur freenode (IRC), sur le salon `#python-fr`.\n"
+"\n"
+"Si vous n'avez pas de client IRC, utilisez: [https://kiwi.freenode.net](https://kiwi.freenode.net).\n"
+"\n"
+"\n"
+"### Comment poser une question ?\n"
+"\n"
+"Soyez poli et respectueux.\n"
+"\n"
+"Ne demandez pas l'autorisation de poser une question, posez votre question\n"
+"directement.\n"
+"\n"
+"Ne demandez pas à ce que quelqu'un fasse votre exercice pour vous, ce\n"
+"n'est pas une bonne manière d'apprendre.\n"
 
 #: website/templates/hkis/help.html:59
-msgid "like #python, but friendlier."
-msgstr "comme #python, mais encore plus accueillant."
-
-#: website/templates/hkis/help.html:63
-msgid "Copenhagen Django (and everything python/web related) Group"
-msgstr ""
-"Groupe Django (et de tout ce qui est lié à Python et au web) de Copenhague"
-
-#: website/templates/hkis/help.html:74
-msgid "Iranian Python Users Group"
-msgstr "Groupe d'utilisateurs de Python iranien"
-
-#: website/templates/hkis/help.html:83
-msgid "Conversations about NumPy and SciPy"
-msgstr "Discussions à propose de NumPy et SciPy"
-
-#: website/templates/hkis/help.html:86
-msgid "You channel is missing? Make a PR →"
-msgstr "Votre canal n'est pas listé ? Faites une PR →"
-
-#: website/templates/hkis/help.html:93
 msgid "Frequently Asked Questions"
 msgstr "Foire Aux Questions"
 
-#: website/templates/hkis/help.html:97
+#: website/templates/hkis/help.html:63
 msgid "Can't connect to correction server?"
 msgstr "Connexion au serveur de correction impossible ?"
 
-#: website/templates/hkis/help.html:98
+#: website/templates/hkis/help.html:64
 msgid ""
 "\n"
 "If you have the correction server connection error, there's two main "
@@ -535,18 +490,19 @@ msgstr ""
 "pouvez peut être leur demander de mettre à jour leur politique de\n"
 "blocage.\n"
 "\n"
-"Soit mon serveur est en carafe (mais alors, comment lisez-vous ce message ?).\n"
+"Soit mon serveur est en carafe (mais alors, comment lisez-vous ce "
+"message ?).\n"
 "\n"
 "Dans tous les cas, dites le moi (ouvrez [un\n"
 "ticket](https://framagit.org/hackinscience/hkis-website/issues)), que\n"
 "je le sache.\n"
 "\n"
 
-#: website/templates/hkis/help.html:118
+#: website/templates/hkis/help.html:84
 msgid "My question is not in the FAQ, how to add it?"
 msgstr "Ma question n'est pas dans la FAQ, comment l'ajouter ?"
 
-#: website/templates/hkis/help.html:119
+#: website/templates/hkis/help.html:85
 msgid ""
 "\n"
 "Ask me, I'll reply, and if it's frequently asked, I'll add it here.\n"
@@ -560,7 +516,8 @@ msgstr ""
 "Demandez moi ! J'y répondrai personnellement, et si la question revient\n"
 "fréquement, je l'ajouterai ici.\n"
 "\n"
-"Vous pouvez me demander en ouvrant [un ticket](https://framagit.org/hackinscience/hkis-website/issues),\n"
+"Vous pouvez me demander en ouvrant [un ticket](https://framagit.org/"
+"hackinscience/hkis-website/issues),\n"
 "ou en m'envoyant un mail : [julien@palard.fr](mailto:julien@palard.fr).\n"
 "\n"
 
@@ -779,6 +736,117 @@ msgstr "Réinitiation de mot de passe"
 #: website/templates/registration/registration_form.html:4
 msgid "Register"
 msgstr "S'enregistrer"
+
+#~ msgid "If you found an issue in an exercise, or the website, please either:"
+#~ msgstr ""
+#~ "Si vous trouvez une erreur dans un exercice, ou sur le site web, merci de "
+#~ "bien vouloir :"
+
+#~ msgid ""
+#~ "Fill a bug [in our bugtracker](https://framagit.org/hackinscience/hkis-"
+#~ "website/issues)."
+#~ msgstr ""
+#~ "Reporter l'erreur [sur notre gestionnaire de bugs](https://framagit.org/"
+#~ "hackinscience/hkis-website/issues)."
+
+#~ msgid "Send me an email:"
+#~ msgstr "M'envoyer un mail :"
+
+#~ msgid ""
+#~ "The Python community is known to be friendly and welcoming, don't\n"
+#~ "hesitate to ask for help! Most of us are using freenode IRC channels\n"
+#~ "to talk."
+#~ msgstr ""
+#~ "La communauté Python est connue pour être amicale et bienveillante, "
+#~ "n'hésitez pas à demander de l'aide !\n"
+#~ "\n"
+#~ "La communauté francophone peut se retrouver à divers endroits :\n"
+#~ "\n"
+#~ "- Le forum de l'AFPy : [discuss.afpy.org](https://discuss.afpy.org).\n"
+#~ "- Sur freenode (IRC), sur le salon #python-fr.\n"
+
+#~ msgid "How to connect to IRC?"
+#~ msgstr "Comment se connecter à IRC ?"
+
+#~ msgid ""
+#~ "There's a nice web client on: [https://kiwi.freenode.net](https://kiwi."
+#~ "freenode.net)."
+#~ msgstr ""
+#~ "Il existe un bon client web sur : [https://kiwi.freenode.net](https://"
+#~ "kiwi.freenode.net)."
+
+#~ msgid ""
+#~ "Pick a `Login` and a channel (see common Python IRC Channels\n"
+#~ "below). If you don't have a NickServ account (or don't know what it\n"
+#~ "is), don't check the \"I have a password\" box."
+#~ msgstr ""
+#~ "Choisissez `un pseudonyme` et un canal (voir les canaux IRC Python usuels "
+#~ "ci-dessous). Si vous n'avez pas de compte NickServ (ou ne savez pas ce "
+#~ "que c'est), ne cochez pas la case à cocher \"I have a password\"."
+
+#~ msgid "How to ask a question?"
+#~ msgstr "Comment poser une question ?"
+
+#~ msgid "Don't ask to ask, just ask."
+#~ msgstr ""
+#~ "Ne demandez pas si vous pouvez poser une question, posez votre question "
+#~ "directement."
+
+#~ msgid "Be polite and respectfull."
+#~ msgstr "Soyez poli et respectueux."
+
+#~ msgid ""
+#~ "Be patient too: We're not always watching our screens for new\n"
+#~ "messages, it can take 15mn for someone to notice a new message, like\n"
+#~ "when you send an email."
+#~ msgstr ""
+#~ "Soyez également patient : Nous ne sommes pas toujours devant notre écran "
+#~ "à attendre des nuveaux messages, cela peut prendre 15 minutes à quelqu'un "
+#~ "de se rendre compte qu'il y a un message, comme lorsqu'on envoie un mail."
+
+#~ msgid ""
+#~ "The author of HackInScience is `mdk` on Freenode, on various channels\n"
+#~ "but mainly on `#python-fr` (I'm French! I bake my own bread!), don't\n"
+#~ "hesitate to prefix your question with `mdk: ` so I notice it faster."
+#~ msgstr ""
+#~ "L'auteur de HackInScience s'appelle `mdk` sur Freenode, il est présent "
+#~ "sur beaucoup de canaux, mais principalement sur `#python-fr` (Je suis "
+#~ "français ! Je fais mon propre pain !), n'hésitez pas à préfixer votre "
+#~ "question par `mdk:` de manière à ce que je sois notifié plus rapidement."
+
+#~ msgid "IRC Channels"
+#~ msgstr "Canaux IRC"
+
+#~ msgid ""
+#~ "There's multiple channels related to Python on freenode, on different\n"
+#~ "topics and different languages, mainly:"
+#~ msgstr ""
+#~ "Il existe une multitude de canaux de discussions liés au langage Python "
+#~ "sur freenode, sur divers sujets et dans différentes langues, "
+#~ "principalement :"
+
+#~ msgid "the main one, but needs a freenode account"
+#~ msgstr "le principal, mais nécessite un compte freenode"
+
+#~ msgid "And many variations around languages and topics:"
+#~ msgstr ""
+#~ "Et beaucoup de variantes autant dans les sujets que dans les langues :"
+
+#~ msgid "like #python, but friendlier."
+#~ msgstr "comme #python, mais encore plus accueillant."
+
+#~ msgid "Copenhagen Django (and everything python/web related) Group"
+#~ msgstr ""
+#~ "Groupe Django (et de tout ce qui est lié à Python et au web) de Copenhague"
+
+#~ msgid "Iranian Python Users Group"
+#~ msgstr "Groupe d'utilisateurs de Python iranien"
+
+#~ msgid "Conversations about NumPy and SciPy"
+#~ msgstr "Discussions à propose de NumPy et SciPy"
+
+#~ msgid "You channel is missing? Make a PR →"
+#~ msgstr "Votre canal n'est pas listé ? Faites une PR →"
 
 #~ msgid "Login to check your code and save your progress."
 #~ msgstr ""
