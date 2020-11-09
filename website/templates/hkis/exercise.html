@@ -215,7 +215,7 @@
       </div>
     </div>
   </div>
-  <div class="col-md-6 style-info">
+  <div class="col-md-5 style-info">
     <form id="answer_form" action="#" onsubmit="return false;" method="post">{% csrf_token %}
         {% for field in answer_form %}
         <div class="fieldWrapper">
@@ -257,10 +257,7 @@
           </div>
           <div class="col">
               {% if previous %}
-              <a class="btn btn-secondary d-none d-xl-inline-block" href="{% url "exercise" previous %}">
-                ← {% trans "Previous" %}
-              </a>
-              <a class="btn btn-secondary d-inline-block d-xl-none" href="{% url "exercise" previous %}">
+              <a class="btn btn-secondary" href="{% url "exercise" previous %}">
                 ←
               </a>
               {% endif %}
@@ -268,10 +265,7 @@
                  href={% url "solutions" object.slug %}>{% blocktrans %}{{ solutions_qty }} solutions{% endblocktrans %}</a>
 
               {% if next %}
-              <a class="btn btn-secondary d-none d-xl-inline-block" href="{% url "exercise" next %}">
-                {% trans "Next" %} →
-              </a>
-              <a class="btn btn-secondary d-inline-block d-xl-none" href="{% url "exercise" next %}">
+              <a class="btn btn-secondary" href="{% url "exercise" next %}">
                 →
               </a>
               {% endif %}
@@ -279,7 +273,7 @@
         </div>
     </form>
   </div>
-  <div class="col-md-3 style-info">
+  <div class="col-md-4 style-info">
     <div id="answers-result" class="result">
       <table id="answer-table" class="table">
         {% for answer in answers %}
