@@ -59,7 +59,7 @@
                     div.insertAdjacentHTML('beforeend', message);
                 }
                 div.appendChild(button_next);
-                document.getElementById("solution_link").removeAttribute("style");
+                document.getElementById("solution_link").classList.remove("disabled");
             }
             else {
                 answer_table.rows[0].className = "table-danger";
@@ -205,72 +205,81 @@
   </div>
 {% endif %}
 {{ answer_form.media }}
-{% if next or previous %}
-<div class="float-right">
-  {% if previous %}
-  <a class="btn btn-secondary" href="{% url "exercise" previous %}">
-    ← {% trans "Previous" %}
-  </a>
-  {% endif %}
-  {% if next %}
-  <a class="btn btn-secondary" href="{% url "exercise" next %}">
-    {% trans "Next" %} →
-  </a>
-  {% endif %}
-</div>
-{% endif %}
-<div class="col-md-8 offset-md-2">
-  <div class="style-info">
-    <h1 class="exercise-title">{{ object.title }}</h1>
-    <div class="signature">{% blocktrans with first_name=object.author.first_name last_name=object.author.last_name %}Created by {{ first_name }} {{ last_name }}{% endblocktrans %}</div>
-    <div class="instructions">
-      {{ object.wording|markdown_to_bootstrap }}
+<div class="row">
+  <div class="col-md-3">
+    <div class="style-info">
+      <h1 class="exercise-title">{{ object.title }}</h1>
+      <div class="signature">{% blocktrans with first_name=object.author.first_name last_name=object.author.last_name %}Created by {{ first_name }} {{ last_name }}{% endblocktrans %}</div>
+      <div class="instructions">
+        {{ object.wording|markdown_to_bootstrap }}
+      </div>
     </div>
   </div>
-</div>
-
-<div class="row">
   <div class="col-md-6 style-info">
-    <h2>{% trans "Your Code" %}</h2>
     <form id="answer_form" action="#" onsubmit="return false;" method="post">{% csrf_token %}
         {% for field in answer_form %}
         <div class="fieldWrapper">
             {{ field }}
         </div>
         {% endfor %}
-        {% if not is_impersonating %}
-        <button
-          disabled
-          id="submit_snippet"
-          class="btn btn-secondary"
-          data-toggle="tooltip"
-          data-placement="bottom"
-          data-delay="500"
-          title="{% trans "Use this to execute your code, so you can try things." %}"
-          onclick="ws_submit_snippet(this.form); return false;">
-          {% trans "Run" %}
-        </button>
-        <button
-          disabled
-          id="submit_answer"
-          class="btn btn-primary"
-          data-toggle="tooltip"
-          data-placement="bottom"
-          data-delay="500"
-          title="This runs automated tests to verify your implementation (also saves your code).&#013;Shortcut: Ctrl-Enter."
-          type="submit"
-          onclick="ws_submit_answer(this.form); return false;">
-          {% trans "Submit for validation" %}
-        </button>
-        {% endif %}
+        <div class="row">
+          <div class="col">
+            {% if not is_impersonating %}
+            <button
+              disabled
+              id="submit_snippet"
+              class="btn btn-secondary"
+              data-toggle="tooltip"
+              data-placement="bottom"
+              data-delay="500"
+              title="{% trans "Use this to execute your code, so you can try things." %}"
+              onclick="ws_submit_snippet(this.form); return false;">
+              {% trans "Run" %}
+            </button>
+            <button
+              disabled
+              id="submit_answer"
+              class="btn btn-primary"
+              data-toggle="tooltip"
+              data-placement="bottom"
+              data-delay="500"
+              title="This runs automated tests to verify your implementation (also saves your code).&#013;Shortcut: Ctrl-Enter."
+              type="submit"
+              onclick="ws_submit_answer(this.form); return false;">
+              <span class="d-none d-xl-inline-block">
+                {% trans "Submit for validation" %}
+              </span>
+              <span class="d-inlie-block d-xl-none">
+                {% trans "Submit" %}
+              </span>
+            </button>
+            {% endif %}
+          </div>
+          <div class="col">
+              {% if previous %}
+              <a class="btn btn-secondary d-none d-xl-inline-block" href="{% url "exercise" previous %}">
+                ← {% trans "Previous" %}
+              </a>
+              <a class="btn btn-secondary d-inline-block d-xl-none" href="{% url "exercise" previous %}">
+                ←
+              </a>
+              {% endif %}
+              <a id="solution_link" class="{% if not is_valid %}disabled{% endif %} btn btn-secondary"
+                 href={% url "solutions" object.slug %}>{% blocktrans %}{{ solutions_qty }} solutions{% endblocktrans %}</a>
+
+              {% if next %}
+              <a class="btn btn-secondary d-none d-xl-inline-block" href="{% url "exercise" next %}">
+                {% trans "Next" %} →
+              </a>
+              <a class="btn btn-secondary d-inline-block d-xl-none" href="{% url "exercise" next %}">
+                →
+              </a>
+              {% endif %}
+          </div>
+        </div>
     </form>
   </div>
-  <div class="col-md-6 style-info">
-    <h2>{% trans "Results" %}
-      <span id="solution_link" {% if not is_valid %} style="display: none" {% endif %}>
-        (<a href={% url "solutions" object.slug %}>{% blocktrans %}{{ solutions_qty}} shared solutions{% endblocktrans %}</a>)
-      </span>
-    </h2>
+  <div class="col-md-3 style-info">
     <div id="answers-result" class="result">
       <table id="answer-table" class="table">
         {% for answer in answers %}
