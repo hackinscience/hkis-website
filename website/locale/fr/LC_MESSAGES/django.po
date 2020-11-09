@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-11-09 22:19+0100\n"
-"PO-Revision-Date: 2020-11-09 22:20+0100\n"
+"POT-Creation-Date: 2020-11-09 22:43+0100\n"
+"PO-Revision-Date: 2020-11-09 22:44+0100\n"
 "Last-Translator: Julien Palard <julien@palard.fr>\n"
 "Language-Team: \n"
 "Language: fr\n"
@@ -332,8 +332,8 @@ msgstr "Précédent"
 
 #: website/templates/hkis/exercise.html:225
 #, python-format
-msgid "Created by %(object.author.first_name)s %(object.author.last_name)s"
-msgstr "Par %(object.author.first_name)s %(object.author.last_name)s"
+msgid "Created by %(first_name)s %(last_name)s"
+msgstr "Par %(first_name)s %(last_name)s"
 
 #: website/templates/hkis/exercise.html:234
 msgid "Your Code"
