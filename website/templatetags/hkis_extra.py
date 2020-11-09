@@ -12,16 +12,6 @@ def _markdown_to_bootstrap(value):
     return mark_safe(markdown_to_bootstrap(value))
 
 
-@register.filter(is_safe=True)
-def i18n_doc_links(value, language):
-    """This filter rewrites https://docs.python.org link to
-    include language tag.
-    """
-    if language == "fr":
-        return value.replace("https://docs.python.org/", "https://docs.python.org/fr/")
-    return value
-
-
 @register.tag(name="md")
 def do_markdownize(parser, token):
     nodelist = parser.parse(("endmd",))
