@@ -14,9 +14,11 @@ class AnswerForm(forms.ModelForm):
                 mode="python",
                 theme="twilight",
                 width="100%",
-                height="400px",
+                height="70vh",
                 fontsize="16px",
                 toolbar=False,
+                showgutter=False,
+                behaviours=False,
             ),
             "exercise": forms.HiddenInput(),
         }
