@@ -63,6 +63,8 @@ def run_snippet_task(source_code: str) -> str:
         )
         try:
             stdout = prof_proc.communicate(timeout=40)[0]
+            if prof_proc.returncode == 255:
+                return "Checker timed out, look for infinite loops maybe?"
             return stdout.decode("UTF-8", "backslashreplace").replace(
                 "\u0000", r"\x00"
             )[:65_536]
