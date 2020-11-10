@@ -127,7 +127,9 @@ def congrats(language):
 
 @shared_task
 def check_answer_task(answer: dict):
-    """Executed on Celery workers."""
+    """Executed on Celery workers.
+    answer should contain: check, source_code, and language.
+    """
     with tempfile.TemporaryDirectory(prefix="hkis") as tmpdir:
         with open(os.path.join(tmpdir, "check.py"), "w") as check_file:
             check_file.write(answer["check"])
@@ -137,6 +139,8 @@ def check_answer_task(answer: dict):
         firejail_env["PATH"] = (
             os.path.expanduser("~/.local/bin") + ":" + firejail_env["PATH"]
         )
+        if "language" in answer:
+            firejail_env["LANGUAGE"] = answer["language"]
         prof_proc = Popen(
             ["firejail"]
             + FIREJAIL_OPTIONS

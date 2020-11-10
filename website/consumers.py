@@ -145,7 +145,11 @@ class ExerciseConsumer(AsyncJsonWebsocketConsumer):
             return
         self.log("Send answer to moulinette")
         is_valid, message = await check_answer(
-            {"check": uncorrected["check"], "source_code": uncorrected["source_code"]}
+            {
+                "check": uncorrected["check"],
+                "source_code": uncorrected["source_code"],
+                "language": self.settings.get("LANGUAGE_CODE", "en"),
+            }
         )
         self.log("Got result from moulinette")
         answer, rank = await db_update_answer(uncorrected["id"], is_valid, message)
