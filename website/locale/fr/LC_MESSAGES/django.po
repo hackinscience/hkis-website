@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-11-09 22:43+0100\n"
-"PO-Revision-Date: 2020-11-09 22:44+0100\n"
+"POT-Creation-Date: 2020-11-10 10:54+0100\n"
+"PO-Revision-Date: 2020-11-10 10:55+0100\n"
 "Last-Translator: Julien Palard <julien@palard.fr>\n"
 "Language-Team: \n"
 "Language: fr\n"
@@ -260,6 +260,7 @@ msgstr ""
 "respectent pas l'option Do Not Track."
 
 #: website/templates/hkis/answer_form.html:8
+#: website/templates/hkis/exercise.html:249
 #: website/templates/registration/registration_form.html:9
 msgid "Submit"
 msgstr "Envoyer"
@@ -269,7 +270,6 @@ msgid "Welcome!"
 msgstr "Bienvenue !"
 
 #: website/templates/hkis/exercise.html:41
-#: website/templates/hkis/exercise.html:217
 #: website/templates/hkis/lesson.html:13
 msgid "Next"
 msgstr "Suivant"
@@ -327,40 +327,24 @@ msgstr ""
 "(Consultez la <a href='%(help_url)s#FAQ'>FAQ</a> si le problème persiste.)"
 
 #: website/templates/hkis/exercise.html:212
-msgid "Previous"
-msgstr "Précédent"
-
-#: website/templates/hkis/exercise.html:225
 #, python-format
 msgid "Created by %(first_name)s %(last_name)s"
 msgstr "Par %(first_name)s %(last_name)s"
 
-#: website/templates/hkis/exercise.html:234
-msgid "Your Code"
-msgstr "Votre code"
-
-#: website/templates/hkis/exercise.html:249
+#: website/templates/hkis/exercise.html:235
 msgid "Use this to execute your code, so you can try things."
 msgstr ""
 "Utilisez ce bouton pour exécuter votre code, cela vous permet de tester des "
 "choses."
 
-#: website/templates/hkis/exercise.html:251
+#: website/templates/hkis/exercise.html:237
 msgid "Run"
 msgstr "Exécuter"
 
-#: website/templates/hkis/exercise.html:263
-msgid "Submit for validation"
-msgstr "Envoi pour validation"
-
-#: website/templates/hkis/exercise.html:269
-msgid "Results"
-msgstr "Résultats"
-
-#: website/templates/hkis/exercise.html:271
+#: website/templates/hkis/exercise.html:255
 #, python-format
-msgid "%(solutions_qty)s shared solutions"
-msgstr "%(solutions_qty)s solutions partagées"
+msgid "%(solutions_qty)s solutions"
+msgstr "%(solutions_qty)s solutions"
 
 #: website/templates/hkis/exercises.html:4
 msgid "Python exercises"
@@ -747,6 +731,18 @@ msgstr "Réinitiation de mot de passe"
 #: website/templates/registration/registration_form.html:4
 msgid "Register"
 msgstr "S'enregistrer"
+
+#~ msgid "Previous"
+#~ msgstr "Précédent"
+
+#~ msgid "Your Code"
+#~ msgstr "Votre code"
+
+#~ msgid "Submit for validation"
+#~ msgstr "Corriger"
+
+#~ msgid "Results"
+#~ msgstr "Résultats"
 
 #~ msgid "If you found an issue in an exercise, or the website, please either:"
 #~ msgstr ""

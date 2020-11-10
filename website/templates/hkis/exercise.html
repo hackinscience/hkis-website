@@ -246,24 +246,21 @@
               title="This runs automated tests to verify your implementation (also saves your code).&#013;Shortcut: Ctrl-Enter."
               type="submit"
               onclick="ws_submit_answer(this.form); return false;">
-              <span class="d-none d-xl-inline-block">
-                {% trans "Submit for validation" %}
-              </span>
-              <span class="d-inlie-block d-xl-none">
-                {% trans "Submit" %}
-              </span>
+              {% trans "Submit" %}
             </button>
             {% endif %}
           </div>
           <div class="col">
+              <a id="solution_link" class="{% if not is_valid %}disabled{% endif %} btn btn-secondary"
+                 href={% url "solutions" object.slug %}>{% blocktrans %}{{ solutions_qty }} solutions{% endblocktrans %}</a>
+
+          </div>
+          <div class="col text-right">
               {% if previous %}
               <a class="btn btn-secondary" href="{% url "exercise" previous %}">
                 ←
               </a>
               {% endif %}
-              <a id="solution_link" class="{% if not is_valid %}disabled{% endif %} btn btn-secondary"
-                 href={% url "solutions" object.slug %}>{% blocktrans %}{{ solutions_qty }} solutions{% endblocktrans %}</a>
-
               {% if next %}
               <a class="btn btn-secondary" href="{% url "exercise" next %}">
                 →
