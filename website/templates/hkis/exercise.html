@@ -206,7 +206,7 @@
 {% endif %}
 {{ answer_form.media }}
 <div class="row">
-  <div class="col-md-3">
+  <div class="col-md-4">
     <div class="style-info">
       <h1 class="exercise-title">{{ object.title }}</h1>
       <div class="signature">{% blocktrans with first_name=object.author.first_name last_name=object.author.last_name %}Created by {{ first_name }} {{ last_name }}{% endblocktrans %}</div>
@@ -270,7 +270,7 @@
         </div>
     </form>
   </div>
-  <div class="col-md-4 style-info">
+  <div class="col-md-3 style-info">
     <div id="answers-result" class="result">
       <table id="answer-table" class="table" style="table-layout: fixed">
         {% for answer in answers %}
