@@ -7,10 +7,14 @@ from functools import partial
 from random import choice
 import os
 import tempfile
-from subprocess import Popen, PIPE
-from subprocess import STDOUT, TimeoutExpired, DEVNULL
+from subprocess import Popen, PIPE, run, STDOUT, TimeoutExpired, DEVNULL
+
+from logging import getLogger
 
 from celery import shared_task
+
+
+logger = getLogger(__name__)
 
 FIREJAIL_OPTIONS = [
     "-c",
@@ -48,9 +52,6 @@ def run_snippet_task(source_code: str) -> str:
         with open(os.path.join(tmpdir, "snippet.py"), "w") as snippet_file:
             snippet_file.write(source_code)
         firejail_env = os.environ.copy()
-        firejail_env["PATH"] = (
-            os.path.expanduser("~/.local/bin") + ":" + firejail_env["PATH"]
-        )
         prof_proc = Popen(
             ["firejail"]
             + FIREJAIL_OPTIONS
@@ -138,11 +139,28 @@ def check_answer_task(answer: dict):
         with open(os.path.join(tmpdir, "solution.py"), "w") as answer_file:
             answer_file.write(answer["source_code"])
         firejail_env = os.environ.copy()
-        firejail_env["PATH"] = (
-            os.path.expanduser("~/.local/bin") + ":" + firejail_env["PATH"]
-        )
         if "language" in answer:
             firejail_env["LANGUAGE"] = answer["language"]
+        if "pre_check" in answer and answer["pre_check"]:
+            # Run a pre-check script outside the sandbox before the actual check.
+            with open(os.path.join(tmpdir, "pre_check.py"), "w") as pre_check_file:
+                pre_check_file.write(answer["pre_check"])
+            logger.info("Running pre-check")
+            pre_check_result = run(
+                ["python3", os.path.join(tmpdir, "pre_check.py")],
+                cwd=tmpdir,
+                stdin=DEVNULL,
+                stdout=PIPE,
+                stderr=PIPE,
+                env=firejail_env,
+            )
+            if pre_check_result.returncode != 0 or pre_check_result.stderr:
+                logger.warning(
+                    "pre_check failed with code %d, stdout: %s, stderr: %s",
+                    pre_check_result.returncode,
+                    pre_check_result.stdout,
+                    pre_check_result.stderr,
+                )
         prof_proc = Popen(
             ["firejail"]
             + FIREJAIL_OPTIONS

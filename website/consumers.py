@@ -55,6 +55,7 @@ def db_find_uncorrected(answer_id: int, user: User) -> dict:
         answer = Answer.objects.get(id=answer_id, user=user, is_corrected=False)
         return {
             "check": answer.exercise.check,
+            "pre_check": answer.exercise.pre_check,
             "source_code": answer.source_code,
             "id": answer.id,
         }
@@ -147,6 +148,7 @@ class ExerciseConsumer(AsyncJsonWebsocketConsumer):
         is_valid, message = await check_answer(
             {
                 "check": uncorrected["check"],
+                "pre_check": uncorrected["pre_check"],
                 "source_code": uncorrected["source_code"],
                 "language": self.settings.get("LANGUAGE_CODE", "en"),
             }
@@ -165,6 +167,7 @@ class ExerciseConsumer(AsyncJsonWebsocketConsumer):
         is_valid, message = await check_answer(
             {
                 "check": answer.exercise.check,
+                "pre_check": answer.exercise.pre_check,
                 "source_code": source_code,
                 "language": self.settings.get("LANGUAGE_CODE", "en"),
             }

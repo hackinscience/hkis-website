@@ -22,6 +22,7 @@ class AdminExerciseForm(forms.ModelForm):
             "position",
             "wording",
             "initial_solution",
+            "pre_check",
             "check",
             "solution",
         )
@@ -30,6 +31,9 @@ class AdminExerciseForm(forms.ModelForm):
                 mode="python", theme="twilight", width="100%", height="400px"
             ),
             "check": AceWidget(
+                mode="python", theme="twilight", width="100%", height="400px"
+            ),
+            "pre_check": AceWidget(
                 mode="python", theme="twilight", width="100%", height="400px"
             ),
             "wording": AceWidget(

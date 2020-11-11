@@ -104,6 +104,14 @@ class Exercise(models.Model):
     title = models.CharField(max_length=255)
     author = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True)
     slug = AutoSlugField(populate_from=["title"], editable=True)
+    # pre_check is ran out of the sandbox (with network access and
+    # all) before the check. It has the LANGUAGE env set to the user
+    # preferences, and current working directory in a directory with
+    # `check.py` and `solution.py` already present, but nothing more,
+    # like when check runs.
+    pre_check = models.TextField(blank=True, null=True)
+    # check is ran inside the sandbox, in a `check.py` file, near a
+    # `solution.py` file containing the student code.
     check = models.TextField()
     is_published = models.BooleanField(default=False)
     solution = models.TextField()
