@@ -22,11 +22,14 @@ logger = logging.getLogger(__name__)
 
 
 @database_sync_to_async
-def db_store_correction(answer, is_valid, message):
-    answer = Answer.get(answer["id"])
-    answer.is_valid = is_valid
-    answer.correction_message = message
+def db_flag_as_unhelpfull(user_id: int, answer_id: int):
+    try:
+        answer = Answer.objects.get(user_id=user_id, id=answer_id)
+    except Answer.DoesNotExist:
+        return False
+    answer.is_unhelpfull = True
     answer.save()
+    return answer
 
 
 @database_sync_to_async
@@ -130,6 +133,8 @@ class ExerciseConsumer(AsyncJsonWebsocketConsumer):
     async def receive_json(self, content):
         if content["type"] == "answer":
             asyncio.create_task(self.answer(content["source_code"]))
+        elif content["type"] == "is_unhelpfull":
+            asyncio.create_task(self.flag_as_unhelpfull(content["answer_id"]))
         elif content["type"] == "recorrect":
             asyncio.create_task(self.recorrect(content))
         elif content["type"] == "snippet":
@@ -138,6 +143,15 @@ class ExerciseConsumer(AsyncJsonWebsocketConsumer):
             self.settings = content["value"]
         else:
             self.log("Unknown message received", json.dumps(content))
+
+    async def flag_as_unhelpfull(self, answer_id: str):
+        try:
+            answer_id = int(answer_id)
+        except ValueError:
+            return
+        answer = await db_flag_as_unhelpfull(self.scope["user"].id, answer_id)
+        if answer:
+            await self.send_json(answer_message(answer))
 
     async def recorrect(self, answer):
         self.log("Restarting correction for an answer")

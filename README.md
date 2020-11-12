@@ -30,6 +30,7 @@ Templates are translated using django `makemessages` and `compilemessages` comma
 
 ```
 $ ./manage.py makemessages --locale fr
+$ ./manage.py makemessages --locale fr --domain djangojs --extension html
 # Edit the .po files
 $ ./manage.py compilemessages
 ```

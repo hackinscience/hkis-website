@@ -17,6 +17,7 @@ from django.contrib import admin
 from django.shortcuts import redirect
 from django.conf import settings
 from django.urls import path, include
+from django.views.i18n import JavaScriptCatalog
 from website.api import router
 from website.views import (
     ExerciseListView,
@@ -34,6 +35,7 @@ from website.views import (
 
 urlpatterns = [
     path("", index, name="index"),
+    path("jsi18n/", JavaScriptCatalog.as_view(), name="javascript-catalog"),
     path("about/", about, name="about"),
     path("help/", helppage, name="help"),
     path("team/", team, name="team"),

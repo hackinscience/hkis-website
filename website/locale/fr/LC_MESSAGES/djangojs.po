@@ -1,0 +1,77 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-11-13 00:02+0100\n"
+"PO-Revision-Date: 2020-11-13 00:03+0100\n"
+"Last-Translator: Julien Palard <julien@palard.fr>\n"
+"Language-Team: fr <julien@palard.fr>\n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: website/templates/hkis/exercise.html:84
+#, javascript-format
+msgid "<a href=\"%s\">Login</a> to backup your code and progression."
+msgstr ""
+"<a href=\"%s\">Connectez-vous</a> pour sauvegarder votre code et votre "
+"progression."
+
+#: website/templates/hkis/exercise.html:92
+msgid ""
+"Flag this answer as particularly unhelpfull,\n"
+"It'll be reviewed by a human."
+msgstr ""
+"Marquer cette correction comme particulièrement innutile,\n"
+"un humain passera la relire."
+
+#: website/templates/hkis/exercise.html:95
+msgid "Report"
+msgstr "Signaler"
+
+#: website/templates/hkis/exercise.html:102
+msgid "Reported"
+msgstr "Signalé"
+
+#: website/templates/hkis/exercise.html:103
+msgid "Thanks for the feedback!"
+msgstr "Merci, je regarde ça bientôt !"
+
+#: website/templates/hkis/exercise.html:110
+msgid "Waiting for correction..."
+msgstr "Correction en cours…"
+
+#: website/templates/hkis/exercise.html:133
+msgid "Waiting for test run"
+msgstr "Exécution en cours…"
+
+#: website/templates/hkis/exercise.html:156
+msgid "Connecting to correction server…"
+msgstr "Connexion au serveur de correction en cours…"
+
+#: website/templates/hkis/exercise.html:173
+msgid "Connected to correction server."
+msgstr "Connecté au serveur de correction!"
+
+#: website/templates/hkis/exercise.html:184
+msgid "Connection to correction server lost, will retry in 5s…"
+msgstr ""
+"La connexion au serveur de correction a échouée. Nouvelle tentative dans 5s…"
+
+#: website/templates/hkis/exercise.html:187
+msgid "Cannot connect to correction server, will retry in 5s…"
+msgstr ""
+"Impossible de se connecter au serveur de correction. Nouvelle tentative dans "
+"5s…"
+
+#: website/templates/hkis/exercise.html:188
+#, javascript-format
+msgid "(See the <a href='%s'#FAQ'>FAQ</a> if it persists.)"
+msgstr "(Consultez la <a href='%s#FAQ'>FAQ</a> si le problème persiste.)"
