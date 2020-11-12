@@ -22,7 +22,7 @@ def parse_args():
 
 def fix_newline_at_end_of_file(text):
     if not text:
-        return text
+        return ""
     if text[-1] != "\n":
         return text + "\n"
     return text
@@ -51,6 +51,7 @@ def main():
                 "check.py",
                 "solution.py",
                 "wording.md",
+                "pre_check.py",
                 "wording_en.md",
                 "wording_fr.md",
                 "initial_solution.py",

@@ -35,6 +35,7 @@ def main():
             if args.only not in meta["slug"]:
                 continue
         for file in (
+            "pre_check.py",
             "check.py",
             "solution.py",
             "wording.md",
