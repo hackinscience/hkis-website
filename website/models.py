@@ -171,6 +171,7 @@ class Answer(models.Model):
     correction_message = models.TextField(default="", blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     corrected_at = models.DateTimeField(blank=True, null=True)
+    is_unhelpfull = models.BooleanField(default=False, blank=True)
 
     def short_correction_message(self):
         return self.correction_message.strip().split("\n")[:1][:100]
@@ -183,3 +184,8 @@ class Answer(models.Model):
 
     def get_absolute_url(self):
         return reverse("exercise", args=[self.exercise.slug])
+
+    def save(self, *args, **kwargs):
+        if self.correction_message and self.correction_message.startswith("Traceback"):
+            self.is_unhelpfull = True
+        super().save(*args, **kwargs)

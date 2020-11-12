@@ -103,11 +103,11 @@ class AnswerAdmin(admin.ModelAdmin):
         "short_correction_message",
         "is_valid",
         "is_corrected",
-        "is_shared",
+        "is_unhelpfull",
         "created_at",
         "see",
     )
-    list_filter = ("is_corrected", "is_valid", "is_shared")
+    list_filter = ("is_corrected", "is_valid", "is_shared", "is_unhelpfull")
     search_fields = ("user__username", "exercise__title")
     form = AnswerExerciseForm
 
