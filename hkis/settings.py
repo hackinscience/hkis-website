@@ -123,6 +123,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "website.context_processors.version",
             ]
         },
     }
@@ -278,6 +279,8 @@ ALLOWED_ATTRIBUTES = {
 }
 
 ALLOWED_STYLES = []
+
+GIT_HEAD = "master"  # Changed in production to the current commit hash, can be used for static file invalidation.
 
 try:
     from local_settings import *

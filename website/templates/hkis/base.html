@@ -7,7 +7,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
         <title>HackInScience - {% block title %}{% trans "Welcome!" %}{% endblock %}</title>
         <link href="{% static "bootstrap.min.css" %}" rel="stylesheet">
-        <link href="{% static "css/hkis.css" %}" rel="stylesheet" type="text/css" />
+        <link href="{% static "css/hkis.css" %}?v={{ version }}" rel="stylesheet" type="text/css" />
         <script src="{% url 'javascript-catalog' %}"></script>
         <script>
           var HKIS_SETTINGS = {
@@ -23,7 +23,7 @@
       {% block nav %}
       {% endblock %}
       {% block body %}
-      <div class="container-fluid">
+      <div class="container-fluid" style="height: 92%">
         {% block container %}
         {% endblock container %}
       </div>

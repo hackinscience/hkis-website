@@ -1,3 +1,8 @@
+html {height: 100%}
+body {height: 100%}
+
+.django-ace-editor {height: 100%}
+
 h1 {
     color: #444;
 }
@@ -54,8 +59,7 @@ a {
 }
 
 div.container-fluid {
-    margin-top: 25px;
-    margin-bottom: 25px;
+    padding-top: 25px;
 }
 
 blockquote {

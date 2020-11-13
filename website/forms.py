@@ -14,7 +14,7 @@ class AnswerForm(forms.ModelForm):
                 mode="python",
                 theme="twilight",
                 width="100%",
-                height="70vh",
+                height="100%",
                 fontsize="16px",
                 toolbar=False,
                 showgutter=False,

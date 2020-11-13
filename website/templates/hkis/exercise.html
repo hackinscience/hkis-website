@@ -242,8 +242,8 @@
   </div>
 {% endif %}
 {{ answer_form.media }}
-<div class="row">
-  <div class="col-md-4">
+<div class="row" style="height: 100%">
+  <div class="col-md-4" style="height: 100%; overflow: auto">
     <div class="style-info">
       <h1 class="exercise-title">{{ object.title }}</h1>
       <div class="signature">{% blocktrans with first_name=object.author.first_name last_name=object.author.last_name %}Created by {{ first_name }} {{ last_name }}{% endblocktrans %}</div>
@@ -252,14 +252,15 @@
       </div>
     </div>
   </div>
-  <div class="col-md-5 style-info">
-    <form id="answer_form" action="#" onsubmit="return false;" method="post">{% csrf_token %}
-        {% for field in answer_form %}
-        <div class="fieldWrapper">
-            {{ field }}
+  <div class="col-md-5 style-info" style="height: 100%">
+    <form id="answer_form" action="#" onsubmit="return false;" method="post" style="height: 100%">{% csrf_token %}
+        <div class="fieldWrapper" style="height: 80%">
+            {{ answer_form.source_code }}
         </div>
-        {% endfor %}
-        <div class="row">
+        <div class="fieldWrapper" style="height: 0%">
+            {{ answer_form.exercise }}
+        </div>
+        <div class="row" style="height: 20%; padding-top:1em">
           <div class="col">
             {% if not is_impersonating %}
             <button
@@ -307,7 +308,7 @@
         </div>
     </form>
   </div>
-  <div class="col-md-3 style-info">
+  <div class="col-md-3 style-info" style="height: 100%; overflow: auto">
     <div id="answers-result" class="result">
       <table id="answer-table" class="table" style="table-layout: fixed">
         {% for answer in answers %}
