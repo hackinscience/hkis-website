@@ -27,6 +27,10 @@ def about(request):
     return render(request, "hkis/about.html")
 
 
+def sponsor(request):
+    return render(request, "hkis/sponsor.html")
+
+
 def helppage(request):
     return render(request, "hkis/help.html")
 
