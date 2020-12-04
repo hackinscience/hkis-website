@@ -13,18 +13,7 @@ from website.models import Answer, Exercise, Snippet, User
 class AdminExerciseForm(forms.ModelForm):
     class Meta:
         model = Exercise
-        fields = (
-            "title",
-            "slug",
-            "author",
-            "is_published",
-            "position",
-            "wording",
-            "initial_solution",
-            "pre_check",
-            "check",
-            "solution",
-        )
+        exclude = ()
         widgets = {
             "solution": AceWidget(
                 mode="python", theme="twilight", width="100%", height="400px"
@@ -47,7 +36,7 @@ class AdminExerciseForm(forms.ModelForm):
 class AnswerExerciseForm(forms.ModelForm):
     class Meta:
         model = Answer
-        exclude = tuple()
+        exclude = ()
         widgets = {
             "source_code": AceWidget(
                 mode="python", theme="twilight", width="100%", height="400px"
@@ -63,10 +52,25 @@ class ExerciseAdmin(TranslationAdmin):
         return super().get_queryset(request).with_weekly_stats()
 
     ordering = ("-is_published", "position")
-    readonly_fields = ("id",)
+    readonly_fields = ("id", "created_at")
+    fields = (
+        "title",
+        "slug",
+        "author",
+        "created_at",
+        "is_published",
+        "position",
+        "wording",
+        "initial_solution",
+        "pre_check",
+        "check",
+        "solution",
+    )
+
     list_display = (
         "title",
         "position",
+        "created_at",
         "weekly_tries",
         "weekly_successes",
         "weekly_success_ratio",

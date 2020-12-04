@@ -1,5 +1,5 @@
-from django.core.management.base import BaseCommand, CommandError
-from website.models import User, Exercise
+from django.core.management.base import BaseCommand
+from website.models import User
 
 
 class Command(BaseCommand):

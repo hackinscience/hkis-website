@@ -3,7 +3,7 @@ from datetime import timedelta
 
 import django.contrib.auth.models
 from django.db import models
-from django.db.models import Count, IntegerField, Value, Q
+from django.db.models import Count, IntegerField, Value, Q, Min
 from django.urls import reverse
 from django.utils.text import Truncator
 from django.utils.timezone import now
@@ -62,6 +62,7 @@ class ExerciseQuerySet(models.QuerySet):
             )
         return self.annotate(
             user_tries=Count("answers", filter=Q(answers__user=user)),
+            solved_at=Min("answers__created_at", filter=Q(answers__user=user)),
             user_successes=Count(
                 "answers",
                 filter=Q(answers__user=user) & Q(answers__is_valid=True),
@@ -128,6 +129,7 @@ class Exercise(models.Model):
     initial_solution = models.TextField(blank=True)
     position = models.FloatField(default=0)
     objects = ExerciseQuerySet.as_manager()
+    created_at = models.DateTimeField(auto_now_add=True)
 
     def clean_fields(self, exclude=None):
         """Clean windows-style newlines, maybe inserted by Ace editor, or
