@@ -1,6 +1,5 @@
 from collections import OrderedDict
 
-from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import Group
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib import messages
@@ -74,6 +73,14 @@ class ProfileView(LoginRequiredMixin, UpdateView):
     def get_success_url(self):
         messages.info(self.request, "Profile updated")
         return reverse("profile", kwargs={"pk": self.request.user.id})
+
+
+class LeaderBoardView(ListView):
+    model = User
+    template_name = "hkis/leaderboard.html"
+
+    def get_queryset(self):
+        return super().get_queryset().order_by("rank")[:100]
 
 
 class ExerciseListView(ListView):

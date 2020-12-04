@@ -1,0 +1,33 @@
+{% extends "hkis/layout.html" %}
+{% load i18n %}
+{% load static %}
+{% block title %}{% trans "Leaderboard" %}{% endblock %}
+
+{% block container %}
+
+<div class="row" style="height: 92%">
+  <div class="col-md-8 offset-md-2" style="height: 100%">
+    <h1 class="align-center">Leaderboard</h1>
+    <table class="table table-sm table-hover">
+      <tbody>
+        {% for user in user_list %}
+        <tr>
+          <td>
+            {{ user.rank }}
+          </td>
+          <td scope="row" class="d-flex align-items-center">
+            {% if user.public_profile %}
+            {{ user.username }}
+            {% else %}
+            (anonymous)
+            {% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+  </div>
+</div>
+
+{% endblock %}
