@@ -56,7 +56,7 @@ function fill_answer(answer) {
                 div.appendChild(hkis.createElement("div", {
                     className: "alert alert-success",
                     innerHTML: interpolate(gettext('Your new <a href="%(url)s">rank</a> is: %(new_rank)s'),
-                                           {url: HKIS_SETTINGS.PROFILE_URL, new_rank: answer.user_rank},
+                                           {url: HKIS_SETTINGS.LEADERBOARD_URL, new_rank: answer.user_rank},
                                            true)}));
             }
             if (!answer.user) {
