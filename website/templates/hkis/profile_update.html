@@ -19,7 +19,7 @@
     </p>
     <p>
       {% if rank is not None %}
-      {% blocktrans trimmed %}
+      {% blocktrans trimmed with rank=rank.rank %}
         You're ranking {{ rank }} over {{ participants }} participants.
       {% endblocktrans %}
       {% else %}
@@ -39,8 +39,12 @@
                 window.location.reload(true);
             }
           </script>
-          <button type="button" class="btn btn-secondary" onclick="set_lang('fr')">French</button>
-          <button type="button" class="btn btn-secondary" onclick="set_lang('en')">English</button>
+          <ul>
+            {% get_current_language as current_language %}
+            {% for language_tag, language in languages %}
+            <li><button type="button" class="btn btn-{% if language_tag != current_language%}outline-{%endif%}secondary" onclick="set_lang('{{ language_tag }}')">{{ language }}</button></li>
+            {% endfor %}
+          </ul>
         </p>
       </div>
     </div>

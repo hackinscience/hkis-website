@@ -5,6 +5,7 @@ from django.contrib.auth.models import Group, User
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib import messages
 from django.core.exceptions import PermissionDenied
+from django.conf import settings
 from django.urls import reverse
 from django.http import HttpResponseRedirect
 from django.db.models import Count, Q, Max
@@ -13,7 +14,7 @@ from django.utils.translation import gettext
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import UpdateView
 from django.views.generic.list import ListView
-from website.models import Exercise, Answer
+from website.models import Exercise, Answer, UserStats
 from website.forms import AnswerForm
 
 
@@ -60,11 +61,9 @@ class ProfileView(LoginRequiredMixin, UpdateView):
         context["submit_qty"] = sum(
             exercise.user_tries for exercise in context["exercises"]
         )
-        try:
-            context["rank"] = self.request.user.userstats.rank
-        except User.userstats.RelatedObjectDoesNotExist:
-            context["rank"] = None
+        context["rank"] = UserStats.objects.for_user(self.request.user)
         context["participants"] = User.objects.count()
+        context["languages"] = settings.LANGUAGES
 
         return context
 

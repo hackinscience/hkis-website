@@ -92,6 +92,13 @@ class UserStatsQuerySet(models.QuerySet):
             user_stats, _ = UserStats.objects.get_or_create(user=user)
             user_stats.recompute()
 
+    def for_user(self, user):
+        """Shortcut to get (or create) a UserStats for a given user."""
+        user_stats, created = UserStats.objects.get_or_create(user=user)
+        if created:
+            user_stats.recompute()
+        return user_stats
+
 
 class UserStats(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
