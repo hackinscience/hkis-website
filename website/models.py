@@ -1,7 +1,7 @@
 import logging
 from datetime import timedelta
 
-from django.contrib.auth.models import User
+from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.db.models import Count, IntegerField, Value, Q
 from django.urls import reverse
@@ -10,6 +10,11 @@ from django.utils.timezone import now
 from django_extensions.db.fields import AutoSlugField
 
 logger = logging.getLogger(__name__)
+
+
+class User(AbstractUser):
+    class Meta:
+        db_table = "auth_user"
 
 
 class ExerciseQuerySet(models.QuerySet):

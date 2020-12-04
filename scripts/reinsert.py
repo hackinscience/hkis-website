@@ -4,15 +4,14 @@ import json
 import pytz
 import django
 from tqdm import tqdm
-from datetime import datetime, timezone
-from website.models import Exercise, Answer
-from django.contrib.auth.models import User
+from datetime import datetime
+from website.models import Exercise, Answer, User
 import random
 
 UNUSABLE_PASSWORD_PREFIX = "!"  # This will never be a valid encoded hash
 UNUSABLE_PASSWORD_SUFFIX_LENGTH = (
-    40
-)  # number of random chars to add after UNUSABLE_PASSWORD_PREFIX
+    40  # number of random chars to add after UNUSABLE_PASSWORD_PREFIX
+)
 
 
 def get_random_string(

@@ -4,11 +4,10 @@ import logging
 
 from channels.db import database_sync_to_async
 from channels.generic.websocket import AsyncJsonWebsocketConsumer
-from django.contrib.auth.models import User
 from django.utils.timezone import now
 
 from moulinette.tasks import check_answer, run_snippet
-from website.models import Answer, Exercise, Snippet, UserStats
+from website.models import Answer, Exercise, Snippet, UserStats, User
 from website.utils import markdown_to_bootstrap
 from website.serializers import AnswerSerializer, SnippetSerializer
 

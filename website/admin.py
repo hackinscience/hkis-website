@@ -1,14 +1,13 @@
 from django import forms
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from django.contrib.auth.models import User
 from django.urls import reverse
 from django.utils.safestring import mark_safe
 from django_ace import AceWidget
 
 from modeltranslation.admin import TranslationAdmin
 
-from website.models import Answer, Exercise, Snippet
+from website.models import Answer, Exercise, Snippet, User
 
 
 class AdminExerciseForm(forms.ModelForm):
@@ -146,6 +145,4 @@ class MyUserAdmin(UserAdmin):
 admin.site.register(Answer, AnswerAdmin)
 admin.site.register(Exercise, ExerciseAdmin)
 admin.site.register(Snippet, SnippetAdmin)
-
-admin.site.unregister(User)
 admin.site.register(User, MyUserAdmin)

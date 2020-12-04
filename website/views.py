@@ -1,7 +1,7 @@
 from collections import OrderedDict
 
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import Group, User
+from django.contrib.auth.models import Group
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib import messages
 from django.core.exceptions import PermissionDenied
@@ -14,7 +14,7 @@ from django.utils.translation import gettext
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import UpdateView
 from django.views.generic.list import ListView
-from website.models import Exercise, Answer, UserStats
+from website.models import Exercise, Answer, UserStats, User
 from website.forms import AnswerForm
 
 

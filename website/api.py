@@ -1,14 +1,14 @@
 import django_filters
 
 from asgiref.sync import async_to_sync
-from django.contrib.auth.models import User, Group
+from django.contrib.auth.models import Group
 from django_filters import rest_framework as filters
 from channels.layers import get_channel_layer
 from rest_framework import permissions
 from rest_framework import routers
 from rest_framework import serializers
 from rest_framework import viewsets
-from website.models import Answer, Exercise, Snippet
+from website.models import Answer, Exercise, Snippet, User
 
 
 class AdminOrReadOnly(permissions.BasePermission):
@@ -27,8 +27,7 @@ class AnswerPermission(permissions.BasePermission):
     """
 
     def has_permission(self, request, view):
-        """Authenticated users can create (POST) but not edit.
-        """
+        """Authenticated users can create (POST) but not edit."""
         if not request.user.is_authenticated:
             return False
         if request.user.is_staff:
@@ -49,8 +48,7 @@ class AnswerPermission(permissions.BasePermission):
         return False
 
     def has_object_permission(self, request, view, obj):
-        """Users can only see and modify own answers
-        """
+        """Users can only see and modify own answers"""
         if request.user.is_staff:
             return True
         elif request.user.is_authenticated and obj.user == request.user:
