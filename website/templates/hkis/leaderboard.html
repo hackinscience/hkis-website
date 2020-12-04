@@ -9,21 +9,37 @@
   <div class="col-md-8 offset-md-2" style="height: 100%">
     <h1 class="align-center">Leaderboard</h1>
     <table class="table table-sm table-hover">
-      <tbody>
-        {% for user in user_list %}
+      <thead>
         <tr>
-          <td>
-            {{ user.rank }}
+          <th scope="col">#</th>
+          <th scope="col">Username</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for other in user_list %}
+        <tr class="{% if other.username == user.username %}table-primary{% endif %}">
+          <td scope="row">
+            {{ other.rank }}
           </td>
-          <td scope="row" class="d-flex align-items-center">
-            {% if user.public_profile %}
-            {{ user.username }}
+          <td scope="row">
+            {% if other.public_profile %}
+            {{ other.username }}
             {% else %}
             (anonymous)
             {% endif %}
           </td>
         </tr>
         {% endfor %}
+        {% if user not in user_list %}
+        <tr class="table-primary">
+          <td scope="row">
+            {{ user.rank }}
+          </td>
+          <td scope="row">
+            {{ user.username }}
+          </td>
+        </tr>
+        {% endif %}
       </tbody>
     </table>
 
