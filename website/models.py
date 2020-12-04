@@ -3,7 +3,7 @@ from datetime import timedelta
 
 import django.contrib.auth.models
 from django.db import models
-from django.db.models import Count, IntegerField, Value, Q, Min
+from django.db.models import Count, Value, Q, Min
 from django.urls import reverse
 from django.utils.text import Truncator
 from django.utils.timezone import now
@@ -74,9 +74,9 @@ class ExerciseQuerySet(models.QuerySet):
     def with_user_stats(self, user):
         if user.is_anonymous:
             return self.annotate(
-                user_tries=Value(0, IntegerField()),
-                solved_at=now(),
-                user_successes=Value(0, IntegerField()),
+                user_tries=Value(0, models.IntegerField()),
+                solved_at=Value(now(), models.DateTimeField()),
+                user_successes=Value(0, models.IntegerField()),
             )
         return self.annotate(
             user_tries=Count("answers", filter=Q(answers__user=user)),
