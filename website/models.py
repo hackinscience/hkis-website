@@ -13,8 +13,7 @@ logger = logging.getLogger(__name__)
 
 
 class User(AbstractUser):
-    class Meta:
-        db_table = "auth_user"
+    pass
 
 
 class ExerciseQuerySet(models.QuerySet):
