@@ -12,7 +12,8 @@ This project requires Python 3.6 at least.
 pip install -r requirements.txt
 ./manage.py migrate
 ./manage.py loaddata initial  # To get some users and exercises
-# (Initial data can be updated using: ./manage.py dumpdata > website/fixtures/initial.json)
+# (Initial data can be updated using:
+   ./manage.py dumpdata -e contenttypes -e auth.Permission -e sessions.session > website/fixtures/initial.json)
 ./manage.py createsuperuser
 ./manage.py runserver
 ```

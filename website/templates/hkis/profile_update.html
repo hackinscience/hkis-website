@@ -18,14 +18,14 @@
       {% endblocktrans %}
     </p>
     <p>
-      {% if rank is not None %}
-      {% blocktrans trimmed with rank=rank.rank %}
-        You're ranking {{ rank }} over {{ participants }} participants.
-      {% endblocktrans %}
+      {% if user.rank is not None %}
+        {% blocktrans trimmed with rank=user.rank %}
+          You're ranking {{ rank }} over {{ participants }} participants.
+        {% endblocktrans %}
       {% else %}
-      {% blocktrans trimmed %}
-        You're not ranked yet.
-      {% endblocktrans %}
+        {% blocktrans trimmed %}
+          You're not ranked yet.
+        {% endblocktrans %}
       {% endif %}
     </p>
     <h2>{% trans "Preferences" %}</h2>

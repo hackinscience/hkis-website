@@ -14,7 +14,7 @@ from django.utils.translation import gettext
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import UpdateView
 from django.views.generic.list import ListView
-from website.models import Exercise, Answer, UserStats, User
+from website.models import Exercise, Answer, User
 from website.forms import AnswerForm
 
 
@@ -61,7 +61,6 @@ class ProfileView(LoginRequiredMixin, UpdateView):
         context["submit_qty"] = sum(
             exercise.user_tries for exercise in context["exercises"]
         )
-        context["rank"] = UserStats.objects.for_user(self.request.user)
         context["participants"] = User.objects.count()
         context["languages"] = settings.LANGUAGES
 
@@ -147,13 +146,10 @@ class ExerciseView(DetailView):
             }
         )
         context["object"].wording = gettext(context["object"].wording)
-        try:
-            if user.is_anonymous:
-                context["current_rank"] = 999999
-            else:
-                context["current_rank"] = self.request.user.userstats.rank
-        except User.userstats.RelatedObjectDoesNotExist:
+        if user.is_anonymous:
             context["current_rank"] = 999999
+        else:
+            context["current_rank"] = self.request.user.rank
         if user.is_anonymous:
             context["is_valid"] = False
         else:

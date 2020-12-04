@@ -1,7 +1,7 @@
 import logging
 from datetime import timedelta
 
-from django.contrib.auth.models import AbstractUser
+import django.contrib.auth.models
 from django.db import models
 from django.db.models import Count, IntegerField, Value, Q
 from django.urls import reverse
@@ -12,8 +12,27 @@ from django_extensions.db.fields import AutoSlugField
 logger = logging.getLogger(__name__)
 
 
-class User(AbstractUser):
-    pass
+class UserManager(django.contrib.auth.models.UserManager):
+    def recompute_ranks(self):
+        for user in User.objects.all():
+            user.recompute_rank()
+
+
+class User(django.contrib.auth.models.AbstractUser):
+    objects = UserManager()
+    points = models.FloatField(default=0)  # Computed sum of solved exercise positions.
+    rank = models.PositiveIntegerField(blank=True, null=True)
+
+    def recompute_rank(self) -> int:
+        """Reconpute, and return, the user rank."""
+        self.points = sum(
+            exercise.position
+            for exercise in Exercise.objects.with_user_stats(user=self)
+            if exercise.user_successes
+        )
+        self.rank = User.objects.filter(points__gt=self.points).count() + 1
+        self.save()
+        return self.rank
 
 
 class ExerciseQuerySet(models.QuerySet):
@@ -88,37 +107,6 @@ class ExerciseQuerySet(models.QuerySet):
                 distinct=True,
             ),
         )
-
-
-class UserStatsQuerySet(models.QuerySet):
-    def recompute(self):
-        for user in User.objects.all():
-            user_stats, _ = UserStats.objects.get_or_create(user=user)
-            user_stats.recompute()
-
-    def for_user(self, user):
-        """Shortcut to get (or create) a UserStats for a given user."""
-        user_stats, created = UserStats.objects.get_or_create(user=user)
-        if created:
-            user_stats.recompute()
-        return user_stats
-
-
-class UserStats(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    points = models.FloatField(default=0)  # Computed sum of solved exercise positions.
-    rank = models.PositiveIntegerField(blank=True, null=True)
-    objects = UserStatsQuerySet.as_manager()
-
-    def recompute(self):
-        self.points = sum(
-            exercise.position
-            for exercise in Exercise.objects.with_user_stats(user=self.user)
-            if exercise.user_successes
-        )
-        self.save()
-        self.rank = UserStats.objects.filter(points__gt=self.points).count() + 1
-        self.save()
 
 
 class Exercise(models.Model):

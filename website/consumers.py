@@ -7,7 +7,7 @@ from channels.generic.websocket import AsyncJsonWebsocketConsumer
 from django.utils.timezone import now
 
 from moulinette.tasks import check_answer, run_snippet
-from website.models import Answer, Exercise, Snippet, UserStats, User
+from website.models import Answer, Exercise, Snippet, User
 from website.utils import markdown_to_bootstrap
 from website.serializers import AnswerSerializer, SnippetSerializer
 
@@ -73,12 +73,9 @@ def db_update_answer(answer_id: int, is_valid: bool, correction_message: str):
     answer.is_valid = is_valid
     answer.corrected_at = now()
     answer.save()
+    rank = None
     if answer.is_valid and answer.user_id:
-        user_stats, _ = UserStats.objects.get_or_create(user=answer.user)
-        user_stats.recompute()
-        rank = user_stats.rank
-    else:
-        rank = None
+        rank = answer.user.recompute_rank()
     return answer, rank
 
 

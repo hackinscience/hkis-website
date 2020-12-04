@@ -132,15 +132,6 @@ class MyUserAdmin(UserAdmin):
     list_display = UserAdmin.list_display + ("date_joined", "points", "rank")
     ordering = ("-date_joined",)
 
-    def points(self, obj):
-        return obj.userstats.points
-
-    def rank(self, obj):
-        return obj.userstats.rank
-
-    def get_queryset(self, request):
-        return super().get_queryset(request).select_related("userstats")
-
 
 admin.site.register(Answer, AnswerAdmin)
 admin.site.register(Exercise, ExerciseAdmin)
