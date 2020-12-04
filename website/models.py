@@ -13,6 +13,16 @@ logger = logging.getLogger(__name__)
 
 
 class ExerciseQuerySet(models.QuerySet):
+    def reorganize(self):
+        all_exercises = self.with_global_stats()
+        max_solves = max(exercise.successes for exercise in all_exercises)
+        number_of_exercises = len(all_exercises)
+        for i, exercise in enumerate(all_exercises):
+            exercise.position = (
+                1 + max_solves - exercise.successes + i / number_of_exercises
+            )
+            exercise.save()
+
     def with_global_stats(self):
         return self.annotate(
             tries=Count("answers__user", distinct=True),
