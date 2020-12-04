@@ -14,7 +14,7 @@ logger = logging.getLogger(__name__)
 
 class UserManager(django.contrib.auth.models.UserManager):
     def recompute_ranks(self):
-        for user in User.objects.order_by("-rank"):
+        for user in User.objects.order_by("rank"):
             user.recompute_rank()
 
 
