@@ -148,6 +148,8 @@ class Exercise(models.Model):
     position = models.FloatField(default=0)
     objects = ExerciseQuerySet.as_manager()
     created_at = models.DateTimeField(auto_now_add=True)
+    # Number of points are granted for solving this exercise
+    points = models.IntegerField(default=1)
 
     def clean_fields(self, exclude=None):
         """Clean windows-style newlines, maybe inserted by Ace editor, or
