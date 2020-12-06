@@ -12,6 +12,7 @@
       <thead>
         <tr>
           <th scope="col">#</th>
+          <th scope="col">points</th>
           <th scope="col">Username</th>
         </tr>
       </thead>
@@ -22,6 +23,9 @@
             {{ other.rank }}
           </td>
           <td scope="row">
+            {{ other.points|floatformat:"0" }}
+          </td>
+          <td scope="row">
             {% if other.public_profile %}
             {{ other.username }}
             {% else %}
@@ -30,10 +34,13 @@
           </td>
         </tr>
         {% endfor %}
-        {% if user not in user_list %}
+        {% if user not in user_list and not user.is_anonymous %}
         <tr class="table-primary">
           <td scope="row">
             {{ user.rank }}
+          </td>
+          <td scope="row">
+            {{ other.points|floatformat:"0" }}
           </td>
           <td scope="row">
             {{ user.username }}
