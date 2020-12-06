@@ -49,7 +49,9 @@ function fill_answer(answer) {
         var div = hkis.createElement("div", {innerHTML: answer.correction_message_html});
         if (answer.is_valid) {
             console.log("Answer is valid: old_rank=", HKIS_SETTINGS.CURRENT_RANK, "new_rank=", answer.user_rank)
-            document.getElementById("btn_next").className = "btn btn-primary"
+            try {
+                document.getElementById("btn_next").className = "btn btn-primary"
+            } catch {}
             document.getElementById("submit_answer").className = "btn btn-secondary"
             answer_table.rows[0].className = "table-success";
             if (answer.user && answer.user_rank < HKIS_SETTINGS.CURRENT_RANK ) {
@@ -59,6 +61,14 @@ function fill_answer(answer) {
                                            {url: HKIS_SETTINGS.LEADERBOARD_URL, new_rank: answer.user_rank},
                                            true)}));
             }
+            div.appendChild(hkis.createElement("a", {
+                target: "_blank",
+                href: "https://twitter.com/intent/tweet?" +
+                    "text=" + encodeURIComponent(
+                        interpolate(gettext("I've completed \"%s\" on HackInScience"), [document.title.split("—")[1].replace(/^\s+|\s+$/g, '')])) +
+                    "&url=" + encodeURIComponent(document.location) +
+                    "&related=sizeof&hashtags=HackInScience",
+                innerText: gettext("Tweet it!")}));
             if (!answer.user) {
                 div.appendChild(hkis.createElement("div", {
                     className: "alert alert-warning",

@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-11-25 11:41+0100\n"
-"PO-Revision-Date: 2020-11-25 11:44+0100\n"
+"POT-Creation-Date: 2020-12-06 17:21+0100\n"
+"PO-Revision-Date: 2020-12-06 17:22+0100\n"
 "Last-Translator: Julien Palard <julien@palard.fr>\n"
 "Language-Team: \n"
 "Language: fr\n"
@@ -146,7 +146,7 @@ msgid "Privacy"
 msgstr "Vie privée"
 
 #: website/templates/hkis/about.html:63
-#: website/templates/hkis/profile_update.html:47
+#: website/templates/hkis/profile_update.html:51
 msgid "Personal informations"
 msgstr "Informations personnelles"
 
@@ -468,8 +468,8 @@ msgstr ""
 "\n"
 
 #: website/templates/hkis/index.html:4
-msgid "Python course"
-msgstr "Cours de Python"
+msgid "Python Exercises"
+msgstr "Exercices Python"
 
 #: website/templates/hkis/index.html:32
 msgid ""
@@ -485,7 +485,7 @@ msgstr ""
 "          avec des informations détaillées de ce qui s'est mal passé afin "
 "d'éviter tout blocage."
 
-#: website/templates/hkis/index.html:36 website/templates/hkis/layout.html:50
+#: website/templates/hkis/index.html:36 website/templates/hkis/layout.html:53
 #: website/templates/registration/login.html:19
 msgid "Sign in"
 msgstr "Connexion"
@@ -511,18 +511,23 @@ msgid "Admin"
 msgstr "Admin"
 
 #: website/templates/hkis/layout.html:36
+#: website/templates/hkis/leaderboard.html:4
+msgid "Leaderboard"
+msgstr "Classement"
+
+#: website/templates/hkis/layout.html:39
 msgid "Help"
 msgstr "Aide"
 
-#: website/templates/hkis/layout.html:39
+#: website/templates/hkis/layout.html:42
 msgid "Sponsor"
 msgstr "Parrainer"
 
-#: website/templates/hkis/layout.html:44
+#: website/templates/hkis/layout.html:47
 msgid "About"
 msgstr "À propos"
 
-#: website/templates/hkis/layout.html:48
+#: website/templates/hkis/layout.html:51
 msgid "Log out"
 msgstr "Déconnexion"
 
@@ -564,11 +569,11 @@ msgstr "Vous n'êtes pas encore classé."
 msgid "Preferences"
 msgstr "Préférences"
 
-#: website/templates/hkis/profile_update.html:60
+#: website/templates/hkis/profile_update.html:64
 msgid "Change your password"
 msgstr "Changer de mot de passe"
 
-#: website/templates/hkis/profile_update.html:62
+#: website/templates/hkis/profile_update.html:66
 msgid "Update"
 msgstr "Mettre à jour"
 
@@ -735,6 +740,9 @@ msgstr "Réinitiation de mot de passe"
 #: website/templates/registration/registration_form.html:4
 msgid "Register"
 msgstr "S'enregistrer"
+
+#~ msgid "Python course"
+#~ msgstr "Cours de Python"
 
 #~ msgid "Donate using Liberapay"
 #~ msgstr "Faire un don via Liberapay"

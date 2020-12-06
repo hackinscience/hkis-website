@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-11-24 16:45+0100\n"
-"PO-Revision-Date: 2020-11-24 16:47+0100\n"
+"POT-Creation-Date: 2020-12-06 17:22+0100\n"
+"PO-Revision-Date: 2020-12-06 17:23+0100\n"
 "Last-Translator: Julien Palard <julien@palard.fr>\n"
 "Language-Team: fr <julien@palard.fr>\n"
 "Language: fr\n"
@@ -21,20 +21,31 @@ msgstr ""
 msgid ""
 "This will send this answer to a human for manual review, so it can be "
 "enhanced, are you sure?"
-msgstr "Cette réponse sera envoyée à un human pour relecture, dans l'espoir de l'améliorer. L'envoyer maintenant ?"
+msgstr ""
+"Cette réponse sera envoyée à un human pour relecture, dans l'espoir de "
+"l'améliorer. L'envoyer maintenant ?"
 
-#: website/static/js/exercise.js:58
+#: website/static/js/exercise.js:60
 msgid "Your new <a href=\"%(url)s\">rank</a> is: %(new_rank)s"
 msgstr "Votre nouveau <a href=\"%(url)s\">classement</a> est: %(new_rank)s"
 
-#: website/static/js/exercise.js:65
+#: website/static/js/exercise.js:68
+#, javascript-format
+msgid "I've completed \"%s\" on HackInScience"
+msgstr "J'ai terminé « %s » sur HackInScience"
+
+#: website/static/js/exercise.js:71
+msgid "Tweet it!"
+msgstr "Partager sur Twitter !"
+
+#: website/static/js/exercise.js:75
 #, javascript-format
 msgid "<a href=\"%s\">Login</a> to backup your code and progression."
 msgstr ""
 "<a href=\"%s\">Connectez-vous</a> pour sauvegarder votre code et votre "
 "progression."
 
-#: website/static/js/exercise.js:73
+#: website/static/js/exercise.js:83
 msgid ""
 "Flag this answer as particularly unhelpfull,\n"
 "It'll be reviewed by a human."
@@ -42,46 +53,46 @@ msgstr ""
 "Marquer cette correction comme particulièrement innutile,\n"
 "un humain passera la relire."
 
-#: website/static/js/exercise.js:76
+#: website/static/js/exercise.js:86
 msgid "Report"
 msgstr "Signaler"
 
-#: website/static/js/exercise.js:83
+#: website/static/js/exercise.js:93
 msgid "Reported"
 msgstr "Signalé"
 
-#: website/static/js/exercise.js:84
+#: website/static/js/exercise.js:94
 msgid "Thanks for the feedback!"
 msgstr "Merci, je regarde ça bientôt !"
 
-#: website/static/js/exercise.js:91
+#: website/static/js/exercise.js:101
 msgid "Waiting for correction..."
 msgstr "Correction en cours…"
 
-#: website/static/js/exercise.js:114
+#: website/static/js/exercise.js:124
 msgid "Waiting for test run"
 msgstr "Exécution en cours…"
 
-#: website/static/js/exercise.js:137
+#: website/static/js/exercise.js:147
 msgid "Connecting to correction server…"
 msgstr "Connexion au serveur de correction en cours…"
 
-#: website/static/js/exercise.js:154
+#: website/static/js/exercise.js:164
 msgid "Connected to correction server."
 msgstr "Connecté au serveur de correction!"
 
-#: website/static/js/exercise.js:165
+#: website/static/js/exercise.js:175
 msgid "Connection to correction server lost, will retry in 5s…"
 msgstr ""
 "La connexion au serveur de correction a échouée. Nouvelle tentative dans 5s…"
 
-#: website/static/js/exercise.js:168
+#: website/static/js/exercise.js:178
 msgid "Cannot connect to correction server, will retry in 5s…"
 msgstr ""
 "Impossible de se connecter au serveur de correction. Nouvelle tentative dans "
 "5s…"
 
-#: website/static/js/exercise.js:169
+#: website/static/js/exercise.js:179
 #, javascript-format
 msgid "(See the <a href='%s'#FAQ'>FAQ</a> if it persists.)"
 msgstr "(Consultez la <a href='%s#FAQ'>FAQ</a> si le problème persiste.)"
