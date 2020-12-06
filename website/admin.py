@@ -49,7 +49,7 @@ class AnswerExerciseForm(forms.ModelForm):
 
 class ExerciseAdmin(TranslationAdmin):
     def get_queryset(self, request):
-        return super().get_queryset(request).with_weekly_stats()
+        return super().get_queryset(request).with_monthly_stats()
 
     ordering = ("-is_published", "position")
     readonly_fields = ("id", "created_at")
@@ -60,6 +60,7 @@ class ExerciseAdmin(TranslationAdmin):
         "created_at",
         "is_published",
         "position",
+        "points",
         "wording",
         "initial_solution",
         "pre_check",
@@ -69,30 +70,37 @@ class ExerciseAdmin(TranslationAdmin):
 
     list_display = (
         "title",
-        "position",
-        "created_at",
-        "weekly_tries",
-        "weekly_successes",
-        "weekly_success_ratio",
+        "formatted_position",
+        "points",
+        "monthly_tries",
+        "monthly_successes",
+        "monthly_success_ratio",
         "is_published",
     )
 
-    def weekly_tries(self, obj):
-        return f"{obj.last_week_tries} ({obj.last_week_tries - obj.prev_week_tries:+})"
+    def formatted_position(self, obj):
+        return f"{obj.position:.2f}"
 
-    def weekly_successes(self, obj):
-        return f"{obj.last_week_successes} ({obj.last_week_successes - obj.prev_week_successes:+})"
+    formatted_position.short_description = "position"
 
-    def weekly_success_ratio(self, obj):
-        last_week_ratio = prev_week_ratio = None
-        if obj.last_week_successes:
-            last_week_ratio = obj.last_week_successes / obj.last_week_tries
-        if obj.prev_week_successes:
-            prev_week_ratio = obj.prev_week_successes / obj.prev_week_tries
-        if prev_week_ratio is not None and last_week_ratio is not None:
-            return f"{last_week_ratio:.0%} ({100*(last_week_ratio - prev_week_ratio):+.2f})"
-        if last_week_ratio is not None:
-            return f"{last_week_ratio:.0%}"
+    def monthly_tries(self, obj):
+        return (
+            f"{obj.last_month_tries} ({obj.last_month_tries - obj.prev_month_tries:+})"
+        )
+
+    def monthly_successes(self, obj):
+        return f"{obj.last_month_successes} ({obj.last_month_successes - obj.prev_month_successes:+})"
+
+    def monthly_success_ratio(self, obj):
+        last_month_ratio = prev_month_ratio = None
+        if obj.last_month_successes:
+            last_month_ratio = obj.last_month_successes / obj.last_month_tries
+        if obj.prev_month_successes:
+            prev_month_ratio = obj.prev_month_successes / obj.prev_month_tries
+        if prev_month_ratio is not None and last_month_ratio is not None:
+            return f"{last_month_ratio:.0%} ({100*(last_month_ratio - prev_month_ratio):+.2f})"
+        if last_month_ratio is not None:
+            return f"{last_month_ratio:.0%}"
         else:
             return "ø"
 

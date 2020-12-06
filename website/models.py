@@ -87,41 +87,41 @@ class ExerciseQuerySet(models.QuerySet):
             ),
         )
 
-    def with_weekly_stats(self):
+    def with_monthly_stats(self):
         return self.annotate(
-            last_week_tries=Count(
+            last_month_tries=Count(
                 "answers__user",
                 filter=Q(
-                    answers__created_at__gt=now() - timedelta(days=7),
+                    answers__created_at__gt=now() - timedelta(days=30),
                     answers__user__is_staff=False,
                 ),
                 distinct=True,
             ),
-            prev_week_tries=Count(
+            prev_month_tries=Count(
                 "answers__user",
                 filter=Q(
-                    answers__created_at__gt=now() - timedelta(days=14),
-                    answers__created_at__lt=now() - timedelta(days=7),
+                    answers__created_at__gt=now() - timedelta(days=60),
+                    answers__created_at__lt=now() - timedelta(days=30),
                     answers__user__is_staff=False,
                 ),
                 distinct=True,
             ),
-            last_week_successes=Count(
+            last_month_successes=Count(
                 "answers__user",
                 filter=Q(
                     answers__is_valid=True,
                     answers__user__is_staff=False,
-                    answers__created_at__gt=now() - timedelta(days=7),
+                    answers__created_at__gt=now() - timedelta(days=30),
                 ),
                 distinct=True,
             ),
-            prev_week_successes=Count(
+            prev_month_successes=Count(
                 "answers__user",
                 filter=Q(
                     answers__is_valid=True,
                     answers__user__is_staff=False,
-                    answers__created_at__gt=now() - timedelta(days=14),
-                    answers__created_at__lt=now() - timedelta(days=7),
+                    answers__created_at__gt=now() - timedelta(days=60),
+                    answers__created_at__lt=now() - timedelta(days=30),
                 ),
                 distinct=True,
             ),
