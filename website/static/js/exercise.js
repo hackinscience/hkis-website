@@ -67,7 +67,7 @@ function fill_answer(answer) {
                     "text=" + encodeURIComponent(
                         interpolate(gettext("I've completed \"%s\" on HackInScience"), [document.title.split("—")[1].replace(/^\s+|\s+$/g, '')])) +
                     "&url=" + encodeURIComponent(document.location) +
-                    "&related=sizeof&hashtags=HackInScience",
+                    "&related=sizeof&hashtags=HackInScience,python",
                 innerText: gettext("Tweet it!")}));
             if (!answer.user) {
                 div.appendChild(hkis.createElement("div", {
