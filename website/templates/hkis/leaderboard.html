@@ -17,17 +17,17 @@
         </tr>
       </thead>
       <tbody>
-        {% for other in user_list %}
-        <tr class="{% if other.username == user.username %}table-primary{% endif %}">
+        {% for rank, player in players %}
+        <tr class="{% if player.username == user.username %}table-primary{% endif %}">
           <td scope="row">
-            {{ other.rank }}
+            {{ rank }}
           </td>
           <td scope="row">
-            {{ other.points|floatformat:"0" }}
+            {{ player.points|floatformat:"0" }}
           </td>
           <td scope="row">
-            {% if other.public_profile %}
-            {{ other.username }}
+            {% if player.public_profile %}
+            {{ player.username }}
             {% else %}
             (anonymous)
             {% endif %}
@@ -40,7 +40,7 @@
             {{ user.rank }}
           </td>
           <td scope="row">
-            {{ other.points|floatformat:"0" }}
+            {{ player.points|floatformat:"0" }}
           </td>
           <td scope="row">
             {{ user.username }}

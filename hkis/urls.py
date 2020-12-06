@@ -21,7 +21,6 @@ from django.views.i18n import JavaScriptCatalog
 from website.api import router
 from website.views import (
     ExerciseListView,
-    LeaderBoardView,
     ExerciseView,
     ProfileView,
     SolutionView,
@@ -32,6 +31,8 @@ from website.views import (
     helppage,
     index,
     team,
+    leaderboard_view,
+    team_leaderboard_view,
 )
 
 
@@ -47,7 +48,12 @@ urlpatterns = [
     path("api-auth/", include("rest_framework.urls")),
     path("accounts/", include("registration.backends.simple.urls")),
     path("exercises/", ExerciseListView.as_view(), name="exercises"),
-    path("leaderboard/", LeaderBoardView.as_view(), name="leaderboard"),
+    path("leaderboard/", leaderboard_view, name="leaderboard"),
+    path(
+        "leaderboard/<team>",
+        team_leaderboard_view,
+        name="team_leaderboard",
+    ),
     path("exercises/<slug:slug>", ExerciseView.as_view(), name="exercise"),
     path("exercises/<slug:slug>/solutions", SolutionView.as_view(), name="solutions"),
     path(

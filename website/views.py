@@ -75,12 +75,22 @@ class ProfileView(LoginRequiredMixin, UpdateView):
         return reverse("profile", kwargs={"pk": self.request.user.id})
 
 
-class LeaderBoardView(ListView):
-    model = User
-    template_name = "hkis/leaderboard.html"
+def leaderboard_view(request):
+    context = {
+        "players": [
+            (player.rank, player) for player in User.objects.order_by("rank")[:100]
+        ]
+    }
+    return render(request, "hkis/leaderboard.html", context)
 
-    def get_queryset(self):
-        return super().get_queryset().order_by("rank")[:100]
+
+def team_leaderboard_view(request, team):
+    context = {
+        "players": enumerate(
+            User.objects.filter(groups__name=team).order_by("rank")[:100], start=1
+        )
+    }
+    return render(request, "hkis/leaderboard.html", context)
 
 
 class ExerciseListView(ListView):
