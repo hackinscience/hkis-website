@@ -1,0 +1,38 @@
+{% extends "hkis/layout.html" %}
+{% load i18n %}
+{% load static %}
+{% block title %}{% blocktrans %}Teams{% endblocktrans %}{% endblock %}
+
+{% block container %}
+
+<div class="row" style="height: 92%">
+  <div class="col-md-8 offset-md-2" style="height: 100%">
+    <h1 class="align-center">{% blocktrans %}Teams{% endblocktrans %}</h1>
+    <table class="table table-sm table-hover">
+      <thead>
+        <tr>
+          <th scope="col">Team</th>
+          <th scope="col">#members</th>
+          <th scope="col">Leaderboard</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for team in teams %}
+        <tr class="{% if user in team.members %}table-primary{% endif %}">
+          <td scope="row">
+            <a href="{% url 'team' team.name %}">{{ team.name }}</a>
+          </td>
+          <td scope="row">
+            {{ team.members.count }}
+          </td>
+          <td scope="row">
+            <a href="{% url 'team_leaderboard' team.name %}">leaderboard</a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+{% endblock %}
