@@ -78,18 +78,20 @@ class ProfileView(LoginRequiredMixin, UpdateView):
 
 def leaderboard_view(request):
     context = {
+        "team": None,
         "players": [
             (player.rank, player) for player in User.objects.order_by("rank")[:100]
-        ]
+        ],
     }
     return render(request, "hkis/leaderboard.html", context)
 
 
 def team_leaderboard_view(request, team):
     context = {
+        "team": team,
         "players": enumerate(
             User.objects.filter(team__name=team).order_by("rank")[:100], start=1
-        )
+        ),
     }
     return render(request, "hkis/leaderboard.html", context)
 

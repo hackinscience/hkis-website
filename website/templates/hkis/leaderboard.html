@@ -14,6 +14,9 @@
           <th scope="col">#</th>
           <th scope="col">points</th>
           <th scope="col">Username</th>
+          {% if not team %}
+          <th scope="col">Team</th>
+          {% endif %}
         </tr>
       </thead>
       <tbody>
@@ -32,6 +35,13 @@
             (anonymous)
             {% endif %}
           </td>
+          {% if not team %}
+          <td scope="row">
+            {% if player.team_set.first %}
+            <a href="{% url 'team' player.team_set.first %}">{{ player.team_set.first }}</a>
+            {% endif %}
+          </td>
+          {% endif %}
         </tr>
         {% endfor %}
         {% if user not in user_list and not user.is_anonymous %}
@@ -42,9 +52,11 @@
           <td scope="row">
             {{ player.points|floatformat:"0" }}
           </td>
+          {% if not team %}
           <td scope="row">
             {{ user.username }}
           </td>
+          {% endif %}
         </tr>
         {% endif %}
       </tbody>
