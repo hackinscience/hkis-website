@@ -3,69 +3,106 @@
 {% block title %}Profile{% endblock %}
 {% block container %}
 
-<div class="row">
-  <div class="col-md-8 offset-md-2">
-    <h2>{% trans "Statistics" %}</h2>
-    <p>
-      {% blocktrans with date_joined=user.date_joined trimmed %}
-      You subscribed on {{ date_joined }}, and sent {{ submit_qty }}
-      answers to the correction bot.
+<div class="col-md-8 offset-md-2">
+  <h2>{% trans "Statistics" %}</h2>
+  <p>
+    {% blocktrans with date_joined=user.date_joined trimmed %}
+    You subscribed on {{ date_joined }}, and sent {{ submit_qty }}
+    answers to the correction bot.
+    {% endblocktrans %}
+  </p>
+  <p>
+    {% blocktrans trimmed %}
+    You resolved {{ done_qty }} exercises, that's {{ done_pct }} of all exercises.
+    {% endblocktrans %}
+  </p>
+  <p>
+    {% if user.rank is not None %}
+      {% blocktrans trimmed with rank=user.rank %}
+        You're ranking {{ rank }} over {{ participants }} participants.
       {% endblocktrans %}
-    </p>
-    <p>
+    {% else %}
       {% blocktrans trimmed %}
-      You resolved {{ done_qty }} exercises, that's {{ done_pct }} of all exercises.
+        You're not ranked yet.
       {% endblocktrans %}
-    </p>
-    <p>
-      {% if user.rank is not None %}
-        {% blocktrans trimmed with rank=user.rank %}
-          You're ranking {{ rank }} over {{ participants }} participants.
-        {% endblocktrans %}
-      {% else %}
-        {% blocktrans trimmed %}
-          You're not ranked yet.
-        {% endblocktrans %}
+    {% endif %}
+  </p>
+</div>
+
+<div class="col-md-8 offset-md-2">
+  <h3>Team</h3>
+  {% if not memberships %}
+  {% trans "You're not in a team, but you can join or create one:" %}
+  <form action="/teams/" method="post" class="form">
+    {% csrf_token %}
+    <input type="text" name="join_team" value="" />
+    <button class="btn btn-sm btn-primary" type="submit">{% trans "Join team" %}</button>
+  </form>
+  {% else %}
+  {% for membership in memberships %}
+    {% url 'team' membership.team.name as team_url %}
+    {% if membership.role == "PE" %}
+      {% blocktrans trimmed with name=tmembership.team.name url=team_url %}
+        You're almost in the <a href="{{ url }}">{{ name }}</a> team (waiting for approval).
+      {% endblocktrans %}
+    {% endif %}
+    {% if membership.role == "ST" %}
+      {% blocktrans trimmed with name=membership.team.name url=team_url %}
+        You're staff in the <a href="{{ url }}">{{ name }}</a> team.
+      {% endblocktrans %}
+    {% endif %}
+    {% if membership.role == "MM" %}
+      {% blocktrans trimmed with name=membership.team.name url=team_url %}
+        You're in the <a href="{{ url }}">{{ name }}</a> team.
+      {% endblocktrans %}
+    {% endif %}
+  <form action="/teams/" method="post" class="form" style="display: inline">
+    {% csrf_token %}
+    <input type="hidden" name="leave_team" value="{{ membership.team.name }}" />
+    <button class="btn btn-sm btn-danger" type="submit">{% trans "Leave team" %}</button>
+  </form>
+  {% endfor %}
+  {% endif %}
+  <br/>
+  <a href="{% url 'help' %}#teams">Learn about teams</a>
+</div>
+
+<div class="col-md-8 offset-md-2">
+  <p>
+    <h3>Preferred language</h3>
+    <script>
+      function set_lang(lang) {
+          document.cookie = "django_language=" + lang + ";samesite=strict;max-age=31536000;path=/";
+          window.location.reload(true);
+      }
+    </script>
+    <ul>
+      {% get_current_language as current_language %}
+      {% for language_tag, language in languages %}
+      <li><button type="button" class="btn btn-{% if language_tag != current_language%}outline-{%endif%}secondary" onclick="set_lang('{{ language_tag }}')">{{ language }}</button></li>
+      {% endfor %}
+    </ul>
+  </p>
+</div>
+
+<div class="col-md-8 offset-md-2">
+  <h2>{% trans "Personal informations" %}</h2>
+  <div class="row">
+    <div class="col-md-6 ">
+      {% if messages %}
+        {% for message in messages %}
+        <div{% if message.tags %} class="alert alert-{{ message.tags }}"{% endif %}>{{ message }}</div>
+        {% endfor %}
       {% endif %}
-    </p>
-    <h2>{% trans "Preferences" %}</h2>
-    <div class="row">
-      <div class="col-md-6 ">
+      <form action="" method="post" class="form">
+        {% csrf_token %}
+        {{ form|crispy }}
+        {% url 'auth_password_change' as password_change %}
         <p>
-          Preferred language:
-          <script>
-            function set_lang(lang) {
-                document.cookie = "django_language=" + lang + ";samesite=strict;max-age=31536000;path=/";
-                window.location.reload(true);
-            }
-          </script>
-          <ul>
-            {% get_current_language as current_language %}
-            {% for language_tag, language in languages %}
-            <li><button type="button" class="btn btn-{% if language_tag != current_language%}outline-{%endif%}secondary" onclick="set_lang('{{ language_tag }}')">{{ language }}</button></li>
-            {% endfor %}
-          </ul>
+        <a href="{{ password_change }}">{% trans "Change your password" %}</a>
         </p>
-      </div>
-    </div>
-    <h2>{% trans "Personal informations" %}</h2>
-    <div class="row">
-      <div class="col-md-6 ">
-        {% if messages %}
-          {% for message in messages %}
-          <div{% if message.tags %} class="alert alert-{{ message.tags }}"{% endif %}>{{ message }}</div>
-          {% endfor %}
-        {% endif %}
-        <form action="" method="post" class="form">
-          {% csrf_token %}
-          {{ form|crispy }}
-          {% url 'auth_password_change' as password_change %}
-          <p>
-          <a href="{{ password_change }}">{% trans "Change your password" %}</a>
-          </p>
-          <button type="submit" class="btn btn-success btn-lg">{% trans "Update" %}</button>
-        </form>
-      </div>
+        <button type="submit" class="btn btn-success btn-lg">{% trans "Update" %}</button>
+      </form>
     </div>
   </div>
 </div>

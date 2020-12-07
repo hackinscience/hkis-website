@@ -6,14 +6,14 @@ from django.contrib import messages
 from django.core.exceptions import PermissionDenied
 from django.conf import settings
 from django.urls import reverse
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, Http404
 from django.db.models import Count, Q, Max
 from django.shortcuts import render
 from django.utils.translation import gettext
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import UpdateView
 from django.views.generic.list import ListView
-from website.models import Exercise, Answer, User
+from website.models import Exercise, Answer, User, Team, Membership
 from website.forms import AnswerForm
 
 
@@ -35,8 +35,8 @@ def helppage(request):
     return render(request, "hkis/help.html")
 
 
-def team(request):
-    return render(request, "hkis/team.html")
+def page_team(request):
+    return render(request, "hkis/page_team.html")
 
 
 class ProfileView(LoginRequiredMixin, UpdateView):
@@ -46,6 +46,7 @@ class ProfileView(LoginRequiredMixin, UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context["memberships"] = context["object"].membership_set.all()
         context["exercises"] = Exercise.objects.filter(
             is_published=True
         ).with_user_stats(self.request.user)
@@ -286,3 +287,38 @@ class StatsDetailView(UserPassesTestMixin, DetailView):
             ]
         )
         return context
+
+
+def teams(request):
+    if request.method != "POST":
+        return HttpResponseRedirect(reverse("teams"))
+    if "remove_from_team" in request.POST:
+        team = Team.objects.get(name=request.POST["remove_from_team"])
+        if team.is_staff(request.user):
+            team.remove_member(request.POST["member"])
+        return HttpResponseRedirect(reverse("team", kwargs={"team": team.name}))
+    if "accept_in_team" in request.POST:
+        team = Team.objects.get(name=request.POST["accept_in_team"])
+        if team.is_staff(request.user):
+            team.accept(request.POST["member"])
+        return HttpResponseRedirect(reverse("team", kwargs={"team": team.name}))
+    if "leave_team" in request.POST:
+        team = Team.objects.get(name=request.POST["leave_team"])
+        team.remove_member(request.user.username)
+    if "join_team" in request.POST:
+        team, _ = Team.objects.get_or_create(name=request.POST["join_team"])
+        team.add_member(request.user.username)
+    return HttpResponseRedirect(reverse("profile", kwargs={"pk": request.user.id}))
+
+
+def team(request, team):
+    try:
+        team = Team.objects.get(name=team)
+    except Team.DoesNotExist:
+        raise Http404("Team does not exist")
+    try:
+        requester_membership = Membership.objects.get(team=team, user=request.user)
+    except Membership.DoesNotExist:
+        requester_membership = None
+    context = {"team": team, "requester_membership": requester_membership}
+    return render(request, "hkis/team.html", context)

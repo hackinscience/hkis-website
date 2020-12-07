@@ -7,7 +7,7 @@ from django_ace import AceWidget
 
 from modeltranslation.admin import TranslationAdmin
 
-from website.models import Answer, Exercise, Snippet, User
+from website.models import Answer, Exercise, Snippet, User, Team, Membership
 
 
 class AdminExerciseForm(forms.ModelForm):
@@ -107,6 +107,17 @@ class ExerciseAdmin(TranslationAdmin):
     form = AdminExerciseForm
 
 
+class MembershipInline(admin.TabularInline):
+    model = Membership
+    extra = 1
+
+
+class TeamAdmin(admin.ModelAdmin):
+    fields = ("name",)
+    readonly_fields = ("created_at",)
+    inlines = (MembershipInline,)
+
+
 class AnswerAdmin(admin.ModelAdmin):
     readonly_fields = ("user", "created_at", "corrected_at")
     list_display = (
@@ -143,9 +154,11 @@ class SnippetAdmin(admin.ModelAdmin):
 class MyUserAdmin(UserAdmin):
     list_display = UserAdmin.list_display + ("date_joined", "points", "rank")
     ordering = ("-date_joined",)
+    inlines = (MembershipInline,)
 
 
 admin.site.register(Answer, AnswerAdmin)
 admin.site.register(Exercise, ExerciseAdmin)
 admin.site.register(Snippet, SnippetAdmin)
 admin.site.register(User, MyUserAdmin)
+admin.site.register(Team, TeamAdmin)

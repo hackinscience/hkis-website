@@ -1,38 +1,65 @@
 {% extends "hkis/layout.html" %}
-{% load hkis_extra %}
-{% load i18n static %}
+{% load i18n %}
+{% load static %}
+{% block title %}{% blocktrans with name=team.name %}Team {{ name }}{% endblocktrans %}{% endblock %}
+
 {% block container %}
 
-<h1>{% trans "About Hackinscience" %}</h1>
-<h2>{% trans "The team" %}</h2>
-<div class="row">
-  <div class="col">
-    <h4>Antoine Angot</h4>
-    <img src="{% static "img/antoine-angot.jpg" %}">
-    <p> Former CS teacher at FdV Licence, <a href="https://lean.fr">lean.fr</a>.</p>
-  </div>
-  <div class="col">
-    <h4>Antoine Mazières</h4>
-    <img src="{% static "img/antoine-mazieres.jpg" %}">
-    <p>
-      Postdoctoral Researcher at Centre Marc Bloch, <a href="https://antonomase.fr/">antonomase.fr</a>.
-    </p>
-  </div>
-  <div class="col">
-    <h4>Julien Palard</h4>
-    <img src="{% static "img/julien-palard.jpg" %}">
-    <p>
-      CPython core developer, independent Python trainer, <a href="https://mdk.fr">mdk.fr</a>.
-    </p>
-  </div>
-  <div class="col">
-    <h4>Jérôme Schneider</h4>
-    <img src="{% static "img/jerome-schneider.jpg" %}">
-    <p>Profesionnal Python programmer with 10+ years of experience.</p>
+<div class="row" style="height: 92%">
+  <div class="col-md-8 offset-md-2" style="height: 100%">
+    <h1 class="align-center">{% blocktrans with name=team.name %}Team {{ name }}{% endblocktrans %}</h1>
+    <table class="table table-sm table-hover">
+      <thead>
+        <tr>
+          <th scope="col">Username</th>
+          <th scope="col">Role</th>
+          {% if requester_membership.role == "ST" %}
+          <th scope="col">Action</th>
+          {% endif %}
+        </tr>
+      </thead>
+      <tbody>
+        {% for membership in team.membership_set.all %}
+        <tr class="{% if membership.user.username == user.username %}table-primary{% endif %}">
+          <td scope="row">
+            {{ membership.user.username }}
+          </td>
+          <td scope="row">
+            {{ membership.get_role_display }}
+          </td>
+          {% if requester_membership.role == "ST" %}
+          <td scope="row">
+            {% if membership.user.username != requester_membership.user.username %}
+            {% if membership.role == "MM" %}
+            <form action="/teams/" method="post" class="form">
+              {% csrf_token %}
+              <input type="hidden" name="remove_from_team" value="{{ team.name }}" />
+              <input type="hidden" name="member" value="{{ membership.user.username }}" />
+              <button class="btn btn-sm btn-danger" type="submit">{% trans "Remove" %}</button>
+            </form>
+            {% endif %}
+            {% if membership.role == "PE" %}
+            <form action="/teams/" method="post" class="form" style="display: inline">
+              {% csrf_token %}
+              <input type="hidden" name="accept_in_team" value="{{ team.name }}" />
+              <input type="hidden" name="member" value="{{ membership.user.username }}" />
+              <button class="btn btn-sm btn-primary" type="submit">{% trans "Accept" %}</button>
+            </form>
+            <form action="/teams/" method="post" class="form" style="display: inline">
+              {% csrf_token %}
+              <input type="hidden" name="remove_from_team" value="{{ team.name }}" />
+              <input type="hidden" name="member" value="{{ membership.user.username }}" />
+              <button class="btn btn-sm btn-secondary" type="submit">{% trans "Reject" %}</button>
+            </form>
+            {% endif %}
+            {% endif %}
+          </td>
+          {% endif %}
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
   </div>
 </div>
-<h2>{% trans "Contact us" %}</h2>
-<p>
-  {% trans "You can contact us by email at team at hackinscience dot org." %}
-</p>
+
 {% endblock %}

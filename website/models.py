@@ -1,13 +1,14 @@
 import logging
 from datetime import timedelta
 
-import django.contrib.auth.models
 from django.db import models
 from django.db.models import Count, Value, Q, Min
 from django.urls import reverse
 from django.utils.text import Truncator
 from django.utils.timezone import now
+from django.utils.translation import ugettext_lazy as _
 from django_extensions.db.fields import AutoSlugField
+import django.contrib.auth.models
 
 logger = logging.getLogger(__name__)
 
@@ -220,3 +221,79 @@ class Answer(models.Model):
         if self.correction_message and self.correction_message.startswith("Traceback"):
             self.is_unhelpfull = True
         super().save(*args, **kwargs)
+
+
+class Team(models.Model):
+    name = models.CharField(max_length=255)
+    created_at = models.DateTimeField(auto_now_add=True)
+    members = models.ManyToManyField(User, through="Membership")
+    is_public = models.BooleanField(default=True)
+
+    def is_staff(self, user):
+        return self.membership_set.filter(
+            user=user, role=Membership.Role.STAFF
+        ).exists()
+
+    def add_member(self, username):
+        """Join a team.
+
+        If the team has no staff yet, join as staff, else join as
+        pending member.
+        """
+        role = (
+            Membership.Role.STAFF
+            if not self.membership_set.filter(role=Membership.Role.STAFF).exists()
+            else Membership.Role.PENDING
+        )
+        return Membership.objects.create(
+            team=self, user=User.objects.get(username=username), role=role
+        )
+
+    def remove_member(self, username):
+        """Remove a member from the team.
+
+        If no staff remain after removal, elect a new staff.
+        """
+        self.membership_set.filter(user__username=username).delete()
+        # If there's no more staff, pick oldest member as staff:
+        if not self.membership_set.filter(role=Membership.Role.STAFF):
+            for membership in self.membership_set.filter(
+                role=Membership.Role.MEMBER
+            ).order_by("-created_at"):
+                membership.role = Membership.Role.STAFF
+                membership.save()
+                return
+            # No member to grant?
+            # Last resort: Pick a pending member as new staff:
+            for membership in self.membership_set.order_by("-created_at"):
+                membership.role = Membership.Role.STAFF
+                membership.save()
+                return
+
+    def accept(self, username):
+        membership = self.membership_set.get(user__username=username)
+        membership.role = Membership.Role.MEMBER
+        membership.save()
+
+    def __str__(self):
+        return self.name
+
+
+class Membership(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    team = models.ForeignKey(Team, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Role(models.TextChoices):
+        PENDING = "PE", _("Pending")
+        MEMBER = "MM", _("Member")
+        STAFF = "ST", _("Staff")
+
+    def __str__(self):
+        return f"{self.user.username} in {self.team.name}"
+
+    role = models.CharField(
+        max_length=2,
+        choices=Role.choices,
+        default=Role.MEMBER,
+    )
