@@ -326,9 +326,11 @@ def team(request, team):
         team = Team.objects.get(name=team)
     except Team.DoesNotExist:
         raise Http404("Team does not exist")
+    requester_membership = None
     try:
-        requester_membership = Membership.objects.get(team=team, user=request.user)
+        if not request.user.is_anonymous:
+            requester_membership = Membership.objects.get(team=team, user=request.user)
     except Membership.DoesNotExist:
-        requester_membership = None
+        pass
     context = {"team": team, "requester_membership": requester_membership}
     return render(request, "hkis/team.html", context)
