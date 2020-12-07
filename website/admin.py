@@ -155,6 +155,12 @@ class MyUserAdmin(UserAdmin):
     list_display = UserAdmin.list_display + ("date_joined", "points", "rank")
     ordering = ("-date_joined",)
     inlines = (MembershipInline,)
+    fieldsets = (
+        (
+            None,
+            {"fields": ("username", "password", "public_profile")},
+        ),
+    ) + UserAdmin.fieldsets[1:]
 
 
 admin.site.register(Answer, AnswerAdmin)
