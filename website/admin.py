@@ -115,7 +115,6 @@ class MembershipInline(admin.TabularInline):
 class TeamAdmin(admin.ModelAdmin):
     fields = ("name", "is_public")
     readonly_fields = ("created_at",)
-    inlines = (MembershipInline,)
 
 
 class AnswerAdmin(admin.ModelAdmin):
