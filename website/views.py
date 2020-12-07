@@ -88,7 +88,7 @@ def leaderboard_view(request):
 def team_leaderboard_view(request, team):
     context = {
         "players": enumerate(
-            User.objects.filter(groups__name=team).order_by("rank")[:100], start=1
+            User.objects.filter(team__name=team).order_by("rank")[:100], start=1
         )
     }
     return render(request, "hkis/leaderboard.html", context)
@@ -290,25 +290,33 @@ class StatsDetailView(UserPassesTestMixin, DetailView):
 
 
 def teams(request):
-    if request.method != "POST":
-        return HttpResponseRedirect(reverse("teams"))
-    if "remove_from_team" in request.POST:
-        team = Team.objects.get(name=request.POST["remove_from_team"])
-        if team.is_staff(request.user):
-            team.remove_member(request.POST["member"])
-        return HttpResponseRedirect(reverse("team", kwargs={"team": team.name}))
-    if "accept_in_team" in request.POST:
-        team = Team.objects.get(name=request.POST["accept_in_team"])
-        if team.is_staff(request.user):
-            team.accept(request.POST["member"])
-        return HttpResponseRedirect(reverse("team", kwargs={"team": team.name}))
-    if "leave_team" in request.POST:
-        team = Team.objects.get(name=request.POST["leave_team"])
-        team.remove_member(request.user.username)
-    if "join_team" in request.POST:
-        team, _ = Team.objects.get_or_create(name=request.POST["join_team"])
-        team.add_member(request.user.username)
-    return HttpResponseRedirect(reverse("profile", kwargs={"pk": request.user.id}))
+    if request.method == "POST":
+        if "remove_from_team" in request.POST:
+            team = Team.objects.get(name=request.POST["remove_from_team"])
+            if team.is_staff(request.user):
+                team.remove_member(request.POST["member"])
+            return HttpResponseRedirect(reverse("team", kwargs={"team": team.name}))
+        if "accept_in_team" in request.POST:
+            team = Team.objects.get(name=request.POST["accept_in_team"])
+            if team.is_staff(request.user):
+                team.accept(request.POST["member"])
+            return HttpResponseRedirect(reverse("team", kwargs={"team": team.name}))
+        if "leave_team" in request.POST:
+            team = Team.objects.get(name=request.POST["leave_team"])
+            team.remove_member(request.user.username)
+            return HttpResponseRedirect(
+                reverse("profile", kwargs={"pk": request.user.id})
+            )
+        if "join_team" in request.POST:
+            team, _ = Team.objects.get_or_create(name=request.POST["join_team"])
+            team.add_member(request.user.username)
+            return HttpResponseRedirect(
+                reverse("profile", kwargs={"pk": request.user.id})
+            )
+    if request.method == "GET":
+        return render(
+            request, "hkis/teams.html", {"teams": Team.objects.select_related()}
+        )
 
 
 def team(request, team):
