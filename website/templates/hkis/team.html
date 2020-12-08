@@ -8,10 +8,11 @@
 <div class="row" style="height: 92%">
   <div class="col-md-8 offset-md-2" style="height: 100%">
     <h1 class="align-center">{% blocktrans with name=team.name %}Team {{ name }}{% endblocktrans %}</h1>
-    <a href="{% url 'team_leaderboard' team.name %}">{% blocktrans with team_name=team.name %}See {{ team_name }} leaderboard{% endblocktrans%}</a>
     <table class="table table-sm table-hover">
       <thead>
         <tr>
+          <th scope="col">#</th>
+          <th scope="col">Points</th>
           <th scope="col">Username</th>
           <th scope="col">Role</th>
           {% if requester_membership.role == "ST" %}
@@ -20,8 +21,14 @@
         </tr>
       </thead>
       <tbody>
-        {% for membership in team.membership_set.all %}
+        {% for rank, membership in team.members_with_rank %}
         <tr class="{% if membership.user.username == user.username %}table-primary{% endif %}">
+          <td scope="row">
+            {{ rank }}
+          </td>
+          <td scope="row">
+            {{ membership.user.points|floatformat:"0" }}
+          </td>
           <td scope="row">
             {{ membership.user.username }}
           </td>

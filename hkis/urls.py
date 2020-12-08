@@ -34,7 +34,6 @@ from website.views import (
     teams,
     team,
     leaderboard_view,
-    team_leaderboard_view,
 )
 
 
@@ -53,11 +52,6 @@ urlpatterns = [
     path("accounts/", include("registration.backends.simple.urls")),
     path("exercises/", ExerciseListView.as_view(), name="exercises"),
     path("leaderboard/", leaderboard_view, name="leaderboard"),
-    path(
-        "leaderboard/<team>",
-        team_leaderboard_view,
-        name="team_leaderboard",
-    ),
     path("exercises/<slug:slug>", ExerciseView.as_view(), name="exercise"),
     path("exercises/<slug:slug>/solutions", SolutionView.as_view(), name="solutions"),
     path(

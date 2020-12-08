@@ -1,5 +1,5 @@
 from collections import OrderedDict
-
+from contextlib import suppress
 from django.contrib.auth.models import Group
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib import messages
@@ -78,20 +78,9 @@ class ProfileView(LoginRequiredMixin, UpdateView):
 
 def leaderboard_view(request):
     context = {
-        "team": None,
         "players": [
             (player.rank, player) for player in User.objects.order_by("rank")[:100]
         ],
-    }
-    return render(request, "hkis/leaderboard.html", context)
-
-
-def team_leaderboard_view(request, team):
-    context = {
-        "team": team,
-        "players": enumerate(
-            User.objects.filter(team__name=team).order_by("rank")[:100], start=1
-        ),
     }
     return render(request, "hkis/leaderboard.html", context)
 
@@ -327,10 +316,8 @@ def team(request, team):
     except Team.DoesNotExist:
         raise Http404("Team does not exist")
     requester_membership = None
-    try:
-        if not request.user.is_anonymous:
+    if not request.user.is_anonymous:
+        with suppress(Membership.DoesNotExist):
             requester_membership = Membership.objects.get(team=team, user=request.user)
-    except Membership.DoesNotExist:
-        pass
     context = {"team": team, "requester_membership": requester_membership}
     return render(request, "hkis/team.html", context)

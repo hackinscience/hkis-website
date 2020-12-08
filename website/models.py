@@ -278,6 +278,9 @@ class Team(models.Model):
         membership.role = Membership.Role.MEMBER
         membership.save()
 
+    def members_with_rank(self):
+        return enumerate(self.membership_set.order_by("user__rank"), start=1)
+
     def __str__(self):
         return self.name
 
