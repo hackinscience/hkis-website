@@ -25,6 +25,9 @@ class User(django.contrib.auth.models.AbstractUser):
     rank = models.PositiveIntegerField(blank=True, null=True)
     public_profile = models.BooleanField(default=True)
 
+    def public_teams(self):
+        return self.team_set.filter(is_public=True)
+
     def recompute_rank(self) -> int:
         """Reconpute, and return, the user rank.
 

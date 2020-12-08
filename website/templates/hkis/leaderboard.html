@@ -37,9 +37,7 @@
           </td>
           {% if not team %}
           <td scope="row">
-            {% if player.team_set.first %}
-            <a href="{% url 'team' player.team_set.first %}">{{ player.team_set.first }}</a>
-            {% endif %}
+            {% for team in player.public_teams %}{% if forloop.counter > 1 %},&nbsp;{% endif %}<a href="{% url 'team' team %}">{{ team }}</a>{% endfor %}
           </td>
           {% endif %}
         </tr>
