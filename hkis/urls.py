@@ -24,16 +24,15 @@ from website.views import (
     ExerciseView,
     ProfileView,
     SolutionView,
-    StatsDetailView,
-    StatsListView,
     about,
-    sponsor,
     helppage,
     index,
-    page_team,
-    teams,
-    team,
     leaderboard_view,
+    page_team,
+    sponsor,
+    team,
+    team_stats,
+    teams,
 )
 
 
@@ -45,6 +44,7 @@ urlpatterns = [
     path("pages/team/", page_team, name="page-team"),
     path("teams/", teams, name="teams"),
     path("teams/<team>", team, name="team"),
+    path("teams/<team>/stats", team_stats, name="team_stats"),
     path("admin/", admin.site.urls),
     path("sponsor/", sponsor, name="sponsor"),
     path("api/", include(router.urls)),
@@ -58,8 +58,6 @@ urlpatterns = [
         "favicon.ico", lambda request: redirect("/static/favicon.ico", permanent=True)
     ),
     path("profile/<int:pk>", ProfileView.as_view(), name="profile"),
-    path("stats/", StatsListView.as_view(), name="stats"),
-    path("stats/<int:pk>", StatsDetailView.as_view(), name="stats"),
 ]
 
 if settings.DEBUG:

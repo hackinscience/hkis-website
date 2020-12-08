@@ -3,15 +3,25 @@
 
 {% block container %}
 <h2>{{ object.name }}</h2>
-<table>
+<table class="table table-stripped table-bordered table-sm">
+  <thead>
+    <tr>
+      <th></th>
+      {% for exercise in exercises %}
+      <th scope="col" style="writing-mode: vertical-rl">
+        {{ exercise.slug }}
+      </th>
+      {% endfor %}
+    </tr>
+  </thead>
+  <tbody>
   {% for username, answers in stats.items %}
   <tr>
-    <td>
+    <th scope="row">
       {{ username }}
-    </td>
+    </th>
     {% for answer in answers %}
     <td>
-      <a href="{% url "admin:website_answer_change" object_id=answer.last_answer %}">
       {% if answer.is_tried %}
           {% if answer.is_valid %}
             <span class="good">✓</span>
@@ -19,10 +29,10 @@
             <span class="bad">✗</span>
           {% endif %}
       {% endif %}
-      </a>
     </td>
     {% endfor %}
   </tr>
   {% endfor %}
+  </tbody>
 </table>
 {% endblock %}

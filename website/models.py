@@ -26,7 +26,7 @@ class User(django.contrib.auth.models.AbstractUser):
     public_profile = models.BooleanField(default=True)
 
     def public_teams(self):
-        return self.team_set.filter(is_public=True)
+        return self.teams.filter(is_public=True)
 
     def recompute_rank(self) -> int:
         """Reconpute, and return, the user rank.
@@ -229,7 +229,7 @@ class Answer(models.Model):
 class Team(models.Model):
     name = models.CharField(max_length=255)
     created_at = models.DateTimeField(auto_now_add=True)
-    members = models.ManyToManyField(User, through="Membership")
+    members = models.ManyToManyField(User, through="Membership", related_name="teams")
     is_public = models.BooleanField(default=True)
 
     def is_staff(self, user):

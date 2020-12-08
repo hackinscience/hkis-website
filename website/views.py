@@ -222,31 +222,23 @@ class SolutionView(LoginRequiredMixin, DetailView):
         return context
 
 
-class StatsListView(UserPassesTestMixin, ListView):
-    template_name = "hkis/stats_list.html"
-    model = Group
+def team_stats(request, team):
+    try:
+        team = Team.objects.get(name=team)
+    except Team.DoesNotExist:
+        raise Http404("Team does not exist")
 
-    def get_queryset(self):
-        self.queryset = self.request.user.groups.all()
-        return super().get_queryset()
+    requester_membership = None
+    if not request.user.is_anonymous:
+        with suppress(Membership.DoesNotExist):
+            requester_membership = Membership.objects.get(team=team, user=request.user)
+    if not requester_membership:
+        raise Http404("Team does not exist")
+    if requester_membership.role != Membership.Role.STAFF:
+        raise Http404("Team does not exist")
 
-    def test_func(self):
-        return self.request.user.has_perm("website.view_answer")
-
-
-class StatsDetailView(UserPassesTestMixin, DetailView):
-    template_name = "hkis/stats_detail.html"
-    model = Group
-
-    def test_func(self):
-        return (
-            self.request.user.has_perm("website.view_answer")
-            and self.get_object() in self.request.user.groups.all()
-        )
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["stats"] = OrderedDict(
+    context = {
+        "stats": OrderedDict(
             [
                 (
                     user.username,
@@ -272,12 +264,12 @@ class StatsDetailView(UserPassesTestMixin, DetailView):
                         ).order_by("position")
                     ],
                 )
-                for user in User.objects.filter(groups=context["object"])
-                .exclude(groups__name="prof")
-                .order_by("username")
+                for user in User.objects.filter(teams=team).order_by("username")
             ]
-        )
-        return context
+        ),
+        "exercises": Exercise.objects.order_by("position"),
+    }
+    return render(request, "hkis/stats_detail.html", context)
 
 
 def teams(request):

@@ -21,11 +21,6 @@
         <li class="nav-item">
           <a class="nav-link" href="{% url 'profile' user.id %}">{% trans "Profile" %}</a>
         </li>
-        {% if perms.website.view_answer %}
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'stats' %}">{% trans "Stats" %}</a>
-          </li>
-        {% endif %}
         {% if user.is_staff %}
           <li class="nav-item">
             <a class="nav-link" href="{% url 'admin:index' %}">{% trans "Admin" %}</a>
