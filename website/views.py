@@ -264,7 +264,7 @@ def team_stats(request, team):
                         ).order_by("position")
                     ],
                 )
-                for user in User.objects.filter(teams=team).order_by("username")
+                for user in User.objects.filter(teams=team).order_by("-points")
             ]
         ),
         "exercises": Exercise.objects.order_by("position"),
