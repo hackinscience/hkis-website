@@ -17,7 +17,7 @@ class AnswerForm(forms.ModelForm):
                 height="100%",
                 fontsize="16px",
                 toolbar=False,
-                showgutter=False,
+                showgutter=True,
                 behaviours=False,
             ),
             "exercise": forms.HiddenInput(),
