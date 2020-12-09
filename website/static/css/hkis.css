@@ -112,3 +112,15 @@ pre {
     line-height: 0;
     text-align: center;
 }
+
+.ace_gutter{
+    width: 45px !important;
+}
+
+.ace_gutter-layer{
+    width: 45px !important;
+}
+
+.ace_gutter-cell{
+    padding-left: 2px !important;
+}
