@@ -32,37 +32,41 @@
 <div class="col-md-8 offset-md-2">
   <h3>Team</h3>
   {% if not memberships %}
-  {% trans "You're not in a team, but you can join or create one:" %}
+  {% trans "You're not in a team, but you can join or create one!" %}
+  {% else %}
+  <ul>
+    {% for membership in memberships %}
+    <li>
+      {% url 'team' membership.team.name as team_url %}
+      {% if membership.role == "PE" %}
+        {% blocktrans trimmed with name=tmembership.team.name url=team_url %}
+          You're almost in the <a href="{{ url }}">{{ name }}</a> team (waiting for approval).
+        {% endblocktrans %}
+      {% endif %}
+      {% if membership.role == "ST" %}
+        {% blocktrans trimmed with name=membership.team.name url=team_url %}
+          You're staff in the <a href="{{ url }}">{{ name }}</a> team.
+        {% endblocktrans %}
+      {% endif %}
+      {% if membership.role == "MM" %}
+        {% blocktrans trimmed with name=membership.team.name url=team_url %}
+          You're in the <a href="{{ url }}">{{ name }}</a> team.
+        {% endblocktrans %}
+      {% endif %}
+      <form action="/teams/" method="post" class="form" style="display: inline">
+        {% csrf_token %}
+        <input type="hidden" name="leave_team" value="{{ membership.team.name }}" />
+        <button class="btn btn-sm btn-danger" type="submit">{% trans "Leave team" %}</button>
+      </form>
+      </li>
+    {% endfor %}
+  </ul>
+  {% endif %}
   <form action="/teams/" method="post" class="form">
     {% csrf_token %}
     <input type="text" name="join_team" value="" />
     <button class="btn btn-sm btn-primary" type="submit">{% trans "Join team" %}</button>
   </form>
-  {% else %}
-  {% for membership in memberships %}
-    {% url 'team' membership.team.name as team_url %}
-    {% if membership.role == "PE" %}
-      {% blocktrans trimmed with name=tmembership.team.name url=team_url %}
-        You're almost in the <a href="{{ url }}">{{ name }}</a> team (waiting for approval).
-      {% endblocktrans %}
-    {% endif %}
-    {% if membership.role == "ST" %}
-      {% blocktrans trimmed with name=membership.team.name url=team_url %}
-        You're staff in the <a href="{{ url }}">{{ name }}</a> team.
-      {% endblocktrans %}
-    {% endif %}
-    {% if membership.role == "MM" %}
-      {% blocktrans trimmed with name=membership.team.name url=team_url %}
-        You're in the <a href="{{ url }}">{{ name }}</a> team.
-      {% endblocktrans %}
-    {% endif %}
-  <form action="/teams/" method="post" class="form" style="display: inline">
-    {% csrf_token %}
-    <input type="hidden" name="leave_team" value="{{ membership.team.name }}" />
-    <button class="btn btn-sm btn-danger" type="submit">{% trans "Leave team" %}</button>
-  </form>
-  {% endfor %}
-  {% endif %}
   <br/>
   <a href="{% url 'help' %}#teams">Learn about teams</a>
 </div>
