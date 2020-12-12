@@ -38,3 +38,26 @@ $ ./manage.py compilemessages
 
 Exercises (title and wording) are translated via the admin (or the
 API), we use django-modeltranslation.
+
+
+## How does the checker bot work?
+
+The answers are load-balanced to correction workers using Celery, so
+you can have multiple machines dedicated to correct loads of answers.
+
+Once received by a worker the worker runs two things:
+
+- An optional `pre_check.py` script, that sets-up anything specific
+  for this answers (required files and directories, translations,
+  whatever is needed).
+
+- A `check.py` script is then started in a sandbox (no internet
+  connectivity, restricted filesystem, CPU, memory usage, …).  This is
+  the script that check the student answer, the protocol is simple: if
+  the script prints, then then answer is wrong, and what's been
+  printed is displayed, as Markdown, to the student.
+
+Both `pre_check.py` and `check.py` are in Python, but they're not
+limited to check for Python answers, if you want to check for shell
+script or C, or whatever, the `check.py` can use `subprocess` to run
+the answer script, or compile the answer code, or whatever needed.
