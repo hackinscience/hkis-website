@@ -33,7 +33,11 @@
             {{ membership.user.points|floatformat:"0" }}
           </td>
           <td scope="row">
+            {% if membership.user.public_profile %}
             {{ membership.user.username }}
+            {% else %}
+            (anonymous)
+            {% endif %}
           </td>
           <td scope="row">
             {{ membership.get_role_display }}
