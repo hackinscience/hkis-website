@@ -1,13 +1,11 @@
+from asgiref.sync import async_to_sync
+from channels.layers import get_channel_layer
+from django.contrib.auth.models import Group
+from django.db.models import Q
+from django_filters import rest_framework as filters
+from rest_framework import viewsets, response, serializers, routers, permissions
 import django_filters
 
-from asgiref.sync import async_to_sync
-from django.contrib.auth.models import Group
-from django_filters import rest_framework as filters
-from channels.layers import get_channel_layer
-from rest_framework import permissions
-from rest_framework import routers
-from rest_framework import serializers
-from rest_framework import viewsets
 from website.models import Answer, Exercise, Snippet, User, Category
 
 
@@ -16,6 +14,22 @@ class AdminOrReadOnly(permissions.BasePermission):
         if request.user and request.user.is_staff:
             return True
         return request.method in permissions.SAFE_METHODS
+
+
+class ExercisePermission(permissions.BasePermission):
+    """This allow exercise owner (and staff) to modify them.
+
+    Also anyone can create new (unpublished) exercises.
+    """
+
+    def has_object_permission(self, request, view, obj):
+        if request.user.is_staff:
+            return True
+        if request.method in permissions.SAFE_METHODS:
+            return True
+        if request.user.is_authenticated and obj.author == request.user:
+            return True
+        return False
 
 
 class AnswerPermission(permissions.BasePermission):
@@ -107,16 +121,21 @@ class PublicSnippetSerializer(serializers.HyperlinkedModelSerializer):
         read_only_fields = ("user", "created_at", "executed_at", "output")
 
 
-class StaffExerciseSerializer(serializers.HyperlinkedModelSerializer):
+class ExerciseSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Exercise
         fields = "__all__"
+        read_only_fields = ("is_published", "author")
 
-
-class PublicExerciseSerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = Exercise
-        fields = ("url", "title", "wording")
+    def __init__(self, *args, **kwargs):
+        fields = kwargs.pop("fields", None)
+        super().__init__(*args, **kwargs)
+        if fields is not None:
+            # Drop any fields that are not specified in the `fields` argument.
+            allowed = set(fields)
+            existing = set(self.fields)
+            for field_name in existing - allowed:
+                self.fields.pop(field_name)
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -209,19 +228,48 @@ class SnippetViewSet(viewsets.ModelViewSet):
 
 
 class ExerciseViewSet(viewsets.ModelViewSet):
-    permission_classes = [AdminOrReadOnly]
+    permission_classes = [ExercisePermission]
     queryset = Exercise.objects.all()
+
+    def perform_create(self, serializer):
+        serializer.save(author=self.request.user)
+
+    def list(self, request, *args, **kwargs):
+        """Non-paginating copy of super().list, which calls get_serializer once per item."""
+        queryset = list(self.filter_queryset(self.get_queryset()))
+        return response.Response(
+            {
+                "count": len(queryset),
+                "results": [self.get_serializer(item).data for item in queryset],
+            }
+        )
+
+    def get_serializer(self, instance=None, *args, **kwargs):
+        """I tweaked the `list` method so the get_serializer always receive an
+        instance as first parameter (no many=True), so we can specialize serializer
+        per instance. This is so exercises owner can see / edit their check.
+        """
+        kwargs["context"] = self.get_serializer_context()
+        if (
+            not instance
+            or instance.author == self.request.user
+            or self.request.user.is_staff
+        ):
+            return ExerciseSerializer(instance, *args, **kwargs)
+        else:
+            return ExerciseSerializer(
+                instance, *args, **kwargs, fields={"url", "title", "wording"}
+            )
 
     def get_queryset(self):
         queryset = super().get_queryset()
         if self.request.user.is_staff:
             return queryset
+        if self.request.user.is_authenticated:
+            return queryset.filter(
+                Q(is_published=True) | Q(author_id=self.request.user.id)
+            )
         return queryset.filter(is_published=True)
-
-    def get_serializer_class(self):
-        if self.request.user.is_staff:
-            return StaffExerciseSerializer
-        return PublicExerciseSerializer
 
 
 router = routers.DefaultRouter()
