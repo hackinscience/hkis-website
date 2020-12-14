@@ -1,5 +1,7 @@
 from collections import OrderedDict
 from contextlib import suppress
+from itertools import groupby
+
 from django.contrib.auth.models import Group
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib import messages
@@ -94,31 +96,16 @@ class ExerciseListView(ListView):
             .filter(is_published=True)
             .with_global_stats()
             .with_user_stats(self.request.user)
+            .select_related("category")
         )
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-
-        def _get_lead(wording):
-            found = False
-            for line in wording.split("\n"):
-                if line.startswith("##"):
-                    found = True
-                    continue
-                if line and found:
-                    return line
-            return ""
-
-        context["exercises"] = [
-            {
-                **vars(exercise),
-                "number": i + 1,
-                "lead": _get_lead(exercise.wording),
-                "tried": exercise.user_tries > 0,
-                "done": exercise.user_successes > 0,
-                "pct_tried": 100 * exercise.successes / (exercise.tries + 1),
-            }
-            for i, exercise in enumerate(self.object_list)
+        context["by_category"] = [
+            (key, list(values))
+            for key, values in groupby(
+                self.object_list, key=lambda exercise: exercise.category
+            )
         ]
         return context
 

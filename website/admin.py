@@ -7,7 +7,7 @@ from django_ace import AceWidget
 
 from modeltranslation.admin import TranslationAdmin
 
-from website.models import Answer, Exercise, Snippet, User, Team, Membership
+from website.models import Answer, Exercise, Snippet, User, Team, Membership, Category
 
 
 class AdminExerciseForm(forms.ModelForm):
@@ -60,6 +60,7 @@ class ExerciseAdmin(TranslationAdmin):
         "created_at",
         "is_published",
         "position",
+        "category",
         "points",
         "wording",
         "initial_solution",
@@ -71,6 +72,7 @@ class ExerciseAdmin(TranslationAdmin):
     list_display = (
         "title",
         "formatted_position",
+        "category",
         "points",
         "monthly_tries",
         "monthly_successes",
@@ -162,8 +164,13 @@ class MyUserAdmin(UserAdmin):
     ) + UserAdmin.fieldsets[1:]
 
 
+class CategoryAdmin(TranslationAdmin):
+    ...
+
+
 admin.site.register(Answer, AnswerAdmin)
 admin.site.register(Exercise, ExerciseAdmin)
 admin.site.register(Snippet, SnippetAdmin)
 admin.site.register(User, MyUserAdmin)
 admin.site.register(Team, TeamAdmin)
+admin.site.register(Category, CategoryAdmin)

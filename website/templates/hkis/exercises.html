@@ -7,14 +7,16 @@
 
 <div class="row" style="height: 92%">
   <div class="col-md-8 offset-md-2" style="height: 100%">
-    <h1 class="align-center">Python exercises</h1>
+    <h1 class="align-center">Exercises</h1>
+    {% for category, exercises in by_category %}
+    {% if category %}<h2>{{ category }}</h2>{% endif %}
     <table class="table table-sm table-hover">
       <tbody>
         {% for exercise in exercises %}
-        <tr onclick="if (!event.ctrlKey){location.href='{% url "exercise" exercise.slug %}';}" class="{% if exercise.tried %}{% if exercise.done %}table-success{% else %}table-danger{% endif %}{% endif %}">
+        <tr onclick="if (!event.ctrlKey){location.href='{% url "exercise" exercise.slug %}';}" class="{% if exercise.user_tries > 0 %}{% if exercise.user_successes > 0 %}table-success{% else %}table-danger{% endif %}{% endif %}">
           <td scope="row" class="d-flex align-items-center">
-              {% if exercise.tried %}
-                {% if exercise.done %}
+              {% if exercise.user_tries > 0 %}
+                {% if exercise.user_successes > 0 %}
                   <span class="good">✓</span>
                 {% else %}
                   <span class="bad">✗</span>
@@ -23,7 +25,7 @@
           </td>
           <td>
             <a href="{% url "exercise" exercise.slug %}">
-              <h5 style="display:inline">{{ exercise.number }}. {{ exercise.title }}</h5>
+              <h5 style="display:inline">{{ forloop.counter }}. {{ exercise.title }}</h5>
             </a>
           </td>
           <td>
@@ -33,7 +35,7 @@
         {% endfor %}
       </tbody>
     </table>
-
+    {% endfor %}
   </div>
 </div>
 

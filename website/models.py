@@ -132,6 +132,19 @@ class ExerciseQuerySet(models.QuerySet):
         )
 
 
+class Category(models.Model):
+    class Meta:
+        verbose_name_plural = "Categories"
+
+    title = models.CharField(max_length=255)
+    slug = AutoSlugField(populate_from=["title"], editable=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    position = models.FloatField(default=0)
+
+    def __str__(self):
+        return self.title or self.title_en or "Unnamed"
+
+
 class Exercise(models.Model):
     title = models.CharField(max_length=255)
     author = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True)
@@ -154,6 +167,9 @@ class Exercise(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     # Number of points are granted for solving this exercise
     points = models.IntegerField(default=1)
+    category = models.ForeignKey(
+        Category, on_delete=models.SET_NULL, blank=True, null=True
+    )
 
     def clean_fields(self, exclude=None):
         """Clean windows-style newlines, maybe inserted by Ace editor, or
@@ -167,7 +183,7 @@ class Exercise(models.Model):
             self.wording = self.wording.replace("\r\n", "\n")
 
     class Meta:
-        ordering = ["position"]
+        ordering = ("category__position", "category", "position")
 
     def get_absolute_url(self):
         return reverse("exercise", args=[self.slug])
