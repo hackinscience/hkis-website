@@ -8,7 +8,7 @@ from rest_framework import permissions
 from rest_framework import routers
 from rest_framework import serializers
 from rest_framework import viewsets
-from website.models import Answer, Exercise, Snippet, User
+from website.models import Answer, Exercise, Snippet, User, Category
 
 
 class AdminOrReadOnly(permissions.BasePermission):
@@ -68,6 +68,12 @@ class GroupSerializer(serializers.HyperlinkedModelSerializer):
         fields = ("url", "name")
 
 
+class CategorySerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Category
+        fields = ("slug", "title", "position")
+
+
 class StaffAnswerSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Answer
@@ -123,6 +129,12 @@ class GroupViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAdminUser]
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
+
+
+class CategoryViewSet(viewsets.ModelViewSet):
+    permission_classes = [AdminOrReadOnly]
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
 
 
 class AnswerFilter(filters.FilterSet):
@@ -218,3 +230,4 @@ router.register(r"snippets", SnippetViewSet)
 router.register(r"exercises", ExerciseViewSet)
 router.register(r"groups", GroupViewSet)
 router.register(r"users", UserViewSet)
+router.register(r"categories", CategoryViewSet)
