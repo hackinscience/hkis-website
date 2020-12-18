@@ -27,7 +27,7 @@ constantly==15.1.0        # via -r requirements.txt, twisted
 cryptography==3.1.1       # via -r requirements.txt, autobahn, pyopenssl, service-identity
 daphne==2.5.0             # via -r requirements.txt, channels
 distlib==0.3.1            # via virtualenv
-django-ace==1.0.8         # via -r requirements.txt
+django-ace==1.0.10        # via -r requirements.txt
 django-crispy-forms==1.9.2  # via -r requirements.txt
 django-debug-toolbar==3.1.1  # via -r requirements.txt
 django-extensions==3.0.9  # via -r requirements.txt
