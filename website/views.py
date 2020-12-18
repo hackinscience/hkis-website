@@ -96,6 +96,7 @@ class ExerciseListView(ListView):
             .filter(is_published=True)
             .with_global_stats()
             .with_user_stats(self.request.user)
+            .only("title", "category")
             .select_related("category")
         )
 
