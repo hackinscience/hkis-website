@@ -243,7 +243,7 @@ class Answer(models.Model):
 
 
 class Team(models.Model):
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=42)
     created_at = models.DateTimeField(auto_now_add=True)
     members = models.ManyToManyField(User, through="Membership", related_name="teams")
     is_public = models.BooleanField(default=True)
@@ -305,6 +305,9 @@ class Membership(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     team = models.ForeignKey(Team, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = [["user", "team"]]
 
     class Role(models.TextChoices):
         PENDING = "PE", _("Pending")
