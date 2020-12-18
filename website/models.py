@@ -44,7 +44,9 @@ class User(django.contrib.auth.models.AbstractUser):
           in the leaderboard.
         """
         points = 0
-        for exercise in Exercise.objects.with_user_stats(user=self):
+        for exercise in Exercise.objects.with_user_stats(user=self).only(
+            "points", "created_at"
+        ):
             if exercise.user_successes:
                 time_to_solve = (
                     exercise.solved_at - exercise.created_at
