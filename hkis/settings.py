@@ -285,6 +285,6 @@ GIT_HEAD = "master"  # Changed in production to the current commit hash, can be 
 AUTH_USER_MODEL = "website.User"
 
 try:
-    from local_settings import *
+    from .local_settings import *
 except ImportError:
     pass
