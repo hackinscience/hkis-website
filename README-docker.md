@@ -27,6 +27,7 @@ $ docker-compose build
 ## First start
 ```bash
 $ docker-compose up
+# In another terminal
 $ docker-compose run web python manage.py migrate
 $ docker-compose run web python manage.py loaddata initial
 ```
