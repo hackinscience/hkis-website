@@ -17,13 +17,11 @@ from celery import shared_task
 logger = getLogger(__name__)
 
 FIREJAIL_OPTIONS = [
-    "-c",
     "--quiet",
     "--net=none",
     "--shell=none",
     "--x11=none",
     "--protocol=inet",
-    "--private",
     "--private-dev",
     "--private-bin=python3",
     "--private-etc=group,hostname,localtime,nsswitch.conf,passwd,resolv.conf,alternatives",
