@@ -17,7 +17,6 @@ from celery import shared_task
 logger = getLogger(__name__)
 
 FIREJAIL_OPTIONS = [
-    "-c",
     "--quiet",
     "--net=none",
     "--shell=none",
@@ -54,11 +53,11 @@ def run_snippet_task(source_code: str) -> str:
         prof_proc = Popen(
             ["firejail"]
             + FIREJAIL_OPTIONS
-            + ["--private=" + tmpdir, "python3", os.path.expanduser("~/snippet.py")],
+            + ["--private=" + tmpdir, "python3", "./snippet.py"],
             stdin=DEVNULL,
             stdout=PIPE,
             stderr=STDOUT,
-            cwd=os.path.expanduser("~/"),
+            cwd=tmpdir,
             env=firejail_env,
         )
         try:
@@ -163,11 +162,11 @@ def check_answer_task(answer: dict):
         prof_proc = Popen(
             ["firejail"]
             + FIREJAIL_OPTIONS
-            + ["--private=" + tmpdir, "python3", os.path.expanduser("~/check.py")],
+            + ["--private=" + tmpdir, "python3", "./check.py"],
             stdin=DEVNULL,
             stdout=PIPE,
             stderr=STDOUT,
-            cwd=os.path.expanduser("~/"),
+            cwd=tmpdir,
             env=firejail_env,
         )
         try:

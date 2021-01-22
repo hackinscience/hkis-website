@@ -1,0 +1,33 @@
+version: '3.3'
+
+services:
+
+  redis:
+    image: redis
+    ports:
+      - '6379:6379'
+
+  celery:
+    build: .
+    command: celery -A hkis worker
+    volumes:
+      - .:/code
+    depends_on:
+      - redis
+
+  smtp:
+    build: .
+    command: python manage.py mail_debug --use-settings
+    volumes:
+      - .:/code
+
+  web:
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/code
+    ports:
+      - '8000:8000'
+    depends_on:
+      - smtp
+      - celery
