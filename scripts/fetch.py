@@ -63,7 +63,7 @@ def main():
                 )
                 del exercise[file.split(".")[0]]
             (path / "meta").write_text(json.dumps(exercise, indent=4))
-        next_exercise_page = exercises["next"]
+        next_exercise_page = exercises.get("next")
 
 
 if __name__ == "__main__":
