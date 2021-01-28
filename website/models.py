@@ -1,7 +1,7 @@
 import logging
 from datetime import timedelta
 
-from django.db import models
+from django.db import models, IntegrityError
 from django.db.models import Count, Value, Q, Min
 from django.urls import reverse
 from django.utils.text import Truncator
@@ -266,9 +266,12 @@ class Team(models.Model):
             if not self.membership_set.filter(role=Membership.Role.STAFF).exists()
             else Membership.Role.PENDING
         )
-        return Membership.objects.create(
-            team=self, user=User.objects.get(username=username), role=role
-        )
+        try:
+            return Membership.objects.create(
+                team=self, user=User.objects.get(username=username), role=role
+            )
+        except IntegrityError:  # Already member of the team.
+            return None
 
     def remove_member(self, username):
         """Remove a member from the team.
