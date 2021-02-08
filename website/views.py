@@ -15,7 +15,7 @@ from django.utils.translation import gettext
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import UpdateView
 from django.views.generic.list import ListView
-from website.models import Exercise, Answer, User, Team, Membership
+from website.models import Exercise, Answer, User, Team, Membership, Page
 from website.forms import AnswerForm
 
 
@@ -25,20 +25,9 @@ def index(request):
     return render(request, "hkis/index.html")
 
 
-def about(request):
-    return render(request, "hkis/about.html")
-
-
-def sponsor(request):
-    return render(request, "hkis/sponsor.html")
-
-
-def helppage(request):
-    return render(request, "hkis/help.html")
-
-
-def page_team(request):
-    return render(request, "hkis/page_team.html")
+def page(request, url):
+    p = Page.objects.get(url=url)
+    return render(request, "hkis/page.html", {"page": p})
 
 
 class ProfileView(LoginRequiredMixin, UpdateView):

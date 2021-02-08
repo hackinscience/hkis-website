@@ -1,0 +1,8 @@
+{% extends "hkis/layout.html" %}
+{% load hkis_extra %}
+{% block title %}
+{{ page.title }}
+{% endblock %}
+{% block container %}
+{{ page.body|markdown_to_bootstrap }}
+{% endblock %}

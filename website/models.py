@@ -306,6 +306,17 @@ class Team(models.Model):
         return self.name
 
 
+class Page(models.Model):
+    url = models.CharField(max_length=64)
+    title = models.CharField(max_length=512)
+    body = models.TextField(default="", blank=True)
+    position = models.FloatField(default=0, blank=True)
+    in_menu = models.BooleanField(default=False, blank=True)
+
+    def __str__(self):
+        return self.title
+
+
 class Membership(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     team = models.ForeignKey(Team, on_delete=models.CASCADE)

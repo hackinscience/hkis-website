@@ -175,8 +175,7 @@ function websocket_connect(ws_location) {
             fill_message(gettext("Connection to correction server lost, will retry in 5s…"), "warning");
         else
 
-        fill_message(gettext("Cannot connect to correction server, will retry in 5s…") + "<br/>" +
-                     interpolate(gettext("(See the <a href='%s'#FAQ'>FAQ</a> if it persists.)"), [HKIS_SETTINGS.HELP_URL]), "warning");
+        fill_message(gettext("Cannot connect to correction server, will retry in 5s…"), "warning");
         setTimeout(function(){websocket_connect(ws_location)}, 5000);
         lock_button("submit_answer", 0);
         lock_button("submit_snippet", 0);

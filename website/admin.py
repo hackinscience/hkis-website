@@ -7,7 +7,27 @@ from django_ace import AceWidget
 
 from modeltranslation.admin import TranslationAdmin
 
-from website.models import Answer, Exercise, Snippet, User, Team, Membership, Category
+from website.models import (
+    Answer,
+    Exercise,
+    Snippet,
+    User,
+    Team,
+    Membership,
+    Category,
+    Page,
+)
+
+
+class PageForm(forms.ModelForm):
+    class Meta:
+        model = Page
+        exclude = ()
+        widgets = {
+            "body": AceWidget(
+                mode="markdown", theme="twilight", width="100%", height="800px"
+            ),
+        }
 
 
 class AdminExerciseForm(forms.ModelForm):
@@ -109,6 +129,14 @@ class ExerciseAdmin(TranslationAdmin):
     form = AdminExerciseForm
 
 
+class PageAdmin(TranslationAdmin):
+    form = PageForm
+    list_display = ("path", "title")
+
+    def path(self, page):
+        return reverse("page", args=[page.url])
+
+
 class MembershipInline(admin.TabularInline):
     model = Membership
     extra = 1
@@ -174,3 +202,4 @@ admin.site.register(Snippet, SnippetAdmin)
 admin.site.register(User, MyUserAdmin)
 admin.site.register(Team, TeamAdmin)
 admin.site.register(Category, CategoryAdmin)
+admin.site.register(Page, PageAdmin)
