@@ -19,7 +19,7 @@
   </div>
 {% endif %}
 {{ answer_form.media }}
-<div class="row" style="height: 100%">
+<div class="row no-gutters" style="height: 100%">
   <div class="col-md-4" style="height: 100%; overflow: auto">
     <div class="style-info">
       <h1 class="exercise-title">{{ object.title }}</h1>
@@ -29,7 +29,7 @@
       </div>
     </div>
   </div>
-  <div class="col-md-5 style-info" style="height: 100%">
+  <div class="col-md-5 style-info" style="height: 100%; padding-left: .5em; padding-right: .5em">
     <form id="answer_form" action="#" onsubmit="return false;" method="post"
           style="height: 100%; display: flex; flex-direction: column; ">
         {% csrf_token %}
