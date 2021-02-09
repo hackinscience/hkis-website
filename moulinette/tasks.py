@@ -38,6 +38,7 @@ FIREJAIL_OPTIONS = [
     "--rlimit-nofile=100",
     "--rlimit-nproc=2000",
     "--rlimit-cpu=20",
+    "--rlimit-as=536870912",  # 512MB
     "--blacklist=/var",
     "--blacklist=/sys",
     "--blacklist=/boot",
