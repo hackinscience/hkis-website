@@ -61,14 +61,6 @@ function fill_answer(answer) {
                                            {url: HKIS_SETTINGS.LEADERBOARD_URL, new_rank: answer.user_rank},
                                            true)}));
             }
-            div.appendChild(hkis.createElement("a", {
-                target: "_blank",
-                href: "https://twitter.com/intent/tweet?" +
-                    "text=" + encodeURIComponent(
-                        interpolate(gettext("I've completed \"%s\" on HackInScience"), [document.title.split("—")[1].replace(/^\s+|\s+$/g, '')])) +
-                    "&url=" + encodeURIComponent(document.location) +
-                    "&related=sizeof&hashtags=HackInScience,python",
-                innerText: gettext("Tweet it!")}));
             if (!answer.user) {
                 div.appendChild(hkis.createElement("div", {
                     className: "alert alert-warning",
