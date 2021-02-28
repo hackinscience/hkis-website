@@ -24,7 +24,7 @@ FIREJAIL_OPTIONS = [
     "--protocol=inet",
     "--private-dev",
     "--private-bin=python3",
-    "--private-etc=group,hostname,localtime,nsswitch.conf,passwd,resolv.conf,alternatives",
+    "--private-etc=group,hostname,localtime,nsswitch.conf,passwd,resolv.conf,alternatives,ssl",
     "--private-tmp",
     "--caps.drop=all",
     "--noprofile",
