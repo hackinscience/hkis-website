@@ -72,6 +72,10 @@ def run_snippet_task(source_code: str) -> str:
             prof_proc.kill()
             prof_proc.wait()
             return "Timed out after 20 seconds."
+        except MemoryError:
+            prof_proc.kill()
+            prof_proc.wait()
+            return "Not enough memory to run your code."
 
 
 def congrats(language):
@@ -188,6 +192,10 @@ def check_answer_task(answer: dict):
             prof_proc.kill()
             prof_proc.wait()
             return False, "Checker timed out."
+        except MemoryError:
+            prof_proc.kill()
+            prof_proc.wait()
+            return False, "Not enough memory to run your code."
 
 
 async def check_answer(answer: dict):
