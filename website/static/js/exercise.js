@@ -64,7 +64,7 @@ function fill_answer(answer) {
             if (!answer.user) {
                 div.appendChild(hkis.createElement("div", {
                     className: "alert alert-warning",
-                    innerHTML: interpolate(gettext('<a href="%s">Login</a> to backup your code and progression.'), [HKIS_SETTINGS.AUTH_LOGIN_URL])
+                    innerHTML: '(Not saved, see "Our DC burned down" page)'
                 }));
             }
             document.getElementById("solution_link").classList.remove("disabled");
