@@ -42,7 +42,7 @@ def db_create_answer(exercise_id: int, user_id: int, source_code):
 @database_sync_to_async
 def db_create_snippet(user: User, source_code):
     return Snippet.objects.create(
-        source_code=source_code, user=user if not user.is_anonymous else None
+        source_code=source_code, user=None  # user if not user.is_anonymous else None
     )
 
 
@@ -169,9 +169,7 @@ class ExerciseConsumer(AsyncJsonWebsocketConsumer):
 
     async def answer(self, source_code):
         self.log("Receive answer from browser")
-        answer = await db_create_answer(
-            self.exercise.id, self.scope["user"].id, source_code
-        )
+        answer = await db_create_answer(self.exercise.id, None, source_code)
         await self.send_json(answer_message(answer))
         self.log("Send answer to moulinette")
         is_valid, message = await check_answer(

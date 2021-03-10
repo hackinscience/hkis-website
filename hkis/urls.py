@@ -42,8 +42,6 @@ urlpatterns = [
     path("teams/<team>/stats", team_stats, name="team_stats"),
     path("admin/", admin.site.urls),
     path("api/", include(router.urls)),
-    path("api-auth/", include("rest_framework.urls")),
-    path("accounts/", include("registration.backends.simple.urls")),
     path("exercises/", ExerciseListView.as_view(), name="exercises"),
     path("leaderboard/", leaderboard_view, name="leaderboard"),
     path("exercises/<slug:slug>", ExerciseView.as_view(), name="exercise"),
