@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-02-08 16:20+0100\n"
-"PO-Revision-Date: 2020-12-06 17:22+0100\n"
+"POT-Creation-Date: 2021-03-23 14:28+0100\n"
+"PO-Revision-Date: 2021-03-23 14:31+0100\n"
 "Last-Translator: Julien Palard <julien@palard.fr>\n"
 "Language-Team: \n"
 "Language: fr\n"
@@ -24,18 +24,18 @@ msgstr "E-mail (facultatif)"
 
 #: website/models.py:329
 msgid "Pending"
-msgstr ""
+msgstr "En attente d'approbation"
 
 #: website/models.py:330
 msgid "Member"
-msgstr ""
+msgstr "Membre"
 
 #: website/models.py:331
 msgid "Staff"
-msgstr ""
+msgstr "Staff"
 
 #: website/templates/hkis/answer_form.html:8
-#: website/templates/hkis/exercise.html:64
+#: website/templates/hkis/exercise.html:66
 #: website/templates/registration/registration_form.html:9
 msgid "Submit"
 msgstr "Envoyer"
@@ -49,22 +49,22 @@ msgstr "Bienvenue !"
 msgid "Created by %(first_name)s %(last_name)s"
 msgstr "Par %(first_name)s %(last_name)s"
 
-#: website/templates/hkis/exercise.html:50
+#: website/templates/hkis/exercise.html:52
 msgid "Use this to execute your code, so you can try things."
 msgstr ""
 "Utilisez ce bouton pour exécuter votre code, cela vous permet de tester des "
 "choses."
 
-#: website/templates/hkis/exercise.html:52
+#: website/templates/hkis/exercise.html:54
 msgid "Run"
 msgstr "Exécuter"
 
-#: website/templates/hkis/exercise.html:70
+#: website/templates/hkis/exercise.html:72
 #, python-format
 msgid "%(solutions_qty)s solutions"
 msgstr "%(solutions_qty)s solutions"
 
-#: website/templates/hkis/exercise.html:98
+#: website/templates/hkis/exercise.html:100
 msgid "Waiting for correction"
 msgstr "En attente de correction"
 
@@ -95,7 +95,7 @@ msgstr ""
 "          avec des informations détaillées de ce qui s'est mal passé afin "
 "d'éviter tout blocage."
 
-#: website/templates/hkis/index.html:36 website/templates/hkis/layout.html:47
+#: website/templates/hkis/index.html:36 website/templates/hkis/layout.html:43
 #: website/templates/registration/login.html:19
 msgid "Sign in"
 msgstr "Connexion"
@@ -104,29 +104,29 @@ msgstr "Connexion"
 msgid "Sign up"
 msgstr "Inscription"
 
-#: website/templates/hkis/layout.html:18
+#: website/templates/hkis/layout.html:14
 msgid "Exercises"
 msgstr "Exercices"
 
-#: website/templates/hkis/layout.html:22
+#: website/templates/hkis/layout.html:18
 msgid "Profile"
 msgstr "Profil"
 
-#: website/templates/hkis/layout.html:26
+#: website/templates/hkis/layout.html:22
 msgid "Admin"
 msgstr "Admin"
 
-#: website/templates/hkis/layout.html:31
+#: website/templates/hkis/layout.html:27
 #: website/templates/hkis/leaderboard.html:4
 msgid "Leaderboard"
 msgstr "Classement"
 
-#: website/templates/hkis/layout.html:34 website/templates/hkis/teams.html:4
+#: website/templates/hkis/layout.html:30 website/templates/hkis/teams.html:4
 #: website/templates/hkis/teams.html:10
 msgid "Teams"
-msgstr ""
+msgstr "Équipes"
 
-#: website/templates/hkis/layout.html:45
+#: website/templates/hkis/layout.html:41
 msgid "Log out"
 msgstr "Déconnexion"
 
@@ -166,44 +166,42 @@ msgstr "Vous n'êtes pas encore classé."
 
 #: website/templates/hkis/profile_update.html:35
 msgid "You're not in a team, but you can join or create one!"
-msgstr ""
+msgstr "Vous n'êtes dans aucune équipe, mais pous pouvez en rejoindre ou en créer une !"
 
 #: website/templates/hkis/profile_update.html:42
 #, python-format
 msgid ""
 "You're almost in the <a href=\"%(url)s\">%(name)s</a> team (waiting for "
 "approval)."
-msgstr ""
+msgstr "Vous êtes presque dans l'équipe <a href=\"%(url)s\">%(name)s</a> (en attente d'approbation)."
 
 #: website/templates/hkis/profile_update.html:47
 #, python-format
 msgid "You're staff in the <a href=\"%(url)s\">%(name)s</a> team."
-msgstr ""
+msgstr "Vous êtes staff dans l'équipe <a href=\"%(url)s\">%(name)s</a>."
 
 #: website/templates/hkis/profile_update.html:52
 #, python-format
 msgid "You're in the <a href=\"%(url)s\">%(name)s</a> team."
-msgstr ""
+msgstr "Vous êtes membre de <a href=\"%(url)s\">%(name)s</a>."
 
 #: website/templates/hkis/profile_update.html:59
-#, fuzzy
-#| msgid "The team"
 msgid "Leave team"
-msgstr "L'équipe"
+msgstr "Quitter l'équipe"
 
 #: website/templates/hkis/profile_update.html:68
 msgid "Join team"
-msgstr ""
+msgstr "Rejoindre l'équipe"
 
-#: website/templates/hkis/profile_update.html:93
+#: website/templates/hkis/profile_update.html:91
 msgid "Personal informations"
 msgstr "Informations personnelles"
 
-#: website/templates/hkis/profile_update.html:106
+#: website/templates/hkis/profile_update.html:104
 msgid "Change your password"
 msgstr "Changer de mot de passe"
 
-#: website/templates/hkis/profile_update.html:108
+#: website/templates/hkis/profile_update.html:106
 msgid "Update"
 msgstr "Mettre à jour"
 
@@ -240,7 +238,7 @@ msgstr "Vous n'avez pas envoyé de réponse pour cet exercice pour le moment."
 
 #: website/templates/hkis/solutions.html:113
 #, python-format
-msgid "Submited on %(date)s:"
+msgid "Submitted on %(date)s:"
 msgstr "Envoyé le %(date)s :"
 
 #: website/templates/hkis/solutions.html:130
@@ -254,19 +252,19 @@ msgstr "Partagez votre solution avec les autres !"
 #: website/templates/hkis/team.html:4 website/templates/hkis/team.html:10
 #, python-format
 msgid "Team %(name)s"
-msgstr ""
+msgstr "Équipe %(name)s"
 
 #: website/templates/hkis/team.html:53
 msgid "Remove"
-msgstr ""
+msgstr "Exclure"
 
 #: website/templates/hkis/team.html:61
 msgid "Accept"
-msgstr ""
+msgstr "Accepter"
 
 #: website/templates/hkis/team.html:67
 msgid "Reject"
-msgstr ""
+msgstr "Rejeter"
 
 #: website/templates/registration/login.html:4
 msgid "Sign in to Hackinscience"
