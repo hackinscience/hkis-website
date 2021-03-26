@@ -51,7 +51,7 @@ class User(django.contrib.auth.models.AbstractUser):
                 time_to_solve = (
                     exercise.solved_at - exercise.created_at
                 ).total_seconds()
-                points += exercise.points - (time_to_solve ** 0.0333 - 1)
+                points += exercise.points - (time_to_solve ** 0.001 - 1)
         self.points = points
         self.rank = User.objects.filter(points__gt=self.points).count() + 1
         self.save()
