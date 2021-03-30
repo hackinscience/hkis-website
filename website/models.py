@@ -1,6 +1,7 @@
 import logging
 from datetime import timedelta
 
+from django.core.exceptions import ValidationError
 from django.db import models, IntegrityError
 from django.db.models import Count, Value, Q, Min
 from django.urls import reverse
@@ -159,11 +160,11 @@ class Exercise(models.Model):
     pre_check = models.TextField(blank=True, null=True)
     # check is ran inside the sandbox, in a `check.py` file, near a
     # `solution.py` file containing the student code.
-    check = models.TextField()
+    check = models.TextField(blank=True, default="")
     is_published = models.BooleanField(default=False)
-    solution = models.TextField()
-    wording = models.TextField()
-    initial_solution = models.TextField(blank=True)
+    solution = models.TextField(blank=True, default="")
+    wording = models.TextField(blank=True, default="")
+    initial_solution = models.TextField(blank=True, default="")
     position = models.FloatField(default=0)
     objects = ExerciseQuerySet.as_manager()
     created_at = models.DateTimeField(auto_now_add=True)
@@ -173,16 +174,22 @@ class Exercise(models.Model):
         Category, on_delete=models.SET_NULL, blank=True, null=True
     )
 
-    def clean_fields(self, exclude=None):
+    def clean(self):
         """Clean windows-style newlines, maybe inserted by Ace editor, or
         other users.
         """
-        if "check" not in exclude:
-            self.check = self.check.replace("\r\n", "\n")
-        if "solution" not in exclude:
-            self.solution = self.solution.replace("\r\n", "\n")
-        if "wording" not in exclude:
-            self.wording = self.wording.replace("\r\n", "\n")
+        self.check = self.check.replace("\r\n", "\n")
+        self.solution = self.solution.replace("\r\n", "\n")
+        self.wording = self.wording.replace("\r\n", "\n")
+        if self.is_published:
+            if not self.check:
+                raise ValidationError(
+                    _("Exercises should have a check script in order to be published.")
+                )
+            if not self.wording:
+                raise ValidationError(
+                    _("Exercises should have a wording in order to be published.")
+                )
 
     class Meta:
         ordering = ("category__position", "category", "position")
