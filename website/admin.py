@@ -73,6 +73,7 @@ class ExerciseAdmin(TranslationAdmin):
 
     ordering = ("-is_published", "position")
     readonly_fields = ("id", "created_at")
+    autocomplete_fields = ("author",)
     fields = (
         "title",
         "slug",
