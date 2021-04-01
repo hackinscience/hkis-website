@@ -17,7 +17,7 @@ nav.navbar {
 
 .hkis_content {
     flex: 1 1 auto;
-    min-height: 0;
+    min-height: fit-content;
     padding-left: .5em;
     padding-top: .5em;
     padding-right: .5em;
