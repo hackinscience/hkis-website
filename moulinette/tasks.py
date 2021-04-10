@@ -167,7 +167,7 @@ def check_answer_task(answer: dict):
         prof_proc = Popen(
             ["firejail"]
             + FIREJAIL_OPTIONS
-            + ["--private=" + tmpdir, "python3", "./check.py"],
+            + ["--private=" + tmpdir, "python3", "-u", "./check.py"],
             stdin=DEVNULL,
             stdout=PIPE,
             stderr=STDOUT,
@@ -183,17 +183,15 @@ def check_answer_task(answer: dict):
                     'File "' + os.path.expanduser("~/"), 'File "'
                 )
             )[:65_536]
+            if prof_proc.returncode == 0:
+                return True, stdout or congrats(answer.get("language", "en"))
             if prof_proc.returncode == 255:
                 return False, "Checker timed out, look for infinite loops maybe?"
-            if prof_proc.returncode != 0 or stdout:
-                return False, stdout
-            return True, congrats(answer.get("language", "en"))
+            return False, stdout
         except TimeoutExpired:
             prof_proc.kill()
             prof_proc.wait()
             return False, "Checker timed out."
-        except OSError as err:
-            return str(err)
         except MemoryError:
             return False, "Not enough memory to run your code."
 

@@ -52,10 +52,12 @@ Once received by a worker the worker runs two things:
   whatever is needed).
 
 - A `check.py` script is then started in a sandbox (no internet
-  connectivity, restricted filesystem, CPU, memory usage, …).  This is
-  the script that check the student answer, the protocol is simple: if
-  the script prints, then then answer is wrong, and what's been
-  printed is displayed, as Markdown, to the student.
+  connectivity, restricted filesystem, CPU, memory usage, …).
+  This is the script that check the student answer, the protocol is
+  simple: if the script exits with non-zero, then then answer is
+  wrong. And what's been printed (both stdout and stderr) is
+  displayed, as Markdown, to the student. If the answer is right and
+  nothing is printed, a default congratulation message is used.
 
 Both `pre_check.py` and `check.py` are in Python, but they're not
 limited to check for Python answers, if you want to check for shell
