@@ -10,7 +10,7 @@ from django.conf import settings
 from django.urls import reverse
 from django.http import HttpResponseRedirect, Http404
 from django.db.models import Count, Q, Max
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.utils.translation import gettext
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import UpdateView
@@ -283,7 +283,12 @@ def team(request, slug):
     try:
         team = Team.objects.get(slug=slug)
     except Team.DoesNotExist:
-        raise Http404("Team does not exist")
+        try:
+            team = Team.objects.get(name=slug)
+        except Team.DoesNotExist:
+            raise Http404("Team does not exist")
+        else:
+            return redirect("team", slug=team.slug)
     requester_membership = None
     if not request.user.is_anonymous:
         with suppress(Membership.DoesNotExist):
