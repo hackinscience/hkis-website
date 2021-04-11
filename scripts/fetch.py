@@ -47,10 +47,10 @@ def main():
         for exercise in exercises["results"]:
             path = Path("exercises") / exercise["slug"]
             path.mkdir(exist_ok=True, parents=True)
+            del exercise["wording"]  # Only use _en and _fr.
             for file in (
                 "check.py",
                 "solution.py",
-                "wording.md",
                 "pre_check.py",
                 "wording_en.md",
                 "wording_fr.md",

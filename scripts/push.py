@@ -38,7 +38,6 @@ def main():
             "pre_check.py",
             "check.py",
             "solution.py",
-            "wording.md",
             "wording_fr.md",
             "wording_en.md",
             "initial_solution.py",
