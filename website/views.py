@@ -2,21 +2,23 @@ from collections import OrderedDict
 from contextlib import suppress
 from itertools import groupby
 
-from django.contrib.auth.models import Group
-from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.contrib import messages
-from django.core.exceptions import PermissionDenied
 from django.conf import settings
+from django.contrib import messages
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.models import Group
+from django.core.exceptions import PermissionDenied
+from django.db.models import Count, Max, Q
+from django.http import Http404, HttpResponseRedirect
+from django.shortcuts import redirect, render
 from django.urls import reverse
-from django.http import HttpResponseRedirect, Http404
-from django.db.models import Count, Q, Max
-from django.shortcuts import render, redirect
 from django.utils.translation import gettext
+from django.views.decorators.http import require_http_methods
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import UpdateView
 from django.views.generic.list import ListView
-from website.models import Exercise, Answer, User, Team, Membership, Page
+
 from website.forms import AnswerForm
+from website.models import Answer, Exercise, Membership, Page, Team, User
 
 
 def index(request):
@@ -247,6 +249,7 @@ def team_stats(request, slug):
     return render(request, "hkis/stats_detail.html", context)
 
 
+@require_http_methods(["GET", "POST"])
 def teams(request):
     if request.method == "POST":
         if request.POST.get("remove_from_team"):
