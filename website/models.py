@@ -252,8 +252,8 @@ class Answer(models.Model):
 
 
 class Team(models.Model):
-    name = models.CharField(max_length=42)
-    slug = AutoSlugField(populate_from=["name"], editable=True)
+    name = models.CharField(max_length=42, unique=True)
+    slug = AutoSlugField(populate_from=["name"], editable=True, unique=True)
     created_at = models.DateTimeField(auto_now_add=True)
     members = models.ManyToManyField(User, through="Membership", related_name="teams")
     is_public = models.BooleanField(default=True)

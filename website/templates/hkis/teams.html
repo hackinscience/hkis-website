@@ -20,7 +20,7 @@
         {% if team.is_public %}
         <tr class="{% if user in team.members %}table-primary{% endif %}">
           <td scope="row">
-            <a href="{% url 'team' team.name %}">{{ team.name }}</a>
+            <a href="{% url 'team' team.slug %}">{{ team.name }}</a>
           </td>
           <td scope="row">
             {{ team.members.count }}

@@ -197,9 +197,9 @@ class SolutionView(LoginRequiredMixin, DetailView):
         return context
 
 
-def team_stats(request, team):
+def team_stats(request, slug):
     try:
-        team = Team.objects.get(name=team)
+        team = Team.objects.get(slug=slug)
     except Team.DoesNotExist:
         raise Http404("Team does not exist")
 
@@ -272,9 +272,9 @@ def teams(request):
         )
 
 
-def team(request, team):
+def team(request, slug):
     try:
-        team = Team.objects.get(name=team)
+        team = Team.objects.get(slug=slug)
     except Team.DoesNotExist:
         raise Http404("Team does not exist")
     requester_membership = None

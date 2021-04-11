@@ -37,7 +37,7 @@
   <ul>
     {% for membership in memberships %}
     <li>
-      {% url 'team' membership.team.name as team_url %}
+      {% url 'team' membership.team.slug as team_url %}
       {% if membership.role == "PE" %}
         {% blocktrans trimmed with name=tmembership.team.name url=team_url %}
           You're almost in the <a href="{{ url }}">{{ name }}</a> team (waiting for approval).
