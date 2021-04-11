@@ -12,6 +12,7 @@
       <thead>
         <tr>
           <th scope="col">Team</th>
+          <th scope="col">points</th>
           <th scope="col">#members</th>
         </tr>
       </thead>
@@ -21,6 +22,9 @@
         <tr class="{% if user in team.members %}table-primary{% endif %}">
           <td scope="row">
             <a href="{% url 'team' team.slug %}">{{ team.name }}</a>
+          </td>
+          <td scope="row">
+            {{ team.points|floatformat:"0" }}
           </td>
           <td scope="row">
             {{ team.members.count }}

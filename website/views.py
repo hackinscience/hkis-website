@@ -268,7 +268,14 @@ def teams(request):
         return HttpResponseRedirect(reverse("profile", kwargs={"pk": request.user.id}))
     if request.method == "GET":
         return render(
-            request, "hkis/teams.html", {"teams": Team.objects.select_related()}
+            request,
+            "hkis/teams.html",
+            {
+                "teams": Team.objects.annotate(points=Max("members__points"))
+                .exclude(points__isnull=True)
+                .order_by("-points")
+                .select_related()
+            },
         )
 
 
