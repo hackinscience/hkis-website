@@ -196,7 +196,7 @@ class MyUserAdmin(UserAdmin):
 
 
 class CategoryAdmin(TranslationAdmin):
-    ...
+    list_display = ["title", "position"]
 
 
 admin.site.register(Answer, AnswerAdmin)
