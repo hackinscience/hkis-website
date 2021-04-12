@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-02-08 16:20+0100\n"
+"POT-Creation-Date: 2021-04-12 10:06+0200\n"
 "PO-Revision-Date: 2020-12-06 17:23+0100\n"
 "Last-Translator: Julien Palard <julien@palard.fr>\n"
 "Language-Team: fr <julien@palard.fr>\n"
@@ -29,23 +29,14 @@ msgstr ""
 msgid "Your new <a href=\"%(url)s\">rank</a> is: %(new_rank)s"
 msgstr "Votre nouveau <a href=\"%(url)s\">classement</a> est: %(new_rank)s"
 
-#: website/static/js/exercise.js:68
-#, javascript-format
-msgid "I've completed \"%s\" on HackInScience"
-msgstr "J'ai terminé « %s » sur HackInScience"
-
-#: website/static/js/exercise.js:71
-msgid "Tweet it!"
-msgstr "Partager sur Twitter !"
-
-#: website/static/js/exercise.js:75
+#: website/static/js/exercise.js:67
 #, javascript-format
 msgid "<a href=\"%s\">Login</a> to backup your code and progression."
 msgstr ""
 "<a href=\"%s\">Connectez-vous</a> pour sauvegarder votre code et votre "
 "progression."
 
-#: website/static/js/exercise.js:83
+#: website/static/js/exercise.js:75
 msgid ""
 "Flag this answer as particularly unhelpfull,\n"
 "It'll be reviewed by a human."
@@ -53,41 +44,48 @@ msgstr ""
 "Marquer cette correction comme particulièrement innutile,\n"
 "un humain passera la relire."
 
-#: website/static/js/exercise.js:86
+#: website/static/js/exercise.js:78
 msgid "Report"
 msgstr "Signaler"
 
-#: website/static/js/exercise.js:93
+#: website/static/js/exercise.js:85
 msgid "Reported"
 msgstr "Signalé"
 
-#: website/static/js/exercise.js:94
+#: website/static/js/exercise.js:86
 msgid "Thanks for the feedback!"
 msgstr "Merci, je regarde ça bientôt !"
 
-#: website/static/js/exercise.js:101
+#: website/static/js/exercise.js:93
 msgid "Waiting for correction..."
 msgstr "Correction en cours…"
 
-#: website/static/js/exercise.js:124
+#: website/static/js/exercise.js:116
 msgid "Waiting for test run"
 msgstr "Exécution en cours…"
 
-#: website/static/js/exercise.js:147
+#: website/static/js/exercise.js:139
 msgid "Connecting to correction server…"
 msgstr "Connexion au serveur de correction en cours…"
 
-#: website/static/js/exercise.js:164
+#: website/static/js/exercise.js:156
 msgid "Connected to correction server."
 msgstr "Connecté au serveur de correction!"
 
-#: website/static/js/exercise.js:175
+#: website/static/js/exercise.js:167
 msgid "Connection to correction server lost, will retry in 5s…"
 msgstr ""
 "La connexion au serveur de correction a échouée. Nouvelle tentative dans 5s…"
 
-#: website/static/js/exercise.js:178
+#: website/static/js/exercise.js:170
 msgid "Cannot connect to correction server, will retry in 5s…"
 msgstr ""
 "Impossible de se connecter au serveur de correction. Nouvelle tentative dans "
 "5s…"
+
+#, javascript-format
+#~ msgid "I've completed \"%s\" on HackInScience"
+#~ msgstr "J'ai terminé « %s » sur HackInScience"
+
+#~ msgid "Tweet it!"
+#~ msgstr "Partager sur Twitter !"

@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-03-23 14:28+0100\n"
-"PO-Revision-Date: 2021-03-23 14:31+0100\n"
+"POT-Creation-Date: 2021-04-12 10:06+0200\n"
+"PO-Revision-Date: 2021-04-12 10:07+0200\n"
 "Last-Translator: Julien Palard <julien@palard.fr>\n"
 "Language-Team: \n"
 "Language: fr\n"
@@ -22,15 +22,23 @@ msgstr ""
 msgid "E-mail (optional)"
 msgstr "E-mail (facultatif)"
 
-#: website/models.py:329
+#: website/models.py:187
+msgid "Exercises should have a check script in order to be published."
+msgstr "Un exercice doit avoir une moulinette de correction pour être publié."
+
+#: website/models.py:191
+msgid "Exercises should have a wording in order to be published."
+msgstr "Un exercice doit contenir un sujet avant d'être publié."
+
+#: website/models.py:337
 msgid "Pending"
 msgstr "En attente d'approbation"
 
-#: website/models.py:330
+#: website/models.py:338
 msgid "Member"
 msgstr "Membre"
 
-#: website/models.py:331
+#: website/models.py:339
 msgid "Staff"
 msgstr "Staff"
 
@@ -72,7 +80,12 @@ msgstr "En attente de correction"
 msgid "Python exercises"
 msgstr "Exercices Python"
 
-#: website/templates/hkis/exercises.html:32
+#: website/templates/hkis/exercises.html:10
+#: website/templates/hkis/layout.html:14
+msgid "Exercises"
+msgstr "Exercices"
+
+#: website/templates/hkis/exercises.html:34
 #, python-format
 msgid "Solved by %(nb)s"
 msgstr "Résolu %(nb)s fois"
@@ -103,10 +116,6 @@ msgstr "Connexion"
 #: website/templates/hkis/index.html:37
 msgid "Sign up"
 msgstr "Inscription"
-
-#: website/templates/hkis/layout.html:14
-msgid "Exercises"
-msgstr "Exercices"
 
 #: website/templates/hkis/layout.html:18
 msgid "Profile"
@@ -166,14 +175,18 @@ msgstr "Vous n'êtes pas encore classé."
 
 #: website/templates/hkis/profile_update.html:35
 msgid "You're not in a team, but you can join or create one!"
-msgstr "Vous n'êtes dans aucune équipe, mais pous pouvez en rejoindre ou en créer une !"
+msgstr ""
+"Vous n'êtes dans aucune équipe, mais pous pouvez en rejoindre ou en créer "
+"une !"
 
 #: website/templates/hkis/profile_update.html:42
 #, python-format
 msgid ""
 "You're almost in the <a href=\"%(url)s\">%(name)s</a> team (waiting for "
 "approval)."
-msgstr "Vous êtes presque dans l'équipe <a href=\"%(url)s\">%(name)s</a> (en attente d'approbation)."
+msgstr ""
+"Vous êtes presque dans l'équipe <a href=\"%(url)s\">%(name)s</a> (en attente "
+"d'approbation)."
 
 #: website/templates/hkis/profile_update.html:47
 #, python-format
