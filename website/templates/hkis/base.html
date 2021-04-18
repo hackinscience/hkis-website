@@ -1,43 +1,44 @@
 {% load i18n %}{% load static %}
 <!DOCTYPE html>
 <html lang="{{ LANGUAGE_CODE|default:"en-us" }}">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-        <title>HackInScience — {% block title %}{% trans "Welcome!" %}{% endblock %}</title>
-        <link href="{% static "bootstrap.min.css" %}" rel="stylesheet">
-        <link href="{% static "css/hkis.css" %}?v={{ version }}" rel="stylesheet" type="text/css" />
-        <script src="{% url 'javascript-catalog' %}"></script>
-        <script>
-          var HKIS_SETTINGS = {
-              {% get_current_language as LANGUAGE_CODE %}
-              LANGUAGE_CODE: "{{ LANGUAGE_CODE }}",
-              PROFILE_URL: "{% if user.is_anonymous %}{% url "auth_login" %}{% else %}{% url "profile" user.id %}{% endif %}",
-              LEADERBOARD_URL: "{% url "leaderboard" %}",
-              CURRENT_RANK: {{ current_rank|default:999999 }},
-              ID: {{object.id|default:0}},
-              AUTH_LOGIN_URL: "{% url "auth_login" %}",
-              IS_IMPERSONATING: {% if is_impersonating %}true{% else %}false{% endif %},
-          };
-        </script>
-        {% block stylesheets %}{% endblock %}
-        {% block extrastyle %}{% endblock %}
-        {% block extrahead %}{% endblock %}
-    </head>
-    <body id="page-top" class="{% if is_popup %}popup {% endif %}{% block bodyclass %}{% endblock %}">
-      {% block nav %}
-      {% endblock %}
-      {% block body %}
-      <div class="hkis_content">
-        {% block container %}
-        {% endblock container %}
-      </div>
-      {% endblock %}
-      <script src="{% static "js/jquery-slim.min.js" %}"></script>
-      <script src="{% static "js/util.js" %}"></script>
-      <script src="{% static "js/collapse.js" %}"></script>
-      {% block extrajs %}
-      {% endblock %}
-    </body>
+  <head>
+    <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+      <title>HackInScience — {% block title %}{% trans "Welcome!" %}{% endblock %}</title>
+      <link href="{% static "bootstrap.min.css" %}" rel="stylesheet">
+      <link rel="icon" href="{% static 'favicon.ico' %}"/>
+      <link href="{% static "css/hkis.css" %}?v={{ version }}" rel="stylesheet" type="text/css" />
+      <script src="{% url 'javascript-catalog' %}"></script>
+      <script>
+        var HKIS_SETTINGS = {
+            {% get_current_language as LANGUAGE_CODE %}
+            LANGUAGE_CODE: "{{ LANGUAGE_CODE }}",
+            PROFILE_URL: "{% if user.is_anonymous %}{% url "auth_login" %}{% else %}{% url "profile" user.id %}{% endif %}",
+            LEADERBOARD_URL: "{% url "leaderboard" %}",
+            CURRENT_RANK: {{ current_rank|default:999999 }},
+            ID: {{object.id|default:0}},
+            AUTH_LOGIN_URL: "{% url "auth_login" %}",
+            IS_IMPERSONATING: {% if is_impersonating %}true{% else %}false{% endif %},
+        };
+      </script>
+      {% block stylesheets %}{% endblock %}
+      {% block extrastyle %}{% endblock %}
+      {% block extrahead %}{% endblock %}
+  </head>
+  <body id="page-top" class="{% if is_popup %}popup {% endif %}{% block bodyclass %}{% endblock %}">
+    {% block nav %}
+    {% endblock %}
+    {% block body %}
+    <div class="hkis_content">
+      {% block container %}
+      {% endblock container %}
+    </div>
+    {% endblock %}
+    <script src="{% static "js/jquery-slim.min.js" %}"></script>
+    <script src="{% static "js/util.js" %}"></script>
+    <script src="{% static "js/collapse.js" %}"></script>
+    {% block extrajs %}
+    {% endblock %}
+  </body>
 </html>
