@@ -256,12 +256,12 @@ def teams(request):
             team = Team.objects.get(name=request.POST["remove_from_team"])
             if team.is_staff(request.user):
                 team.remove_member(request.POST["member"])
-            return HttpResponseRedirect(reverse("team", kwargs={"team": team.slug}))
+            return HttpResponseRedirect(reverse("team", kwargs={"slug": team.slug}))
         if request.POST.get("accept_in_team"):
             team = Team.objects.get(name=request.POST["accept_in_team"])
             if team.is_staff(request.user):
                 team.accept(request.POST["member"])
-            return HttpResponseRedirect(reverse("team", kwargs={"team": team.slug}))
+            return HttpResponseRedirect(reverse("team", kwargs={"slug": team.slug}))
         if request.POST.get("leave_team"):
             team = Team.objects.get(name=request.POST["leave_team"])
             team.remove_member(request.user.username)
