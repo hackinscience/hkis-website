@@ -93,15 +93,10 @@ LOGGING = {
             "class": "logging.StreamHandler",
             "formatter": "django.server",
         },
-        "mail_admins": {
-            "level": "ERROR",
-            "filters": ["require_debug_false"],
-            "class": "django.utils.log.AdminEmailHandler",
-        },
     },
     "loggers": {
         "": {"handlers": ["console"], "level": "INFO"},
-        "django": {"handlers": ["console", "mail_admins"], "level": "INFO"},
+        "django": {"handlers": ["console"], "level": "INFO"},
         "django.server": {
             "handlers": ["django.server"],
             "level": "INFO",
