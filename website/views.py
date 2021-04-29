@@ -22,6 +22,10 @@ from website.models import Answer, Exercise, Membership, Page, Team, User
 
 
 def index(request):
+    if request.user.is_authenticated:
+        return HttpResponseRedirect(
+            Page.objects.order_by("position")[0].get_absolute_url()
+        )
     return render(request, "hkis/index.html")
 
 

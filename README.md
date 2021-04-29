@@ -24,6 +24,9 @@ You can live with only those two pages, or create a whole set of pages
 like one exercise page per programming language, or per topic, per
 student class, ...
 
+Once logged, the users are redirected to the first page (the one with
+the smallsest `position`).
+
 
 ## The categories
 
