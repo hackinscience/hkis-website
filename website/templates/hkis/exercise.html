@@ -69,17 +69,17 @@
           </div>
           <div style="margin-left: auto; margin-right: auto">
               <a id="solution_link" class="{% if not is_valid %}disabled{% endif %} btn btn-secondary"
-                 href={% url "solutions" object.slug %}>{% blocktrans %}{{ solutions_qty }} solutions{% endblocktrans %}</a>
+                 href={{ object.get_solutions_absolute_url }}>{% blocktrans %}{{ solutions_qty }} solutions{% endblocktrans %}</a>
 
           </div>
           <div style="margin-right: 0; flex: 0 0 auto">
               {% if previous %}
-              <a class="btn btn-secondary" href="{% url "exercise" previous %}">
+              <a class="btn btn-secondary" href="{{ previous.get_absolute_url }}">
                 ←
               </a>
               {% endif %}
               {% if next %}
-              <a id="btn_next" class="btn btn-secondary" href="{% url "exercise" next %}">
+              <a id="btn_next" class="btn btn-secondary" href="{{ next.get_absolute_url }}">
                 →
               </a>
               {% endif %}

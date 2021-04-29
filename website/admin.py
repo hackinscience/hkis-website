@@ -1,7 +1,6 @@
 from django import forms
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from django.urls import reverse
 from django.utils.safestring import mark_safe
 from django_ace import AceWidget
 
@@ -78,10 +77,11 @@ class ExerciseAdmin(TranslationAdmin):
         "title",
         "slug",
         "author",
+        "page",
+        "category",
+        "position",
         "created_at",
         "is_published",
-        "position",
-        "category",
         "points",
         "wording",
         "initial_solution",
@@ -132,10 +132,7 @@ class ExerciseAdmin(TranslationAdmin):
 
 class PageAdmin(TranslationAdmin):
     form = PageForm
-    list_display = ("path", "title")
-
-    def path(self, page):
-        return reverse("page", args=[page.url])
+    list_display = ("slug", "title")
 
 
 class MembershipInline(admin.TabularInline):
@@ -159,7 +156,6 @@ class AnswerAdmin(admin.ModelAdmin):
         "is_corrected",
         "is_unhelpfull",
         "created_at",
-        "see",
     )
     list_filter = ("is_corrected", "is_valid", "is_shared", "is_unhelpfull")
     search_fields = ("user__username", "exercise__title", "user__teams__name")
@@ -167,14 +163,6 @@ class AnswerAdmin(admin.ModelAdmin):
 
     def get_queryset(self, request):
         return super().get_queryset(request).select_related("user", "exercise")
-
-    def see(self, obj):
-        url = reverse("exercise", kwargs={"slug": obj.exercise.slug})
-        if obj.user:
-            return mark_safe(
-                f"<a target=_blank href='{url}?view_as={obj.user.id}'>see</a>"
-            )
-        return ""
 
 
 class SnippetAdmin(admin.ModelAdmin):

@@ -1,8 +1,48 @@
 {% extends "hkis/layout.html" %}
+{% load i18n %}
+{% load static %}
 {% load hkis_extra %}
+
 {% block title %}
 {{ page.title }}
 {% endblock %}
+
 {% block container %}
-{{ page.body|markdown_to_bootstrap }}
+<div>
+  <div style="height: 100%">
+    {{ page.body|markdown_to_bootstrap }}
+    <div class="d-flex flex-row flex-wrap justify-content-around">
+      {% for category, exercises in by_category %}
+      <div class="p-2" style="width: 35em">
+        {% if category %}<h2>{{ category }}</h2>{% endif %}
+        <table class="table table-sm table-hover">
+          <tbody>
+            {% for exercise in exercises %}
+            <tr class="{% if exercise.user_tries > 0 %}{% if exercise.user_successes > 0 %}table-success{% else %}table-danger{% endif %}{% endif %}">
+              <td scope="row" class="d-flex align-items-center">
+                  {% if exercise.user_tries > 0 %}
+                    {% if exercise.user_successes > 0 %}
+                      <span class="good">✓</span>
+                    {% else %}
+                      <span class="bad">✗</span>
+                    {% endif %}
+                  {% endif %}
+              </td>
+              <td>
+                <a href="{{ exercise.get_absolute_url }}">
+                  <h5 style="display:inline">{{ forloop.counter }}. {{ exercise.title }}</h5>
+                </a>
+              </td>
+              <td>
+                <i>{% blocktrans with nb=exercise.successes %}Solved by {{ nb }}{% endblocktrans %}</i>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
 {% endblock %}

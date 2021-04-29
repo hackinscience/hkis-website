@@ -1,3 +1,37 @@
+# Using HackInScience
+
+First step after creating a superuser (using `./manage.py
+createsuperuser` is to login to `/admin`, from here you can change
+everything about your installation: manage users, create pages, create
+exercises, teams, review answers, and so on.
+
+A `/exercises` page, and a `/help` page has been created automatically
+for you, you may want to start by adding some exercises to the
+`exercises` page.
+
+
+## The pages
+
+A page is literaly a URL in your site, it can contain text (stored
+Markdown) and/or exercises.
+
+For example the automatically created page at `/help` is aimed to
+store text but no exercises, and the page at `/exercises` is aimed to
+present some exercises, maybe after an intro text, or without any
+text.
+
+You can live with only those two pages, or create a whole set of pages
+like one exercise page per programming language, or per topic, per
+student class, ...
+
+
+## The categories
+
+Inside a page, you can optionally group exercises in categories,
+instead of displaying them as a whole single big list. It becomes
+handy around 50~70 exercises.
+
+
 # How to contribute
 
 

@@ -10,8 +10,18 @@
   </a>
   <div class="collapse navbar-collapse" id="navbarNav">
     <ul class="navbar-nav mr-auto">
+      {% for page in pages %}
       <li class="nav-item">
-        <a class="nav-link" href="{% url 'exercises' %}">{% trans "Exercises" %}</a>
+        <a class="nav-link" href="{{ page.get_absolute_url }}">{{ page.title }}</a>
+      </li>
+      {% endfor %}
+    </ul>
+    <ul class="navbar-nav navbar-right">
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'leaderboard' %}">{% trans "Leaderboard" %}</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'teams' %}">{% trans "Teams" %}</a>
       </li>
       {% if user.is_authenticated %}
         <li class="nav-item">
@@ -23,19 +33,6 @@
           </li>
         {% endif %}
       {% endif %}
-      <li class="nav-item">
-        <a class="nav-link" href="{% url 'leaderboard' %}">{% trans "Leaderboard" %}</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="{% url 'teams' %}">{% trans "Teams" %}</a>
-      </li>
-      {% for page in pages %}
-      <li class="nav-item">
-        <a class="nav-link" href="{% url 'page' page.url %}">{{ page.title }}</a>
-      </li>
-      {% endfor %}
-    </ul>
-    <ul class="navbar-nav navbar-right">
       <li class="nav-item">
         {% if user.is_authenticated %}
           <a class="nav-link" href="{% url 'auth_logout' %}">{% trans "Log out" %}</a>

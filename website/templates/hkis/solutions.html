@@ -37,7 +37,7 @@
 
 {% block container %}
 
-<h1> {% trans "Solutions for exercise:" %} <a href="{% url "exercise" exercise.slug %}">{{ exercise.title }}</a></h1>
+<h1> {% trans "Solutions for exercise:" %} <a href="{{ exercise.get_absolute_url }}">{{ exercise.title }}</a></h1>
 
 <h2 style="margin-top: 20px;">{% trans "Shared solutions" %}</h2>
 {% if is_solved %}

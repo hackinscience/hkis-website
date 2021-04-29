@@ -22,14 +22,11 @@ from website.models import Answer, Exercise, Membership, Page, Team, User
 
 
 def index(request):
-    if request.user.is_authenticated:
-        return HttpResponseRedirect(reverse("exercises"))
     return render(request, "hkis/index.html")
 
 
-def page(request, url):
-    p = Page.objects.get(url=url)
-    return render(request, "hkis/page.html", {"page": p})
+def old_page(request, url):
+    return HttpResponseRedirect("/" + url)
 
 
 class ProfileView(LoginRequiredMixin, UpdateView):
@@ -76,27 +73,24 @@ def leaderboard_view(request):
     return render(request, "hkis/leaderboard.html", context)
 
 
-class ExerciseListView(ListView):
-    model = Exercise
-    template_name = "hkis/exercises.html"
+class PageView(DetailView):
+    model = Page
+    slug_url_kwarg = "page"
+    template_name = "hkis/page.html"
 
-    def get_queryset(self):
-        return (
-            super()
-            .get_queryset()
-            .filter(is_published=True)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        exercises = (
+            self.object.exercises.filter(is_published=True)
             .with_global_stats()
             .with_user_stats(self.request.user)
             .only("title", "category")
             .select_related("category")
         )
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
         context["by_category"] = [
             (key, list(values))
             for key, values in groupby(
-                self.object_list, key=lambda exercise: exercise.category
+                exercises, key=lambda exercise: exercise.category
             )
         ]
         return context
@@ -105,6 +99,21 @@ class ExerciseListView(ListView):
 class ExerciseView(DetailView):
     model = Exercise
     template_name = "hkis/exercise.html"
+
+    def get_object(self, queryset=None):
+        """Return the object the view is displaying."""
+        # Use a custom queryset if provided; this is required for subclasses
+        # like DateDetailView
+        if queryset is None:
+            queryset = self.get_queryset()
+        queryset = queryset.filter(
+            page__slug=self.kwargs["page"], slug=self.kwargs["exercise"]
+        )
+        try:
+            # Get the single item from the filtered queryset
+            return queryset.get()
+        except queryset.model.DoesNotExist:
+            raise Http404("No exercise found matching the query")
 
     def get_queryset(self):
         queryset = super().get_queryset()
@@ -153,16 +162,13 @@ class ExerciseView(DetailView):
                 Exercise.objects.filter(position__gt=self.object.position)
                 .filter(is_published=True)
                 .order_by("position")[0]
-                .slug
             )
         except IndexError:
             context["next"] = None
         try:
-            context["previous"] = (
-                Exercise.objects.filter(position__lt=self.object.position)
-                .order_by("-position")[0]
-                .slug
-            )
+            context["previous"] = Exercise.objects.filter(
+                position__lt=self.object.position
+            ).order_by("-position")[0]
         except IndexError:
             context["previous"] = None
         return context
@@ -171,6 +177,21 @@ class ExerciseView(DetailView):
 class SolutionView(LoginRequiredMixin, DetailView):
     model = Exercise
     template_name = "hkis/solutions.html"
+
+    def get_object(self, queryset=None):
+        """Return the object the view is displaying."""
+        # Use a custom queryset if provided; this is required for subclasses
+        # like DateDetailView
+        if queryset is None:
+            queryset = self.get_queryset()
+        queryset = queryset.filter(
+            page__slug=self.kwargs["page"], slug=self.kwargs["exercise"]
+        )
+        try:
+            # Get the single item from the filtered queryset
+            return queryset.get()
+        except queryset.model.DoesNotExist:
+            raise Http404("No exercise found matching the query")
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

@@ -59,6 +59,33 @@ class User(django.contrib.auth.models.AbstractUser):
         return self.rank
 
 
+class Page(models.Model):
+    slug = models.CharField(max_length=64)
+    title = models.CharField(max_length=512)
+    body = models.TextField(default="", blank=True)
+    position = models.FloatField(default=0, blank=True)
+    in_menu = models.BooleanField(default=False, blank=True)
+
+    def get_absolute_url(self):
+        return reverse("page", args=[self.slug])
+
+    def __str__(self):
+        return self.title
+
+
+class Category(models.Model):
+    class Meta:
+        verbose_name_plural = "Categories"
+
+    title = models.CharField(max_length=255)
+    slug = AutoSlugField(populate_from=["title"], editable=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    position = models.FloatField(default=0)
+
+    def __str__(self):
+        return self.title or self.title_en or "Unnamed"
+
+
 class ExerciseQuerySet(models.QuerySet):
     def reorganize(self):
         all_exercises = self.with_global_stats()
@@ -135,19 +162,6 @@ class ExerciseQuerySet(models.QuerySet):
         )
 
 
-class Category(models.Model):
-    class Meta:
-        verbose_name_plural = "Categories"
-
-    title = models.CharField(max_length=255)
-    slug = AutoSlugField(populate_from=["title"], editable=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    position = models.FloatField(default=0)
-
-    def __str__(self):
-        return self.title or self.title_en or "Unnamed"
-
-
 class Exercise(models.Model):
     title = models.CharField(max_length=255)
     author = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True)
@@ -173,6 +187,7 @@ class Exercise(models.Model):
     category = models.ForeignKey(
         Category, on_delete=models.SET_NULL, blank=True, null=True
     )
+    page = models.ForeignKey(Page, on_delete=models.RESTRICT, related_name="exercises")
 
     def shared_solutions(self):
         return Answer.objects.filter(
@@ -203,7 +218,10 @@ class Exercise(models.Model):
         ordering = ("category__position", "category", "position")
 
     def get_absolute_url(self):
-        return reverse("exercise", args=[self.slug])
+        return reverse("exercise", args=[self.page.slug, self.slug])
+
+    def get_solutions_absolute_url(self):
+        return reverse("solutions", args=[self.page.slug, self.slug])
 
     def __str__(self):
         return self.title
@@ -251,7 +269,7 @@ class Answer(models.Model):
         )
 
     def get_absolute_url(self):
-        return reverse("exercise", args=[self.exercise.slug])
+        return self.exercise.get_absolute_url() + "?view_as=" + str(self.user.id)
 
     def save(self, *args, **kwargs):
         if self.correction_message and self.correction_message.startswith("Traceback"):
@@ -320,17 +338,6 @@ class Team(models.Model):
 
     def __str__(self):
         return self.name
-
-
-class Page(models.Model):
-    url = models.CharField(max_length=64)
-    title = models.CharField(max_length=512)
-    body = models.TextField(default="", blank=True)
-    position = models.FloatField(default=0, blank=True)
-    in_menu = models.BooleanField(default=False, blank=True)
-
-    def __str__(self):
-        return self.title
 
 
 class Membership(models.Model):

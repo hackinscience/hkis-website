@@ -9,6 +9,7 @@ class ExerciseTranslationOptions(TranslationOptions):
 class CategoryTranslationOptions(TranslationOptions):
     fields = ("title",)
 
+
 class PageTranslationOptions(TranslationOptions):
     fields = ("title", "body")
 
