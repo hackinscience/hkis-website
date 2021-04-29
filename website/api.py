@@ -6,7 +6,7 @@ from django_filters import rest_framework as filters
 from rest_framework import viewsets, response, serializers, routers, permissions
 import django_filters
 
-from website.models import Answer, Exercise, Snippet, User, Category
+from website.models import Answer, Exercise, Snippet, User, Category, Page
 
 
 class AdminOrReadOnly(permissions.BasePermission):
@@ -88,6 +88,12 @@ class CategorySerializer(serializers.HyperlinkedModelSerializer):
         fields = ("slug", "title", "position")
 
 
+class PageSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Page
+        fields = ("url", "slug", "title", "position")
+
+
 class StaffAnswerSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Answer
@@ -154,6 +160,12 @@ class CategoryViewSet(viewsets.ModelViewSet):
     permission_classes = [AdminOrReadOnly]
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
+
+
+class PageViewSet(viewsets.ModelViewSet):
+    permission_classes = [AdminOrReadOnly]
+    queryset = Page.objects.all()
+    serializer_class = PageSerializer
 
 
 class AnswerFilter(filters.FilterSet):
@@ -279,3 +291,4 @@ router.register(r"exercises", ExerciseViewSet)
 router.register(r"groups", GroupViewSet)
 router.register(r"users", UserViewSet)
 router.register(r"categories", CategoryViewSet)
+router.register(r"pages", PageViewSet)
