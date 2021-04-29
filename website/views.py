@@ -174,20 +174,15 @@ class SolutionView(LoginRequiredMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["my_answers"] = Answer.objects.filter(
-            exercise_id=self.object.id, user=self.request.user
+        context["my_answers"] = self.object.answers.filter(
+            user=self.request.user
         ).order_by("-created_at")
-        context["solutions"] = []
-        context["is_allowed_to_see_solutions"] = False
-        already_seen = set()
-        if self.object.answers.filter(user=self.request.user, is_valid=True):
-            context["is_allowed_to_see_solutions"] = True
-            for solution in Answer.objects.filter(
-                exercise__pk=self.object.id, is_valid=True, is_shared=True
-            ).order_by("created_at"):
-                if solution.source_code not in already_seen:
-                    context["solutions"].append(solution)
-                    already_seen.add(solution.source_code)
+        if self.object.is_solved_by(self.request.user):
+            context["is_solved"] = True
+            context["solutions"] = self.object.shared_solutions()[:10]
+        else:
+            context["is_solved"] = False
+            context["solutions"] = []
         try:
             context["next"] = (
                 Exercise.objects.filter(position__gt=self.object.position)

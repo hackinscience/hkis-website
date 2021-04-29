@@ -174,6 +174,14 @@ class Exercise(models.Model):
         Category, on_delete=models.SET_NULL, blank=True, null=True
     )
 
+    def shared_solutions(self):
+        return Answer.objects.filter(
+            exercise=self, is_valid=True, is_shared=True
+        ).order_by("-created_at")
+
+    def is_solved_by(self, user):
+        return self.answers.filter(user=user, is_valid=True).exists()
+
     def clean(self):
         """Clean windows-style newlines, maybe inserted by Ace editor, or
         other users.
