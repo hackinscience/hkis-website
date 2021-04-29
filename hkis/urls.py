@@ -32,6 +32,8 @@ urlpatterns = [
     path("api/", include(router.urls)),
     path("api-auth/", include("rest_framework.urls")),
     path("accounts/", include("registration.backends.simple.urls")),
+    path("profile/<int:pk>", views.ProfileView.as_view(), name="profile"),
+    path("leaderboard/", views.leaderboard_view, name="leaderboard"),
     path("<slug:page>/", views.PageView.as_view(), name="page"),
     path("<slug:page>/<slug:exercise>", views.ExerciseView.as_view(), name="exercise"),
     path(
@@ -39,11 +41,9 @@ urlpatterns = [
         views.SolutionView.as_view(),
         name="solutions",
     ),
-    path("leaderboard/", views.leaderboard_view, name="leaderboard"),
     path(
         "favicon.ico", lambda request: redirect("/static/favicon.ico", permanent=True)
     ),
-    path("profile/<int:pk>", views.ProfileView.as_view(), name="profile"),
 ]
 
 if settings.DEBUG:
