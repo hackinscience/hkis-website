@@ -143,10 +143,13 @@ class MembershipInline(admin.TabularInline):
 
 class TeamAdmin(admin.ModelAdmin):
     fields = ("name", "is_public", "slug")
-    list_display = ("name", "points")
+    list_display = ("name", "points", "members_qty")
     ordering = ("-points",)
     readonly_fields = ("created_at",)
     inlines = (MembershipInline,)
+
+    def members_qty(self, team):
+        return team.members.count()
 
 
 class AnswerAdmin(admin.ModelAdmin):
