@@ -294,8 +294,7 @@ def teams(request):
             request,
             "hkis/teams.html",
             {
-                "teams": Team.objects.annotate(points=Max("members__points"))
-                .exclude(points__isnull=True)
+                "teams": Team.objects.exclude(points__isnull=True)
                 .order_by("-points")
                 .select_related()
             },

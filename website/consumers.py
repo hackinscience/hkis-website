@@ -76,6 +76,8 @@ def db_update_answer(answer_id: int, is_valid: bool, correction_message: str):
     rank = None
     if answer.is_valid and answer.user_id:
         rank = answer.user.recompute_rank()
+        for team in answer.user.teams.all():
+            team.recompute_rank()
     return answer, rank
 
 

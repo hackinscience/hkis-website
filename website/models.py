@@ -277,12 +277,41 @@ class Answer(models.Model):
         super().save(*args, **kwargs)
 
 
+class TeamQuerySet(models.QuerySet):
+    def recompute_ranks(self):
+        for team in Team.objects.all():
+            team.recompute_rank()
+
+
 class Team(models.Model):
+    objects = TeamQuerySet.as_manager()
     name = models.CharField(max_length=42, unique=True)
     slug = AutoSlugField(populate_from=["name"], editable=True, unique=True)
     created_at = models.DateTimeField(auto_now_add=True)
     members = models.ManyToManyField(User, through="Membership", related_name="teams")
     is_public = models.BooleanField(default=True)
+    points = models.FloatField(default=0)  # Computed value trying to represent the team
+
+    def recompute_rank(self):
+        """Try to mix member score to get a representative team score."""
+        values = 0
+        weights = 0
+        i = 1
+        for member in (
+            self.membership_set.filter(
+                Q(role=Membership.Role.STAFF) | Q(role=Membership.Role.MEMBER)
+            )
+            .select_related()
+            .order_by("user__points")
+        ):
+            values += member.user.points * i
+            weights += i
+            i += i
+        try:
+            self.points = values / weights
+        except ZeroDivisionError:
+            self.points = 0
+        self.save()
 
     def is_staff(self, user):
         return self.membership_set.filter(

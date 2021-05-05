@@ -143,6 +143,8 @@ class MembershipInline(admin.TabularInline):
 
 class TeamAdmin(admin.ModelAdmin):
     fields = ("name", "is_public", "slug")
+    list_display = ("name", "points")
+    ordering = ("-points",)
     readonly_fields = ("created_at",)
     inlines = (MembershipInline,)
 
