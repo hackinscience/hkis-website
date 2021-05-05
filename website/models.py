@@ -295,7 +295,7 @@ class Team(models.Model):
     def recompute_rank(self):
         """Try to mix member score to get a representative team score."""
         values = 0
-        weights = 0
+        weights = 1  # Won't change much big teams, but penalize too-small teams.
         i = 1
         for member in (
             self.membership_set.filter(
