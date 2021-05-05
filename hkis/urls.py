@@ -34,7 +34,6 @@ urlpatterns = [
     path("accounts/", include("registration.backends.simple.urls")),
     path("profile/<int:pk>", views.ProfileView.as_view(), name="profile"),
     path("leaderboard/", views.Leaderboard.as_view(), name="leaderboard"),
-    path("settings.js", views.settings, name="javascript-settings"),
     path("<slug:page>/", views.PageView.as_view(), name="page"),
     path("<slug:page>/<slug:exercise>", views.ExerciseView.as_view(), name="exercise"),
     path(
