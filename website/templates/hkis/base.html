@@ -1,4 +1,5 @@
-{% load i18n %}{% load static %}
+{% load i18n %}
+{% load static %}
 <!DOCTYPE html>
 <html lang="{{ LANGUAGE_CODE|default:"en-us" }}">
   <head>
@@ -10,18 +11,7 @@
       <link rel="icon" href="{% static 'favicon.ico' %}"/>
       <link href="{% static "css/hkis.css" %}?v={{ version }}" rel="stylesheet" type="text/css" />
       <script src="{% url 'javascript-catalog' %}"></script>
-      <script>
-        var HKIS_SETTINGS = {
-            {% get_current_language as LANGUAGE_CODE %}
-            LANGUAGE_CODE: "{{ LANGUAGE_CODE }}",
-            PROFILE_URL: "{% if user.is_anonymous %}{% url "auth_login" %}{% else %}{% url "profile" user.id %}{% endif %}",
-            LEADERBOARD_URL: "{% url "leaderboard" %}",
-            CURRENT_RANK: {{ current_rank|default:999999 }},
-            ID: {{object.id|default:0}},
-            AUTH_LOGIN_URL: "{% url "auth_login" %}",
-            IS_IMPERSONATING: {% if is_impersonating %}true{% else %}false{% endif %},
-        };
-      </script>
+      <script src="{% url 'javascript-settings' %}"></script>
       {% block stylesheets %}{% endblock %}
       {% block extrastyle %}{% endblock %}
       {% block extrahead %}{% endblock %}

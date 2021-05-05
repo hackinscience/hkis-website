@@ -29,6 +29,10 @@ def index(request):
     return render(request, "hkis/index.html")
 
 
+def settings(request):
+    return render(request, "hkis/settings.js", content_type="application/javascript")
+
+
 def old_page(request, url):
     return HttpResponseRedirect("/" + url)
 
