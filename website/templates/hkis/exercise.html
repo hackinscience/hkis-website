@@ -8,6 +8,18 @@
     {{ object.title }}
   {% endif %}
 {% endblock %}
+
+{% block data %}
+{% get_current_language as LANGUAGE_CODE %}
+data-language-code="{{ LANGUAGE_CODE }}"
+data-profile-url="{% if user.is_anonymous %}{% url "auth_login" %}{% else %}{% url "profile" user.id %}{% endif %}"
+data-leaderboard-url="{% url "leaderboard" %}"
+data-current-rank="{{ current_rank|default:999999 }}"
+data-exercise-id="{{object.id|default:0}}"
+data-auth-login-url="{% url "auth_login" %}"
+data-is-impersonating="{% if is_impersonating %}true{% else %}false{% endif %}"
+{% endblock %}
+
 {% block stylesheets %}
 <link href="{% static 'css/codehilite.css' %}" rel="stylesheet" type="text/css" >
 {% endblock %}

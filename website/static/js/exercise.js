@@ -1,3 +1,5 @@
+const settings = document.getElementsByTagName('body')[0].dataset;
+
 if (typeof Element.prototype.swapChild === 'undefined') {
     Object.defineProperty(Element.prototype, 'swapChild', {
       configurable: true,
@@ -48,23 +50,23 @@ function fill_answer(answer) {
         var answer_table = document.getElementById("answer-table");
         var div = hkis.createElement("div", {innerHTML: answer.correction_message_html});
         if (answer.is_valid) {
-            console.log("Answer is valid: old_rank=", HKIS_SETTINGS.CURRENT_RANK, "new_rank=", answer.user_rank)
+            console.log("Answer is valid: old_rank=", settings.currentRank, "new_rank=", answer.user_rank)
             try {
                 document.getElementById("btn_next").className = "btn btn-primary"
             } catch {}
             document.getElementById("submit_answer").className = "btn btn-secondary"
             answer_table.rows[0].className = "table-success";
-            if (answer.user && answer.user_rank < HKIS_SETTINGS.CURRENT_RANK ) {
+            if (answer.user && answer.user_rank < parseInt(settings.currentRank) ) {
                 div.appendChild(hkis.createElement("div", {
                     className: "alert alert-success",
                     innerHTML: interpolate(gettext('Your new <a href="%(url)s">rank</a> is: %(new_rank)s'),
-                                           {url: HKIS_SETTINGS.LEADERBOARD_URL, new_rank: answer.user_rank},
+                                           {url: settings.leaderboardUrl, new_rank: answer.user_rank},
                                            true)}));
             }
             if (!answer.user) {
                 div.appendChild(hkis.createElement("div", {
                     className: "alert alert-warning",
-                    innerHTML: interpolate(gettext('<a href="%s">Login</a> to backup your code and progression.'), [HKIS_SETTINGS.AUTH_LOGIN_URL])
+                    innerHTML: interpolate(gettext('<a href="%s">Login</a> to backup your code and progression.'), [settings.authLoginUrl])
                 }));
             }
             document.getElementById("solution_link").classList.remove("disabled");
@@ -154,7 +156,7 @@ function websocket_connect(ws_location) {
         unlock_button("submit_snippet");
         connected = true;
         fill_message(gettext("Connected to correction server."), "success");
-        window.ws.send(JSON.stringify({type: "settings", value: HKIS_SETTINGS}));
+        window.ws.send(JSON.stringify({type: "settings", value: {LANGUAGE_CODE: settings.languageCode}}));
         document.querySelectorAll("td.answer-cell").forEach(function(answer) {
             if (answer.dataset.isCorrected == "True") return ;
             console.log("Need to correct answer number", answer.dataset.answerId);
@@ -209,9 +211,9 @@ function ctrl_enter_handler(event) {
 
 var ws_protocol = window.location.protocol == "http:" ? "ws:" : "wss:";
 
-if (!HKIS_SETTINGS.IS_IMPERSONATING) {
+if (settings.isImpersonating == "false") {
     window.addEventListener("DOMContentLoaded", function (event) {
-        websocket_connect(ws_protocol + "//" + window.location.host + "/ws/exercises/" + HKIS_SETTINGS.ID + "/");
+        websocket_connect(ws_protocol + "//" + window.location.host + "/ws/exercises/" + settings.exerciseId + "/");
         document.addEventListener("keydown", ctrl_enter_handler);
     });
 }
