@@ -18,10 +18,10 @@
         </tr>
       </thead>
       <tbody>
-        {% for rank, player in players %}
+        {% for player in page_obj %}
         <tr class="{% if player.username == user.username %}table-primary{% endif %}">
           <td scope="row">
-            {{ rank }}
+            {{ forloop.counter0|add:page_obj.start_index }}
           </td>
           <td scope="row">
             {{ player.points|floatformat:"0" }}
@@ -38,22 +38,26 @@
           </td>
         </tr>
         {% endfor %}
-        {% if user not in user_list and not user.is_anonymous %}
-        <tr class="table-primary">
-          <td scope="row">
-            {{ user.rank }}
-          </td>
-          <td scope="row">
-            {{ player.points|floatformat:"0" }}
-          </td>
-          <td scope="row">
-            {{ user.username }}
-          </td>
-        </tr>
-        {% endif %}
       </tbody>
     </table>
 
+    <div class="pagination">
+      <span class="step-links">
+        {% if page_obj.has_previous %}
+        <a href="?page=1">&laquo; first</a>
+        <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+          Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+        </span>
+
+        {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}">next</a>
+        <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+      </span>
+      </div>
   </div>
 </div>
 

@@ -70,11 +70,11 @@ class ProfileView(LoginRequiredMixin, UpdateView):
         return reverse("profile", kwargs={"pk": self.request.user.id})
 
 
-def leaderboard_view(request):
-    context = {
-        "players": enumerate(User.objects.order_by("-points")[:100], start=1),
-    }
-    return render(request, "hkis/leaderboard.html", context)
+class Leaderboard(ListView):
+    model = User
+    paginate_by = 100
+    template_name = "hkis/leaderboard.html"
+    ordering = ["-points"]
 
 
 class PageView(DetailView):
