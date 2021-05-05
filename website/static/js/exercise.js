@@ -217,3 +217,8 @@ if (settings.isImpersonating == "false") {
         document.addEventListener("keydown", ctrl_enter_handler);
     });
 }
+
+window.addEventListener("DOMContentLoaded", function (event) {
+    document.getElementById("submit_snippet").addEventListener("click", function(e) {e.preventDefault(); ws_submit_snippet(this.form); return false;});
+    document.getElementById("submit_answer").addEventListener("click", function(e) {e.preventDefault(); ws_submit_answer(this.form); return false;});
+})

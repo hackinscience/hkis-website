@@ -42,7 +42,7 @@ data-is-impersonating="{% if is_impersonating %}true{% else %}false{% endif %}"
     </div>
   </div>
   <div class="col-md-5 style-info" style="height: 100%; padding-left: .5em; padding-right: .5em">
-    <form id="answer_form" action="#" onsubmit="return false;" method="post"
+    <form id="answer_form" action="#" method="post"
           style="height: 100%; display: flex; flex-direction: column; ">
         {% csrf_token %}
         <div class="fieldWrapper" style="flex: 1 1 auto">
@@ -61,8 +61,7 @@ data-is-impersonating="{% if is_impersonating %}true{% else %}false{% endif %}"
               data-toggle="tooltip"
               data-placement="bottom"
               data-delay="500"
-              title="{% trans "Use this to execute your code, so you can try things." %}"
-              onclick="ws_submit_snippet(this.form); return false;">
+              title="{% trans "Use this to execute your code, so you can try things." %}">
               {% trans "Run" %}
             </button>
             <button
@@ -72,9 +71,7 @@ data-is-impersonating="{% if is_impersonating %}true{% else %}false{% endif %}"
               data-toggle="tooltip"
               data-placement="bottom"
               data-delay="500"
-              title="This runs automated tests to verify your implementation (also saves your code).&#013;Shortcut: Ctrl-Enter."
-              type="submit"
-              onclick="ws_submit_answer(this.form); return false;">
+              title="This runs automated tests to verify your implementation (also saves your code).&#013;Shortcut: Ctrl-Enter.">
               {% trans "Submit" %}
             </button>
             {% endif %}
