@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-04-12 10:06+0200\n"
-"PO-Revision-Date: 2021-04-12 10:07+0200\n"
+"POT-Creation-Date: 2021-05-07 05:54+0200\n"
+"PO-Revision-Date: 2021-05-07 05:55+0200\n"
 "Last-Translator: Julien Palard <julien@palard.fr>\n"
 "Language-Team: \n"
 "Language: fr\n"
@@ -22,28 +22,28 @@ msgstr ""
 msgid "E-mail (optional)"
 msgstr "E-mail (facultatif)"
 
-#: website/models.py:187
+#: website/models.py:210
 msgid "Exercises should have a check script in order to be published."
 msgstr "Un exercice doit avoir une moulinette de correction pour être publié."
 
-#: website/models.py:191
+#: website/models.py:214
 msgid "Exercises should have a wording in order to be published."
 msgstr "Un exercice doit contenir un sujet avant d'être publié."
 
-#: website/models.py:337
+#: website/models.py:381
 msgid "Pending"
 msgstr "En attente d'approbation"
 
-#: website/models.py:338
+#: website/models.py:382
 msgid "Member"
 msgstr "Membre"
 
-#: website/models.py:339
+#: website/models.py:383
 msgid "Staff"
 msgstr "Staff"
 
 #: website/templates/hkis/answer_form.html:8
-#: website/templates/hkis/exercise.html:66
+#: website/templates/hkis/exercise.html:75
 #: website/templates/registration/registration_form.html:9
 msgid "Submit"
 msgstr "Envoyer"
@@ -52,43 +52,29 @@ msgstr "Envoyer"
 msgid "Welcome!"
 msgstr "Bienvenue !"
 
-#: website/templates/hkis/exercise.html:26
+#: website/templates/hkis/exercise.html:38
 #, python-format
 msgid "Created by %(first_name)s %(last_name)s"
 msgstr "Par %(first_name)s %(last_name)s"
 
-#: website/templates/hkis/exercise.html:52
+#: website/templates/hkis/exercise.html:64
 msgid "Use this to execute your code, so you can try things."
 msgstr ""
 "Utilisez ce bouton pour exécuter votre code, cela vous permet de tester des "
 "choses."
 
-#: website/templates/hkis/exercise.html:54
+#: website/templates/hkis/exercise.html:65
 msgid "Run"
 msgstr "Exécuter"
 
-#: website/templates/hkis/exercise.html:72
+#: website/templates/hkis/exercise.html:81
 #, python-format
 msgid "%(solutions_qty)s solutions"
 msgstr "%(solutions_qty)s solutions"
 
-#: website/templates/hkis/exercise.html:100
+#: website/templates/hkis/exercise.html:109
 msgid "Waiting for correction"
 msgstr "En attente de correction"
-
-#: website/templates/hkis/exercises.html:4
-msgid "Python exercises"
-msgstr "Exercices Python"
-
-#: website/templates/hkis/exercises.html:10
-#: website/templates/hkis/layout.html:14
-msgid "Exercises"
-msgstr "Exercices"
-
-#: website/templates/hkis/exercises.html:34
-#, python-format
-msgid "Solved by %(nb)s"
-msgstr "Résolu %(nb)s fois"
 
 #: website/templates/hkis/index.html:4
 msgid "Python Exercises"
@@ -108,7 +94,7 @@ msgstr ""
 "          avec des informations détaillées de ce qui s'est mal passé afin "
 "d'éviter tout blocage."
 
-#: website/templates/hkis/index.html:36 website/templates/hkis/layout.html:43
+#: website/templates/hkis/index.html:36 website/templates/hkis/layout.html:40
 #: website/templates/registration/login.html:19
 msgid "Sign in"
 msgstr "Connexion"
@@ -117,31 +103,32 @@ msgstr "Connexion"
 msgid "Sign up"
 msgstr "Inscription"
 
-#: website/templates/hkis/layout.html:18
-msgid "Profile"
-msgstr "Profil"
-
-#: website/templates/hkis/layout.html:22
-msgid "Admin"
-msgstr "Admin"
-
-#: website/templates/hkis/layout.html:27
+#: website/templates/hkis/layout.html:21
 #: website/templates/hkis/leaderboard.html:4
 msgid "Leaderboard"
 msgstr "Classement"
 
-#: website/templates/hkis/layout.html:30 website/templates/hkis/teams.html:4
+#: website/templates/hkis/layout.html:24 website/templates/hkis/teams.html:4
 #: website/templates/hkis/teams.html:10
 msgid "Teams"
 msgstr "Équipes"
 
-#: website/templates/hkis/layout.html:41
+#: website/templates/hkis/layout.html:28
+msgid "Profile"
+msgstr "Profil"
+
+#: website/templates/hkis/layout.html:32
+msgid "Admin"
+msgstr "Admin"
+
+#: website/templates/hkis/layout.html:38
 msgid "Log out"
 msgstr "Déconnexion"
 
-#: website/templates/hkis/lesson.html:13
-msgid "Next"
-msgstr "Suivant"
+#: website/templates/hkis/page.html:37
+#, python-format
+msgid "Solved by %(nb)s"
+msgstr "Résolu %(nb)s fois"
 
 #: website/templates/hkis/profile_update.html:7
 msgid "Statistics"
@@ -166,8 +153,10 @@ msgstr ""
 
 #: website/templates/hkis/profile_update.html:21
 #, python-format
-msgid "You're ranking %(rank)s over %(participants)s participants."
-msgstr "Vous êtes classé %(rank)s sur %(participants)s participants."
+msgid ""
+"You have %(points)s points which ranks you %(rank)s over %(participants)s "
+"participants."
+msgstr "Vous avez %(points)s, ce qui vous classe %(rank)s sur %(participants)s participants."
 
 #: website/templates/hkis/profile_update.html:25
 msgid "You're not ranked yet."
@@ -226,20 +215,20 @@ msgstr "Solutions de l'exercice :"
 msgid "Shared solutions"
 msgstr "Les solutions partagées"
 
-#: website/templates/hkis/solutions.html:44
-msgid "(You're not allowed to see them until you resolved the exercise.)"
-msgstr ""
-"(Vous n'êtes pas autorisé à les voir tant que vous n'avez pas résolu "
-"l'exercice.)"
-
-#: website/templates/hkis/solutions.html:71
+#: website/templates/hkis/solutions.html:68
 #, python-format
 msgid "Solution shared by %(username)s on %(date)s:"
 msgstr "Solution partagée par %(username)s le %(date)s :"
 
-#: website/templates/hkis/solutions.html:83
+#: website/templates/hkis/solutions.html:80
 msgid "No solution shared yet :("
 msgstr "Aucun solution partagée pour le moment :("
+
+#: website/templates/hkis/solutions.html:83
+msgid "(You're not allowed to see them until you resolved the exercise.)"
+msgstr ""
+"(Vous n'êtes pas autorisé à les voir tant que vous n'avez pas résolu "
+"l'exercice.)"
 
 #: website/templates/hkis/solutions.html:86
 msgid "My answers"
@@ -332,3 +321,12 @@ msgstr "Réinitiation de mot de passe"
 #: website/templates/registration/registration_form.html:4
 msgid "Register"
 msgstr "S'enregistrer"
+
+#~ msgid "Python exercises"
+#~ msgstr "Exercices Python"
+
+#~ msgid "Exercises"
+#~ msgstr "Exercices"
+
+#~ msgid "Next"
+#~ msgstr "Suivant"

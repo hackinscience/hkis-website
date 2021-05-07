@@ -18,8 +18,8 @@
   </p>
   <p>
     {% if user.rank is not None %}
-      {% blocktrans trimmed with rank=user.rank %}
-        You're ranking {{ rank }} over {{ participants }} participants.
+      {% blocktrans trimmed with rank=user.rank points=user.points|floatformat:"0" %}
+        You have {{ points }} points which ranks you {{ rank }} over {{ participants }} participants.
       {% endblocktrans %}
     {% else %}
       {% blocktrans trimmed %}
