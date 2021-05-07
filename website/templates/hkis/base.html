@@ -7,7 +7,7 @@
       <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
       <title>HackInScience — {% block title %}{% trans "Welcome!" %}{% endblock %}</title>
       <link href="{% static "bootstrap.min.css" %}" rel="stylesheet">
-      <link rel="icon" href="{% static 'favicon.ico' %}"/>
+      <link rel="icon" type="image/png" href="{% static 'favicon.png' %}"/>
       <link href="{% static "css/hkis.css" %}?v={{ version }}" rel="stylesheet" type="text/css" />
       <script src="{% url 'javascript-catalog' %}"></script>
       {% block stylesheets %}{% endblock %}

@@ -42,7 +42,7 @@ urlpatterns = [
         name="solutions",
     ),
     path(
-        "favicon.ico", lambda request: redirect("/static/favicon.ico", permanent=True)
+        "favicon.ico", lambda request: redirect("/static/favicon.png", permanent=True)
     ),
 ]
 
