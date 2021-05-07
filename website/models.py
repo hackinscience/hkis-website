@@ -7,7 +7,7 @@ from django.db.models import Count, Value, Q, Min
 from django.urls import reverse
 from django.utils.text import Truncator
 from django.utils.timezone import now
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from django_extensions.db.fields import AutoSlugField
 import django.contrib.auth.models
 
