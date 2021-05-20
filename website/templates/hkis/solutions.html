@@ -14,25 +14,6 @@
   <script type="text/javascript" src="{% static "django_ace/ace/mode-python.js" %}"></script>
   <script type="text/javascript" src="{% static "django_ace/ace/theme-twilight.js" %}"></script>
   <script src="{% static "js/tab.js" %}"></script>
-  <script>
-    function shared_answer(answer_id, is_shared, csrf_token) {
-        var data = {
-            "is_shared": is_shared,
-        };
-        var xhr = new XMLHttpRequest();
-        xhr.open('PATCH', "/api/answers/".concat(answer_id, "/"), false);
-        xhr.setRequestHeader("Content-type", "application/json");
-        xhr.setRequestHeader("cache-control", "no-cache");
-        xhr.setRequestHeader("X-CSRFToken", csrf_token);
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState === 4 && xhr.status === 200) {
-                document.getElementById("btn-".concat(answer_id, "-share")).style.display = is_shared ? "none" : "";
-                document.getElementById("btn-".concat(answer_id, "-unshare")).style.display = is_shared ? "" : "none";
-            }
-        };
-        xhr.send(JSON.stringify(data));
-    }
-  </script>
 {% endblock %}
 
 {% block container %}
@@ -142,4 +123,5 @@
   </div>
 
 {% endif %}
+<script src="{% static 'js/exercise.js' %}?v={{ version }}" type="text/javascript"></script>
 {% endblock %}

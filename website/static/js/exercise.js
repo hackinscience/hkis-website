@@ -222,3 +222,21 @@ window.addEventListener("DOMContentLoaded", function (event) {
     document.getElementById("submit_snippet").addEventListener("click", function(e) {e.preventDefault(); ws_submit_snippet(this.form); return false;});
     document.getElementById("submit_answer").addEventListener("click", function(e) {e.preventDefault(); ws_submit_answer(this.form); return false;});
 })
+
+function shared_answer(answer_id, is_shared, csrf_token) {
+    var data = {
+        "is_shared": is_shared,
+    };
+    var xhr = new XMLHttpRequest();
+    xhr.open('PATCH', "/api/answers/".concat(answer_id, "/"), false);
+    xhr.setRequestHeader("Content-type", "application/json");
+    xhr.setRequestHeader("cache-control", "no-cache");
+    xhr.setRequestHeader("X-CSRFToken", csrf_token);
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+            document.getElementById("btn-".concat(answer_id, "-share")).style.display = is_shared ? "none" : "";
+            document.getElementById("btn-".concat(answer_id, "-unshare")).style.display = is_shared ? "" : "none";
+        }
+    };
+    xhr.send(JSON.stringify(data));
+}
