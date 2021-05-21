@@ -1,6 +1,7 @@
 import logging
 from datetime import timedelta
 
+from asgiref.sync import async_to_sync
 from django.core.exceptions import ValidationError
 from django.db import models, IntegrityError
 from django.db.models import Count, Value, Q, Min
@@ -275,6 +276,24 @@ class Answer(models.Model):
         if self.correction_message and self.correction_message.startswith("Traceback"):
             self.is_unhelpfull = True
         super().save(*args, **kwargs)
+
+    def send_to_correction_bot(self, lang="en"):
+        from moulinette.tasks import check_answer
+
+        sync_check_answer = async_to_sync(check_answer)
+        is_valid, message = sync_check_answer(
+            {
+                "check": self.exercise.check,
+                "pre_check": self.exercise.pre_check,
+                "source_code": self.source_code,
+                "language": lang,
+            }
+        )
+        self.correction_message = message
+        self.is_corrected = True
+        self.is_valid = is_valid
+        self.corrected_at = now()
+        self.save()
 
 
 class TeamQuerySet(models.QuerySet):

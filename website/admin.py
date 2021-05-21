@@ -152,8 +152,15 @@ class TeamAdmin(admin.ModelAdmin):
         return team.members.count()
 
 
+@admin.action(description="Send to correction bot")
+def send_to_correction_bot(modeladmin, request, queryset):
+    for answer in queryset:
+        answer.send_to_correction_bot()
+
+
 class AnswerAdmin(admin.ModelAdmin):
     readonly_fields = ("user", "created_at", "corrected_at")
+    actions = (send_to_correction_bot,)
     list_display = (
         "__str__",
         "short_correction_message",
