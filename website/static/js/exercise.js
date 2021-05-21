@@ -223,6 +223,16 @@ window.addEventListener("DOMContentLoaded", function (event) {
         document.getElementById("submit_snippet").addEventListener("click", function(e) {e.preventDefault(); ws_submit_snippet(this.form); return false;});
         document.getElementById("submit_answer").addEventListener("click", function(e) {e.preventDefault(); ws_submit_answer(this.form); return false;});
     }
+    document.querySelectorAll("button[data-share]").forEach(function (button) {
+        button.addEventListener("click", function(e) {
+            shared_answer(button.dataset.share, true, settings.csrfToken);
+        });
+    });
+    document.querySelectorAll("button[data-unshare]").forEach(function (button) {
+        button.addEventListener("click", function(e) {
+            shared_answer(button.dataset.unshare, false, settings.csrfToken);
+        });
+    });
 })
 
 function shared_answer(answer_id, is_shared, csrf_token) {

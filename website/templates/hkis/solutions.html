@@ -2,7 +2,9 @@
 {% load hkis_extra %}
 {% load i18n static %}
 {% block title %}{{ object.title }}{% endblock %}
-
+{% block data %}
+data-csrf-token="{{ csrf_token }}"
+{% endblock %}
 {% block stylesheets %}
   <link href="{% static "css/codehilite.css" %}" rel="stylesheet" type="text/css" />
   <link href="{% static "django_ace/widget.css" %}" type="text/css" media="screen" rel="stylesheet">
@@ -105,16 +107,16 @@
         {% if solution.is_valid %}
         <button id="btn-{{ solution.id }}-unshare"
                 type="button"
+                data-unshare="{{ solution.id }}"
                 {% if not solution.is_shared %}style="display: none"{% endif %}
-                class="btn btn-secondary btn-sm"
-                onclick="shared_answer('{{ solution.id }}', false, '{{ csrf_token }}')">
+                class="btn btn-secondary btn-sm">
           {% trans "Unshare it" %}
         </button>
         <button id="btn-{{ solution.id }}-share"
                 type="button"
+                data-share="{{ solution.id }}"
                 {% if solution.is_shared %}style="display: none"{% endif %}
-                class="btn btn-primary btn-sm"
-                onclick="shared_answer('{{ solution.id }}', true, '{{ csrf_token }}')">
+                class="btn btn-primary btn-sm">
           {% trans "Share it with other students!" %}
         </button>
         {% endif %}
