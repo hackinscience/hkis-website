@@ -5,6 +5,7 @@ celery -A hkis worker
 import asyncio
 from functools import partial
 from random import choice
+from typing import Optional
 import os
 import tempfile
 from subprocess import Popen, PIPE, run, STDOUT, TimeoutExpired, DEVNULL
@@ -46,8 +47,19 @@ FIREJAIL_OPTIONS = [
 
 
 @shared_task
-def run_snippet_task(source_code: str) -> str:
+def run_snippet_task(source_code: str, pre: Optional[str] = None) -> str:
+    """Just run the *source_code* by putting it in a `snippet.py` file and
+    running it in a sandbox.
+
+    `pre` can be used to run some preparation code
+    **unsanboxed**. It's usefull to setup the test environment by
+    pre-creating files, installing dependencies, placing i18n files,
+    ...
+
+    """
     with tempfile.TemporaryDirectory(prefix="hkis_snippets") as tmpdir:
+        if pre:
+            run_pre_check(tmpdir, pre)
         with open(os.path.join(tmpdir, "snippet.py"), "w") as snippet_file:
             snippet_file.write(source_code)
         firejail_env = os.environ.copy()
@@ -131,6 +143,28 @@ def congrats(language):
     )
 
 
+def run_pre_check(tmpdir, pre_check: str, env=None):
+    """Run a pre-check script outside the sandbox before the actual check."""
+    with open(os.path.join(tmpdir, "pre_check.py"), "w") as pre_check_file:
+        pre_check_file.write(pre_check)
+    logger.info("Running pre-check")
+    pre_check_result = run(
+        ["python3", os.path.join(tmpdir, "pre_check.py")],
+        cwd=tmpdir,
+        stdin=DEVNULL,
+        stdout=PIPE,
+        stderr=PIPE,
+        env=env,
+    )
+    if pre_check_result.returncode != 0 or pre_check_result.stderr:
+        logger.warning(
+            "pre_check failed with code %d, stdout: %s, stderr: %s",
+            pre_check_result.returncode,
+            pre_check_result.stdout,
+            pre_check_result.stderr,
+        )
+
+
 @shared_task
 def check_answer_task(answer: dict):
     """Executed on Celery workers.
@@ -145,25 +179,7 @@ def check_answer_task(answer: dict):
         if "language" in answer:
             firejail_env["LANGUAGE"] = answer["language"]
         if "pre_check" in answer and answer["pre_check"]:
-            # Run a pre-check script outside the sandbox before the actual check.
-            with open(os.path.join(tmpdir, "pre_check.py"), "w") as pre_check_file:
-                pre_check_file.write(answer["pre_check"])
-            logger.info("Running pre-check")
-            pre_check_result = run(
-                ["python3", os.path.join(tmpdir, "pre_check.py")],
-                cwd=tmpdir,
-                stdin=DEVNULL,
-                stdout=PIPE,
-                stderr=PIPE,
-                env=firejail_env,
-            )
-            if pre_check_result.returncode != 0 or pre_check_result.stderr:
-                logger.warning(
-                    "pre_check failed with code %d, stdout: %s, stderr: %s",
-                    pre_check_result.returncode,
-                    pre_check_result.stdout,
-                    pre_check_result.stderr,
-                )
+            run_pre_check(tmpdir, answer["pre_check"], env=firejail_env)
         prof_proc = Popen(
             ["firejail"]
             + FIREJAIL_OPTIONS
@@ -210,14 +226,14 @@ async def check_answer(answer: dict):
     )
 
 
-async def run_snippet(source_code: str) -> str:
+async def run_snippet(source_code: str, pre: Optional[str] = None) -> str:
     """Executed Django side.
 
     TODO with Celery 5: should no longer need run_in_executor.
     """
 
     def sync_celery_check_answer(source_code: str):
-        return run_snippet_task.apply_async((source_code,), expires=60).get()
+        return run_snippet_task.apply_async((source_code, pre), expires=60).get()
 
     return await asyncio.get_running_loop().run_in_executor(
         None, partial(sync_celery_check_answer, source_code=source_code)

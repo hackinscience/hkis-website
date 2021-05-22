@@ -202,7 +202,7 @@ class ExerciseConsumer(AsyncJsonWebsocketConsumer):
         )
         await self.send_json(snippet_message(snippet_obj))
         self.log("Sending snippet to runner")
-        result = await run_snippet(snippet["source_code"])
+        result = await run_snippet(snippet["source_code"], pre=self.exercise.pre_check)
         self.log("Got result from snippet runner")
         snippet_obj = await db_update_snippet(snippet_obj.id, result)
         await self.send_json(snippet_message(snippet_obj))
