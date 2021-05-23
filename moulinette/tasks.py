@@ -39,7 +39,9 @@ FIREJAIL_OPTIONS = [
     "--rlimit-nofile=100",
     "--rlimit-nproc=2000",
     "--rlimit-cpu=20",
-    "--rlimit-as=536870912",  # 512MB
+    "--rlimit-as=1610612736",  # 1.5GB. correction_helper will cap
+    # student code at 1GB, leaving some space for check.py to report
+    # errors.
     "--blacklist=/var",
     "--blacklist=/sys",
     "--blacklist=/boot",
