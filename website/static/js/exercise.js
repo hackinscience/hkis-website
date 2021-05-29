@@ -233,6 +233,11 @@ window.addEventListener("DOMContentLoaded", function (event) {
             shared_answer(button.dataset.unshare, false, settings.csrfToken);
         });
     });
+    document.querySelectorAll("button[data-delete]").forEach(function (button) {
+        button.addEventListener("click", function(e) {
+            delete_answer(button.dataset.delete, settings.csrfToken);
+        });
+    });
 })
 
 function shared_answer(answer_id, is_shared, csrf_token) {
@@ -251,4 +256,20 @@ function shared_answer(answer_id, is_shared, csrf_token) {
         }
     };
     xhr.send(JSON.stringify(data));
+}
+
+function delete_answer(answer_id, csrf_token) {
+    if (!confirm(gettext("Are you sure you want to delete this answer?")))
+        return;
+    var xhr = new XMLHttpRequest();
+    xhr.open('DELETE', "/api/answers/".concat(answer_id, "/"), false);
+    xhr.setRequestHeader("Content-type", "application/json");
+    xhr.setRequestHeader("cache-control", "no-cache");
+    xhr.setRequestHeader("X-CSRFToken", csrf_token);
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4 && xhr.status === 204) {
+            document.getElementById("btn-".concat(answer_id, "-delete")).style.display = "none";
+        }
+    }
+    xhr.send();
 }

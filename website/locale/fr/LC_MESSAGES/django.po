@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-05-07 05:54+0200\n"
+"POT-Creation-Date: 2021-05-29 01:51+0200\n"
 "PO-Revision-Date: 2021-05-07 05:58+0200\n"
 "Last-Translator: Julien Palard <julien@palard.fr>\n"
 "Language-Team: \n"
@@ -22,23 +22,23 @@ msgstr ""
 msgid "E-mail (optional)"
 msgstr "E-mail (facultatif)"
 
-#: website/models.py:210
+#: website/models.py:211
 msgid "Exercises should have a check script in order to be published."
 msgstr "Un exercice doit avoir une moulinette de correction pour être publié."
 
-#: website/models.py:214
+#: website/models.py:215
 msgid "Exercises should have a wording in order to be published."
 msgstr "Un exercice doit contenir un sujet avant d'être publié."
 
-#: website/models.py:381
+#: website/models.py:400
 msgid "Pending"
 msgstr "En attente d'approbation"
 
-#: website/models.py:382
+#: website/models.py:401
 msgid "Member"
 msgstr "Membre"
 
-#: website/models.py:383
+#: website/models.py:402
 msgid "Staff"
 msgstr "Staff"
 
@@ -156,7 +156,9 @@ msgstr ""
 msgid ""
 "You have %(points)s points which ranks you %(rank)s over %(participants)s "
 "participants."
-msgstr "Vous avez %(points)s points, ce qui vous classe %(rank)s sur %(participants)s participants."
+msgstr ""
+"Vous avez %(points)s points, ce qui vous classe %(rank)s sur "
+"%(participants)s participants."
 
 #: website/templates/hkis/profile_update.html:25
 msgid "You're not ranked yet."
@@ -207,49 +209,53 @@ msgstr "Changer de mot de passe"
 msgid "Update"
 msgstr "Mettre à jour"
 
-#: website/templates/hkis/solutions.html:40
+#: website/templates/hkis/solutions.html:23
 msgid "Solutions for exercise:"
 msgstr "Solutions de l'exercice :"
 
-#: website/templates/hkis/solutions.html:42
+#: website/templates/hkis/solutions.html:25
 msgid "Shared solutions"
 msgstr "Les solutions partagées"
 
-#: website/templates/hkis/solutions.html:68
+#: website/templates/hkis/solutions.html:51
 #, python-format
 msgid "Solution shared by %(username)s on %(date)s:"
 msgstr "Solution partagée par %(username)s le %(date)s :"
 
-#: website/templates/hkis/solutions.html:80
+#: website/templates/hkis/solutions.html:63
 msgid "No solution shared yet :("
 msgstr "Aucun solution partagée pour le moment :("
 
-#: website/templates/hkis/solutions.html:83
+#: website/templates/hkis/solutions.html:66
 msgid "(You're not allowed to see them until you resolved the exercise.)"
 msgstr ""
 "(Vous n'êtes pas autorisé à les voir tant que vous n'avez pas résolu "
 "l'exercice.)"
 
-#: website/templates/hkis/solutions.html:86
+#: website/templates/hkis/solutions.html:69
 msgid "My answers"
 msgstr "Mes réponses"
 
-#: website/templates/hkis/solutions.html:88
+#: website/templates/hkis/solutions.html:71
 msgid "You haven't submitted anything for this exercise yet."
 msgstr "Vous n'avez pas envoyé de réponse pour cet exercice pour le moment."
 
-#: website/templates/hkis/solutions.html:113
+#: website/templates/hkis/solutions.html:96
 #, python-format
 msgid "Submitted on %(date)s:"
 msgstr "Envoyé le %(date)s :"
 
-#: website/templates/hkis/solutions.html:130
+#: website/templates/hkis/solutions.html:113
 msgid "Unshare it"
 msgstr "Annuler le partage"
 
-#: website/templates/hkis/solutions.html:137
+#: website/templates/hkis/solutions.html:120
 msgid "Share it with other students!"
 msgstr "Partagez votre solution avec les autres !"
+
+#: website/templates/hkis/solutions.html:127
+msgid "Delete this answer"
+msgstr "Supprimer cette réponse"
 
 #: website/templates/hkis/team.html:4 website/templates/hkis/team.html:10
 #, python-format
@@ -321,12 +327,3 @@ msgstr "Réinitiation de mot de passe"
 #: website/templates/registration/registration_form.html:4
 msgid "Register"
 msgstr "S'enregistrer"
-
-#~ msgid "Python exercises"
-#~ msgstr "Exercices Python"
-
-#~ msgid "Exercises"
-#~ msgstr "Exercices"
-
-#~ msgid "Next"
-#~ msgstr "Suivant"
