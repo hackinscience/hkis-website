@@ -48,8 +48,8 @@ class AnswerPermission(permissions.BasePermission):
             return True
         if request.user.is_authenticated:
             UPDATE_ALLOWS_FIELD = ["is_shared"]
-            if request.method == "POST":
-                # Logged in user can answer and update their answer
+            if request.method in ("POST", "DELETE"):
+                # Logged in user can answer and update/delete their answer
                 return True
             elif request.method == "PATCH":
                 # We authorized patch only if the field is authorized

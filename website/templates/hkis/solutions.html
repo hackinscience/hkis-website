@@ -120,6 +120,12 @@ data-csrf-token="{{ csrf_token }}"
           {% trans "Share it with other students!" %}
         </button>
         {% endif %}
+        <button id="btn-{{ solution.id }}-delete"
+                type="button"
+                data-delete="{{ solution.id }}"
+                class="btn btn-danger btn-sm">
+          {% trans "Delete this answer" %}
+        </button>
       </div>
       {% endfor %}
   </div>
