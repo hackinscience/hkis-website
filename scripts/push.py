@@ -28,9 +28,8 @@ def main():
         args.password = Path(args.password_file).read_text().rstrip("\n")
     elif not args.password:
         args.password = getpass()
-    for exercise in Path("exercises").glob("*/"):
-        with open(exercise / "meta") as f:
-            meta = json.load(f)
+    for exercise in Path(".").glob("*/*/meta"):
+        meta = json.loads(exercise.read_text())
         if args.only:
             if args.only not in meta["slug"]:
                 continue
@@ -42,7 +41,7 @@ def main():
             "wording_en.md",
             "initial_solution.py",
         ):
-            meta[file.split(".")[0]] = (exercise / (file)).read_text()
+            meta[file.split(".")[0]] = (exercise.parent / file).read_text()
         print("Uploading ", meta["title"])
         response = requests.put(
             meta["url"], json=meta, auth=(args.username, args.password)

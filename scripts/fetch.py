@@ -4,6 +4,7 @@
 import argparse
 from getpass import getpass
 from pathlib import Path
+from functools import lru_cache
 import json
 
 import requests
@@ -17,6 +18,7 @@ def parse_args():
     parser.add_argument(
         "--endpoint", default="https://www.hackinscience.org/api/exercises/"
     )
+    parser.add_argument("--page", default="exercises")
     return parser.parse_args()
 
 
@@ -37,17 +39,28 @@ def main():
     elif not args.password:
         args.password = getpass()
     next_exercise_page = args.endpoint
+
+    @lru_cache()
+    def get(url):
+        return requests.get(url, auth=(args.username, args.password)).json()
+
     while next_exercise_page:
-        exercises = requests.get(
-            next_exercise_page, auth=(args.username, args.password)
-        ).json()
+        exercises = get(next_exercise_page)
         if "results" not in exercises:
             print(exercises)
             exit(1)
         for exercise in exercises["results"]:
-            path = Path("exercises") / exercise["slug"]
+            if exercise["category"] is not None:
+                category = get(exercise["category"])["slug"]
+            else:
+                category = "exercises"
+            page = get(exercise["page"])
+            if page["slug"] != args.page:
+                continue
+            path = Path(category) / exercise["slug"]
             path.mkdir(exist_ok=True, parents=True)
             del exercise["wording"]  # Only use _en and _fr.
+            print("Downloading", exercise["title"])
             for file in (
                 "check.py",
                 "solution.py",
@@ -56,7 +69,7 @@ def main():
                 "wording_fr.md",
                 "initial_solution.py",
             ):
-                (path / (file)).write_text(
+                (path / file).write_text(
                     fix_newline_at_end_of_file(exercise[file.split(".")[0]]).replace(
                         "\r\n", "\n"
                     )
