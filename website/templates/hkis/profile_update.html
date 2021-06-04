@@ -72,16 +72,16 @@
 <div class="col-md-8 offset-md-2">
   <p>
     <h3>Preferred language</h3>
-    <script>
-      function set_lang(lang) {
-          document.cookie = "django_language=" + lang + ";samesite=strict;max-age=31536000;path=/";
-          window.location.reload(true);
-      }
-    </script>
     <ul>
       {% get_current_language as current_language %}
       {% for language_tag, language in languages %}
-      <li><button type="button" class="btn btn-{% if language_tag != current_language%}outline-{%endif%}secondary" onclick="set_lang('{{ language_tag }}')">{{ language }}</button></li>
+      <li>
+        <button
+          type="button"
+          data-lang="{{ language_tag }}"
+          class="btn btn-{% if language_tag != current_language%}outline-{%endif%}secondary">{{ language }}
+        </button>
+      </li>
       {% endfor %}
     </ul>
   </p>
@@ -108,4 +108,5 @@
     </div>
   </div>
 </div>
+<script src="{% static 'js/profile.js' %}?v={{ version }}" type="text/javascript"></script>
 {% endblock %}
