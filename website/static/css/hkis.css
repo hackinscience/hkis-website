@@ -8,11 +8,13 @@ body {
     flex-direction: column;
 }
 
-nav.navbar {
+header.navbar {
     background: #1e2933;
     font-family: Cabin,'Helvetica Neue',Helvetica,Arial,sans-serif;
-    line-height: 1.8em;
-    flex: 0 1 auto;
+}
+
+.navbar-dark .navbar-nav .nav-link {
+    color: rgba(255,255,255,.66);
 }
 
 .hkis_content {
@@ -56,10 +58,6 @@ h1.exercise-title {
     background: radial-gradient(farthest-corner, black, transparent 70%);
 }
 
-.table-hover tbody tr:hover {
-  background-color: rgba(0, 0, 0, 0.1);
-}
-
 span.good {
     color: #28a745;
 }
@@ -78,10 +76,6 @@ a {
 
 .result-box pre {
     margin-bottom: 0;
-}
-
-div.container-fluid {
-    padding-top: 25px;
 }
 
 blockquote {

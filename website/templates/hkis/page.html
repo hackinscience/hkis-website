@@ -8,7 +8,7 @@
 {% endblock %}
 
 {% block container %}
-<div>
+<div class="container-xxl md-4">
   <div style="height: 100%">
     {{ page.body|markdown_to_bootstrap }}
     <div class="d-flex flex-row flex-wrap justify-content-around">
@@ -26,6 +26,8 @@
                     {% else %}
                       <span class="bad">✗</span>
                     {% endif %}
+                  {% else %}
+                      &nbsp;
                   {% endif %}
               </td>
               <td>

@@ -2,49 +2,50 @@
 {% load i18n static %}
 
 {% block nav %}
-<nav class="navbar navbar-expand-lg navbar-dark">
-  <a class="navbar-brand" href="/">
-    <div style="float:left;">
-        <img src="{% static "img/logo_hackinscience.png" %}" width="20" height="20" alt="logo"/>
-    </div>
-  </a>
-  <div class="collapse navbar-collapse" id="navbarNav">
-    <ul class="navbar-nav mr-auto">
-      {% for page in pages %}
-      <li class="nav-item">
-        <a class="nav-link" href="{{ page.get_absolute_url }}">{{ page.title }}</a>
-      </li>
-      {% endfor %}
-    </ul>
-    <ul class="navbar-nav navbar-right">
-      <li class="nav-item">
-        <a class="nav-link" href="{% url 'leaderboard' %}">{% trans "Leaderboard" %}</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="{% url 'teams' %}">{% trans "Teams" %}</a>
-      </li>
-      {% if user.is_authenticated %}
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'profile' user.id %}">{% trans "Profile" %}</a>
+<header class="navbar navbar-expand-md navbar-dark bd-navbar p-0">
+  <nav class="navbar navbar-dark container-xxl flex-wrap flex-md-nowrap fs-4 text">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <a class="navbar-brand" href="/">
+      <div style="float:left;">
+          <img src="{% static "img/logo_hackinscience.png" %}" width="30" height="30" alt="logo"/>
+      </div>
+    </a>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav flex-row flex-wrap bd-navbar-nav pt-2 py-md-0">
+        {% for page in pages %}
+        <li class="nav-item col-6 col-md-auto">
+          <a class="nav-link" href="{{ page.get_absolute_url }}">{{ page.title }}</a>
         </li>
-        {% if user.is_staff %}
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'admin:index' %}">{% trans "Admin" %}</a>
-          </li>
-        {% endif %}
-      {% endif %}
-      <li class="nav-item">
+        {% endfor %}
+        <li class="nav-item col-6 col-md-auto">
+          <a class="nav-link" href="{% url 'leaderboard' %}">{% trans "Leaderboard" %}</a>
+        </li>
+        <li class="nav-item col-6 col-md-auto">
+          <a class="nav-link" href="{% url 'teams' %}">{% trans "Teams" %}</a>
+        </li>
+      </ul>
+      <ul class="navbar-nav flex-row flex-wrap ms-md-auto">
         {% if user.is_authenticated %}
-          <a class="nav-link" href="{% url 'auth_logout' %}">{% trans "Log out" %}</a>
-        {% else %}
-          <a class="nav-link" href="{% url 'auth_login' %}">{% trans "Sign in" %}</a>
+          <li class="nav-item col-6 col-md-auto">
+            <a class="nav-link" href="{% url 'profile' user.id %}">{% trans "Profile" %}</a>
+          </li>
+          {% if user.is_staff %}
+            <li class="nav-item col-6 col-md-auto">
+              <a class="nav-link" href="{% url 'admin:index' %}">{% trans "Admin" %}</a>
+            </li>
+          {% endif %}
         {% endif %}
-      </li>
-    </ul>
-  </div><!-- /.navbar-collapse -->
-  <!-- Collect the nav links, forms, and other content for toggling -->
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-</nav>
+        <li class="nav-item col-6 col-md-auto">
+          {% if user.is_authenticated %}
+            <a class="nav-link" href="{% url 'auth_logout' %}">{% trans "Log out" %}</a>
+          {% else %}
+            <a class="nav-link" href="{% url 'auth_login' %}">{% trans "Sign in" %}</a>
+          {% endif %}
+        </li>
+      </ul>
+    </div>
+  </nav>
+</header>
 {% endblock %}

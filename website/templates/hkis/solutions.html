@@ -19,7 +19,7 @@ data-csrf-token="{{ csrf_token }}"
 {% endblock %}
 
 {% block container %}
-
+<div class="container-xxl md-4">
 <h1> {% trans "Solutions for exercise:" %} <a href="{{ exercise.get_absolute_url }}">{{ exercise.title }}</a></h1>
 
 <h2 style="margin-top: 20px;">{% trans "Shared solutions" %}</h2>
@@ -130,6 +130,7 @@ data-csrf-token="{{ csrf_token }}"
       {% endfor %}
   </div>
 
+</div>
 {% endif %}
 <script src="{% static 'js/exercise.js' %}?v={{ version }}" type="text/javascript"></script>
 {% endblock %}
