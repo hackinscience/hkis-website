@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-10-04 04:56+0200\n"
-"PO-Revision-Date: 2021-10-04 04:59+0200\n"
+"PO-Revision-Date: 2021-10-04 05:05+0200\n"
 "Last-Translator: Julien Palard <julien@palard.fr>\n"
 "Language-Team: \n"
 "Language: fr\n"
@@ -20,7 +20,7 @@ msgstr ""
 
 #: website/admin.py:168
 msgid "team"
-msgstr "équipe\n"
+msgstr "équipe"
 
 #: website/admin.py:179
 msgid "exercise author"
