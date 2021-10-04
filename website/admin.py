@@ -172,7 +172,8 @@ class TeamFilter(admin.SimpleListFilter):
         return [(team.id, team.name) for team in Team.objects.my_teams(request.user)]
 
     def queryset(self, request, queryset):
-        return queryset.filter(user__teams=self.value())
+        if self.value() is not None:
+            return queryset.filter(user__teams=self.value())
 
 
 class MyExercisesFilter(admin.SimpleListFilter):
@@ -180,11 +181,11 @@ class MyExercisesFilter(admin.SimpleListFilter):
     parameter_name = "mine"
 
     def lookups(self, request, model_admin):
-        return [(1, _("My exercises only"))]
+        return [("1", _("My exercises only"))]
 
     def queryset(self, request, queryset):
-        if self.value() == 1:
-            return queryset.filter(exercise__user=self.request.user)
+        if self.value() == "1":
+            return queryset.filter(exercise__author=request.user)
         return queryset
 
 
@@ -211,13 +212,26 @@ class AnswerAdmin(admin.ModelAdmin):
     form = AnswerExerciseForm
 
     def get_queryset(self, request):
-        """If not superuser, one can only see own exercises or own team members."""
-        queryset = super().get_queryset(request).select_related("user", "exercise")
+        return super().get_queryset(request).select_related("user", "exercise")
+
+    def has_view_permission(self, request, obj=None):
         if request.user.is_superuser:
-            return queryset
-        my_teams = Team.objects.my_teams(request.user)
-        return queryset.filter(
-            Q(exercise__author=request.user) | Q(user__teams__in=my_teams)
+            return True
+        if obj is None:
+            return super().has_view_permission(request, obj)
+        return super().has_view_permission(request, obj) and (
+            obj.exercise.author == request.user
+            or (obj.user.teams.all() & Team.objects.my_teams(request.user)).count()
+        )
+
+    def has_change_permission(self, request, obj=None):
+        if request.user.is_superuser:
+            return True
+        if obj is None:
+            return super().has_view_permission(request, obj)
+        return super().has_change_permission(request, obj) and (
+            obj.exercise.author == request.user
+            or (obj.user.teams.all() & Team.objects.my_teams(request.user)).count()
         )
 
 
