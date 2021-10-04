@@ -4,7 +4,9 @@ from datetime import timedelta
 from asgiref.sync import async_to_sync
 from django.core.exceptions import ValidationError
 from django.db import models, IntegrityError
-from django.db.models import Count, Value, Q, Min
+from django.db.models import Count, Value, Q, Min, Sum
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from django.urls import reverse
 from django.utils.text import Truncator
 from django.utils.timezone import now
@@ -245,6 +247,9 @@ class Snippet(models.Model):
 
 
 class Answer(models.Model):
+    class Meta:
+        indexes = [models.Index(fields=["exercise", "-votes"])]
+
     exercise = models.ForeignKey(
         Exercise, on_delete=models.CASCADE, related_name="answers"
     )
@@ -259,6 +264,7 @@ class Answer(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     corrected_at = models.DateTimeField(blank=True, null=True)
     is_unhelpfull = models.BooleanField(default=False, blank=True)
+    votes = models.IntegerField(default=0, blank=True, null=False)  # Sum of Vote.value
 
     def short_correction_message(self):
         return self.correction_message.strip().split("\n")[:1][:100]
@@ -294,6 +300,20 @@ class Answer(models.Model):
         self.is_valid = is_valid
         self.corrected_at = now()
         self.save()
+
+
+class Vote(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    answer = models.ForeignKey(Answer, on_delete=models.CASCADE)
+    value = models.IntegerField(null=False)  # Typically +1 or -1
+
+
+@receiver(post_save, sender=Vote)
+def update_vote_count(sender, instance, **kwargs):
+    instance.answer.votes = Vote.objects.filter(answer=instance.answer).aggregate(
+        Sum("value")
+    )["value__sum"]
+    instance.answer.save()
 
 
 class TeamQuerySet(models.QuerySet):
