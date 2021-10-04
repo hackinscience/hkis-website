@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-05-29 01:51+0200\n"
-"PO-Revision-Date: 2021-05-07 05:58+0200\n"
+"POT-Creation-Date: 2021-10-04 04:56+0200\n"
+"PO-Revision-Date: 2021-10-04 04:59+0200\n"
 "Last-Translator: Julien Palard <julien@palard.fr>\n"
 "Language-Team: \n"
 "Language: fr\n"
@@ -17,6 +17,18 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: Poedit 2.4.1\n"
+
+#: website/admin.py:168
+msgid "team"
+msgstr "équipe\n"
+
+#: website/admin.py:179
+msgid "exercise author"
+msgstr "auteur"
+
+#: website/admin.py:183
+msgid "My exercises only"
+msgstr "Mes exercices"
 
 #: website/forms.py:28
 msgid "E-mail (optional)"
@@ -30,15 +42,15 @@ msgstr "Un exercice doit avoir une moulinette de correction pour être publié."
 msgid "Exercises should have a wording in order to be published."
 msgstr "Un exercice doit contenir un sujet avant d'être publié."
 
-#: website/models.py:400
+#: website/models.py:406
 msgid "Pending"
 msgstr "En attente d'approbation"
 
-#: website/models.py:401
+#: website/models.py:407
 msgid "Member"
 msgstr "Membre"
 
-#: website/models.py:402
+#: website/models.py:408
 msgid "Staff"
 msgstr "Staff"
 
