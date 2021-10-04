@@ -297,6 +297,12 @@ class Answer(models.Model):
 
 
 class TeamQuerySet(models.QuerySet):
+    def my_teams(self, user):
+        """Get teams for which user is staff."""
+        return self.filter(
+            Q(membership__role=Membership.Role.STAFF) & Q(membership__user=user)
+        )
+
     def recompute_ranks(self):
         for team in Team.objects.all():
             team.recompute_rank()

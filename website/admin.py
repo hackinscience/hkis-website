@@ -2,6 +2,8 @@ from django import forms
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.utils.safestring import mark_safe
+from django.db.models import Q
+from django.utils.translation import gettext_lazy as _
 from django_ace import AceWidget
 
 from modeltranslation.admin import TranslationAdmin
@@ -68,7 +70,11 @@ class AnswerExerciseForm(forms.ModelForm):
 
 class ExerciseAdmin(TranslationAdmin):
     def get_queryset(self, request):
-        return super().get_queryset(request).with_monthly_stats()
+        """If not superuser, one can only see own exercises."""
+        queryset = super().get_queryset(request).with_monthly_stats()
+        if request.user.is_superuser:
+            return queryset
+        return queryset.filter(author=request.user)
 
     ordering = ("-is_published", "position")
     readonly_fields = ("id", "created_at")
@@ -158,6 +164,30 @@ def send_to_correction_bot(modeladmin, request, queryset):
         answer.send_to_correction_bot()
 
 
+class TeamFilter(admin.SimpleListFilter):
+    title = _("team")
+    parameter_name = "team"
+
+    def lookups(self, request, model_admin):
+        return [(team.id, team.name) for team in Team.objects.my_teams(request.user)]
+
+    def queryset(self, request, queryset):
+        return queryset.filter(user__teams=self.value())
+
+
+class MyExercisesFilter(admin.SimpleListFilter):
+    title = _("exercise author")
+    parameter_name = "mine"
+
+    def lookups(self, request, model_admin):
+        return [(1, _("My exercises only"))]
+
+    def queryset(self, request, queryset):
+        if self.value() == 1:
+            return queryset.filter(exercise__user=self.request.user)
+        return queryset
+
+
 class AnswerAdmin(admin.ModelAdmin):
     readonly_fields = ("user", "created_at", "corrected_at")
     actions = (send_to_correction_bot,)
@@ -169,12 +199,26 @@ class AnswerAdmin(admin.ModelAdmin):
         "is_unhelpfull",
         "created_at",
     )
-    list_filter = ("is_corrected", "is_valid", "is_shared", "is_unhelpfull")
+    list_filter = (
+        MyExercisesFilter,
+        TeamFilter,
+        "is_unhelpfull",
+        "is_corrected",
+        "is_valid",
+        "is_shared",
+    )
     search_fields = ("user__username", "exercise__title", "user__teams__name")
     form = AnswerExerciseForm
 
     def get_queryset(self, request):
-        return super().get_queryset(request).select_related("user", "exercise")
+        """If not superuser, one can only see own exercises or own team members."""
+        queryset = super().get_queryset(request).select_related("user", "exercise")
+        if request.user.is_superuser:
+            return queryset
+        my_teams = Team.objects.my_teams(request.user)
+        return queryset.filter(
+            Q(exercise__author=request.user) | Q(user__teams__in=my_teams)
+        )
 
 
 class SnippetAdmin(admin.ModelAdmin):
