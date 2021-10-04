@@ -54,7 +54,7 @@ class AdminExerciseForm(forms.ModelForm):
         }
 
 
-class AnswerExerciseForm(forms.ModelForm):
+class AnswerForm(forms.ModelForm):
     class Meta:
         model = Answer
         exclude = ()
@@ -69,15 +69,6 @@ class AnswerExerciseForm(forms.ModelForm):
 
 
 class ExerciseAdmin(TranslationAdmin):
-    def get_queryset(self, request):
-        """If not superuser, one can only see own exercises."""
-        queryset = super().get_queryset(request).with_monthly_stats()
-        if request.user.is_superuser:
-            return queryset
-        return queryset.filter(author=request.user)
-
-    ordering = ("-is_published", "position")
-    readonly_fields = ("id", "created_at")
     autocomplete_fields = ("author",)
     fields = (
         "title",
@@ -95,7 +86,7 @@ class ExerciseAdmin(TranslationAdmin):
         "check",
         "solution",
     )
-
+    form = AdminExerciseForm
     list_display = (
         "title",
         "formatted_position",
@@ -106,6 +97,31 @@ class ExerciseAdmin(TranslationAdmin):
         "monthly_success_ratio",
         "is_published",
     )
+    ordering = ("-is_published", "position")
+    readonly_fields = ("id", "created_at")
+
+    def get_queryset(self, request):
+        """If not superuser, one can only see own exercises."""
+        queryset = super().get_queryset(request).with_monthly_stats()
+        if request.user.is_superuser:
+            return queryset
+        return queryset.filter(author=request.user)
+
+    def save_model(self, request, obj, form, change):
+        if not request.user.is_superuser:
+            if not change:
+                obj.is_published = False
+                obj.author = request.user
+                sandbox, _ = Category.objects.get_or_create(
+                    title="Sandbox", slug="sandbox", position=999
+                )
+                obj.category = sandbox
+        super().save_formset(request, obj, form, change)
+
+    def get_readonly_fields(self, request, obj=None):
+        if request.user.is_superuser:
+            return self.readonly_fields
+        return self.readonly_fields + ("author", "category", "is_published")
 
     def formatted_position(self, obj):
         return f"{obj.position:.2f}"
@@ -132,8 +148,6 @@ class ExerciseAdmin(TranslationAdmin):
             return f"{last_month_ratio:.0%}"
         else:
             return "ø"
-
-    form = AdminExerciseForm
 
 
 class PageAdmin(TranslationAdmin):
@@ -209,7 +223,7 @@ class AnswerAdmin(admin.ModelAdmin):
         "is_shared",
     )
     search_fields = ("user__username", "exercise__title", "user__teams__name")
-    form = AnswerExerciseForm
+    form = AnswerForm
 
     def get_queryset(self, request):
         return super().get_queryset(request).select_related("user", "exercise")
