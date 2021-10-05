@@ -259,6 +259,7 @@ class MyUserAdmin(UserAdmin):
     list_display = UserAdmin.list_display + ("date_joined", "points", "rank")
     ordering = ("-date_joined",)
     inlines = (MembershipInline,)
+    search_fields = UserAdmin.search_fields + ("teams__name",)
     fieldsets = (
         (
             None,
