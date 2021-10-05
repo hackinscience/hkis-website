@@ -9,27 +9,28 @@ import django_filters
 from website.models import Answer, Exercise, Snippet, User, Category, Page
 
 
-class AdminOrReadOnly(permissions.BasePermission):
-    def has_permission(self, request, view):
-        if request.user and request.user.is_staff:
-            return True
-        return request.method in permissions.SAFE_METHODS
+class DjangoModelPermissionsStrict(permissions.DjangoModelPermissions):
+    perms_map = {
+        "GET": ["%(app_label)s.view_%(model_name)s"],
+        "OPTIONS": [],
+        "HEAD": [],
+        "POST": ["%(app_label)s.add_%(model_name)s"],
+        "PUT": ["%(app_label)s.change_%(model_name)s"],
+        "PATCH": ["%(app_label)s.change_%(model_name)s"],
+        "DELETE": ["%(app_label)s.delete_%(model_name)s"],
+    }
 
 
-class ExercisePermission(permissions.BasePermission):
-    """This allow exercise owner (and staff) to modify them.
+class ExercisePermission(permissions.DjangoModelPermissions):
+    """Allow exercise author (and superusers) to modify them.
 
     Also anyone can create new (unpublished) exercises.
     """
 
     def has_object_permission(self, request, view, obj):
-        if request.user.is_staff:
-            return True
-        if request.method in permissions.SAFE_METHODS:
-            return True
-        if request.user.is_authenticated and obj.author == request.user:
-            return True
-        return False
+        return super().has_permission(request, view) or (
+            request.user.is_authenticated and obj.author == request.user
+        )
 
 
 class AnswerPermission(permissions.BasePermission):
@@ -40,32 +41,29 @@ class AnswerPermission(permissions.BasePermission):
     - Staff is root and can see everything.
     """
 
+    update_allows_field = ["is_shared"]
+
     def has_permission(self, request, view):
         """Authenticated users can create (POST) but not edit."""
         if not request.user.is_authenticated:
             return False
-        if request.user.is_staff:
+        if request.user.is_superuser:
             return True
-        if request.user.is_authenticated:
-            UPDATE_ALLOWS_FIELD = ["is_shared"]
-            if request.method in ("POST", "DELETE"):
-                # Logged in user can answer and update/delete their answer
-                return True
-            elif request.method == "PATCH":
-                # We authorized patch only if the field is authorized
-                for key in request.data.keys():
-                    if key not in UPDATE_ALLOWS_FIELD:
-                        return False
-                return True
+        if request.method in ("POST", "DELETE"):
+            # Logged in user can answer and update/delete their answer
+            return True
+        if request.method == "PATCH":
+            # We authorized patch only if the field is authorized
+            return all(key in self.update_allows_field for key in request.data.keys())
         if request.method in permissions.SAFE_METHODS:
             return True
         return False
 
     def has_object_permission(self, request, view, obj):
         """Users can only see and modify own answers"""
-        if request.user.is_staff:
+        if request.user.is_superuser:
             return True
-        elif request.user.is_authenticated and obj.user == request.user:
+        if request.user.is_authenticated and obj.user == request.user:
             return True
         return False
 
@@ -145,25 +143,25 @@ class ExerciseSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class UserViewSet(viewsets.ModelViewSet):
-    permission_classes = [permissions.IsAdminUser]
+    permission_classes = [DjangoModelPermissionsStrict]
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
 
 class GroupViewSet(viewsets.ModelViewSet):
-    permission_classes = [permissions.IsAdminUser]
+    permission_classes = [DjangoModelPermissionsStrict]
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
 
 
 class CategoryViewSet(viewsets.ModelViewSet):
-    permission_classes = [AdminOrReadOnly]
+    permission_classes = [permissions.DjangoModelPermissions]
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
 
 
 class PageViewSet(viewsets.ModelViewSet):
-    permission_classes = [AdminOrReadOnly]
+    permission_classes = [permissions.DjangoModelPermissions]
     queryset = Page.objects.all()
     serializer_class = PageSerializer
 
@@ -197,12 +195,12 @@ class AnswerViewSet(viewsets.ModelViewSet):
         )
 
     def get_queryset(self):
-        if self.request.user.is_staff:
+        if self.request.user.is_superuser:
             return super().get_queryset()
         return super().get_queryset().filter(user=self.request.user)
 
     def get_serializer_class(self):
-        if self.request.user.is_staff:
+        if self.request.user.is_superuser:
             return StaffAnswerSerializer
         return PublicAnswerSerializer
 
@@ -222,7 +220,7 @@ class SnippetViewSet(viewsets.ModelViewSet):
     filterset_fields = ("executed_at",)
 
     def get_queryset(self):
-        if self.request.user.is_staff:
+        if self.request.user.is_superuser:
             queryset = super().get_queryset()
             executed_at = self.request.query_params.get("executed_at__isnull", None)
             if executed_at is not None:
@@ -231,7 +229,7 @@ class SnippetViewSet(viewsets.ModelViewSet):
         return super().get_queryset().filter(user=self.request.user)
 
     def get_serializer_class(self):
-        if self.request.user.is_staff:
+        if self.request.user.is_superuser:
             return StaffSnippetSerializer
         return PublicSnippetSerializer
 
@@ -265,17 +263,16 @@ class ExerciseViewSet(viewsets.ModelViewSet):
         if (
             not instance
             or instance.author == self.request.user
-            or self.request.user.is_staff
+            or self.request.user.is_superuser
         ):
             return ExerciseSerializer(instance, *args, **kwargs)
-        else:
-            return ExerciseSerializer(
-                instance, *args, **kwargs, fields={"url", "title", "wording"}
-            )
+        return ExerciseSerializer(
+            instance, *args, **kwargs, fields={"url", "title", "wording"}
+        )
 
     def get_queryset(self):
         queryset = super().get_queryset()
-        if self.request.user.is_staff:
+        if self.request.user.is_superuser:
             return queryset
         if self.request.user.is_authenticated:
             return queryset.filter(
