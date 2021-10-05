@@ -28,7 +28,7 @@ class ExercisePermission(permissions.DjangoModelPermissions):
     """
 
     def has_object_permission(self, request, view, obj):
-        return super().has_permission(request, view) or (
+        return request.user.is_superuser or (
             request.user.is_authenticated and obj.author == request.user
         )
 
@@ -260,25 +260,14 @@ class ExerciseViewSet(viewsets.ModelViewSet):
         per instance. This is so exercises owner can see / edit their check.
         """
         kwargs["context"] = self.get_serializer_context()
-        if (
-            not instance
-            or instance.author == self.request.user
-            or self.request.user.is_superuser
-        ):
-            return ExerciseSerializer(instance, *args, **kwargs)
-        return ExerciseSerializer(
-            instance, *args, **kwargs, fields={"url", "title", "wording"}
-        )
-
-    def get_queryset(self):
-        queryset = super().get_queryset()
-        if self.request.user.is_superuser:
-            return queryset
-        if self.request.user.is_authenticated:
-            return queryset.filter(
-                Q(is_published=True) | Q(author_id=self.request.user.id)
+        if self.action == "list":
+            return ExerciseSerializer(
+                instance,
+                *args,
+                **kwargs,
+                fields=("url", "title", "wording", "is_published", "category")
             )
-        return queryset.filter(is_published=True)
+        return ExerciseSerializer(instance, *args, **kwargs)
 
 
 router = routers.DefaultRouter()
