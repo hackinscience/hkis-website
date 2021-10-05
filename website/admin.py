@@ -1,4 +1,5 @@
 from django import forms
+from django.core.exceptions import FieldError
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.utils.safestring import mark_safe
@@ -186,8 +187,12 @@ class TeamFilter(admin.SimpleListFilter):
         return [(team.id, team.name) for team in Team.objects.my_teams(request.user)]
 
     def queryset(self, request, queryset):
-        if self.value() is not None:
-            return queryset.filter(user__teams=self.value())
+        try:  # to filter on objects having a user property:
+            if self.value() is not None:
+                return queryset.filter(user__teams=self.value())
+        except FieldError:  # to filter on users
+            if self.value() is not None:
+                return queryset.filter(teams=self.value())
 
 
 class MyExercisesFilter(admin.SimpleListFilter):
