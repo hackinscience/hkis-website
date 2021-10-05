@@ -7,6 +7,7 @@ from django.db import models, IntegrityError
 from django.db.models import Count, Value, Q, Min, Sum
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.template.defaultfilters import truncatechars
 from django.urls import reverse
 from django.utils.text import Truncator
 from django.utils.timezone import now
@@ -267,7 +268,7 @@ class Answer(models.Model):
     votes = models.IntegerField(default=0, blank=True, null=False)  # Sum of Vote.value
 
     def short_correction_message(self):
-        return self.correction_message.strip().split("\n")[:1][:100]
+        return truncatechars(self.correction_message.strip().split("\n")[0], 100)
 
     def __str__(self):
         return "{} on {}".format(
