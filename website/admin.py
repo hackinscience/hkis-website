@@ -257,6 +257,8 @@ class SnippetAdmin(admin.ModelAdmin):
 
 class MyUserAdmin(UserAdmin):
     list_display = UserAdmin.list_display + ("date_joined", "points", "rank")
+    list_filter = UserAdmin.list_filter + (TeamFilter,)
+
     ordering = ("-date_joined",)
     inlines = (MembershipInline,)
     search_fields = UserAdmin.search_fields + ("teams__name",)
