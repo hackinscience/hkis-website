@@ -2,17 +2,19 @@ from collections import OrderedDict
 from contextlib import suppress
 from itertools import groupby
 
+from asgiref.sync import async_to_sync
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.models import Group
 from django.core.exceptions import PermissionDenied
 from django.db.models import Count, Max, Q
-from django.http import Http404, HttpResponseRedirect
+from django.http import Http404, HttpResponseRedirect, JsonResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.utils.translation import gettext
 from django.views.decorators.http import require_http_methods
+from django.views.decorators.csrf import csrf_exempt
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import UpdateView
 from django.views.generic.list import ListView
@@ -317,3 +319,50 @@ def team(request, slug):
             requester_membership = Membership.objects.get(team=team, user=request.user)
     context = {"team": team, "requester_membership": requester_membership}
     return render(request, "hkis/team.html", context)
+
+
+@csrf_exempt
+def test_check(request):
+    """Test a given check code.
+
+    This picks ~10 succeeding answers and ~10 failing answers for the
+    exercise, and run the correction bots on it with the given check.
+
+    Then it reports what changed.
+    """
+    from moulinette.tasks import check_answer
+
+    sync_check_answer = async_to_sync(check_answer)
+    exercise = Exercise.objects.get(pk=request.GET.get("exercise"))
+    valid_set = exercise.answers.filter(is_valid=True).order_by("-pk")[:10]
+    invalid_set = exercise.answers.filter(is_valid=False).order_by("-pk")[:10]
+    check_code = request.body.decode("UTF-8")
+    results = {"false_positives": [], "false_negatives": []}
+    for answer in valid_set:
+        is_valid, message = sync_check_answer(
+            {
+                "check": check_code,
+                "pre_check": exercise.pre_check,
+                "source_code": answer.source_code,
+                "language": "en",
+            }
+        )
+        if not is_valid:
+            results["false_negatives"].append(
+                {"source_code": answer.source_code, "message": message}
+            )
+    for answer in invalid_set:
+        is_valid, message = sync_check_answer(
+            {
+                "check": check_code,
+                "pre_check": exercise.pre_check,
+                "source_code": answer.source_code,
+                "language": "en",
+            }
+        )
+        if is_valid:
+            results["false_positives"].append(
+                {"source_code": answer.source_code, "message": message}
+            )
+
+    return JsonResponse(results)

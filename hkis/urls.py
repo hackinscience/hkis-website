@@ -26,6 +26,7 @@ urlpatterns = [
     path("jsi18n/", JavaScriptCatalog.as_view(), name="javascript-catalog"),
     path("page/<slug:url>", views.old_page, name="oldpage"),
     path("teams/", views.teams, name="teams"),
+    path("test-check/", views.test_check, name="test-check"),
     path("teams/<slug:slug>", views.team, name="team"),
     path("teams/<slug:slug>/stats", views.team_stats, name="team_stats"),
     path("admin/", admin.site.urls),
