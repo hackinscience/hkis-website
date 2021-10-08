@@ -173,6 +173,7 @@ def check_answer_task(answer: dict):
     answer should contain: check, source_code, and language.
     """
     with tempfile.TemporaryDirectory(prefix="hkis") as tmpdir:
+        logger.debug("Checking an answer in %s.", tmpdir)
         with open(os.path.join(tmpdir, "check.py"), "w") as check_file:
             check_file.write(answer["check"])
         with open(os.path.join(tmpdir, "solution.py"), "w") as answer_file:
