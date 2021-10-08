@@ -7,6 +7,7 @@ from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.models import Group
+from django.contrib.auth.decorators import permission_required
 from django.core.exceptions import PermissionDenied
 from django.db.models import Count, Max, Q
 from django.http import Http404, HttpResponseRedirect, JsonResponse
@@ -322,6 +323,8 @@ def team(request, slug):
 
 
 @csrf_exempt
+@require_http_methods(["POST"])
+@permission_required("website.view_answer")
 def test_check(request):
     """Test a given check code.
 
