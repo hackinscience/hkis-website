@@ -15,7 +15,6 @@ data-csrf-token="{{ csrf_token }}"
   <script type="text/javascript" src="{% static "django_ace/widget.js" %}"></script>
   <script type="text/javascript" src="{% static "django_ace/ace/mode-python.js" %}"></script>
   <script type="text/javascript" src="{% static "django_ace/ace/theme-twilight.js" %}"></script>
-  <script src="{% static "js/tab.js" %}"></script>
 {% endblock %}
 
 {% block container %}
@@ -28,15 +27,15 @@ data-csrf-token="{{ csrf_token }}"
       <ul class="nav nav-tabs" id="solutions" role="tablist">
           {% for solution in solutions %}
           <li class="nav-item">
-            <a class="nav-link{% if forloop.counter == 1 %} active{% endif %}"
+            <button class="nav-link{% if forloop.counter == 1 %} active{% endif %}"
                id="sol-{{forloop.counter}}-tab"
-               data-toggle="tab"
-               href="#sol-{{forloop.counter}}"
+               data-bs-toggle="tab"
+               data-bs-target="#sol-{{forloop.counter}}"
                role="tab"
                aria-controls="sol-{{forloop.counter}}"
                aria-selected="{% if forloop.counter == 1 %}true{% else %}false{% endif %}">
                   {{ forloop.counter }}
-              </a>
+              </button>
           </li>
           {% endfor %}
       </ul>
@@ -73,15 +72,15 @@ data-csrf-token="{{ csrf_token }}"
   <ul class="nav nav-tabs" id="my_answers" role="tablist">
       {% for solution in my_answers %}
       <li class="nav-item">
-        <a class="nav-link{% if forloop.counter == 1 %} active{% endif %}"
+        <button class="nav-link{% if forloop.counter == 1 %} active{% endif %}"
            id="ans-{{forloop.counter}}-tab"
-           data-toggle="tab"
-           href="#ans-{{forloop.counter}}"
+           data-bs-toggle="tab"
+           data-bs-target="#ans-{{forloop.counter}}"
            role="tab"
            aria-controls="ans-{{forloop.counter}}"
            aria-selected="{% if forloop.counter == 1 %}true{% else %}false{% endif %}">
               {{ forloop.counter }}
-          </a>
+          </button>
       </li>
       {% endfor %}
   </ul>
