@@ -1,3 +1,3 @@
-from hkis.celery import app as app
+from hkis.celery import app
 
 __all__ = ("app",)

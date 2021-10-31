@@ -19,7 +19,7 @@ logger = logging.getLogger(__name__)
 
 
 class UserManager(django.contrib.auth.models.UserManager):
-    def recompute_ranks(self):
+    def recompute_ranks(self):  # pylint: disable=no-self-use
         for user in User.objects.order_by("rank"):
             user.recompute_rank()
 
@@ -87,7 +87,7 @@ class Category(models.Model):
     position = models.FloatField(default=0)
 
     def __str__(self):
-        return self.title or self.title_en or "Unnamed"
+        return self.title or self.title_en or "Unnamed"  # pylint: disable=no-member
 
 
 class ExerciseQuerySet(models.QuerySet):
@@ -266,6 +266,9 @@ class Answer(models.Model):
     corrected_at = models.DateTimeField(blank=True, null=True)
     is_unhelpfull = models.BooleanField(default=False, blank=True)
     votes = models.IntegerField(default=0, blank=True, null=False)  # Sum of Vote.value
+    is_safe = models.BooleanField(
+        default=False, blank=True
+    )  # If answer can be used without sandboxing for test purposes. To be set manually.
 
     def short_correction_message(self):
         return truncatechars(self.correction_message.strip().split("\n")[0], 100)
@@ -285,7 +288,9 @@ class Answer(models.Model):
         super().save(*args, **kwargs)
 
     def send_to_correction_bot(self, lang="en"):
-        from moulinette.tasks import check_answer
+        from moulinette.tasks import (  # pylint: disable=import-outside-toplevel
+            check_answer,
+        )
 
         sync_check_answer = async_to_sync(check_answer)
         is_valid, message = sync_check_answer(
@@ -310,7 +315,7 @@ class Vote(models.Model):
 
 
 @receiver(post_save, sender=Vote)
-def update_vote_count(sender, instance, **kwargs):
+def update_vote_count(sender, instance, **kwargs):  # pylint: disable=unused-argument
     instance.answer.votes = Vote.objects.filter(answer=instance.answer).aggregate(
         Sum("value")
     )["value__sum"]
@@ -324,7 +329,7 @@ class TeamQuerySet(models.QuerySet):
             Q(membership__role=Membership.Role.STAFF) & Q(membership__user=user)
         )
 
-    def recompute_ranks(self):
+    def recompute_ranks(self):  # pylint: disable=no-self-use
         for team in Team.objects.all():
             team.recompute_rank()
 

@@ -2,8 +2,6 @@ from django import forms
 from django.core.exceptions import FieldError
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from django.utils.safestring import mark_safe
-from django.db.models import Q
 from django.utils.translation import gettext_lazy as _
 from django_ace import AceWidget
 
@@ -24,7 +22,7 @@ from website.models import (
 class PageForm(forms.ModelForm):
     class Meta:
         model = Page
-        exclude = ()
+        fields = ("slug", "title", "body", "position", "in_menu")
         widgets = {
             "body": AceWidget(
                 mode="markdown", theme="twilight", width="100%", height="800px"
@@ -35,7 +33,21 @@ class PageForm(forms.ModelForm):
 class AdminExerciseForm(forms.ModelForm):
     class Meta:
         model = Exercise
-        exclude = ()
+        fields = (
+            "title",
+            "author",
+            "slug",
+            "pre_check",
+            "check",
+            "is_published",
+            "solution",
+            "wording",
+            "initial_solution",
+            "position",
+            "points",
+            "category",
+            "page",
+        )
         widgets = {
             "solution": AceWidget(
                 mode="python", theme="twilight", width="100%", height="400px"
@@ -58,7 +70,18 @@ class AdminExerciseForm(forms.ModelForm):
 class AnswerForm(forms.ModelForm):
     class Meta:
         model = Answer
-        exclude = ()
+        fields = (
+            "exercise",
+            "source_code",
+            "is_corrected",
+            "is_valid",
+            "is_shared",
+            "correction_message",
+            "corrected_at",
+            "is_unhelpfull",
+            "votes",
+            "is_safe",
+        )
         widgets = {
             "source_code": AceWidget(
                 mode="python", theme="twilight", width="100%", height="400px"
@@ -124,31 +147,35 @@ class ExerciseAdmin(TranslationAdmin):
             return self.readonly_fields
         return self.readonly_fields + ("author", "category", "is_published")
 
-    def formatted_position(self, obj):
+    @admin.display(description="position")
+    def formatted_position(self, obj):  # pylint: disable=no-self-use
         return f"{obj.position:.2f}"
 
-    formatted_position.short_description = "position"
-
-    def monthly_tries(self, obj):
+    def monthly_tries(self, obj):  # pylint: disable=no-self-use
         return (
             f"{obj.last_month_tries} ({obj.last_month_tries - obj.prev_month_tries:+})"
         )
 
-    def monthly_successes(self, obj):
-        return f"{obj.last_month_successes} ({obj.last_month_successes - obj.prev_month_successes:+})"
+    def monthly_successes(self, obj):  # pylint: disable=no-self-use
+        return (
+            f"{obj.last_month_successes} "
+            f"({obj.last_month_successes - obj.prev_month_successes:+})"
+        )
 
-    def monthly_success_ratio(self, obj):
+    def monthly_success_ratio(self, obj):  # pylint: disable=no-self-use
         last_month_ratio = prev_month_ratio = None
         if obj.last_month_successes:
             last_month_ratio = obj.last_month_successes / obj.last_month_tries
         if obj.prev_month_successes:
             prev_month_ratio = obj.prev_month_successes / obj.prev_month_tries
         if prev_month_ratio is not None and last_month_ratio is not None:
-            return f"{last_month_ratio:.0%} ({100*(last_month_ratio - prev_month_ratio):+.2f})"
+            return (
+                f"{last_month_ratio:.0%} "
+                f"({100*(last_month_ratio - prev_month_ratio):+.2f})"
+            )
         if last_month_ratio is not None:
             return f"{last_month_ratio:.0%}"
-        else:
-            return "ø"
+        return "ø"
 
 
 class PageAdmin(TranslationAdmin):
@@ -169,12 +196,14 @@ class TeamAdmin(admin.ModelAdmin):
     readonly_fields = ("created_at",)
     inlines = (MembershipInline,)
 
-    def members_qty(self, team):
+    def members_qty(self, team):  # pylint: disable=no-self-use
         return team.members.count()
 
 
 @admin.action(description="Send to correction bot")
-def send_to_correction_bot(modeladmin, request, queryset):
+def send_to_correction_bot(
+    modeladmin, request, queryset
+):  # pylint: disable=unused-argument
     for answer in queryset:
         answer.send_to_correction_bot()
 
@@ -193,6 +222,7 @@ class TeamFilter(admin.SimpleListFilter):
         except FieldError:  # to filter on users
             if self.value() is not None:
                 return queryset.filter(teams=self.value())
+        return None
 
 
 class MyExercisesFilter(admin.SimpleListFilter):

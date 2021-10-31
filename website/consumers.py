@@ -1,6 +1,7 @@
 import asyncio
 import json
 import logging
+from typing import Optional
 
 from channels.db import database_sync_to_async
 from channels.generic.websocket import AsyncJsonWebsocketConsumer
@@ -47,12 +48,12 @@ def db_create_snippet(user: User, source_code):
 
 
 @database_sync_to_async
-def db_get_exercise(exercise_id: int):
+def db_get_exercise(exercise_id: int) -> Exercise:
     return Exercise.objects.get(id=exercise_id)
 
 
 @database_sync_to_async
-def db_find_uncorrected(answer_id: int, user: User) -> dict:
+def db_find_uncorrected(answer_id: int, user: User) -> Optional[dict]:
     try:
         answer = Answer.objects.get(id=answer_id, user=user, is_corrected=False)
         return {
@@ -107,28 +108,30 @@ def snippet_message(snippet: Snippet):
     return message
 
 
+def log(message, *args):
+    if args:
+        message = message + ": " + str(args)
+    logger.info("WebSocket %s", message)
+
+
 class ExerciseConsumer(AsyncJsonWebsocketConsumer):
     def __init__(self, *args, **kwargs):
         self.settings = {}
+        self.exercise: Optional[Exercise] = None
         super().__init__(*args, **kwargs)
 
-    def log(self, message, *args):
-        if args:
-            message = message + ": " + str(args)
-        logger.info("WebSocket %s", message)
-
     async def connect(self):
-        self.log("connect")
+        log("connect")
         self.exercise = await db_get_exercise(
             self.scope["url_route"]["kwargs"]["exercise_id"]
         )
-        self.log("accept")
+        log("accept")
         await self.accept()
 
-    async def disconnect(self, close_code):
-        self.log("disconnect")
+    async def disconnect(self, code):
+        logger.info("WebSocket disconnect (code=%s)", code)
 
-    async def receive_json(self, content):
+    async def receive_json(self, content, **kwargs):
         if content["type"] == "answer":
             asyncio.create_task(self.answer(content["source_code"]))
         elif content["type"] == "is_unhelpfull":
@@ -140,23 +143,23 @@ class ExerciseConsumer(AsyncJsonWebsocketConsumer):
         elif content["type"] == "settings":
             self.settings = content["value"]
         else:
-            self.log("Unknown message received", json.dumps(content))
+            log("Unknown message received", json.dumps(content))
 
     async def flag_as_unhelpfull(self, answer_id: str):
         try:
-            answer_id = int(answer_id)
+            answer_id_int = int(answer_id)
         except ValueError:
             return
-        answer = await db_flag_as_unhelpfull(self.scope["user"].id, answer_id)
+        answer = await db_flag_as_unhelpfull(self.scope["user"].id, answer_id_int)
         if answer:
             await self.send_json(answer_message(answer))
 
     async def recorrect(self, answer):
-        self.log("Restarting correction for an answer")
+        log("Restarting correction for an answer")
         uncorrected = await db_find_uncorrected(answer["id"], self.scope["user"])
         if not uncorrected:
             return
-        self.log("Send answer to moulinette")
+        log("Send answer to moulinette")
         is_valid, message = await check_answer(
             {
                 "check": uncorrected["check"],
@@ -165,17 +168,17 @@ class ExerciseConsumer(AsyncJsonWebsocketConsumer):
                 "language": self.settings.get("LANGUAGE_CODE", "en"),
             }
         )
-        self.log("Got result from moulinette")
+        log("Got result from moulinette")
         answer, rank = await db_update_answer(uncorrected["id"], is_valid, message)
         await self.send_json(answer_message(answer, rank))
 
     async def answer(self, source_code):
-        self.log("Receive answer from browser")
+        log("Receive answer from browser")
         answer = await db_create_answer(
             self.exercise.id, self.scope["user"].id, source_code
         )
         await self.send_json(answer_message(answer))
-        self.log("Send answer to moulinette")
+        log("Send answer to moulinette")
         is_valid, message = await check_answer(
             {
                 "check": answer.exercise.check,
@@ -184,7 +187,7 @@ class ExerciseConsumer(AsyncJsonWebsocketConsumer):
                 "language": self.settings.get("LANGUAGE_CODE", "en"),
             }
         )
-        self.log("Got result from moulinette")
+        log("Got result from moulinette")
         answer, rank = await db_update_answer(answer.id, is_valid, message)
         await self.send_json(answer_message(answer, rank))
 
@@ -196,13 +199,13 @@ class ExerciseConsumer(AsyncJsonWebsocketConsumer):
         Note it's a distinct task (started by receive_json) to avoid
         blocking this consumer.
         """
-        self.log("Receive snippet from browser")
+        log("Receive snippet from browser")
         snippet_obj = await db_create_snippet(
             self.scope["user"], snippet["source_code"]
         )
         await self.send_json(snippet_message(snippet_obj))
-        self.log("Sending snippet to runner")
+        log("Sending snippet to runner")
         result = await run_snippet(snippet["source_code"], pre=self.exercise.pre_check)
-        self.log("Got result from snippet runner")
+        log("Got result from snippet runner")
         snippet_obj = await db_update_snippet(snippet_obj.id, result)
         await self.send_json(snippet_message(snippet_obj))

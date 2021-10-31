@@ -2,20 +2,16 @@ from collections import OrderedDict
 from contextlib import suppress
 from itertools import groupby
 
-from asgiref.sync import async_to_sync
 from django.conf import settings
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.contrib.auth.models import Group
-from django.contrib.auth.decorators import permission_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
 from django.db.models import Count, Max, Q
-from django.http import Http404, HttpResponseRedirect, JsonResponse
+from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.utils.translation import gettext
 from django.views.decorators.http import require_http_methods
-from django.views.decorators.csrf import csrf_exempt
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import UpdateView
 from django.views.generic.list import ListView
@@ -63,10 +59,10 @@ class ProfileView(LoginRequiredMixin, UpdateView):
 
         return context
 
-    def dispatch(self, request, pk, *args, **kwargs):
-        if pk != request.user.pk:
+    def dispatch(self, request, *args, **kwargs):
+        if kwargs["pk"] != request.user.pk:
             raise PermissionDenied
-        return super().dispatch(request, *args, pk=pk, **kwargs)
+        return super().dispatch(request, *args, **kwargs)
 
     def get_success_url(self):
         messages.info(self.request, "Profile updated")
@@ -119,8 +115,8 @@ class ExerciseView(DetailView):
         try:
             # Get the single item from the filtered queryset
             return queryset.get()
-        except queryset.model.DoesNotExist:
-            raise Http404("No exercise found matching the query")
+        except queryset.model.DoesNotExist as err:
+            raise Http404("No exercise found matching the query") from err
 
     def get_queryset(self):
         queryset = super().get_queryset()
@@ -197,8 +193,8 @@ class SolutionView(LoginRequiredMixin, DetailView):
         try:
             # Get the single item from the filtered queryset
             return queryset.get()
-        except queryset.model.DoesNotExist:
-            raise Http404("No exercise found matching the query")
+        except queryset.model.DoesNotExist as err:
+            raise Http404("No exercise found matching the query") from err
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -225,8 +221,8 @@ class SolutionView(LoginRequiredMixin, DetailView):
 def team_stats(request, slug):
     try:
         team = Team.objects.get(slug=slug)
-    except Team.DoesNotExist:
-        raise Http404("Team does not exist")
+    except Team.DoesNotExist as err:
+        raise Http404("Team does not exist") from err
 
     requester_membership = None
     if not request.user.is_anonymous:
@@ -292,26 +288,25 @@ def teams(request):
             team, _ = Team.objects.get_or_create(name=request.POST["join_team"])
             team.add_member(request.user.username)
         return HttpResponseRedirect(reverse("profile", kwargs={"pk": request.user.id}))
-    if request.method == "GET":
-        return render(
-            request,
-            "hkis/teams.html",
-            {
-                "teams": Team.objects.exclude(points__isnull=True)
-                .order_by("-points")
-                .select_related()
-            },
-        )
+    return render(
+        request,
+        "hkis/teams.html",
+        {
+            "teams": Team.objects.exclude(points__isnull=True)
+            .order_by("-points")
+            .select_related()
+        },
+    )
 
 
-def team(request, slug):
+def team_view(request, slug):
     try:
         team = Team.objects.get(slug=slug)
     except Team.DoesNotExist:
         try:
             team = Team.objects.get(name=slug)
-        except Team.DoesNotExist:
-            raise Http404("Team does not exist")
+        except Team.DoesNotExist as err:
+            raise Http404("Team does not exist") from err
         else:
             return redirect("team", slug=team.slug)
     requester_membership = None

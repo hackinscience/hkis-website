@@ -1,8 +1,8 @@
 from django import template
 from django.utils.safestring import mark_safe
-from website.utils import markdown_to_bootstrap
-
 import markdown
+
+from website.utils import markdown_to_bootstrap
 
 register = template.Library()
 
@@ -13,7 +13,7 @@ def _markdown_to_bootstrap(value):
 
 
 @register.tag(name="md")
-def do_markdownize(parser, token):
+def do_markdownize(parser, token):  # pylint: disable=unused-argument
     nodelist = parser.parse(("endmd",))
     parser.delete_first_token()
     return MarkdownNode(nodelist)

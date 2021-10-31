@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 """
 
 import os
+from typing import List
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -274,7 +275,7 @@ ALLOWED_ATTRIBUTES = {
     "p": ["align", "class"],
 }
 
-ALLOWED_STYLES = []
+ALLOWED_STYLES: List[str] = []
 
 GIT_HEAD = "master"  # Changed in production to the current commit hash, can be used for static file invalidation.
 
