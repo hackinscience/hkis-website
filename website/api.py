@@ -4,6 +4,7 @@ from django.contrib.auth.models import Group
 from django.db.models import Q
 from django_filters import rest_framework as filters
 from rest_framework import viewsets, response, serializers, routers, permissions
+from rest_framework.decorators import api_view, permission_classes
 import django_filters
 
 from website.models import Answer, Exercise, Snippet, User, Category, Page
@@ -268,6 +269,59 @@ class ExerciseViewSet(viewsets.ModelViewSet):
                 fields=("url", "title", "wording", "is_published", "category")
             )
         return ExerciseSerializer(instance, *args, **kwargs)
+
+
+class CanViewAnswer(permissions.DjangoModelPermissions):
+    def has_permission(self, request, view):
+        return request.user.has_perm("website.view_answer")
+
+
+@api_view(["POST"])
+@permission_classes([CanViewAnswer])
+def test_check(request):
+    """Test a given check code.
+
+    This picks ~10 succeeding answers and ~10 failing answers for the
+    exercise, and run the correction bots on it with the given check.
+
+    Then it reports what changed.
+    """
+    from moulinette.tasks import check_answer
+
+    sync_check_answer = async_to_sync(check_answer)
+    exercise = Exercise.objects.get(pk=request.GET.get("exercise"))
+    valid_set = exercise.answers.filter(is_valid=True).order_by("-pk")[:10]
+    invalid_set = exercise.answers.filter(is_valid=False).order_by("-pk")[:10]
+    check_code = request.body.decode("UTF-8")
+    results = {"false_positives": [], "false_negatives": []}
+    for answer in valid_set:
+        is_valid, message = sync_check_answer(
+            {
+                "check": check_code,
+                "pre_check": exercise.pre_check,
+                "source_code": answer.source_code,
+                "language": "en",
+            }
+        )
+        if not is_valid:
+            results["false_negatives"].append(
+                {"source_code": answer.source_code, "message": message}
+            )
+    for answer in invalid_set:
+        is_valid, message = sync_check_answer(
+            {
+                "check": check_code,
+                "pre_check": exercise.pre_check,
+                "source_code": answer.source_code,
+                "language": "en",
+            }
+        )
+        if is_valid:
+            results["false_positives"].append(
+                {"source_code": answer.source_code, "message": message}
+            )
+
+    return response.Response(results)
 
 
 router = routers.DefaultRouter()

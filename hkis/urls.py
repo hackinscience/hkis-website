@@ -18,7 +18,7 @@ from django.shortcuts import redirect
 from django.conf import settings
 from django.urls import path, include
 from django.views.i18n import JavaScriptCatalog
-from website.api import router
+from website.api import router, test_check
 import website.views as views
 
 urlpatterns = [
@@ -26,7 +26,7 @@ urlpatterns = [
     path("jsi18n/", JavaScriptCatalog.as_view(), name="javascript-catalog"),
     path("page/<slug:url>", views.old_page, name="oldpage"),
     path("teams/", views.teams, name="teams"),
-    path("test-check/", views.test_check, name="test-check"),
+    path("test-check/", test_check, name="test-check"),
     path("teams/<slug:slug>", views.team, name="team"),
     path("teams/<slug:slug>/stats", views.team_stats, name="team_stats"),
     path("admin/", admin.site.urls),
