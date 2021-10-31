@@ -1,3 +1,5 @@
+import asyncio
+
 from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
 from django.contrib.auth.models import Group
@@ -276,6 +278,36 @@ class CanViewAnswer(permissions.DjangoModelPermissions):
         return request.user.has_perm("website.view_answer")
 
 
+async def atest_check(code_to_check, exercise, valid_set, invalid_set):
+    from moulinette.tasks import check_answer
+
+    results = await asyncio.gather(
+        *[
+            check_answer(
+                {
+                    "check": code_to_check,
+                    "pre_check": exercise.pre_check,
+                    "source_code": answer.source_code,
+                }
+            )
+            for answer in valid_set
+        ],
+        *[
+            check_answer(
+                {
+                    "check": code_to_check,
+                    "pre_check": exercise.pre_check,
+                    "source_code": answer.source_code,
+                }
+            )
+            for answer in invalid_set
+        ]
+    )
+    return zip(valid_set, results[: len(valid_set)]), zip(
+        invalid_set, results[len(valid_set) :]
+    )
+
+
 @api_view(["POST"])
 @permission_classes([CanViewAnswer])
 def test_check(request):
@@ -286,36 +318,22 @@ def test_check(request):
 
     Then it reports what changed.
     """
-    from moulinette.tasks import check_answer
 
-    sync_check_answer = async_to_sync(check_answer)
     exercise = Exercise.objects.get(pk=request.GET.get("exercise"))
-    valid_set = exercise.answers.filter(is_valid=True).order_by("-pk")[:10]
-    invalid_set = exercise.answers.filter(is_valid=False).order_by("-pk")[:10]
+    valid_set = list(exercise.answers.filter(is_valid=True).order_by("-pk")[:10])
+    invalid_set = list(exercise.answers.filter(is_valid=False).order_by("-pk")[:10])
     check_code = request.body.decode("UTF-8")
     results = {"false_positives": [], "false_negatives": []}
-    for answer in valid_set:
-        is_valid, message = sync_check_answer(
-            {
-                "check": check_code,
-                "pre_check": exercise.pre_check,
-                "source_code": answer.source_code,
-                "language": "en",
-            }
-        )
+    valid_results, invalid_results = async_to_sync(atest_check)(
+        check_code, exercise, valid_set, invalid_set
+    )
+
+    for answer, (is_valid, message) in valid_results:
         if not is_valid:
             results["false_negatives"].append(
                 {"source_code": answer.source_code, "message": message}
             )
-    for answer in invalid_set:
-        is_valid, message = sync_check_answer(
-            {
-                "check": check_code,
-                "pre_check": exercise.pre_check,
-                "source_code": answer.source_code,
-                "language": "en",
-            }
-        )
+    for answer, (is_valid, message) in invalid_results:
         if is_valid:
             results["false_positives"].append(
                 {"source_code": answer.source_code, "message": message}
