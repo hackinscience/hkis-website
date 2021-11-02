@@ -175,7 +175,7 @@ class AnswerFilter(filters.FilterSet):
 
 class AnswerViewSet(viewsets.ModelViewSet):
     permission_classes = [AnswerPermission]
-    queryset = Answer.objects.all()
+    queryset = Answer.objects.all().order_by("-pk")
     filterset_class = AnswerFilter
 
     def cb_new_answer(self, instance):  # pylint: disable=no-self-use
