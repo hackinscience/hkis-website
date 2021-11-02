@@ -15,7 +15,6 @@ def parse_args():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--username")
     parser.add_argument("--password")
-    parser.add_argument("--password-file")
     parser.add_argument(
         "--endpoint", default="https://www.hackinscience.org/api/exercises/"
     )
@@ -23,14 +22,13 @@ def parse_args():
         "--page", help="Only download exercises for the given page slug."
     )
     args = parser.parse_args()
-    if not args.username:
-        args.username = input("Username: ")
-    if args.password_file:
-        args.password = (
-            Path(args.password_file).read_text(encoding="UTF-8").rstrip("\n")
+    if not args.username or not args.password:
+        args.username, args.password = (
+            (Path.home() / ".hkis")
+            .read_text(encoding="UTF-8")
+            .rstrip()
+            .split(":", maxsplit=1)
         )
-    elif not args.password:
-        args.password = getpass()
     return args
 
 

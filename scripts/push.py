@@ -12,22 +12,23 @@ def parse_args():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--username")
     parser.add_argument("--password")
-    parser.add_argument("--password-file")
     parser.add_argument("--only")
     parser.add_argument(
         "--endpoint", default="https://www.hackinscience.org/api/exercises/"
     )
-    return parser.parse_args()
+    args = parser.parse_args()
+    if not args.username or not args.password:
+        args.username, args.password = (
+            (Path.home() / ".hkis")
+            .read_text(encoding="UTF-8")
+            .rstrip()
+            .split(":", maxsplit=1)
+        )
+    return args
 
 
 def main():
     args = parse_args()
-    if not args.username:
-        args.username = input("Username: ")
-    if args.password_file:
-        args.password = Path(args.password_file).read_text().rstrip("\n")
-    elif not args.password:
-        args.password = getpass()
     for exercise in Path(".").glob("*/*/meta"):
         meta = json.loads(exercise.read_text())
         if args.only:
