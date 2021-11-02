@@ -249,7 +249,10 @@ class Snippet(models.Model):
 
 class Answer(models.Model):
     class Meta:
-        indexes = [models.Index(fields=["exercise", "-votes"])]
+        indexes = [
+            models.Index(fields=["exercise", "-votes"]),
+            models.Index(fields=["is_valid", "is_safe"]),
+        ]
 
     exercise = models.ForeignKey(
         Exercise, on_delete=models.CASCADE, related_name="answers"
