@@ -170,7 +170,7 @@ class AnswerFilter(filters.FilterSet):
 
     class Meta:
         model = Answer
-        fields = ("is_corrected", "is_valid", "user")
+        fields = ("is_corrected", "is_valid", "user", "is_safe")
 
 
 class AnswerViewSet(viewsets.ModelViewSet):
