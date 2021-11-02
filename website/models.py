@@ -180,7 +180,6 @@ class Exercise(models.Model):
     # `solution.py` file containing the student code.
     check = models.TextField(blank=True, default="")
     is_published = models.BooleanField(default=False)
-    solution = models.TextField(blank=True, default="")
     wording = models.TextField(blank=True, default="")
     initial_solution = models.TextField(blank=True, default="")
     position = models.FloatField(default=0)
@@ -206,7 +205,6 @@ class Exercise(models.Model):
         other users.
         """
         self.check = self.check.replace("\r\n", "\n")
-        self.solution = self.solution.replace("\r\n", "\n")
         self.wording = self.wording.replace("\r\n", "\n")
         if self.is_published:
             if not self.check:

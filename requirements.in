@@ -19,3 +19,6 @@ djangorestframework
 gunicorn
 markdown
 pygments
+
+# For scripts/:
+requests

@@ -36,7 +36,6 @@ def main():
         for file in (
             "pre_check.py",
             "check.py",
-            "solution.py",
             "wording_fr.md",
             "wording_en.md",
             "initial_solution.py",

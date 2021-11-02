@@ -2,10 +2,11 @@
 """
 
 import argparse
+from contextlib import suppress
+import json
+from functools import lru_cache
 from getpass import getpass
 from pathlib import Path
-from functools import lru_cache
-import json
 
 import requests
 
@@ -18,8 +19,19 @@ def parse_args():
     parser.add_argument(
         "--endpoint", default="https://www.hackinscience.org/api/exercises/"
     )
-    parser.add_argument("--page", default="exercises")
-    return parser.parse_args()
+    parser.add_argument(
+        "--page", help="Only download exercises for the given page slug."
+    )
+    args = parser.parse_args()
+    if not args.username:
+        args.username = input("Username: ")
+    if args.password_file:
+        args.password = (
+            Path(args.password_file).read_text(encoding="UTF-8").rstrip("\n")
+        )
+    elif not args.password:
+        args.password = getpass()
+    return args
 
 
 def fix_newline_at_end_of_file(text):
@@ -30,53 +42,56 @@ def fix_newline_at_end_of_file(text):
     return text
 
 
+def get_exercises(endpoint, session):
+    while endpoint:
+        response = session.get(endpoint).json()
+        yield from response["results"]
+        endpoint = response.get("next")
+
+
 def main():
     args = parse_args()
-    if not args.username:
-        args.username = input("Username: ")
-    if args.password_file:
-        args.password = Path(args.password_file).read_text().rstrip("\n")
-    elif not args.password:
-        args.password = getpass()
-    next_exercise_page = args.endpoint
+
+    session = requests.session()
+    session.auth = (args.username, args.password)
 
     @lru_cache()
     def get(url):
-        return requests.get(url, auth=(args.username, args.password)).json()
+        return session.get(url).json()
 
-    while next_exercise_page:
-        exercises = get(next_exercise_page)
-        if "results" not in exercises:
-            print(exercises)
-            exit(1)
-        for exercise in exercises["results"]:
-            if exercise["category"] is not None:
-                category = get(exercise["category"])["slug"]
-            else:
-                category = "exercises"
-            page = get(exercise["page"])
-            if page["slug"] != args.page:
-                continue
-            path = Path(category) / exercise["slug"]
-            path.mkdir(exist_ok=True, parents=True)
-            del exercise["wording"]  # Only use _en and _fr.
-            print("Downloading", exercise["title"])
-            for file in (
-                "check.py",
-                "solution.py",
-                "pre_check.py",
-                "wording_en.md",
-                "wording_fr.md",
-                "initial_solution.py",
-            ):
-                (path / file).write_text(
-                    fix_newline_at_end_of_file(exercise[file.split(".")[0]]).replace(
-                        "\r\n", "\n"
-                    )
+    for exercise in get_exercises(args.endpoint, session):
+        exercise = get(exercise["url"])
+        if exercise.get("page"):
+            page = get(exercise["page"])["slug"]
+        else:
+            page = "exercises"
+        if args.page and page != args.page:
+            continue
+        path = Path(page) / exercise["slug"]
+        path.mkdir(exist_ok=True, parents=True)
+        del exercise["wording"]  # Only use _en and _fr.
+        print("Downloading", exercise["title"], "in", page)
+        with suppress(FileNotFoundError):
+            old_meta = json.loads((path / "meta").read_text(encoding="UTF-8"))
+            if old_meta["url"] != exercise["url"]:
+                raise RuntimeError(
+                    f"Exercise {old_meta['url']} and exercise {exercise['url']} "
+                    "have the same slug and are the same page.",
                 )
-                del exercise[file.split(".")[0]]
-            (path / "meta").write_text(json.dumps(exercise, indent=4))
-        next_exercise_page = exercises.get("next")
+        for file in (
+            "check.py",
+            "pre_check.py",
+            "wording_en.md",
+            "wording_fr.md",
+            "initial_solution.py",
+        ):
+            (path / file).write_text(
+                fix_newline_at_end_of_file(
+                    exercise[file.split(".", maxsplit=1)[0]]
+                ).replace("\r\n", "\n")
+            )
+            del exercise[file.split(".", maxsplit=1)[0]]
+        (path / "meta").write_text(json.dumps(exercise, indent=4))
 
 
 if __name__ == "__main__":
