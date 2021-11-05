@@ -56,16 +56,6 @@ data-is-impersonating="{% if is_impersonating %}true{% else %}false{% endif %}"
             {% if not is_impersonating %}
             <button
               disabled
-              id="submit_snippet"
-              class="btn btn-secondary"
-              data-toggle="tooltip"
-              data-placement="bottom"
-              data-delay="500"
-              title="{% trans "Use this to execute your code, so you can try things." %}">
-              {% trans "Run" %}
-            </button>
-            <button
-              disabled
               id="submit_answer"
               class="btn btn-primary"
               data-toggle="tooltip"
