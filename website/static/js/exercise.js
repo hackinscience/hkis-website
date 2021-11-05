@@ -153,7 +153,6 @@ function websocket_connect(ws_location) {
     };
     window.ws.onopen = function() {
         unlock_button("submit_answer");
-        unlock_button("submit_snippet");
         connected = true;
         fill_message(gettext("Connected to correction server."), "success");
         window.ws.send(JSON.stringify({type: "settings", value: {LANGUAGE_CODE: settings.languageCode}}));
@@ -172,7 +171,6 @@ function websocket_connect(ws_location) {
         fill_message(gettext("Cannot connect to correction server, will retry in 5s…"), "warning");
         setTimeout(function(){websocket_connect(ws_location)}, 5000);
         lock_button("submit_answer", 0);
-        lock_button("submit_snippet", 0);
     };
 }
 
@@ -194,14 +192,6 @@ function lock_button(button_id, unlock_after_seconds) {
         setTimeout(function(){unlock_button(button_id);}, unlock_after_seconds * 1000);
 }
 
-function ws_submit_snippet(form) {
-    var message = {"type": "snippet", "source_code": form["source_code"].value};
-    lock_button("submit_snippet", 1);
-    console.log("WebSocket send snippet", message);
-    window.ws.send(JSON.stringify(message));
-
-}
-
 function ctrl_enter_handler(event) {
     if (!event.ctrlKey) return;
     if (event.code !== "Enter") return;
@@ -219,8 +209,7 @@ if (settings.isImpersonating == "false") {
 }
 
 window.addEventListener("DOMContentLoaded", function (event) {
-    if (document.getElementById("submit_snippet")) {
-        document.getElementById("submit_snippet").addEventListener("click", function(e) {e.preventDefault(); ws_submit_snippet(this.form); return false;});
+    if (document.getElementById("submit_answer")) {
         document.getElementById("submit_answer").addEventListener("click", function(e) {e.preventDefault(); ws_submit_answer(this.form); return false;});
     }
     document.querySelectorAll("button[data-share]").forEach(function (button) {
