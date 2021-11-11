@@ -17,7 +17,7 @@ from django.views.generic.edit import UpdateView
 from django.views.generic.list import ListView
 
 from website.forms import AnswerForm
-from website.models import Answer, Exercise, Membership, Page, Team, User
+from website.models import Exercise, Membership, Page, Team, User
 
 
 def index(request):
@@ -154,12 +154,6 @@ class ExerciseView(DetailView):
             context["is_valid"] = bool(
                 self.object.answers.filter(user=user, is_valid=True)
             )
-        context["solutions_qty"] = len(
-            Answer.objects.filter(
-                exercise__pk=self.object.id, is_valid=True, is_shared=True
-            )
-        )
-
         try:
             context["next"] = (
                 Exercise.objects.filter(position__gt=self.object.position)
