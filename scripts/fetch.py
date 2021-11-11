@@ -5,31 +5,21 @@ import argparse
 from contextlib import suppress
 import json
 from functools import lru_cache
-from getpass import getpass
 from pathlib import Path
 
 import requests
 
+from utils import common_parse_args
+
 
 def parse_args():
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--username")
-    parser.add_argument("--password")
-    parser.add_argument(
-        "--endpoint", default="https://www.hackinscience.org/api/exercises/"
-    )
+    args, remaining = common_parse_args(__doc__)
+
+    parser = argparse.ArgumentParser()
     parser.add_argument(
         "--page", help="Only download exercises for the given page slug."
     )
-    args = parser.parse_args()
-    if not args.username or not args.password:
-        args.username, args.password = (
-            (Path.home() / ".hkis")
-            .read_text(encoding="UTF-8")
-            .rstrip()
-            .split(":", maxsplit=1)
-        )
-    return args
+    return parser.parse_args(remaining, args)
 
 
 def fix_newline_at_end_of_file(text):

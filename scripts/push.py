@@ -1,30 +1,19 @@
 """Push back exercises via hackinscience API.
 """
 import argparse
-from getpass import getpass
 from pathlib import Path
 import json
 
 import requests
 
+from utils import common_parse_args
+
 
 def parse_args():
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--username")
-    parser.add_argument("--password")
+    args, remaining = common_parse_args(__doc__)
+    parser = argparse.ArgumentParser()
     parser.add_argument("--only")
-    parser.add_argument(
-        "--endpoint", default="https://www.hackinscience.org/api/exercises/"
-    )
-    args = parser.parse_args()
-    if not args.username or not args.password:
-        args.username, args.password = (
-            (Path.home() / ".hkis")
-            .read_text(encoding="UTF-8")
-            .rstrip()
-            .split(":", maxsplit=1)
-        )
-    return args
+    return parser.parse_args(remaining, args)
 
 
 def main():
