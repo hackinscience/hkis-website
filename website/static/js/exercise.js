@@ -37,86 +37,59 @@ function report_as_unhelpfull(answer_id) {
 }
 
 function fill_answer(answer) {
-    var result = document.getElementById("answers-result");
-    if (!result)
+    var wording_div = document.getElementById("wording");
+    var answer_div = document.getElementById("answer-message");
+    var answer_box = document.getElementById("answer-box");
+    wording_div.style.display = 'none';
+    answer_div.style.display = 'block';
+    if (!answer.is_corrected) {
+        answer_box.className = "hkis-callout hkis-callout-info";
+        answer_box.innerHTML = gettext("Waiting for correction...")
         return;
-    var answerbox = document.getElementById("td-".concat(answer.id));
-    if (!answerbox) {
-        var answer_table = document.getElementById("answer-table");
-        append_to_answer_table('<tr><td id="td-'.concat(answer.id).concat('">…</td> </tr>'));
-        answerbox = document.getElementById("td-".concat(answer.id));
     }
-    if (answer.is_corrected) {
-        var answer_table = document.getElementById("answer-table");
-        var div = hkis.createElement("div", {innerHTML: answer.correction_message_html});
-        if (answer.is_valid) {
-            console.log("Answer is valid: old_rank=", settings.currentRank, "new_rank=", answer.user_rank)
-            try {
-                document.getElementById("btn_next").className = "btn btn-primary"
-            } catch {}
-            document.getElementById("submit_answer").className = "btn btn-secondary"
-            answer_table.rows[0].className = "table-success";
-            if (answer.user && answer.user_rank < parseInt(settings.currentRank) ) {
-                div.appendChild(hkis.createElement("div", {
-                    className: "alert alert-success",
-                    innerHTML: interpolate(gettext('Your new <a href="%(url)s">rank</a> is: %(new_rank)s'),
-                                           {url: settings.leaderboardUrl, new_rank: answer.user_rank},
-                                           true)}));
-            }
-            if (!answer.user) {
-                div.appendChild(hkis.createElement("div", {
-                    className: "alert alert-warning",
-                    innerHTML: interpolate(gettext('<a href="%s">Login</a> to backup your code and progression.'), [settings.authLoginUrl])
-                }));
-            }
-            document.getElementById("solution_link").classList.remove("disabled");
+    var div = hkis.createElement("div", {innerHTML: answer.correction_message_html});
+    if (answer.is_valid) {
+        answer_box.className = "hkis-callout hkis-callout-success";
+        console.log("Answer is valid: old_rank=", settings.currentRank, "new_rank=", answer.user_rank)
+        try {
+            document.getElementById("btn_next").className = "btn btn-primary"
+        } catch {}
+        document.getElementById("submit_answer").className = "btn btn-secondary"
+        if (answer.user && answer.user_rank < parseInt(settings.currentRank) ) {
+            div.appendChild(hkis.createElement("div", {
+                className: "alert alert-success",
+                innerHTML: interpolate(gettext('Your new <a href="%(url)s">rank</a> is: %(new_rank)s'),
+                                       {url: settings.leaderboardUrl, new_rank: answer.user_rank},
+                                       true)}));
         }
-        else {
-            answer_table.rows[0].className = "table-danger";
-            var button_unhelpfull = hkis.createElement("button", {
-                title: gettext("Flag this answer as particularly unhelpfull,\nIt'll be reviewed by a human."),
-                className: "btn, btn-outline-danger btn-sm",
-                onclick: function() {return report_as_unhelpfull(answer.id);},
-                innerHTML: gettext("Report")
-            }, {
-                toggle: "tooltip"
-            });
-
-            if (answer.is_unhelpfull) {
-                button_unhelpfull.disabled = true;
-                button_unhelpfull.innerHTML = gettext("Reported")
-                button_unhelpfull.title = gettext("Thanks for the feedback!")
-            }
-            div.appendChild(button_unhelpfull);
+        if (!answer.user) {
+            div.appendChild(hkis.createElement("div", {
+                className: "alert alert-warning",
+                innerHTML: interpolate(gettext('<a href="%s">Login</a> to backup your code and progression.'), [settings.authLoginUrl])
+            }));
         }
-        answerbox.swapChild(div)
-        unlock_button("submit_answer")
-    } else {
-        answerbox.innerHTML = gettext("Waiting for correction...")
+        document.getElementById("solution_link").classList.remove("disabled");
     }
-}
+    else {
+        answer_box.className = "hkis-callout hkis-callout-failure";
+        var button_unhelpfull = hkis.createElement("button", {
+            title: gettext("Flag this answer as particularly unhelpfull,\nIt'll be reviewed by a human."),
+            className: "btn, btn-outline-danger btn-sm",
+            onclick: function() {return report_as_unhelpfull(answer.id);},
+            innerHTML: gettext("Report as unhelpfull")
+        }, {
+            toggle: "tooltip"
+        });
 
-function fill_snippet(id, executed_at, output) {
-    var result = document.getElementById("answers-result");
-    if (!result)
-        return;
-    var elem = document.getElementById("td-snippet-".concat(id));
-    if (!elem) {
-        var answer_table = document.getElementById("answer-table");
-        append_to_answer_table('<tr class="table-info"><td id="td-snippet-'.concat(id).concat('">…</td> </tr>'));
-        elem = document.getElementById("td-snippet-".concat(id));
+        if (answer.is_unhelpfull) {
+            button_unhelpfull.disabled = true;
+            button_unhelpfull.innerHTML = gettext("Reported")
+            button_unhelpfull.title = gettext("Thanks for the feedback!")
+        }
+        div.appendChild(button_unhelpfull);
     }
-    if (executed_at) {
-        var pre = document.createElement("pre");
-        var div = document.createElement("div");
-        div.appendChild(pre);
-        var content = document.createTextNode(output);
-        pre.appendChild(content);
-        elem.swapChild(div);
-        unlock_button("submit_answer");
-    } else {
-        elem.innerHTML = gettext("Waiting for test run");
-    }
+    answer_box.swapChild(div)
+    unlock_button("submit_answer")
 }
 
 function fill_message(message, type) {
@@ -143,8 +116,6 @@ function websocket_connect(ws_location) {
     window.ws.onmessage = function(e) {
         var data = JSON.parse(e.data);
         console.log("WebSocket recv:", data);
-        if (data.type == "snippet.update")
-            fill_snippet(data.id, data.executed_at, data.output)
         if (data.type == "answer.update")
             fill_answer(data);
     };
@@ -192,11 +163,22 @@ function lock_button(button_id, unlock_after_seconds) {
         setTimeout(function(){unlock_button(button_id);}, unlock_after_seconds * 1000);
 }
 
-function ctrl_enter_handler(event) {
-    if (!event.ctrlKey) return;
-    if (event.code !== "Enter") return;
-    console.log("Sending via Ctrl-enter");
-    ws_submit_answer(document.getElementById("answer_form"));
+function close_answer_box(event) {
+    var wording_div = document.getElementById("wording");
+    var answer_div = document.getElementById("answer-message");
+    wording_div.style.display = 'block';
+    answer_div.style.display = 'none';
+}
+
+function shortcuts_handler(event) {
+    if (event.ctrlKey && event.code == "Enter") {
+        console.log("Sending via Ctrl-enter");
+        ws_submit_answer(document.getElementById("answer_form"));
+        return ;
+    }
+    if (event.code == "Escape") {
+        close_answer_box();
+    }
 }
 
 var ws_protocol = window.location.protocol == "http:" ? "ws:" : "wss:";
@@ -204,30 +186,9 @@ var ws_protocol = window.location.protocol == "http:" ? "ws:" : "wss:";
 if (settings.isImpersonating == "false") {
     window.addEventListener("DOMContentLoaded", function (event) {
         websocket_connect(ws_protocol + "//" + window.location.host + "/ws/exercises/" + settings.exerciseId + "/");
-        document.addEventListener("keydown", ctrl_enter_handler);
+        document.addEventListener("keydown", shortcuts_handler);
     });
 }
-
-window.addEventListener("DOMContentLoaded", function (event) {
-    if (document.getElementById("submit_answer")) {
-        document.getElementById("submit_answer").addEventListener("click", function(e) {e.preventDefault(); ws_submit_answer(this.form); return false;});
-    }
-    document.querySelectorAll("button[data-share]").forEach(function (button) {
-        button.addEventListener("click", function(e) {
-            shared_answer(button.dataset.share, true, settings.csrfToken);
-        });
-    });
-    document.querySelectorAll("button[data-unshare]").forEach(function (button) {
-        button.addEventListener("click", function(e) {
-            shared_answer(button.dataset.unshare, false, settings.csrfToken);
-        });
-    });
-    document.querySelectorAll("button[data-delete]").forEach(function (button) {
-        button.addEventListener("click", function(e) {
-            delete_answer(button.dataset.delete, settings.csrfToken);
-        });
-    });
-})
 
 function shared_answer(answer_id, is_shared, csrf_token) {
     var data = {
@@ -262,3 +223,27 @@ function delete_answer(answer_id, csrf_token) {
     }
     xhr.send();
 }
+
+window.addEventListener("DOMContentLoaded", function (event) {
+    if (document.getElementById("submit_answer")) {
+        document.getElementById("submit_answer").addEventListener("click", function(e) {e.preventDefault(); ws_submit_answer(document.getElementById("answer_form")); return false;});
+    }
+    if (document.getElementById("close-answer-message")) {
+        document.getElementById("close-answer-message").addEventListener("click", function(e) {e.preventDefault(); close_answer_box(); return false;});
+    }
+    document.querySelectorAll("button[data-share]").forEach(function (button) {
+        button.addEventListener("click", function(e) {
+            shared_answer(button.dataset.share, true, settings.csrfToken);
+        });
+    });
+    document.querySelectorAll("button[data-unshare]").forEach(function (button) {
+        button.addEventListener("click", function(e) {
+            shared_answer(button.dataset.unshare, false, settings.csrfToken);
+        });
+    });
+    document.querySelectorAll("button[data-delete]").forEach(function (button) {
+        button.addEventListener("click", function(e) {
+            delete_answer(button.dataset.delete, settings.csrfToken);
+        });
+    });
+})

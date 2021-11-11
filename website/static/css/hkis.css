@@ -20,12 +20,7 @@ header.navbar {
 .hkis_content {
     flex: 1 1 auto;
     min-height: 0;
-    padding-left: .5em;
-    padding-top: .5em;
-    padding-right: .5em;
 }
-
-.django-ace-editor {height: 100%}
 
 h1 {
     color: #444;
@@ -79,6 +74,7 @@ a.text-underline-hover:hover {
 }
 
 .fieldWrapper .django-ace-editor {
+    height: 100%;
     font-size: 16px;
 }
 
@@ -135,4 +131,37 @@ pre {
     color: #666;
     line-height: 0;
     text-align: center;
+}
+
+.hkis-callout {
+ padding:1.25rem;
+ margin-top:1.25rem;
+ margin-bottom:1.25rem;
+ border:1px solid #e9ecef;
+ border-left-width:.25rem;
+ border-radius:.25rem
+}
+
+.hkis-callout h4 {
+ margin-bottom:.25rem
+}
+
+.hkis-callout p:last-child {
+ margin-bottom:0
+}
+
+.hkis-callout code {
+ border-radius:.25rem
+}
+
+.hkis-callout-info {
+ border-left-color:#5bc0de;
+}
+
+.hkis-callout-failure {
+ border-left-color:#d9534f;
+}
+
+.hkis-callout-success {
+ border-left-color: #198754;
 }

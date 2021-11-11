@@ -32,80 +32,64 @@ data-is-impersonating="{% if is_impersonating %}true{% else %}false{% endif %}"
 {% endif %}
 {{ answer_form.media }}
 <div class="row g-0" style="height: 100%">
-  <div class="col-md-4" style="height: 100%; overflow: auto">
-    <div class="style-info">
-      <h1 class="exercise-title">{{ object.title }}</h1>
-      <div class="signature">{% blocktrans with first_name=object.author.first_name last_name=object.author.last_name %}Created by {{ first_name }} {{ last_name }}{% endblocktrans %}</div>
-      <div class="instructions">
-        {{ object.wording|markdown_to_bootstrap }}
-      </div>
-    </div>
-  </div>
-  <div class="col-md-5 style-info" style="height: 100%; padding-left: .5em; padding-right: .5em">
+  <div class="col style-info" style="height: 100%">
     <form id="answer_form" action="#" method="post"
           style="height: 100%; display: flex; flex-direction: column; ">
         {% csrf_token %}
-        <div class="fieldWrapper" style="flex: 1 1 auto">
+        <div class="fieldWrapper" style="flex: 1 1 auto; overflow: hidden;">
             {{ answer_form.source_code }}
         </div>
         <div class="fieldWrapper" style="height: 0">
             {{ answer_form.exercise }}
         </div>
-        <div style="flex: 0 1 auto; height: 4em; display: flex; align-items: center">
-          <div style="">
-            {% if not is_impersonating %}
-            <button
-              disabled
-              id="submit_answer"
-              class="btn btn-primary"
-              data-toggle="tooltip"
-              data-placement="bottom"
-              data-delay="500"
-              title="This runs automated tests to verify your implementation (also saves your code).&#013;Shortcut: Ctrl-Enter.">
-              {% trans "Submit" %}
-            </button>
-            {% endif %}
-          </div>
-          <div style="margin-left: auto; margin-right: auto">
-              <a id="solution_link" class="{% if not is_valid %}disabled{% endif %} btn btn-secondary"
-                 href={{ object.get_solutions_absolute_url }}>{% blocktrans %}See solutions{% endblocktrans %}</a>
-
-          </div>
-          <div style="margin-right: 0; flex: 0 0 auto">
-              {% if previous %}
-              <a class="btn btn-secondary" href="{{ previous.get_absolute_url }}">
-                ←
-              </a>
-              {% endif %}
-              {% if next %}
-              <a id="btn_next" class="btn btn-secondary" href="{{ next.get_absolute_url }}">
-                →
-              </a>
-              {% endif %}
-          </div>
-        </div>
     </form>
   </div>
-  <div class="col-md-3 style-info" style="height: 100%; overflow: auto">
-    <div id="answers-result" class="result">
-      <table id="answer-table" class="table" style="table-layout: fixed">
-        {% for answer in answers %}
-        <tr class="{% if answer.is_valid %}table-success{%else%}table-danger{% endif %}">
-          <td id="td-{{ answer.id }}"
-              data-answer-id="{{ answer.id }}"
-              data-is-corrected="{{ answer.is_corrected }}"
-              class="answer-cell">
-            {% if not answer.is_corrected %}
-              <img src="{% static "img/loading_anim.gif" %}" height=30> {% trans "Waiting for correction" %}
-            {% else %}
-              <div>
-              {{ answer.correction_message|markdown_to_bootstrap }}
-            </div>
-            {% endif %}
-          </td>
-        </tr>
-        {% endfor %}
-      </table>
+  <div class="col" style="height: 100%; padding: 1em; flex-direction: column; display: flex">
+    <div style="flex: 1 1 auto; overflow-y: auto">
+      <div id="wording">
+        <div class="style-info">
+          <h1 class="exercise-title">{{ object.title }}</h1>
+          <div class="signature">{% blocktrans with first_name=object.author.first_name last_name=object.author.last_name %}Created by {{ first_name }} {{ last_name }}{% endblocktrans %}</div>
+          <div class="instructions">
+            {{ object.wording|markdown_to_bootstrap }}
+          </div>
+        </div>
+      </div>
+      <div id="answer-message" style="display: none">
+        <a id="close-answer-message" href="" class="btn btn-outline-secondary" style="float: right">
+          (esc) <span style="font-weight: boldest">X</span>
+        </a>
+        <div id="answer-box"></div>
+      </div>
+    </div>
+    <div style="flex: 0 1 auto; height: 4em; display: flex; align-items: center;">
+      <div style="">
+        {% if not is_impersonating %}
+        <button
+          disabled
+          id="submit_answer"
+          class="btn btn-primary"
+          data-toggle="tooltip"
+          data-placement="bottom"
+          data-delay="500"
+          title="This runs automated tests to verify your implementation (also saves your code).&#013;Shortcut: Ctrl-Enter.">
+          {% trans "Submit (Ctrl-Enter)" %}
+        </button>
+        {% endif %}
+      </div>
+      <div style="margin-left: auto; margin-right: auto">
+        <a id="solution_link" class="{% if not is_valid %}disabled{% endif %} btn btn-secondary"
+           href={{ object.get_solutions_absolute_url }}>{% blocktrans %}See solutions{% endblocktrans %}
+        </a>
+      </div>
+      <div style="margin-right: 0; flex: 0 0 auto">
+          {% if previous %}
+          <a class="btn btn-secondary" href="{{ previous.get_absolute_url }}">←</a>
+          {% endif %}
+          {% if next %}
+          <a id="btn_next" class="btn btn-secondary" href="{{ next.get_absolute_url }}">→</a>
+          {% endif %}
+      </div>
     </div>
   </div>
 </div>
