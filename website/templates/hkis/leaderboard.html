@@ -28,7 +28,7 @@
           </td>
           <td scope="row">
             {% if player.public_profile %}
-            {{ player.username }}
+            {{ player.username }} {% if player.is_superuser %}(staff){% endif %}
             {% else %}
             (anonymous)
             {% endif %}
