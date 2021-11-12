@@ -45,21 +45,41 @@ data-is-impersonating="{% if is_impersonating %}true{% else %}false{% endif %}"
     </form>
   </div>
   <div class="col" style="height: 100%; padding: 1em; flex-direction: column; display: flex">
+    <ul class="nav nav-tabs">
+      <li class="nav-item">
+        <button id="tab-instructions" data-bs-toggle="tab" data-bs-target="#wording" class="nav-link active" role="tab" aria-controls="wording" aria-selected="true">{% trans "Instructions" %}</button>
+      </li>
+      <li class="nav-item">
+        <button id="tab-correction" data-bs-toggle="tab" data-bs-target="#answer-message" class="nav-link" role="tab" aria-controls="answer-message" aria-selected="false">Correction</button>
+      </li>
+    </ul>
     <div style="flex: 1 1 auto; overflow-y: auto">
-      <div id="wording">
-        <div class="style-info">
-          <h1 class="exercise-title">{{ object.title }}</h1>
-          <div class="signature">{% blocktrans with first_name=object.author.first_name last_name=object.author.last_name %}Created by {{ first_name }} {{ last_name }}{% endblocktrans %}</div>
-          <div class="instructions">
-            {{ object.wording|markdown_to_bootstrap }}
+      <div class="tab-content">
+        <div id="wording" class="tab-pane active" role="tabpanel" aria-labelledby="wording-tab">
+          <div class="style-info">
+            <h1 class="exercise-title">{{ object.title }}</h1>
+            <div class="signature">{% blocktrans with first_name=object.author.first_name last_name=object.author.last_name %}Created by {{ first_name }} {{ last_name }}{% endblocktrans %}</div>
+            <div class="instructions">
+              {{ object.wording|markdown_to_bootstrap }}
+            </div>
           </div>
         </div>
-      </div>
-      <div id="answer-message" style="display: none">
-        <a id="close-answer-message" href="" class="btn btn-outline-secondary" style="float: right">
-          (esc) <span style="font-weight: boldest">X</span>
-        </a>
-        <div id="answer-box"></div>
+        <div id="answer-message" class="tab-pane" role="tabpanel" aria-labelledby="wording-tab">
+          <div id="answer-box">
+            <p>
+              {% blocktrans %}
+              There's no corrections yet, hit the `Submit` button to send your code to the correction bot.
+              {% endblocktrans %}
+            </p>
+            <p>
+              {% trans "Keyboard shortcuts:" %}
+              <ul>
+                <li>{% blocktrans %}Ctrl-Enter: Send your code to the correction bot.{% endblocktrans %}</li>
+                <li>{% blocktrans %}Escape: Get back to the instructions tab.{% endblocktrans %}</li>
+              </ul>
+            </p>
+          </div>
+        </div>
       </div>
     </div>
     <div style="flex: 0 1 auto; height: 4em; display: flex; align-items: center;">

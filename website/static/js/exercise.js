@@ -40,8 +40,10 @@ function fill_answer(answer) {
     var wording_div = document.getElementById("wording");
     var answer_div = document.getElementById("answer-message");
     var answer_box = document.getElementById("answer-box");
-    wording_div.style.display = 'none';
-    answer_div.style.display = 'block';
+
+    var tab = new bootstrap.Tab(document.querySelector("#tab-correction"));
+    tab.show();
+
     if (!answer.is_corrected) {
         answer_box.className = "hkis-callout hkis-callout-info";
         answer_box.innerHTML = gettext("Waiting for correction...")
@@ -164,10 +166,9 @@ function lock_button(button_id, unlock_after_seconds) {
 }
 
 function close_answer_box(event) {
-    var wording_div = document.getElementById("wording");
-    var answer_div = document.getElementById("answer-message");
-    wording_div.style.display = 'block';
-    answer_div.style.display = 'none';
+    var instructions_tab = document.querySelector('#tab-instructions');
+    var tab = new bootstrap.Tab(instructions_tab);
+    tab.show();
 }
 
 function shortcuts_handler(event) {
@@ -227,9 +228,6 @@ function delete_answer(answer_id, csrf_token) {
 window.addEventListener("DOMContentLoaded", function (event) {
     if (document.getElementById("submit_answer")) {
         document.getElementById("submit_answer").addEventListener("click", function(e) {e.preventDefault(); ws_submit_answer(document.getElementById("answer_form")); return false;});
-    }
-    if (document.getElementById("close-answer-message")) {
-        document.getElementById("close-answer-message").addEventListener("click", function(e) {e.preventDefault(); close_answer_box(); return false;});
     }
     document.querySelectorAll("button[data-share]").forEach(function (button) {
         button.addEventListener("click", function(e) {

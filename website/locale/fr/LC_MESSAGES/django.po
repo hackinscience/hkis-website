@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-11-11 17:10+0100\n"
-"PO-Revision-Date: 2021-11-11 17:11+0100\n"
+"POT-Creation-Date: 2021-11-12 08:44+0100\n"
+"PO-Revision-Date: 2021-11-12 08:48+0100\n"
 "Last-Translator: Julien Palard <julien@palard.fr>\n"
 "Language-Team: \n"
 "Language: fr\n"
@@ -55,7 +55,6 @@ msgid "Staff"
 msgstr "Staff"
 
 #: website/templates/hkis/answer_form.html:8
-#: website/templates/hkis/exercise.html:65
 #: website/templates/registration/registration_form.html:9
 msgid "Submit"
 msgstr "Envoyer"
@@ -64,18 +63,42 @@ msgstr "Envoyer"
 msgid "Welcome!"
 msgstr "Bienvenue !"
 
-#: website/templates/hkis/exercise.html:38
+#: website/templates/hkis/exercise.html:50
+msgid "Instructions"
+msgstr "Énoncé"
+
+#: website/templates/hkis/exercise.html:61
 #, python-format
 msgid "Created by %(first_name)s %(last_name)s"
 msgstr "Par %(first_name)s %(last_name)s"
 
-#: website/templates/hkis/exercise.html:71
+#: website/templates/hkis/exercise.html:70
+msgid ""
+"\n"
+"              There's no corrections yet, hit the `Submit` button to send "
+"your code to the correction bot.\n"
+"              "
+msgstr "\nIl n'y a pas encore de message de corretion pour cet exercice. Cliquez sur le bouton « Envoyer » pour envoyer votre code à la moulinette de correction."
+
+#: website/templates/hkis/exercise.html:75
+msgid "Keyboard shortcuts:"
+msgstr "Raccourcis claviers :"
+
+#: website/templates/hkis/exercise.html:77
+msgid "Ctrl-Enter: Send your code to the correction bot."
+msgstr "Ctrl-Entrée : Envoie votre code à la moulinette de correction."
+
+#: website/templates/hkis/exercise.html:78
+msgid "Escape: Get back to the instructions tab."
+msgstr "Échap. : Retourne sur l'énoncé."
+
+#: website/templates/hkis/exercise.html:96
+msgid "Submit (Ctrl-Enter)"
+msgstr "Envoyer (Ctrl-Entrée)"
+
+#: website/templates/hkis/exercise.html:102
 msgid "See solutions"
 msgstr "Voir les solutions"
-
-#: website/templates/hkis/exercise.html:99
-msgid "Waiting for correction"
-msgstr "En attente de correction"
 
 #: website/templates/hkis/index.html:4
 msgid "Python Exercises"
@@ -328,6 +351,9 @@ msgstr "Réinitiation de mot de passe"
 #: website/templates/registration/registration_form.html:4
 msgid "Register"
 msgstr "S'enregistrer"
+
+#~ msgid "Waiting for correction"
+#~ msgstr "En attente de correction"
 
 #~ msgid "Use this to execute your code, so you can try things."
 #~ msgstr ""
