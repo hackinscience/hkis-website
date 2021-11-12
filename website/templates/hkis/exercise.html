@@ -32,7 +32,7 @@ data-is-impersonating="{% if is_impersonating %}true{% else %}false{% endif %}"
 {% endif %}
 {{ answer_form.media }}
 <div class="row g-0" style="height: 100%">
-  <div class="col style-info" style="height: 100%">
+  <div class="col-md-6 style-info" style="height: 100%">
     <form id="answer_form" action="#" method="post"
           style="height: 100%; display: flex; flex-direction: column; ">
         {% csrf_token %}
@@ -44,7 +44,7 @@ data-is-impersonating="{% if is_impersonating %}true{% else %}false{% endif %}"
         </div>
     </form>
   </div>
-  <div class="col" style="height: 100%; padding: 1em; flex-direction: column; display: flex">
+  <div class="col-md-6" style="height: 100%; padding: 1em; flex-direction: column; display: flex">
     <ul class="nav nav-tabs">
       <li class="nav-item">
         <button id="tab-instructions" data-bs-toggle="tab" data-bs-target="#wording" class="nav-link active" role="tab" aria-controls="wording" aria-selected="true">{% trans "Instructions" %}</button>
