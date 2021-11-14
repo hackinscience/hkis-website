@@ -176,7 +176,7 @@ def check_answer_task(answer: dict):
         logger.debug("Checking an answer in %s.", tmpdir)
         with open(os.path.join(tmpdir, "check.py"), "w") as check_file:
             check_file.write(answer["check"])
-        with open(os.path.join(tmpdir, "solution.py"), "w") as answer_file:
+        with open(os.path.join(tmpdir, "solution"), "w") as answer_file:
             answer_file.write(answer["source_code"])
         firejail_env = os.environ.copy()
         if "language" in answer:

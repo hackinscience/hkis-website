@@ -173,11 +173,11 @@ class Exercise(models.Model):
     # pre_check is ran out of the sandbox (with network access and
     # all) before the check. It has the LANGUAGE env set to the user
     # preferences, and current working directory in a directory with
-    # `check.py` and `solution.py` already present, but nothing more,
+    # `check.py` and `solution` already present, but nothing more,
     # like when check runs.
     pre_check = models.TextField(blank=True, null=True)
     # check is ran inside the sandbox, in a `check.py` file, near a
-    # `solution.py` file containing the student code.
+    # `solution` file containing the student code.
     check = models.TextField(blank=True, default="")
     is_published = models.BooleanField(default=False)
     wording = models.TextField(blank=True, default="")
