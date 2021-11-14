@@ -35,7 +35,7 @@ FIREJAIL_OPTIONS = [
     "--nogroups",
     "--noroot",
     "--seccomp",
-    "--rlimit-fsize=8192",
+    "--rlimit-fsize=32768",
     "--rlimit-nofile=100",
     "--rlimit-nproc=2000",
     "--rlimit-cpu=20",
