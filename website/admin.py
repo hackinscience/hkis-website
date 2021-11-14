@@ -261,7 +261,8 @@ class AnswerAdmin(admin.ModelAdmin):
     def has_view_permission(self, request, obj=None):
         if request.user.is_superuser:
             return True
-        if obj is None:
+        if obj is None or obj.user is None:
+            # obj.user is None in case of an anonymouse user answer.
             return super().has_view_permission(request, obj)
         return super().has_view_permission(request, obj) and (
             obj.exercise.author == request.user
