@@ -24,7 +24,7 @@ FIREJAIL_OPTIONS = [
     "--x11=none",
     "--protocol=inet",
     "--private-dev",
-    "--private-bin=python3,gcc,as",  # Make this configurable per Page?
+    "--private-bin=python3,gcc,as,ld",  # Make this configurable per Page?
     "--private-etc=group,hostname,localtime,nsswitch.conf,passwd,resolv.conf,ssl",
     "--private-tmp",
     "--caps.drop=all",
