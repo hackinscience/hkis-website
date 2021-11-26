@@ -6,7 +6,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('website', '0006_user_public_profile'),
+        ('hkis', '0006_user_public_profile'),
     ]
 
     operations = [

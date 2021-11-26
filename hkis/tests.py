@@ -1,7 +1,7 @@
 from django.test import TestCase
 from rest_framework.test import APITestCase
 
-from website.models import User, Exercise
+from hkis.models import User, Exercise
 
 
 class TestAdminSuperUser(TestCase):
@@ -11,11 +11,11 @@ class TestAdminSuperUser(TestCase):
         self.client.force_login(User.objects.get(username="mdk"))
 
     def test_get_admin_exercises(self):
-        response = self.client.get("/admin/website/exercise/")
+        response = self.client.get("/admin/hkis/exercise/")
         assert b"Hello World" in response.content
 
     def test_get_admin_exercises_1(self):
-        response = self.client.get("/admin/website/exercise/1/change/")
+        response = self.client.get("/admin/hkis/exercise/1/change/")
         assert b"Hello World" in response.content
 
 
@@ -40,7 +40,7 @@ class TestAdminSuperUser(TestCase):
 #         password_input = self.selenium.find_element_by_name("password")
 #         password_input.send_keys("boisminrosael")
 #         self.selenium.find_element_by_xpath('//button[text()="Sign in"]').click()
-#         self.selenium.get(self.live_server_url + "/admin/website/exercise/add/")
+#         self.selenium.get(self.live_server_url + "/admin/hkis/exercise/add/")
 #         title_input = self.selenium.find_element_by_id("id_title_en")
 #         title_input.send_keys = "Lisa's Exercise"
 #         page_select = Select(self.selenium.find_element_by_id("id_page"))
@@ -56,23 +56,23 @@ class TestAdminStaffWithTeacherGroup(TestCase):
         self.client.force_login(self.user)
 
     def test_get_admin_exercises(self):
-        response = self.client.get("/admin/website/exercise/")
+        response = self.client.get("/admin/hkis/exercise/")
         assert b"Hello World" not in response.content  # mdk's exercise
         assert b"Print 42" in response.content  # Lisa's exercise
 
     def test_get_admin_exercises_1(self):
         """Exercise 1 is owned by mdk, Lisa can't view it."""
-        response = self.client.get("/admin/website/exercise/1/change/")
+        response = self.client.get("/admin/hkis/exercise/1/change/")
         assert response.status_code == 302
 
     def test_get_admin_exercises_2(self):
         """Exercise 1 is owned by Lisa, Lisa can view it."""
-        response = self.client.get("/admin/website/exercise/2/change/")
+        response = self.client.get("/admin/hkis/exercise/2/change/")
         assert response.status_code == 200
 
     def test_create_exercise(self):
         response = self.client.post(
-            "/admin/website/exercise/add/",
+            "/admin/hkis/exercise/add/",
             {"title_en": "Lisa's exercise", "page": 1, "position": 100, "points": 1},
         )
         assert response.status_code == 302

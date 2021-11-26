@@ -9,7 +9,7 @@ import django_extensions.db.fields
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('website', '0008_auto_20201207_1511'),
+        ('hkis', '0008_auto_20201207_1511'),
     ]
 
     operations = [
@@ -31,11 +31,11 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='team',
             name='members',
-            field=models.ManyToManyField(related_name='teams', through='website.Membership', to=settings.AUTH_USER_MODEL),
+            field=models.ManyToManyField(related_name='teams', through='hkis.Membership', to=settings.AUTH_USER_MODEL),
         ),
         migrations.AddField(
             model_name='exercise',
             name='category',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to='website.category'),
+            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to='hkis.category'),
         ),
     ]

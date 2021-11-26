@@ -5,7 +5,7 @@ from django_filters import rest_framework as filters
 from rest_framework import viewsets, response, serializers, routers, permissions
 import django_filters
 
-from website.models import Answer, Exercise, Snippet, User, Category, Page
+from hkis.models import Answer, Exercise, Snippet, User, Category, Page
 
 
 class DjangoModelPermissionsStrict(permissions.DjangoModelPermissions):
@@ -275,7 +275,7 @@ class ExerciseViewSet(viewsets.ModelViewSet):
 
 class CanViewAnswer(permissions.DjangoModelPermissions):
     def has_permission(self, request, view):
-        return request.user.has_perm("website.view_answer")
+        return request.user.has_perm("hkis.view_answer")
 
 
 router = routers.DefaultRouter()

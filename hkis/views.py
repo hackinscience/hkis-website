@@ -16,8 +16,8 @@ from django.views.generic.detail import DetailView
 from django.views.generic.edit import UpdateView
 from django.views.generic.list import ListView
 
-from website.forms import AnswerForm
-from website.models import Exercise, Membership, Page, Team, User
+from hkis.forms import AnswerForm
+from hkis.models import Exercise, Membership, Page, Team, User
 
 
 def index(request):

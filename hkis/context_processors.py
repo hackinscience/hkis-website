@@ -1,5 +1,5 @@
 from django.conf import settings
-from website.models import Page
+from hkis.models import Page
 
 
 def version(request):

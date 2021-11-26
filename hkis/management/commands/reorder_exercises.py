@@ -1,5 +1,5 @@
 from django.core.management.base import BaseCommand
-from website.models import Exercise
+from hkis.models import Exercise
 
 
 class Command(BaseCommand):

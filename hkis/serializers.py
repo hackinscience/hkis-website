@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from website.models import Answer, Snippet
+from hkis.models import Answer, Snippet
 
 
 class AnswerSerializer(serializers.ModelSerializer):

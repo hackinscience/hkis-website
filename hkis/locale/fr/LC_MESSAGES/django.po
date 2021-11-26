@@ -18,61 +18,61 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: Poedit 2.4.1\n"
 
-#: website/admin.py:207
+#: hkis/admin.py:207
 msgid "team"
 msgstr "équipe"
 
-#: website/admin.py:224
+#: hkis/admin.py:224
 msgid "exercise author"
 msgstr "auteur de l'exercice"
 
-#: website/admin.py:228
+#: hkis/admin.py:228
 msgid "My exercises only"
 msgstr "Mes exercices"
 
-#: website/forms.py:28
+#: hkis/forms.py:28
 msgid "E-mail (optional)"
 msgstr "E-mail (facultatif)"
 
-#: website/models.py:212
+#: hkis/models.py:212
 msgid "Exercises should have a check script in order to be published."
 msgstr "Un exercice doit avoir une moulinette de correction pour être publié."
 
-#: website/models.py:216
+#: hkis/models.py:216
 msgid "Exercises should have a wording in order to be published."
 msgstr "Un exercice doit contenir un sujet avant d'être publié."
 
-#: website/models.py:433
+#: hkis/models.py:433
 msgid "Pending"
 msgstr "En attente d'approbation"
 
-#: website/models.py:434
+#: hkis/models.py:434
 msgid "Member"
 msgstr "Membre"
 
-#: website/models.py:435
+#: hkis/models.py:435
 msgid "Staff"
 msgstr "Staff"
 
-#: website/templates/hkis/answer_form.html:8
-#: website/templates/registration/registration_form.html:9
+#: hkis/templates/hkis/answer_form.html:8
+#: hkis/templates/registration/registration_form.html:9
 msgid "Submit"
 msgstr "Envoyer"
 
-#: website/templates/hkis/base.html:8
+#: hkis/templates/hkis/base.html:8
 msgid "Welcome!"
 msgstr "Bienvenue !"
 
-#: website/templates/hkis/exercise.html:50
+#: hkis/templates/hkis/exercise.html:50
 msgid "Instructions"
 msgstr "Énoncé"
 
-#: website/templates/hkis/exercise.html:61
+#: hkis/templates/hkis/exercise.html:61
 #, python-format
 msgid "Created by %(first_name)s %(last_name)s"
 msgstr "Par %(first_name)s %(last_name)s"
 
-#: website/templates/hkis/exercise.html:70
+#: hkis/templates/hkis/exercise.html:70
 msgid ""
 "\n"
 "              There's no corrections yet, hit the `Submit` button to send "
@@ -80,31 +80,31 @@ msgid ""
 "              "
 msgstr "\nIl n'y a pas encore de message de corretion pour cet exercice. Cliquez sur le bouton « Envoyer » pour envoyer votre code à la moulinette de correction."
 
-#: website/templates/hkis/exercise.html:75
+#: hkis/templates/hkis/exercise.html:75
 msgid "Keyboard shortcuts:"
 msgstr "Raccourcis claviers :"
 
-#: website/templates/hkis/exercise.html:77
+#: hkis/templates/hkis/exercise.html:77
 msgid "Ctrl-Enter: Send your code to the correction bot."
 msgstr "Ctrl-Entrée : Envoie votre code à la moulinette de correction."
 
-#: website/templates/hkis/exercise.html:78
+#: hkis/templates/hkis/exercise.html:78
 msgid "Escape: Get back to the instructions tab."
 msgstr "Échap. : Retourne sur l'énoncé."
 
-#: website/templates/hkis/exercise.html:96
+#: hkis/templates/hkis/exercise.html:96
 msgid "Submit (Ctrl-Enter)"
 msgstr "Envoyer (Ctrl-Entrée)"
 
-#: website/templates/hkis/exercise.html:102
+#: hkis/templates/hkis/exercise.html:102
 msgid "See solutions"
 msgstr "Voir les solutions"
 
-#: website/templates/hkis/index.html:4
+#: hkis/templates/hkis/index.html:4
 msgid "Python Exercises"
 msgstr "Exercices Python"
 
-#: website/templates/hkis/index.html:32
+#: hkis/templates/hkis/index.html:32
 msgid ""
 "Hackinscience is an interactive Python exercise platform: <br/>\n"
 "          Write code, get instant feedback from our correction bot <br/>\n"
@@ -118,47 +118,47 @@ msgstr ""
 "          avec des informations détaillées de ce qui s'est mal passé afin "
 "d'éviter tout blocage."
 
-#: website/templates/hkis/index.html:36 website/templates/hkis/layout.html:44
-#: website/templates/registration/login.html:19
+#: hkis/templates/hkis/index.html:36 website/templates/hkis/layout.html:44
+#: hkis/templates/registration/login.html:19
 msgid "Sign in"
 msgstr "Connexion"
 
-#: website/templates/hkis/index.html:37
+#: hkis/templates/hkis/index.html:37
 msgid "Sign up"
 msgstr "Inscription"
 
-#: website/templates/hkis/layout.html:23
-#: website/templates/hkis/leaderboard.html:4
+#: hkis/templates/hkis/layout.html:23
+#: hkis/templates/hkis/leaderboard.html:4
 msgid "Leaderboard"
 msgstr "Classement"
 
-#: website/templates/hkis/layout.html:26 website/templates/hkis/teams.html:4
-#: website/templates/hkis/teams.html:10
+#: hkis/templates/hkis/layout.html:26 website/templates/hkis/teams.html:4
+#: hkis/templates/hkis/teams.html:10
 msgid "Teams"
 msgstr "Équipes"
 
-#: website/templates/hkis/layout.html:32
+#: hkis/templates/hkis/layout.html:32
 msgid "Profile"
 msgstr "Profil"
 
-#: website/templates/hkis/layout.html:36
+#: hkis/templates/hkis/layout.html:36
 msgid "Admin"
 msgstr "Admin"
 
-#: website/templates/hkis/layout.html:42
+#: hkis/templates/hkis/layout.html:42
 msgid "Log out"
 msgstr "Déconnexion"
 
-#: website/templates/hkis/page.html:39
+#: hkis/templates/hkis/page.html:39
 #, python-format
 msgid "Solved by %(nb)s"
 msgstr "Résolu %(nb)s fois"
 
-#: website/templates/hkis/profile_update.html:7
+#: hkis/templates/hkis/profile_update.html:7
 msgid "Statistics"
 msgstr "Statistiques"
 
-#: website/templates/hkis/profile_update.html:9
+#: hkis/templates/hkis/profile_update.html:9
 #, python-format
 msgid ""
 "You subscribed on %(date_joined)s, and sent %(submit_qty)s answers to the "
@@ -167,7 +167,7 @@ msgstr ""
 "Vous avez rejoint hackinscience le %(date_joined)s, et envoyé %(submit_qty)s "
 "réponses à la moulinette de correction."
 
-#: website/templates/hkis/profile_update.html:15
+#: hkis/templates/hkis/profile_update.html:15
 #, python-format
 msgid ""
 "You resolved %(done_qty)s exercises, that's %(done_pct)s of all exercises."
@@ -175,7 +175,7 @@ msgstr ""
 "Vous avez résolu %(done_qty)s exercices, c'est %(done_pct)s de tous les "
 "exercices."
 
-#: website/templates/hkis/profile_update.html:21
+#: hkis/templates/hkis/profile_update.html:21
 #, python-format
 msgid ""
 "You have %(points)s points which ranks you %(rank)s over %(participants)s "
@@ -184,17 +184,17 @@ msgstr ""
 "Vous avez %(points)s points, ce qui vous classe %(rank)s sur "
 "%(participants)s participants."
 
-#: website/templates/hkis/profile_update.html:25
+#: hkis/templates/hkis/profile_update.html:25
 msgid "You're not ranked yet."
 msgstr "Vous n'êtes pas encore classé."
 
-#: website/templates/hkis/profile_update.html:35
+#: hkis/templates/hkis/profile_update.html:35
 msgid "You're not in a team, but you can join or create one!"
 msgstr ""
 "Vous n'êtes dans aucune équipe, mais pous pouvez en rejoindre ou en créer "
 "une !"
 
-#: website/templates/hkis/profile_update.html:42
+#: hkis/templates/hkis/profile_update.html:42
 #, python-format
 msgid ""
 "You're almost in the <a href=\"%(url)s\">%(name)s</a> team (waiting for "
@@ -203,152 +203,152 @@ msgstr ""
 "Vous êtes presque dans l'équipe <a href=\"%(url)s\">%(name)s</a> (en attente "
 "d'approbation)."
 
-#: website/templates/hkis/profile_update.html:47
+#: hkis/templates/hkis/profile_update.html:47
 #, python-format
 msgid "You're staff in the <a href=\"%(url)s\">%(name)s</a> team."
 msgstr "Vous êtes staff dans l'équipe <a href=\"%(url)s\">%(name)s</a>."
 
-#: website/templates/hkis/profile_update.html:52
+#: hkis/templates/hkis/profile_update.html:52
 #, python-format
 msgid "You're in the <a href=\"%(url)s\">%(name)s</a> team."
 msgstr "Vous êtes membre de <a href=\"%(url)s\">%(name)s</a>."
 
-#: website/templates/hkis/profile_update.html:59
+#: hkis/templates/hkis/profile_update.html:59
 msgid "Leave team"
 msgstr "Quitter l'équipe"
 
-#: website/templates/hkis/profile_update.html:68
+#: hkis/templates/hkis/profile_update.html:68
 msgid "Join team"
 msgstr "Rejoindre l'équipe"
 
-#: website/templates/hkis/profile_update.html:91
+#: hkis/templates/hkis/profile_update.html:91
 msgid "Personal informations"
 msgstr "Informations personnelles"
 
-#: website/templates/hkis/profile_update.html:104
+#: hkis/templates/hkis/profile_update.html:104
 msgid "Change your password"
 msgstr "Changer de mot de passe"
 
-#: website/templates/hkis/profile_update.html:106
+#: hkis/templates/hkis/profile_update.html:106
 msgid "Update"
 msgstr "Mettre à jour"
 
-#: website/templates/hkis/solutions.html:22
+#: hkis/templates/hkis/solutions.html:22
 msgid "Solutions for exercise:"
 msgstr "Solutions de l'exercice :"
 
-#: website/templates/hkis/solutions.html:24
+#: hkis/templates/hkis/solutions.html:24
 msgid "Shared solutions"
 msgstr "Les solutions partagées"
 
-#: website/templates/hkis/solutions.html:50
+#: hkis/templates/hkis/solutions.html:50
 #, python-format
 msgid "Solution shared by %(username)s on %(date)s:"
 msgstr "Solution partagée par %(username)s le %(date)s :"
 
-#: website/templates/hkis/solutions.html:62
+#: hkis/templates/hkis/solutions.html:62
 msgid "No solution shared yet :("
 msgstr "Aucun solution partagée pour le moment :("
 
-#: website/templates/hkis/solutions.html:65
+#: hkis/templates/hkis/solutions.html:65
 msgid "(You're not allowed to see them until you resolved the exercise.)"
 msgstr ""
 "(Vous n'êtes pas autorisé à les voir tant que vous n'avez pas résolu "
 "l'exercice.)"
 
-#: website/templates/hkis/solutions.html:68
+#: hkis/templates/hkis/solutions.html:68
 msgid "My answers"
 msgstr "Mes réponses"
 
-#: website/templates/hkis/solutions.html:70
+#: hkis/templates/hkis/solutions.html:70
 msgid "You haven't submitted anything for this exercise yet."
 msgstr "Vous n'avez pas envoyé de réponse pour cet exercice pour le moment."
 
-#: website/templates/hkis/solutions.html:95
+#: hkis/templates/hkis/solutions.html:95
 #, python-format
 msgid "Submitted on %(date)s:"
 msgstr "Envoyé le %(date)s :"
 
-#: website/templates/hkis/solutions.html:112
+#: hkis/templates/hkis/solutions.html:112
 msgid "Unshare it"
 msgstr "Annuler le partage"
 
-#: website/templates/hkis/solutions.html:119
+#: hkis/templates/hkis/solutions.html:119
 msgid "Share it with other students!"
 msgstr "Partagez votre solution avec les autres !"
 
-#: website/templates/hkis/solutions.html:126
+#: hkis/templates/hkis/solutions.html:126
 msgid "Delete this answer"
 msgstr "Supprimer cette réponse"
 
-#: website/templates/hkis/team.html:4 website/templates/hkis/team.html:10
+#: hkis/templates/hkis/team.html:4 website/templates/hkis/team.html:10
 #, python-format
 msgid "Team %(name)s"
 msgstr "Équipe %(name)s"
 
-#: website/templates/hkis/team.html:53
+#: hkis/templates/hkis/team.html:53
 msgid "Remove"
 msgstr "Exclure"
 
-#: website/templates/hkis/team.html:61
+#: hkis/templates/hkis/team.html:61
 msgid "Accept"
 msgstr "Accepter"
 
-#: website/templates/hkis/team.html:67
+#: hkis/templates/hkis/team.html:67
 msgid "Reject"
 msgstr "Rejeter"
 
-#: website/templates/registration/login.html:4
+#: hkis/templates/registration/login.html:4
 msgid "Sign in to Hackinscience"
 msgstr "Se connecter à Hackinscience"
 
-#: website/templates/registration/login.html:16
+#: hkis/templates/registration/login.html:16
 msgid "Forgot your password?"
 msgstr "Mot de passe oublié ?"
 
-#: website/templates/registration/login.html:25
+#: hkis/templates/registration/login.html:25
 msgid "New to Hackinscience?"
 msgstr "Nouveau sur Hackinscience ?"
 
-#: website/templates/registration/login.html:25
+#: hkis/templates/registration/login.html:25
 msgid "Create an account."
 msgstr "Créer un compte."
 
-#: website/templates/registration/password_change_form.html:4
-#: website/templates/registration/password_change_form.html:8
+#: hkis/templates/registration/password_change_form.html:4
+#: hkis/templates/registration/password_change_form.html:8
 msgid "Change password"
 msgstr "Changer de mot de passe"
 
-#: website/templates/registration/password_change_form.html:9
-#: website/templates/registration/registration_form.html:10
+#: hkis/templates/registration/password_change_form.html:9
+#: hkis/templates/registration/registration_form.html:10
 msgid "Back"
 msgstr "Retour"
 
-#: website/templates/registration/password_reset_confirm.html:10
+#: hkis/templates/registration/password_reset_confirm.html:10
 msgid "Confirm password reset"
 msgstr "Confirmer le changement de mot de passe"
 
-#: website/templates/registration/password_reset_confirm.html:14
+#: hkis/templates/registration/password_reset_confirm.html:14
 msgid "Enter your new password below to reset your password:"
 msgstr "Entrez votre nouveau mot de passe ci-dessous pour le réinitialiser :"
 
-#: website/templates/registration/password_reset_confirm.html:18
+#: hkis/templates/registration/password_reset_confirm.html:18
 msgid "Set password"
 msgstr "Changer le mot de passe"
 
-#: website/templates/registration/password_reset_confirm.html:22
+#: hkis/templates/registration/password_reset_confirm.html:22
 msgid ""
 "Password reset unsuccessful. Please <a href=\"{{ url }}\">try again.</a>"
 msgstr ""
 "Le reset du mot de passe a échoué. Merci <a href=\"{{ url }}\">de réessayer."
 "</a>"
 
-#: website/templates/registration/password_reset_form.html:4
-#: website/templates/registration/password_reset_form.html:10
+#: hkis/templates/registration/password_reset_form.html:4
+#: hkis/templates/registration/password_reset_form.html:10
 msgid "Reset password"
 msgstr "Réinitiation de mot de passe"
 
-#: website/templates/registration/registration_form.html:4
+#: hkis/templates/registration/registration_form.html:4
 msgid "Register"
 msgstr "S'enregistrer"
 

@@ -8,7 +8,7 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('website', '0019_auto_20210507_1828'),
+        ('hkis', '0019_auto_20210507_1828'),
     ]
 
     operations = [
@@ -26,12 +26,12 @@ class Migration(migrations.Migration):
         ),
         migrations.AddIndex(
             model_name='answer',
-            index=models.Index(fields=['exercise', '-votes'], name='website_ans_exercis_d8ffb5_idx'),
+            index=models.Index(fields=['exercise', '-votes'], name='hkis_ans_exercis_d8ffb5_idx'),
         ),
         migrations.AddField(
             model_name='vote',
             name='answer',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='website.answer'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='hkis.answer'),
         ),
         migrations.AddField(
             model_name='vote',

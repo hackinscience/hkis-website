@@ -2,7 +2,7 @@ from django import template
 from django.utils.safestring import mark_safe
 import markdown
 
-from website.utils import markdown_to_bootstrap
+from hkis.utils import markdown_to_bootstrap
 
 register = template.Library()
 

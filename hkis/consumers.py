@@ -8,9 +8,9 @@ from channels.generic.websocket import AsyncJsonWebsocketConsumer
 from django.utils.timezone import now
 
 from moulinette.tasks import check_answer, run_snippet
-from website.models import Answer, Exercise, Snippet, User
-from website.utils import markdown_to_bootstrap
-from website.serializers import AnswerSerializer, SnippetSerializer
+from hkis.models import Answer, Exercise, Snippet, User
+from hkis.utils import markdown_to_bootstrap
+from hkis.serializers import AnswerSerializer, SnippetSerializer
 
 logger = logging.getLogger(__name__)
 

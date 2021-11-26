@@ -7,7 +7,7 @@ import django_extensions.db.fields
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('website', '0013_auto_20210411_2106'),
+        ('hkis', '0013_auto_20210411_2106'),
     ]
 
     operations = [

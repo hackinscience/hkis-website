@@ -6,7 +6,7 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('website', '0022_answer_website_ans_is_vali_c5790f_idx'),
+        ('hkis', '0022_answer_website_ans_is_vali_c5790f_idx'),
     ]
 
     operations = [

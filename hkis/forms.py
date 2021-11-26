@@ -2,7 +2,7 @@ from django import forms
 from django.utils.translation import gettext_lazy as _
 from django_ace import AceWidget
 from registration.forms import RegistrationForm
-from website.models import Answer
+from hkis.models import Answer
 
 
 class AnswerForm(forms.ModelForm):

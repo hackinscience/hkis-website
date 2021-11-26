@@ -97,7 +97,7 @@ class Migration(migrations.Migration):
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('corrected_at', models.DateTimeField(blank=True, null=True)),
                 ('is_unhelpfull', models.BooleanField(blank=True, default=False)),
-                ('exercise', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='answers', to='website.exercise')),
+                ('exercise', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='answers', to='hkis.exercise')),
                 ('user', models.ForeignKey(blank=True, editable=False, null=True, on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
             ],
         ),

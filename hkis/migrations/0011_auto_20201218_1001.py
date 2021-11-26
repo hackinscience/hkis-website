@@ -6,7 +6,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('website', '0010_auto_20201214_1343'),
+        ('hkis', '0010_auto_20201214_1343'),
     ]
 
     operations = [

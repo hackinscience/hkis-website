@@ -7,7 +7,7 @@ import django.utils.timezone
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('website', '0004_auto_20201204_1337'),
+        ('hkis', '0004_auto_20201204_1337'),
     ]
 
     operations = [

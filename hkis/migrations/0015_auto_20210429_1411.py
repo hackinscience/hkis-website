@@ -4,8 +4,8 @@ from django.db import migrations
 
 
 def create_exercise_page(apps, schema_editor):
-    Page = apps.get_model("website", "Page")
-    Exercise = apps.get_model("website", "Exercise")
+    Page = apps.get_model("hkis", "Page")
+    Exercise = apps.get_model("hkis", "Exercise")
     try:
         exercises_page = Page.objects.get(url="exercises")
     except Page.DoesNotExist:
@@ -22,15 +22,15 @@ def create_exercise_page(apps, schema_editor):
 
 
 def create_help_page(apps, schema_editor):
-    Page = apps.get_model("website", "Page")
+    Page = apps.get_model("hkis", "Page")
     if Page.objects.filter(url="help").exists():
         return
     body = """# Getting help
 
 ## Report a bug on hackinscience
 
-If you found an issue in the website, please fill a bug [in our
-bugtracker](https://framagit.org/hackinscience/hkis-website/issues).
+If you found an issue in the hkis, please fill a bug [in our
+bugtracker](https://framagit.org/hackinscience/hkis-hkis/issues).
 """
 
     Page.objects.create(
@@ -45,7 +45,7 @@ bugtracker](https://framagit.org/hackinscience/hkis-website/issues).
 ## Signaler un bug trouvé sur HackInScience
 
 Si vous avez trouvé un bug sur le site vous pouvez ouvrir [un
-ticket](https://framagit.org/hackinscience/hkis-website/ issues).
+ticket](https://framagit.org/hackinscience/hkis-hkis/ issues).
 """,
         position=1,
         in_menu=True,
@@ -55,7 +55,7 @@ ticket](https://framagit.org/hackinscience/hkis-website/ issues).
 class Migration(migrations.Migration):
 
     dependencies = [
-        ("website", "0014_auto_20210411_2136"),
+        ("hkis", "0014_auto_20210411_2136"),
     ]
 
     operations = [

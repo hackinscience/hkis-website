@@ -7,7 +7,7 @@ import django_extensions.db.fields
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('website', '0012_page'),
+        ('hkis', '0012_page'),
     ]
 
     operations = [

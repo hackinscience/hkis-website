@@ -37,7 +37,7 @@ INTERNAL_DOMAINS = ["www.hackinscience.org"]
 # Application definition
 
 INSTALLED_APPS = [
-    "website",
+    "hkis",
     "moulinette",
     "registration",
     "modeltranslation",
@@ -119,8 +119,8 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
-                "website.context_processors.version",
-                "website.context_processors.menu",
+                "hkis.context_processors.version",
+                "hkis.context_processors.menu",
             ]
         },
     }
@@ -179,7 +179,7 @@ STATIC_URL = "/static/"
 
 # Django registration
 ACCOUNT_ACTIVATION_DAYS = 7
-REGISTRATION_FORM = "website.forms.HkisRegistrationForm"
+REGISTRATION_FORM = "hkis.forms.HkisRegistrationForm"
 LOGIN_REDIRECT_URL = "/exercises/"
 LOGOUT_REDIRECT_URL = "/"
 
@@ -279,7 +279,7 @@ ALLOWED_STYLES: List[str] = []
 
 GIT_HEAD = "master"  # Changed in production to the current commit hash, can be used for static file invalidation.
 
-AUTH_USER_MODEL = "website.User"
+AUTH_USER_MODEL = "hkis.User"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 

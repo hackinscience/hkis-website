@@ -2,8 +2,8 @@ from django.urls import path, include
 from django.views.i18n import JavaScriptCatalog
 from django.shortcuts import redirect
 
-from website.api import router
-import website.views as views
+from hkis.api import router
+import hkis.views as views
 
 urlpatterns = [
     path("", views.index, name="index"),

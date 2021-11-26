@@ -7,7 +7,7 @@ from django_ace import AceWidget
 
 from modeltranslation.admin import TranslationAdmin
 
-from website.models import (
+from hkis.models import (
     Answer,
     Exercise,
     Snippet,

@@ -8,7 +8,7 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('website', '0007_exercise_points'),
+        ('hkis', '0007_exercise_points'),
     ]
 
     operations = [
@@ -27,13 +27,13 @@ class Migration(migrations.Migration):
                 ('name', models.CharField(max_length=255)),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('is_public', models.BooleanField(default=True)),
-                ('members', models.ManyToManyField(through='website.Membership', to=settings.AUTH_USER_MODEL)),
+                ('members', models.ManyToManyField(through='hkis.Membership', to=settings.AUTH_USER_MODEL)),
             ],
         ),
         migrations.AddField(
             model_name='membership',
             name='team',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='website.team'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='hkis.team'),
         ),
         migrations.AddField(
             model_name='membership',

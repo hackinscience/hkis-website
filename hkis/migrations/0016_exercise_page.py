@@ -7,14 +7,14 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('website', '0015_auto_20210429_1411'),
+        ('hkis', '0015_auto_20210429_1411'),
     ]
 
     operations = [
         migrations.AddField(
             model_name='exercise',
             name='page',
-            field=models.ForeignKey(default=1, on_delete=django.db.models.deletion.RESTRICT, related_name='exercises', to='website.page'),
+            field=models.ForeignKey(default=1, on_delete=django.db.models.deletion.RESTRICT, related_name='exercises', to='hkis.page'),
             preserve_default=False,
         ),
     ]
