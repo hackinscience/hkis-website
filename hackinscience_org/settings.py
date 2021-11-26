@@ -11,7 +11,6 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 """
 
 import os
-from typing import List
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -29,10 +28,6 @@ DEBUG = True
 ALLOWED_HOSTS = ["*"]
 
 SERVER_EMAIL = "team@example.com"
-
-# During conversion from markdown to html, links to outside INTERNAL_DOMAINS will
-# get a target=_blank.
-INTERNAL_DOMAINS = ["www.hackinscience.org"]
 
 # Application definition
 
@@ -205,76 +200,6 @@ LOCALE_PATHS = [BASE_DIR + "/locale/"]
 
 CELERY_BROKER_URL = "redis://localhost:6379/0"
 CELERY_RESULT_BACKEND = CELERY_BROKER_URL
-
-ALLOWED_TAGS = [
-    # Bleach Defaults
-    "a",
-    "abbr",
-    "acronym",
-    "b",
-    "blockquote",
-    "code",
-    "em",
-    "i",
-    "li",
-    "ol",
-    "strong",
-    "ul",
-    # Custom Additions
-    "br",
-    "caption",
-    "cite",
-    "col",
-    "colgroup",
-    "dd",
-    "del",
-    "details",
-    "div",
-    "dl",
-    "dt",
-    "h1",
-    "h2",
-    "h3",
-    "h4",
-    "h5",
-    "h6",
-    "hr",
-    "img",
-    "p",
-    "pre",
-    "span",
-    "sub",
-    "summary",
-    "sup",
-    "table",
-    "tbody",
-    "td",
-    "th",
-    "thead",
-    "tr",
-    "tt",
-    "kbd",
-    "var",
-]
-
-ALLOWED_ATTRIBUTES = {
-    # Bleach Defaults
-    "a": ["href", "title"],
-    "abbr": ["title"],
-    "acronym": ["title"],
-    # Custom Additions
-    "*": ["id"],
-    "hr": ["class"],
-    "img": ["src", "width", "height", "alt", "align", "class"],
-    "span": ["class"],
-    "div": ["class"],
-    "th": ["align"],
-    "td": ["align"],
-    "code": ["class"],
-    "p": ["align", "class"],
-}
-
-ALLOWED_STYLES: List[str] = []
 
 GIT_HEAD = "master"  # Changed in production to the current commit hash, can be used for static file invalidation.
 
