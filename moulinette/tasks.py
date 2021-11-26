@@ -1,5 +1,5 @@
 """Run using:
-celery -A hkis worker
+celery -A hackinscience_org worker
 """
 
 import asyncio

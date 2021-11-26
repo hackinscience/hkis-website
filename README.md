@@ -58,7 +58,7 @@ pip install -r requirements.txt
 To also run the moulinette, you'll need to install `firejail` and `redis` then run:
 
 ```
-celery -A hkis worker
+celery -A hackinscience_org worker
 ```
 
 

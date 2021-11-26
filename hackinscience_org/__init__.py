@@ -1,3 +1,3 @@
-from hkis.celery import app
+from hackinscience_org.celery import app
 
 __all__ = ("app",)

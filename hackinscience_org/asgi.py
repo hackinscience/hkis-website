@@ -7,7 +7,7 @@ import os
 import django
 from channels.routing import get_default_application
 
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "hkis.settings")
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "hackinscience_org.settings")
 
 django.setup()
 

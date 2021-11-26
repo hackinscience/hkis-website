@@ -9,7 +9,7 @@ services:
 
   celery:
     build: .
-    command: celery -A hkis worker
+    command: celery -A hackinscience_org worker
     volumes:
       - .:/code
     depends_on:

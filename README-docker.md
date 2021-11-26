@@ -6,7 +6,7 @@
 You need **docker** and **docker-compose**. You have to create a local settings file:
 
 ```bash
-$ cat hkis/local_settings.py
+$ cat hackinscience_org/local_settings.py
 CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
