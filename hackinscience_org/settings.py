@@ -38,7 +38,6 @@ INTERNAL_DOMAINS = ["www.hackinscience.org"]
 
 INSTALLED_APPS = [
     "hkis",
-    "moulinette",
     "registration",
     "modeltranslation",
     "django.contrib.admin",

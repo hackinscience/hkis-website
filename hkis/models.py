@@ -289,9 +289,7 @@ class Answer(models.Model):
         super().save(*args, **kwargs)
 
     def send_to_correction_bot(self, lang="en"):
-        from moulinette.tasks import (  # pylint: disable=import-outside-toplevel
-            check_answer,
-        )
+        from hkis.tasks import check_answer  # pylint: disable=import-outside-toplevel
 
         sync_check_answer = async_to_sync(check_answer)
         is_valid, message = sync_check_answer(

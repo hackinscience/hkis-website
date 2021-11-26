@@ -9,7 +9,9 @@ services:
 
   celery:
     build: .
-    command: celery -A hackinscience_org worker
+    environment:
+      DJANGO_SETTINGS_MODULE=hackinscience_org.settings
+    command: celery -A hkis.tasks worker
     volumes:
       - .:/code
     depends_on:

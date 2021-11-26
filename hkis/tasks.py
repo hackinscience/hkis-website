@@ -1,5 +1,5 @@
 """Run using:
-celery -A hackinscience_org worker
+celery -A hkis.tasks worker
 """
 
 import asyncio
@@ -9,11 +9,13 @@ from typing import Optional
 import os
 import tempfile
 from subprocess import Popen, PIPE, run, STDOUT, TimeoutExpired, DEVNULL
-
 from logging import getLogger
 
-from celery import shared_task
+from celery import Celery
 
+app = Celery("hackinscience_org")
+app.config_from_object("django.conf:settings", namespace="CELERY")
+app.autodiscover_tasks()
 
 logger = getLogger(__name__)
 
@@ -48,7 +50,7 @@ FIREJAIL_OPTIONS = [
 ]
 
 
-@shared_task
+@app.task
 def run_snippet_task(source_code: str, pre: Optional[str] = None) -> str:
     """Just run the *source_code* by putting it in a `snippet.py` file and
     running it in a sandbox.
@@ -62,10 +64,12 @@ def run_snippet_task(source_code: str, pre: Optional[str] = None) -> str:
     with tempfile.TemporaryDirectory(prefix="hkis_snippets") as tmpdir:
         if pre:
             run_pre_check(tmpdir, pre)
-        with open(os.path.join(tmpdir, "snippet.py"), "w") as snippet_file:
+        with open(
+            os.path.join(tmpdir, "snippet.py"), "w", encoding="UTF-8"
+        ) as snippet_file:
             snippet_file.write(source_code)
         firejail_env = os.environ.copy()
-        prof_proc = Popen(
+        prof_proc = Popen(  # pylint: disable=consider-using-with
             ["firejail"]
             + FIREJAIL_OPTIONS
             + ["--private=" + tmpdir, "python3", "./snippet.py"],
@@ -147,7 +151,9 @@ def congrats(language):
 
 def run_pre_check(tmpdir, pre_check: str, env=None):
     """Run a pre-check script outside the sandbox before the actual check."""
-    with open(os.path.join(tmpdir, "pre_check.py"), "w") as pre_check_file:
+    with open(
+        os.path.join(tmpdir, "pre_check.py"), "w", encoding="UTF-8"
+    ) as pre_check_file:
         pre_check_file.write(pre_check)
     logger.info("Running pre-check")
     pre_check_result = run(
@@ -157,6 +163,7 @@ def run_pre_check(tmpdir, pre_check: str, env=None):
         stdout=PIPE,
         stderr=PIPE,
         env=env,
+        check=False,
     )
     if pre_check_result.returncode != 0 or pre_check_result.stderr:
         logger.warning(
@@ -167,23 +174,27 @@ def run_pre_check(tmpdir, pre_check: str, env=None):
         )
 
 
-@shared_task
+@app.task
 def check_answer_task(answer: dict):
     """Executed on Celery workers.
     answer should contain: check, source_code, and language.
     """
     with tempfile.TemporaryDirectory(prefix="hkis") as tmpdir:
         logger.debug("Checking an answer in %s.", tmpdir)
-        with open(os.path.join(tmpdir, "check.py"), "w") as check_file:
+        with open(
+            os.path.join(tmpdir, "check.py"), "w", encoding="UTF-8"
+        ) as check_file:
             check_file.write(answer["check"])
-        with open(os.path.join(tmpdir, "solution"), "w") as answer_file:
+        with open(
+            os.path.join(tmpdir, "solution"), "w", encoding="UTF-8"
+        ) as answer_file:
             answer_file.write(answer["source_code"])
         firejail_env = os.environ.copy()
         if "language" in answer:
             firejail_env["LANGUAGE"] = answer["language"]
         if "pre_check" in answer and answer["pre_check"]:
             run_pre_check(tmpdir, answer["pre_check"], env=firejail_env)
-        prof_proc = Popen(
+        prof_proc = Popen(  # pylint: disable=consider-using-with
             ["firejail"]
             + FIREJAIL_OPTIONS
             + ["--private=" + tmpdir, "python3", "-u", "./check.py"],

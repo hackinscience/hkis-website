@@ -7,7 +7,7 @@ from channels.db import database_sync_to_async
 from channels.generic.websocket import AsyncJsonWebsocketConsumer
 from django.utils.timezone import now
 
-from moulinette.tasks import check_answer, run_snippet
+from hkis.tasks import check_answer, run_snippet
 from hkis.models import Answer, Exercise, Snippet, User
 from hkis.utils import markdown_to_bootstrap
 from hkis.serializers import AnswerSerializer, SnippetSerializer

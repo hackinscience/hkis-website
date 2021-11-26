@@ -55,10 +55,11 @@ pip install -r requirements.txt
 ./manage.py runserver
 ```
 
-To also run the moulinette, you'll need to install `firejail` and `redis` then run:
+To also run the correction bot you'll need to install `firejail` and
+`redis` then run:
 
-```
-celery -A hackinscience_org worker
+```bash
+DJANGO_SETTINGS_MODULE=hackinscience_org.settings celery -A hkis.tasks worker
 ```
 
 
