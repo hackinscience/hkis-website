@@ -8,7 +8,7 @@ from channels.generic.websocket import AsyncJsonWebsocketConsumer
 from django.utils.timezone import now
 
 from hkis.tasks import check_answer, run_snippet
-from hkis.models import Answer, Exercise, Snippet, User
+from hkis.models import Answer, Exercise, Snippet, User, UserInfo
 from hkis.utils import markdown_to_bootstrap
 from hkis.serializers import AnswerSerializer, SnippetSerializer
 
@@ -76,7 +76,8 @@ def db_update_answer(answer_id: int, is_valid: bool, correction_message: str):
     answer.save()
     rank = None
     if answer.is_valid and answer.user_id:
-        rank = answer.user.recompute_rank()
+        userinfo, _ = UserInfo.objects.get_or_create(user=answer.user)
+        rank = userinfo.recompute_rank()
         for team in answer.user.teams.all():
             team.recompute_rank()
     return answer, rank

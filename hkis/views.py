@@ -73,7 +73,7 @@ class Leaderboard(ListView):
     queryset = User.objects.select_related("hkis")
     paginate_by = 100
     template_name = "hkis/leaderboard.html"
-    ordering = ["-points"]
+    ordering = ["-hkis__points"]
 
 
 class PageView(DetailView):
@@ -144,10 +144,10 @@ class ExerciseView(DetailView):
             }
         )
         context["object"].wording = gettext(context["object"].wording)
-        if user.is_anonymous:
+        if user.is_anonymous or not hasattr(user, "hkis"):
             context["current_rank"] = 999999
         else:
-            context["current_rank"] = self.request.user.rank
+            context["current_rank"] = user.hkis.rank
         if user.is_anonymous:
             context["is_valid"] = False
         else:

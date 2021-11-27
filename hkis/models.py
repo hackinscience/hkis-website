@@ -18,58 +18,26 @@ import django.contrib.auth.models
 logger = logging.getLogger(__name__)
 
 
-class UserManager(django.contrib.auth.models.UserManager):
-    def recompute_ranks(self):  # pylint: disable=no-self-use
-        for user in User.objects.order_by("rank"):
-            user.recompute_rank()
-
-
 class User(django.contrib.auth.models.AbstractUser):
-    objects = UserManager()
-    points = models.FloatField(default=0)  # Computed sum of solved exercise positions.
-    rank = models.PositiveIntegerField(blank=True, null=True)
-
     class Meta:
         db_table = "auth_user"
 
-    def recompute_rank(self) -> int:
-        """Reconpute, and return, the user rank.
 
-        Points for one exercise done:
-
-        - Equals to the position of the exercise, itself often equal
-          to number_of_solves_of_easiest_exercise - number_of_solve
-
-        - Solving it "late" remove points, but doing more exercise
-          should always grant more than doing them first!
-
-        - Only less than one point can be lost by doing it late, so it
-          won't appear visually when ceil()ed, but make 1st solver 1st
-          in the leaderboard.
-        """
-        points = 0
-        for exercise in Exercise.objects.with_user_stats(user=self).only(
-            "points", "created_at"
-        ):
-            if exercise.user_successes:
-                time_to_solve = (
-                    exercise.solved_at - exercise.created_at
-                ).total_seconds()
-                points += exercise.points - (time_to_solve ** 0.001 - 1)
-        self.points = points
-        self.rank = User.objects.filter(points__gt=self.points).count() + 1
-        self.save()
-        return self.rank
+class UserManager(django.contrib.auth.models.UserManager):
+    def recompute_ranks(self):  # pylint: disable=no-self-use
+        for userinfo in UserInfo.objects.order_by("rank"):
+            userinfo.recompute_rank()
 
 
 class UserInfo(models.Model):
+    objects = UserManager()
     user = models.OneToOneField(to=User, on_delete=models.CASCADE, related_name="hkis")
     points = models.FloatField(default=0)  # Computed sum of solved exercise positions.
     rank = models.PositiveIntegerField(blank=True, null=True)
     public_profile = models.BooleanField(default=True)
 
     def public_teams(self):
-        return self.teams.filter(is_public=True)
+        return self.user.teams.filter(is_public=True)
 
     def recompute_rank(self) -> int:
         """Reconpute, and return, the user rank.
@@ -87,7 +55,7 @@ class UserInfo(models.Model):
           in the leaderboard.
         """
         points = 0
-        for exercise in Exercise.objects.with_user_stats(user=self).only(
+        for exercise in Exercise.objects.with_user_stats(user=self.user).only(
             "points", "created_at"
         ):
             if exercise.user_successes:
@@ -96,7 +64,7 @@ class UserInfo(models.Model):
                 ).total_seconds()
                 points += exercise.points - (time_to_solve ** 0.001 - 1)
         self.points = points
-        self.rank = User.objects.filter(points__gt=self.points).count() + 1
+        self.rank = UserInfo.objects.filter(points__gt=self.points).count() + 1
         self.save()
         return self.rank
 
@@ -147,7 +115,7 @@ class ExerciseQuerySet(models.QuerySet):
             ),
         )
 
-    def with_user_stats(self, user):
+    def with_user_stats(self, user: User):
         if user.is_anonymous:
             return self.annotate(
                 user_tries=Value(0, models.IntegerField()),
@@ -389,10 +357,11 @@ class Team(models.Model):
             self.membership_set.filter(
                 Q(role=Membership.Role.STAFF) | Q(role=Membership.Role.MEMBER)
             )
-            .select_related()
-            .order_by("user__points")
+            .filter(user__hkis__isnull=False)
+            .select_related("user__hkis")
+            .order_by("user__hkis__points")
         ):
-            values += member.user.points * i
+            values += member.user.hkis.points * i
             weights += i
             i += i
         try:
@@ -452,7 +421,9 @@ class Team(models.Model):
 
     def members_with_rank(self):
         return enumerate(
-            self.membership_set.order_by("user__rank").select_related("user__hkis"),
+            self.membership_set.order_by("user__hkis__rank").select_related(
+                "user__hkis"
+            ),
             start=1,
         )
 

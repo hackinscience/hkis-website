@@ -17,8 +17,8 @@
     {% endblocktrans %}
   </p>
   <p>
-    {% if user.rank is not None %}
-      {% blocktrans trimmed with rank=user.rank points=user.points|floatformat:"0" %}
+    {% if user.hkis and user.hkis.rank is not None %}
+      {% blocktrans trimmed with rank=user.hkis.rank points=user.hkis.points|floatformat:"0" %}
         You have {{ points }} points which ranks you {{ rank }} over {{ participants }} participants.
       {% endblocktrans %}
     {% else %}

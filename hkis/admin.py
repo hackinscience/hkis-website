@@ -1,21 +1,22 @@
 from django import forms
 from django.core.exceptions import FieldError
 from django.contrib import admin
-from django.contrib.auth.admin import UserAdmin
 from django.utils.translation import gettext_lazy as _
+from django.contrib.auth.admin import UserAdmin
 from django_ace import AceWidget
 
 from modeltranslation.admin import TranslationAdmin
 
 from hkis.models import (
     Answer,
-    Exercise,
-    Snippet,
-    User,
-    Team,
-    Membership,
     Category,
+    Exercise,
+    Membership,
     Page,
+    Snippet,
+    Team,
+    User,
+    UserInfo,
 )
 
 
@@ -286,19 +287,10 @@ class SnippetAdmin(admin.ModelAdmin):
     search_fields = ("user__username",)
 
 
-class MyUserAdmin(UserAdmin):
-    list_display = UserAdmin.list_display + ("date_joined", "points", "rank")
-    list_filter = UserAdmin.list_filter + (TeamFilter,)
-
-    ordering = ("-date_joined",)
-    inlines = (MembershipInline,)
-    search_fields = UserAdmin.search_fields + ("teams__name",)
-    fieldsets = (
-        (
-            None,
-            {"fields": ("username", "password")},
-        ),
-    ) + UserAdmin.fieldsets[1:]
+class UserInfoAdmin(admin.ModelAdmin):
+    list_display = ("user", "points", "rank", "public_profile")
+    list_filter = (TeamFilter,)
+    search_fields = ("teams__name",)
 
 
 class CategoryAdmin(TranslationAdmin):
@@ -308,7 +300,8 @@ class CategoryAdmin(TranslationAdmin):
 admin.site.register(Answer, AnswerAdmin)
 admin.site.register(Exercise, ExerciseAdmin)
 admin.site.register(Snippet, SnippetAdmin)
-admin.site.register(User, MyUserAdmin)
+admin.site.register(UserInfo, UserInfoAdmin)
 admin.site.register(Team, TeamAdmin)
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Page, PageAdmin)
+admin.site.register(User, UserAdmin)
