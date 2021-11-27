@@ -10,7 +10,6 @@ class Command(BaseCommand):
             UserInfo.objects.get_or_create(user=user)
             user.hkis.rank = user.rank
             user.hkis.points = user.points
-            user.hkis.public_profile = user.public_profile
             user.save()
 
         self.stdout.write(self.style.SUCCESS("Successfully synchronized"))

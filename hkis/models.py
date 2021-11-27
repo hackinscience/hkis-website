@@ -28,7 +28,6 @@ class User(django.contrib.auth.models.AbstractUser):
     objects = UserManager()
     points = models.FloatField(default=0)  # Computed sum of solved exercise positions.
     rank = models.PositiveIntegerField(blank=True, null=True)
-    public_profile = models.BooleanField(default=True)
 
     class Meta:
         db_table = "auth_user"
