@@ -32,9 +32,6 @@ class User(django.contrib.auth.models.AbstractUser):
     class Meta:
         db_table = "auth_user"
 
-    def public_teams(self):
-        return self.teams.filter(is_public=True)
-
     def recompute_rank(self) -> int:
         """Reconpute, and return, the user rank.
 

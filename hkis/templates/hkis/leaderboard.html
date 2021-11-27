@@ -35,7 +35,7 @@
                 {% endif %}
               </td>
               <td scope="row">
-                {% for team in player.public_teams %}{% if forloop.counter > 1 %},&nbsp;{% endif %}<a href="{% url 'team' team.slug %}">{{ team }}</a>{% endfor %}
+                {% for team in player.hkis.public_teams %}{% if forloop.counter > 1 %},&nbsp;{% endif %}<a href="{% url 'team' team.slug %}">{{ team }}</a>{% endfor %}
               </td>
             </tr>
           {% endif %}
