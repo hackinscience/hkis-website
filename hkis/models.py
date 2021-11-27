@@ -30,6 +30,48 @@ class User(django.contrib.auth.models.AbstractUser):
     rank = models.PositiveIntegerField(blank=True, null=True)
     public_profile = models.BooleanField(default=True)
 
+    class Meta:
+        db_table = "auth_user"
+
+    def public_teams(self):
+        return self.teams.filter(is_public=True)
+
+    def recompute_rank(self) -> int:
+        """Reconpute, and return, the user rank.
+
+        Points for one exercise done:
+
+        - Equals to the position of the exercise, itself often equal
+          to number_of_solves_of_easiest_exercise - number_of_solve
+
+        - Solving it "late" remove points, but doing more exercise
+          should always grant more than doing them first!
+
+        - Only less than one point can be lost by doing it late, so it
+          won't appear visually when ceil()ed, but make 1st solver 1st
+          in the leaderboard.
+        """
+        points = 0
+        for exercise in Exercise.objects.with_user_stats(user=self).only(
+            "points", "created_at"
+        ):
+            if exercise.user_successes:
+                time_to_solve = (
+                    exercise.solved_at - exercise.created_at
+                ).total_seconds()
+                points += exercise.points - (time_to_solve ** 0.001 - 1)
+        self.points = points
+        self.rank = User.objects.filter(points__gt=self.points).count() + 1
+        self.save()
+        return self.rank
+
+
+class UserInfo(models.Model):
+    user = models.OneToOneField(to=User, on_delete=models.CASCADE, related_name="hkis")
+    points = models.FloatField(default=0)  # Computed sum of solved exercise positions.
+    rank = models.PositiveIntegerField(blank=True, null=True)
+    public_profile = models.BooleanField(default=True)
+
     def public_teams(self):
         return self.teams.filter(is_public=True)
 
