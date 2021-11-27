@@ -203,8 +203,6 @@ CELERY_RESULT_BACKEND = CELERY_BROKER_URL
 
 GIT_HEAD = "master"  # Changed in production to the current commit hash, can be used for static file invalidation.
 
-AUTH_USER_MODEL = "hkis.User"
-
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 try:

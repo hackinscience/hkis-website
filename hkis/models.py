@@ -2,6 +2,7 @@ import logging
 from datetime import timedelta
 
 from asgiref.sync import async_to_sync
+from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 from django.db import models, IntegrityError
 from django.db.models import Count, Value, Q, Min, Sum
@@ -13,24 +14,22 @@ from django.utils.text import Truncator
 from django.utils.timezone import now
 from django.utils.translation import gettext_lazy as _
 from django_extensions.db.fields import AutoSlugField
-import django.contrib.auth.models
+
 
 logger = logging.getLogger(__name__)
 
 
-class User(django.contrib.auth.models.AbstractUser):
-    class Meta:
-        db_table = "auth_user"
+User = get_user_model()
 
 
-class UserManager(django.contrib.auth.models.UserManager):
+class UserInfoQuerySet(models.QuerySet):
     def recompute_ranks(self):  # pylint: disable=no-self-use
         for userinfo in UserInfo.objects.order_by("rank"):
             userinfo.recompute_rank()
 
 
 class UserInfo(models.Model):
-    objects = UserManager()
+    objects = UserInfoQuerySet.as_manager()
     user = models.OneToOneField(to=User, on_delete=models.CASCADE, related_name="hkis")
     points = models.FloatField(default=0)  # Computed sum of solved exercise positions.
     rank = models.PositiveIntegerField(blank=True, null=True)
@@ -115,7 +114,7 @@ class ExerciseQuerySet(models.QuerySet):
             ),
         )
 
-    def with_user_stats(self, user: User):
+    def with_user_stats(self, user):
         if user.is_anonymous:
             return self.annotate(
                 user_tries=Value(0, models.IntegerField()),

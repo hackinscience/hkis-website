@@ -1,7 +1,60 @@
 from django.test import TestCase
 from rest_framework.test import APITestCase
 
-from hkis.models import User, Exercise
+from hkis.models import User, UserInfo, Exercise, Page, Category
+
+
+class TestRankUserWithInfo(TestCase):
+    fixtures = ["initial"]
+
+    def setUp(self):
+        self.user = User.objects.create(username="Temporary")
+        self.userinfo, _ = UserInfo.objects.get_or_create(user=self.user)
+        self.client.force_login(self.user)
+
+    def test_recompute_rank(self):
+        self.userinfo.recompute_rank()
+        assert User.objects.get(username="Temporary").hkis.rank == 2
+
+    def test_recompute_ranks(self):
+        UserInfo.objects.recompute_ranks()
+        assert User.objects.get(username="Temporary").hkis.rank == 2
+
+
+class TestRankUserWithNoInfo(TestCase):
+    fixtures = ["initial"]
+
+    def setUp(self):
+        self.user = User.objects.create(username="Temporary")
+
+    def test_recompute_ranks(self):
+        UserInfo.objects.recompute_ranks()
+
+
+class TestGetPublicTeams(TestCase):
+    fixtures = ["initial"]
+
+    def test_public_teams(self):
+        assert User.objects.get(username="mdk").hkis.public_teams()
+
+
+class TestPages(TestCase):
+    fixtures = ["initial"]
+
+    def test_page(self):
+        p1 = Page.objects.first()
+        assert p1.slug in p1.get_absolute_url()
+
+
+class TestCategories(TestCase):
+    fixtures = ["initial"]
+
+    def test_unnamed_category(self):
+        c1 = Category.objects.create()
+        assert str(c1) == "Unnamed"
+
+    def test_named_category(self):
+        assert str(Category.objects.first()) != "Unnamed"
 
 
 class TestAdminSuperUser(TestCase):

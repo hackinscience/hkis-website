@@ -2,7 +2,6 @@ from django import forms
 from django.core.exceptions import FieldError
 from django.contrib import admin
 from django.utils.translation import gettext_lazy as _
-from django.contrib.auth.admin import UserAdmin
 from django_ace import AceWidget
 
 from modeltranslation.admin import TranslationAdmin
@@ -15,7 +14,6 @@ from hkis.models import (
     Page,
     Snippet,
     Team,
-    User,
     UserInfo,
 )
 
@@ -304,4 +302,3 @@ admin.site.register(UserInfo, UserInfoAdmin)
 admin.site.register(Team, TeamAdmin)
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Page, PageAdmin)
-admin.site.register(User, UserAdmin)
