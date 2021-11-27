@@ -70,7 +70,7 @@ class ProfileView(LoginRequiredMixin, UpdateView):
 
 
 class Leaderboard(ListView):
-    model = User
+    queryset = User.objects.select_related("hkis")
     paginate_by = 100
     template_name = "hkis/leaderboard.html"
     ordering = ["-points"]
