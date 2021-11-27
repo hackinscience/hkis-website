@@ -19,24 +19,26 @@
       </thead>
       <tbody>
         {% for player in page_obj %}
-        <tr class="{% if player.username == user.username %}table-primary{% endif %}">
-          <td scope="row">
-            {{ forloop.counter0|add:page_obj.start_index }}
-          </td>
-          <td scope="row">
-            {{ player.points|floatformat:"0" }}
-          </td>
-          <td scope="row">
-            {% if player.public_profile %}
-            {{ player.username }} {% if player.is_superuser %}(staff){% endif %}
-            {% else %}
-            (anonymous)
-            {% endif %}
-          </td>
-          <td scope="row">
-            {% for team in player.public_teams %}{% if forloop.counter > 1 %},&nbsp;{% endif %}<a href="{% url 'team' team.slug %}">{{ team }}</a>{% endfor %}
-          </td>
-        </tr>
+          {% if player.hkis %}
+            <tr class="{% if player.username == user.username %}table-primary{% endif %}">
+              <td scope="row">
+                {{ forloop.counter0|add:page_obj.start_index }}
+              </td>
+              <td scope="row">
+                {{ player.points|floatformat:"0" }}
+              </td>
+              <td scope="row">
+                {% if player.hkis.public_profile %}
+                {{ player.username }} {% if player.is_superuser %}(staff){% endif %}
+                {% else %}
+                (anonymous)
+                {% endif %}
+              </td>
+              <td scope="row">
+                {% for team in player.public_teams %}{% if forloop.counter > 1 %},&nbsp;{% endif %}<a href="{% url 'team' team.slug %}">{{ team }}</a>{% endfor %}
+              </td>
+            </tr>
+          {% endif %}
         {% endfor %}
       </tbody>
     </table>

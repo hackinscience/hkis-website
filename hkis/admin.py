@@ -296,7 +296,7 @@ class MyUserAdmin(UserAdmin):
     fieldsets = (
         (
             None,
-            {"fields": ("username", "password", "public_profile")},
+            {"fields": ("username", "password")},
         ),
     ) + UserAdmin.fieldsets[1:]
 
