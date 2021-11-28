@@ -9,4 +9,24 @@ window.addEventListener("DOMContentLoaded", function (event) {
             set_lang(button.dataset.lang);
         });
     });
+
+    $('#team_selector').select2(
+        {
+            tags: true,
+            placeholder: "Create or join a team by typing its name.",
+            width: '30em',
+            ajax: {
+                url: "/api/teams/",
+                processResults: function (data) {
+                    // Transforms the top-level key of the response object from 'items' to 'results'
+                    results = [];
+                    for (i in data.results) {
+                        results.push({"id": data.results[i].name, "text": data.results[i].name})
+                    }
+                    return {
+                        results: results
+                    };
+                }
+            },
+        });
 });

@@ -1,11 +1,18 @@
 from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
 from django.contrib.auth.models import Group
-from django_filters import rest_framework as filters
-from rest_framework import viewsets, response, serializers, routers, permissions
+import django_filters
+from rest_framework import (
+    viewsets,
+    response,
+    serializers,
+    routers,
+    permissions,
+    filters,
+)
 import django_filters
 
-from hkis.models import Answer, Exercise, Snippet, User, Category, Page
+from hkis.models import Answer, Exercise, Snippet, User, Category, Page, Team
 
 
 class DjangoModelPermissionsStrict(permissions.DjangoModelPermissions):
@@ -74,6 +81,12 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class GroupSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Group
+        fields = ("url", "name")
+
+
+class TeamSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Group
         fields = ("url", "name")
@@ -153,6 +166,18 @@ class GroupViewSet(viewsets.ModelViewSet):
     serializer_class = GroupSerializer
 
 
+class QSearchFilter(filters.SearchFilter):
+    search_param = "q"
+
+
+class TeamViewSet(viewsets.ModelViewSet):
+    permission_classes = [DjangoModelPermissionsStrict]
+    filter_backends = [QSearchFilter]
+    search_fields = ["name"]
+    queryset = Team.objects.all()
+    serializer_class = TeamSerializer
+
+
 class CategoryViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.DjangoModelPermissions]
     queryset = Category.objects.all()
@@ -165,7 +190,7 @@ class PageViewSet(viewsets.ModelViewSet):
     serializer_class = PageSerializer
 
 
-class AnswerFilter(filters.FilterSet):
+class AnswerFilter(django_filters.rest_framework.FilterSet):
     username = django_filters.CharFilter(field_name="user__username")
 
     class Meta:
@@ -279,10 +304,11 @@ class CanViewAnswer(permissions.DjangoModelPermissions):
 
 
 router = routers.DefaultRouter()
-router.register(r"answers", AnswerViewSet)
-router.register(r"snippets", SnippetViewSet)
-router.register(r"exercises", ExerciseViewSet)
-router.register(r"groups", GroupViewSet)
-router.register(r"users", UserViewSet)
-router.register(r"categories", CategoryViewSet)
-router.register(r"pages", PageViewSet)
+router.register("answers", AnswerViewSet)
+router.register("snippets", SnippetViewSet)
+router.register("exercises", ExerciseViewSet)
+router.register("groups", GroupViewSet)
+router.register("teams", TeamViewSet)
+router.register("users", UserViewSet)
+router.register("categories", CategoryViewSet)
+router.register("pages", PageViewSet)

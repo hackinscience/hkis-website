@@ -1,6 +1,11 @@
 {% extends "registration/registration_base.html" %}
 {% load i18n static crispy_forms_tags %}
 {% block title %}Profile{% endblock %}
+{% block extrahead %}
+<script src="{% static 'admin/js/vendor/jquery/jquery.min.js' %}"></script>
+<script src="{% static 'admin/js/vendor/select2/select2.full.min.js' %}"></script>
+<link href="{% static 'admin/css/vendor/select2/select2.min.css' %}" rel="stylesheet" type="text/css"/>
+{% endblock %}
 {% block container %}
 
 <div class="col-md-8 offset-md-2">
@@ -64,7 +69,7 @@
   {% endif %}
   <form action="/teams/" method="post" class="form">
     {% csrf_token %}
-    <input type="text" name="join_team" value="" />
+    <select id="team_selector" name="join_team"></select>
     <button class="btn btn-sm btn-primary" type="submit">{% trans "Join team" %}</button>
   </form>
 </div>
