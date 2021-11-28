@@ -13,6 +13,7 @@ window.addEventListener("DOMContentLoaded", function (event) {
     $('#team_selector').select2(
         {
             tags: true,
+            minimumInputLength: 2,
             placeholder: "Create or join a team by typing its name.",
             width: '30em',
             ajax: {
