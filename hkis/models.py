@@ -396,6 +396,8 @@ class Team(models.Model):
         """Remove a member from the team.
 
         If no staff remain after removal, elect a new staff.
+
+        If no member left after removal, remove the team.
         """
         self.membership_set.filter(user__username=username).delete()
         # If there's no more staff, pick oldest member as staff:
@@ -405,13 +407,15 @@ class Team(models.Model):
             ).order_by("-created_at"):
                 membership.role = Membership.Role.STAFF
                 membership.save()
-                return
+                break
             # No member to grant?
             # Last resort: Pick a pending member as new staff:
             for membership in self.membership_set.order_by("-created_at"):
                 membership.role = Membership.Role.STAFF
                 membership.save()
-                return
+                break
+            # No member left at all? Drop the team.
+            self.delete()
 
     def accept(self, username):
         membership = self.membership_set.get(user__username=username)
