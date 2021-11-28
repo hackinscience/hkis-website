@@ -24,55 +24,53 @@
         </tr>
       </thead>
       <tbody>
-        {% for rank, membership in team.members_with_rank %}
-          {% if membership.user.hkis %}
-            <tr class="{% if membership.user.username == user.username %}table-primary{% endif %}">
-              <td scope="row">
-                {{ rank }}
-              </td>
-              <td scope="row">
-                {{ membership.user.hkis.points|floatformat:"0" }}
-              </td>
-              <td scope="row">
-                {% if membership.user.hkis.public_profile %}
-                  {{ membership.user.username }}
-                {% else %}
-                  (anonymous)
-                {% endif %}
-              </td>
-              <td scope="row">
-                {{ membership.get_role_display }}
-              </td>
-              {% if requester_membership.role == "ST" %}
-              <td scope="row">
-                {% if membership.user.username != requester_membership.user.username %}
-                {% if membership.role == "MM" %}
-                <form action="/teams/" method="post" class="form">
-                  {% csrf_token %}
-                  <input type="hidden" name="remove_from_team" value="{{ team.name }}" />
-                  <input type="hidden" name="member" value="{{ membership.user.username }}" />
-                  <button class="btn btn-sm btn-danger" type="submit">{% trans "Remove" %}</button>
-                </form>
-                {% endif %}
-                {% if membership.role == "PE" %}
-                <form action="/teams/" method="post" class="form" style="display: inline">
-                  {% csrf_token %}
-                  <input type="hidden" name="accept_in_team" value="{{ team.name }}" />
-                  <input type="hidden" name="member" value="{{ membership.user.username }}" />
-                  <button class="btn btn-sm btn-primary" type="submit">{% trans "Accept" %}</button>
-                </form>
-                <form action="/teams/" method="post" class="form" style="display: inline">
-                  {% csrf_token %}
-                  <input type="hidden" name="remove_from_team" value="{{ team.name }}" />
-                  <input type="hidden" name="member" value="{{ membership.user.username }}" />
-                  <button class="btn btn-sm btn-secondary" type="submit">{% trans "Reject" %}</button>
-                </form>
-                {% endif %}
-                {% endif %}
-              </td>
+        {% for membership in team.members_by_rank %}
+          <tr class="{% if membership.user.username == user.username %}table-primary{% endif %}">
+            <td scope="row">
+              {{ forloop.counter }}
+            </td>
+            <td scope="row">
+              {{ membership.user.hkis.points|floatformat:"0" }}
+            </td>
+            <td scope="row">
+              {% if membership.user.hkis.public_profile %}
+                {{ membership.user.username }}
+              {% else %}
+                (anonymous)
               {% endif %}
-            </tr>
-          {% endif %}
+            </td>
+            <td scope="row">
+              {{ membership.get_role_display }}
+            </td>
+            {% if requester_membership.role == "ST" %}
+            <td scope="row">
+              {% if membership.user.username != requester_membership.user.username %}
+              {% if membership.role == "MM" %}
+              <form action="/teams/" method="post" class="form">
+                {% csrf_token %}
+                <input type="hidden" name="remove_from_team" value="{{ team.name }}" />
+                <input type="hidden" name="member" value="{{ membership.user.username }}" />
+                <button class="btn btn-sm btn-danger" type="submit">{% trans "Remove" %}</button>
+              </form>
+              {% endif %}
+              {% if membership.role == "PE" %}
+              <form action="/teams/" method="post" class="form" style="display: inline">
+                {% csrf_token %}
+                <input type="hidden" name="accept_in_team" value="{{ team.name }}" />
+                <input type="hidden" name="member" value="{{ membership.user.username }}" />
+                <button class="btn btn-sm btn-primary" type="submit">{% trans "Accept" %}</button>
+              </form>
+              <form action="/teams/" method="post" class="form" style="display: inline">
+                {% csrf_token %}
+                <input type="hidden" name="remove_from_team" value="{{ team.name }}" />
+                <input type="hidden" name="member" value="{{ membership.user.username }}" />
+                <button class="btn btn-sm btn-secondary" type="submit">{% trans "Reject" %}</button>
+              </form>
+              {% endif %}
+              {% endif %}
+            </td>
+            {% endif %}
+          </tr>
         {% endfor %}
       </tbody>
     </table>

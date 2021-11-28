@@ -418,12 +418,11 @@ class Team(models.Model):
         membership.role = Membership.Role.MEMBER
         membership.save()
 
-    def members_with_rank(self):
-        return enumerate(
-            self.membership_set.order_by("user__hkis__rank").select_related(
-                "user__hkis"
-            ),
-            start=1,
+    def members_by_rank(self):
+        return (
+            self.membership_set.filter(user__hkis__isnull=False)
+            .order_by("user__hkis__rank")
+            .select_related("user__hkis")
         )
 
     def __str__(self):
