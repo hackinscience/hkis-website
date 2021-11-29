@@ -1,7 +1,8 @@
+from django.contrib.auth.models import Permission, User, Group
+from django.contrib.contenttypes.models import ContentType
 from django.test import TestCase
 from rest_framework.test import APITestCase
-
-from hkis.models import User, UserInfo, Exercise, Page, Category
+from hkis.models import UserInfo, Exercise, Page, Category, Answer
 
 
 class TestRankUserWithInfo(TestCase):
@@ -101,11 +102,28 @@ class TestAdminSuperUser(TestCase):
 #         self.selenium.find_element_by_xpath('//input[@value="Save"]').click()
 
 
+def set_teacher_permissions():
+    teacher = Group.objects.get(name="Teacher")
+    exercise_content_type = ContentType.objects.get_for_model(Exercise)
+    answer_content_type = ContentType.objects.get_for_model(Answer)
+    for content_type, perm in (
+        (answer_content_type, "view_answer"),
+        (answer_content_type, "change_answer"),
+        (exercise_content_type, "add_exercise"),
+        (exercise_content_type, "change_exercise"),
+        (exercise_content_type, "view_exercise"),
+        (exercise_content_type, "delete_exercise"),
+    ):
+        permission = Permission.objects.get(codename=perm)
+        teacher.permissions.add(permission)
+
+
 class TestAdminStaffWithTeacherGroup(TestCase):
     fixtures = ["initial"]
 
     def setUp(self):
         self.user = User.objects.get(username="Lisa")
+        set_teacher_permissions()
         self.client.force_login(self.user)
 
     def test_get_admin_exercises(self):

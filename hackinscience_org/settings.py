@@ -10,14 +10,14 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.0/ref/settings/
 """
 
-import os
+from pathlib import Path
 
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+# Build paths inside the project like this: BASE_DIR / 'subdir'.
+BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 # Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/2.0/howto/deployment/checklist/
+# See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = "ndoh1n6%d%7i$hm^joz4%0j@ix!8to6p)n0lkse4e1jm$7(adh"
@@ -105,7 +105,7 @@ ROOT_URLCONF = "hackinscience_org.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [os.path.join(BASE_DIR, "templates")],
+        "DIRS": [BASE_DIR / "templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -123,6 +123,7 @@ TEMPLATES = [
 CRISPY_TEMPLATE_PACK = "bootstrap4"
 
 WSGI_APPLICATION = "hackinscience_org.wsgi.application"
+ASGI_APPLICATION = "hackinscience_org.routing.application"
 
 
 # Database
@@ -131,7 +132,7 @@ WSGI_APPLICATION = "hackinscience_org.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
-        "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
+        "NAME": BASE_DIR / "db.sqlite3",
     }
 }
 
@@ -173,7 +174,7 @@ STATIC_URL = "/static/"
 
 # Django registration
 ACCOUNT_ACTIVATION_DAYS = 7
-REGISTRATION_FORM = "hkis.forms.HkisRegistrationForm"
+REGISTRATION_FORM = "hackinscience_org.forms.HkisRegistrationForm"
 LOGIN_REDIRECT_URL = "/exercises/"
 LOGOUT_REDIRECT_URL = "/"
 
@@ -185,8 +186,6 @@ REST_FRAMEWORK = {
     "PAGE_SIZE": 100,
 }
 
-ASGI_APPLICATION = "hackinscience_org.routing.application"
-
 CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
@@ -196,7 +195,7 @@ CHANNEL_LAYERS = {
 
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTOCOL", "https")
 
-LOCALE_PATHS = [BASE_DIR + "/locale/"]
+LOCALE_PATHS = [BASE_DIR / "locale"]
 
 CELERY_BROKER_URL = "redis://localhost:6379/0"
 CELERY_RESULT_BACKEND = CELERY_BROKER_URL

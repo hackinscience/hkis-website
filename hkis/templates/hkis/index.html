@@ -31,8 +31,14 @@
           Write code, get instant feedback from our correction bot <br/>
           with detailed information about what went wrong so you'll never get stuck.{% endblocktrans %}
           </br><br/>
-          <a class="btn btn-secondary" href="{% url 'auth_login' %}" role="button">{% trans "Sign in" %}</a>
-          <a class="btn btn-primary" href="{% url 'registration_register' %}" role="button">{% trans "Sign up" %}</a>
+          {% url "auth_login" as auth_login %}
+          {% if auth_login %}
+          <a class="btn btn-secondary" href="{{ auth_login }}" role="button">{% trans "Sign in" %}</a>
+          {% endif %}
+          {% url "registration_register" as registration_register %}
+          {% if registration_register %}
+          <a class="btn btn-primary" href="{{ registration_register }}" role="button">{% trans "Sign up" %}</a>
+          {% endif %}
           <br/>
         </p>
     </div>

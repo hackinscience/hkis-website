@@ -14,7 +14,6 @@ urlpatterns = [
     path("teams/<slug:slug>/stats", views.team_stats, name="team_stats"),
     path("api/", include(router.urls)),
     path("api-auth/", include("rest_framework.urls")),
-    path("accounts/", include("registration.backends.simple.urls")),
     path("profile/<int:pk>", views.ProfileView.as_view(), name="profile"),
     path("leaderboard/", views.Leaderboard.as_view(), name="leaderboard"),
     path("<slug:page>/", views.PageView.as_view(), name="page"),

@@ -1,13 +1,44 @@
-# Using HackInScience
+# HackInScience
 
-First step after creating a superuser (using `./manage.py
-createsuperuser` is to login to `/admin`, from here you can change
-everything about your installation: manage users, create pages, create
-exercises, teams, review answers, and so on.
+## Setup
+
+First `firejail` and `redis` (from your package manager), like:
+
+    apt install firejail redis
+
+Install the dependencies:
+
+    python -m pip install requirements.txt
+
+Then run the classical Django things:
+
+    ./manage.py migrate
+    ./manage.py loaddata initial
+    ./manage.py compilemessages --ignore '.tox' --ignore '.venv'
+    ./manage.py createsuperuser
+
+Then in two distinct terminals, or by detaching one of them:
+
+    ./manage.py correction_bot
+
+and:
+
+    ./manage.py runserver
+
+
+Now you can login to `/admin`, from here you can change everything
+about your installation: manage users, create pages, create exercises,
+teams, review answers, and so on.
 
 A `/exercises` page, and a `/help` page has been created automatically
 for you, you may want to start by adding some exercises to the
 `exercises` page.
+
+Alternatively, one can use the `hkis` app alone, in order to
+personalize registration, urls, and so on, for this you can install
+hkis as a django app in your own project:
+
+    pip install django-hkis
 
 
 ## The pages
@@ -38,29 +69,11 @@ handy around 50~70 exercises.
 # How to contribute
 
 
-## Requirements
+## Updating the intial fixture
 
-This project requires Python 3.6 at least.
+To save the initial.json file, use:
 
-
-## Install
-
-```
-pip install -r requirements.txt
-./manage.py migrate
-./manage.py loaddata initial  # To get some users and exercises
-# (Initial data can be updated using:
-   ./manage.py dumpdata -e contenttypes -e sessions -o hkis/fixtures/initial.json)
-./manage.py createsuperuser
-./manage.py runserver
-```
-
-To also run the correction bot you'll need to install `firejail` and
-`redis` then run:
-
-```bash
-DJANGO_SETTINGS_MODULE=hackinscience_org.settings celery -A hkis.tasks worker
-```
+    ./manage.py dumpdata --indent 4 -e admin -e auth.Permission -e contenttypes -e sessions -o hkis/fixtures/initial.json
 
 
 ## Translations
@@ -71,7 +84,7 @@ Templates are translated using django `makemessages` and `compilemessages` comma
 $ ./manage.py makemessages --locale fr
 $ ./manage.py makemessages --locale fr --domain djangojs
 # Edit the .po files
-$ ./manage.py compilemessages
+$ ./manage.py compilemessages --ignore '.tox' --ignore '.venv'
 ```
 
 Exercises (title and wording) are translated via the admin (or the
