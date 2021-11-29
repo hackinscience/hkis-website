@@ -12,7 +12,6 @@ from hkis.models import (
     Exercise,
     Membership,
     Page,
-    Snippet,
     Team,
     UserInfo,
 )
@@ -279,12 +278,6 @@ class AnswerAdmin(admin.ModelAdmin):
         )
 
 
-class SnippetAdmin(admin.ModelAdmin):
-    readonly_fields = ("user", "created_at", "executed_at")
-    list_display = ("user", "short_input", "short_output", "created_at", "executed_at")
-    search_fields = ("user__username",)
-
-
 class UserInfoAdmin(admin.ModelAdmin):
     list_display = ("user", "points", "rank", "public_profile")
     list_filter = (TeamFilter,)
@@ -297,7 +290,6 @@ class CategoryAdmin(TranslationAdmin):
 
 admin.site.register(Answer, AnswerAdmin)
 admin.site.register(Exercise, ExerciseAdmin)
-admin.site.register(Snippet, SnippetAdmin)
 admin.site.register(UserInfo, UserInfoAdmin)
 admin.site.register(Team, TeamAdmin)
 admin.site.register(Category, CategoryAdmin)

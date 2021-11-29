@@ -7,10 +7,10 @@ from channels.db import database_sync_to_async
 from channels.generic.websocket import AsyncJsonWebsocketConsumer
 from django.utils.timezone import now
 
-from hkis.tasks import check_answer, run_snippet
-from hkis.models import Answer, Exercise, Snippet, User, UserInfo
+from hkis.tasks import check_answer
+from hkis.models import Answer, Exercise, User, UserInfo
 from hkis.utils import markdown_to_bootstrap
-from hkis.serializers import AnswerSerializer, SnippetSerializer
+from hkis.serializers import AnswerSerializer
 
 logger = logging.getLogger(__name__)
 
@@ -38,13 +38,6 @@ def db_create_answer(exercise_id: int, user_id: int, source_code):
         source_code=source_code, user_id=user_id
     )
     return answer
-
-
-@database_sync_to_async
-def db_create_snippet(user: User, source_code):
-    return Snippet.objects.create(
-        source_code=source_code, user=user if not user.is_anonymous else None
-    )
 
 
 @database_sync_to_async
@@ -83,15 +76,6 @@ def db_update_answer(answer_id: int, is_valid: bool, correction_message: str):
     return answer, rank
 
 
-@database_sync_to_async
-def db_update_snippet(snippet_id: int, output: str):
-    snippet = Snippet.objects.get(id=snippet_id)
-    snippet.output = output
-    snippet.executed_at = now()
-    snippet.save()
-    return snippet
-
-
 def answer_message(answer: Answer, rank: int = None) -> dict:
     message = AnswerSerializer(answer).data
     if rank:
@@ -100,12 +84,6 @@ def answer_message(answer: Answer, rank: int = None) -> dict:
         message["correction_message"]
     )
     message["type"] = "answer.update"
-    return message
-
-
-def snippet_message(snippet: Snippet):
-    message = SnippetSerializer(snippet).data
-    message["type"] = "snippet.update"
     return message
 
 
@@ -139,8 +117,6 @@ class ExerciseConsumer(AsyncJsonWebsocketConsumer):
             asyncio.create_task(self.flag_as_unhelpfull(content["answer_id"]))
         elif content["type"] == "recorrect":
             asyncio.create_task(self.recorrect(content))
-        elif content["type"] == "snippet":
-            asyncio.create_task(self.snippet(content))
         elif content["type"] == "settings":
             self.settings = content["value"]
         else:
@@ -191,22 +167,3 @@ class ExerciseConsumer(AsyncJsonWebsocketConsumer):
         log("Got result from moulinette")
         answer, rank = await db_update_answer(answer.id, is_valid, message)
         await self.send_json(answer_message(answer, rank))
-
-    async def snippet(self, snippet):
-        """Snippet runner does not listen for DB events: it awaits for the
-        snippet to run and send the result to the caller, no channels
-        group involved (it won't be sent to other browser tabs).
-
-        Note it's a distinct task (started by receive_json) to avoid
-        blocking this consumer.
-        """
-        log("Receive snippet from browser")
-        snippet_obj = await db_create_snippet(
-            self.scope["user"], snippet["source_code"]
-        )
-        await self.send_json(snippet_message(snippet_obj))
-        log("Sending snippet to runner")
-        result = await run_snippet(snippet["source_code"], pre=self.exercise.pre_check)
-        log("Got result from snippet runner")
-        snippet_obj = await db_update_snippet(snippet_obj.id, result)
-        await self.send_json(snippet_message(snippet_obj))

@@ -5,7 +5,6 @@ celery -A hkis.tasks worker
 import asyncio
 from functools import partial
 from random import choice
-from typing import Optional
 import os
 import tempfile
 from subprocess import Popen, PIPE, run, STDOUT, TimeoutExpired, DEVNULL
@@ -48,52 +47,6 @@ FIREJAIL_OPTIONS = [
     "--blacklist=/sys",
     "--blacklist=/boot",
 ]
-
-
-@app.task
-def run_snippet_task(source_code: str, pre: Optional[str] = None) -> str:
-    """Just run the *source_code* by putting it in a `snippet.py` file and
-    running it in a sandbox.
-
-    `pre` can be used to run some preparation code
-    **unsanboxed**. It's usefull to setup the test environment by
-    pre-creating files, installing dependencies, placing i18n files,
-    ...
-
-    """
-    with tempfile.TemporaryDirectory(prefix="hkis_snippets") as tmpdir:
-        if pre:
-            run_pre_check(tmpdir, pre)
-        with open(
-            os.path.join(tmpdir, "snippet.py"), "w", encoding="UTF-8"
-        ) as snippet_file:
-            snippet_file.write(source_code)
-        firejail_env = os.environ.copy()
-        prof_proc = Popen(  # pylint: disable=consider-using-with
-            ["firejail"]
-            + FIREJAIL_OPTIONS
-            + ["--private=" + tmpdir, "python3", "./snippet.py"],
-            stdin=DEVNULL,
-            stdout=PIPE,
-            stderr=STDOUT,
-            cwd=tmpdir,
-            env=firejail_env,
-        )
-        try:
-            stdout = prof_proc.communicate(timeout=40)[0]
-            if prof_proc.returncode == 255:
-                return "Checker timed out, look for infinite loops maybe?"
-            return stdout.decode("UTF-8", "backslashreplace").replace(
-                "\u0000", r"\x00"
-            )[:65_536]
-        except TimeoutExpired:
-            prof_proc.kill()
-            prof_proc.wait()
-            return "Timed out after 20 seconds."
-        except OSError as err:
-            return str(err)
-        except MemoryError:
-            return "Not enough memory to run your code."
 
 
 def congrats(language):
@@ -237,18 +190,4 @@ async def check_answer(answer: dict):
 
     return await asyncio.get_running_loop().run_in_executor(
         None, partial(sync_celery_check_answer, answer=answer)
-    )
-
-
-async def run_snippet(source_code: str, pre: Optional[str] = None) -> str:
-    """Executed Django side.
-
-    TODO with Celery 5: should no longer need run_in_executor.
-    """
-
-    def sync_celery_check_answer(source_code: str):
-        return run_snippet_task.apply_async((source_code, pre), expires=60).get()
-
-    return await asyncio.get_running_loop().run_in_executor(
-        None, partial(sync_celery_check_answer, source_code=source_code)
     )

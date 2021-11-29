@@ -10,9 +10,9 @@ from rest_framework import (
     permissions,
     filters,
 )
-import django_filters
 
-from hkis.models import Answer, Exercise, Snippet, User, Category, Page, Team
+
+from hkis.models import Answer, Exercise, User, Category, Page, Team
 
 
 class DjangoModelPermissionsStrict(permissions.DjangoModelPermissions):
@@ -124,19 +124,6 @@ class PublicAnswerSerializer(serializers.HyperlinkedModelSerializer):
         )
 
 
-class StaffSnippetSerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = Snippet
-        fields = "__all__"
-
-
-class PublicSnippetSerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = Snippet
-        fields = "__all__"
-        read_only_fields = ("user", "created_at", "executed_at", "output")
-
-
 class ExerciseSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Exercise
@@ -238,29 +225,6 @@ class AnswerViewSet(viewsets.ModelViewSet):
         self.cb_new_answer(instance)
 
 
-class SnippetViewSet(viewsets.ModelViewSet):
-    permission_classes = [AnswerPermission]  # Snippets are like answers: Create only.
-    queryset = Snippet.objects.all()
-    filterset_fields = ("executed_at",)
-
-    def get_queryset(self):
-        if self.request.user.is_superuser:
-            queryset = super().get_queryset()
-            executed_at = self.request.query_params.get("executed_at__isnull", None)
-            if executed_at is not None:
-                queryset = queryset.filter(executed_at__isnull=True)
-            return queryset
-        return super().get_queryset().filter(user=self.request.user)
-
-    def get_serializer_class(self):
-        if self.request.user.is_superuser:
-            return StaffSnippetSerializer
-        return PublicSnippetSerializer
-
-    def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
-
-
 class ExerciseViewSet(viewsets.ModelViewSet):
     permission_classes = [ExercisePermission]
     queryset = Exercise.objects.all()
@@ -305,7 +269,6 @@ class CanViewAnswer(permissions.DjangoModelPermissions):
 
 router = routers.DefaultRouter()
 router.register("answers", AnswerViewSet)
-router.register("snippets", SnippetViewSet)
 router.register("exercises", ExerciseViewSet)
 router.register("groups", GroupViewSet)
 router.register("teams", TeamViewSet)

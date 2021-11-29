@@ -234,22 +234,6 @@ class Exercise(models.Model):
         return self.title
 
 
-class Snippet(models.Model):
-    user = models.ForeignKey(
-        User, on_delete=models.CASCADE, editable=False, blank=True, null=True
-    )
-    source_code = models.TextField()
-    output = models.TextField(blank=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    executed_at = models.DateTimeField(blank=True, null=True)
-
-    def short_input(self):
-        return self.source_code.split("\n")[:1][:100]
-
-    def short_output(self):
-        return self.output.split("\n")[:1][:100]
-
-
 class Answer(models.Model):
     class Meta:
         indexes = [
