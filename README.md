@@ -40,6 +40,10 @@ hkis as a django app in your own project:
 
     pip install django-hkis
 
+A simple example project can be seen at:
+
+=> https://framagit.org/hackinscience/hkis-example
+
 
 ## The pages
 
