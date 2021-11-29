@@ -158,7 +158,7 @@ class QSearchFilter(filters.SearchFilter):
 
 
 class TeamViewSet(viewsets.ModelViewSet):
-    permission_classes = [DjangoModelPermissionsStrict]
+    permission_classes = [permissions.DjangoModelPermissions]
     filter_backends = [QSearchFilter]
     search_fields = ["name"]
     queryset = Team.objects.all()
