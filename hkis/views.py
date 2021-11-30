@@ -17,7 +17,7 @@ from django.views.generic.edit import UpdateView
 from django.views.generic.list import ListView
 
 from hkis.forms import AnswerForm
-from hkis.models import Exercise, Membership, Page, Team, User
+from hkis.models import Exercise, Membership, Page, Team, User, UserInfo
 
 
 def index(request):
@@ -70,12 +70,14 @@ class ProfileView(LoginRequiredMixin, UpdateView):
 
 
 class Leaderboard(ListView):
-    queryset = User.objects.filter(
-        hkis__isnull=False, is_superuser=False
-    ).select_related("hkis")
+    queryset = (
+        UserInfo.objects.with_rank()
+        .filter(user__is_superuser=False)
+        .select_related("user")
+    )
     paginate_by = 100
     template_name = "hkis/leaderboard.html"
-    ordering = ["-hkis__points"]
+    ordering = ["-points"]
 
 
 class PageView(DetailView):

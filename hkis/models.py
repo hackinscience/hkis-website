@@ -5,8 +5,10 @@ from asgiref.sync import async_to_sync
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 from django.db import models, IntegrityError
-from django.db.models import Count, Value, Q, Min, Sum
+from django.db.models import Count, Value, Q, Min, Sum, F
 from django.db.models.signals import post_save
+from django.db.models.expressions import Window
+from django.db.models.functions import DenseRank
 from django.dispatch import receiver
 from django.template.defaultfilters import truncatechars
 from django.urls import reverse
@@ -27,8 +29,18 @@ class UserInfoQuerySet(models.QuerySet):
         for userinfo in UserInfo.objects.order_by("rank"):
             userinfo.recompute_rank()
 
+    def with_rank(self):
+        return self.annotate(
+            r=Window(order_by=F("points").desc(), expression=DenseRank())
+        )
+
 
 class UserInfo(models.Model):
+    class Meta:
+        indexes = [
+            models.Index(fields=["-points"]),
+        ]
+
     objects = UserInfoQuerySet.as_manager()
     user = models.OneToOneField(to=User, on_delete=models.CASCADE, related_name="hkis")
     points = models.FloatField(default=0)  # Computed sum of solved exercise positions.
