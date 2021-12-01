@@ -266,7 +266,7 @@ def team_stats(request, slug):
                         ).order_by("position")
                     ],
                 )
-                for user in User.objects.filter(teams=team).order_by("-points")
+                for user in User.objects.filter(teams=team).order_by("-hkis__points")
             ]
         ),
         "exercises": Exercise.objects.order_by("position"),
