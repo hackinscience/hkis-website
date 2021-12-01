@@ -85,6 +85,11 @@ class TestViews(TestCase):
     def test_get_profile(self):
         self.client.get("/profile/1")
 
+    def test_get_teams(self):
+        self.client.get("/teams/")
+        self.client.get("/teams/team-mdk")
+        self.client.get("/teams/team-mdk/stats")
+
     def test_get_page(self):
         self.client.get("/exercises/")
 
