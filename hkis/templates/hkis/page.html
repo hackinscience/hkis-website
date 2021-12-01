@@ -18,14 +18,10 @@
     <table class="table table-sm table-hover">
       <tbody>
         {% for exercise in exercises %}
-        <tr class="{% if exercise.user_tries > 0 %}{% if exercise.user_successes > 0 %}table-success{% else %}table-danger{% endif %}{% endif %}">
+        <tr class="{% if exercise.pk in exercises_done %}table-success{% endif %}">
           <td scope="row" class="align-items-center">
-              {% if exercise.user_tries > 0 %}
-                {% if exercise.user_successes > 0 %}
+              {% if exercise.pk in exercises_done %}
                   <span class="good">✓</span>
-                {% else %}
-                  <span class="bad">✗</span>
-                {% endif %}
               {% else %}
                   &nbsp;
               {% endif %}

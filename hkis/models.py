@@ -175,7 +175,6 @@ class ExerciseQuerySet(models.QuerySet):
 
     def with_global_stats(self):
         return self.annotate(
-            tries=Count("answers__user", distinct=True),
             successes=Count(
                 "answers__user", filter=Q(answers__is_valid=True), distinct=True
             ),
@@ -184,12 +183,10 @@ class ExerciseQuerySet(models.QuerySet):
     def with_user_stats(self, user):
         if user.is_anonymous:
             return self.annotate(
-                user_tries=Value(0, models.IntegerField()),
                 solved_at=Value(now(), models.DateTimeField()),
                 user_successes=Value(0, models.IntegerField()),
             )
         return self.annotate(
-            user_tries=Count("answers", filter=Q(answers__user=user)),
             solved_at=Min("answers__created_at", filter=Q(answers__user=user)),
             user_successes=Count(
                 "answers",

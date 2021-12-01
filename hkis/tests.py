@@ -76,7 +76,7 @@ class TestAdminSuperUser(TestCase):
         assert b"Hello World" in response.content
 
 
-class TestProfile(TestCase):
+class TestViews(TestCase):
     fixtures = ["initial"]
 
     def setUp(self):
@@ -84,6 +84,15 @@ class TestProfile(TestCase):
 
     def test_get_profile(self):
         self.client.get("/profile/1")
+
+    def test_get_page(self):
+        self.client.get("/exercises/")
+
+    def test_get_exercise(self):
+        self.client.get("/exercises/hello-world")
+
+    def test_get_solution(self):
+        self.client.get("/exercises/hello-world/solutions")
 
 
 # class TestStaffCanCreateExercise(LiveServerTestCase):

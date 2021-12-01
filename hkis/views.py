@@ -17,7 +17,7 @@ from django.views.generic.edit import UpdateView
 from django.views.generic.list import ListView
 
 from hkis.forms import AnswerForm
-from hkis.models import Exercise, Membership, Page, Team, User, UserInfo
+from hkis.models import Exercise, Membership, Page, Team, User, UserInfo, Answer
 
 
 def index(request):
@@ -55,9 +55,9 @@ class ProfileView(LoginRequiredMixin, UpdateView):
             if context["exercises"]
             else "ø"
         )
-        context["submit_qty"] = sum(
-            exercise.user_tries for exercise in context["exercises"]
-        )
+        # context["submit_qty"] = sum(
+        #     exercise.user_tries for exercise in context["exercises"]
+        # )
         context["participants"] = User.objects.count()
         context["languages"] = settings.LANGUAGES
 
@@ -87,11 +87,19 @@ class PageView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        if not self.request.user.is_anonymous:
+            context["exercises_done"] = {
+                row[0]
+                for row in Answer.objects.filter(user=self.request.user, is_valid=True)
+                .distinct()
+                .values_list("exercise_id")
+            }
+        else:
+            context["exercises_done"] = set()
         exercises = (
             context["object"]
             .exercises.filter(is_published=True)
             .with_global_stats()
-            .with_user_stats(self.request.user)
             .only("title", "category", "page", "slug")
             .select_related("category")
         )
