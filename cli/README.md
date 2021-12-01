@@ -15,6 +15,8 @@ Characters counting
 $ hkis get Print 42
 Downloaded print-42.py, you can upload it back using:
 
+    hkis check print-42.py
+
 $ hkis check print-42.py
 Your code printed nothing, did you forgot to call the
 [print](https://docs.python.org/3/library/functions.html#print) function?
