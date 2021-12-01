@@ -2,7 +2,7 @@ from django.contrib.auth.models import Permission, User, Group
 from django.contrib.contenttypes.models import ContentType
 from django.test import TestCase
 from rest_framework.test import APITestCase
-from hkis.models import UserInfo, Exercise, Page, Category, Answer
+from hkis.models import UserInfo, Exercise, Page, Category, Answer, Team
 
 
 class TestRankUserWithInfo(TestCase):
@@ -14,12 +14,12 @@ class TestRankUserWithInfo(TestCase):
         self.client.force_login(self.user)
 
     def test_recompute_rank(self):
-        self.userinfo.recompute_rank()
-        assert User.objects.get(username="Temporary").hkis.rank == 2
+        self.userinfo.recompute_points()
+        assert UserInfo.with_rank.get(user__username="Temporary").rank == 2
 
     def test_recompute_ranks(self):
-        UserInfo.objects.recompute_ranks()
-        assert User.objects.get(username="Temporary").hkis.rank == 2
+        UserInfo.objects.recompute_points()
+        assert UserInfo.with_rank.get(user__username="Temporary").rank == 2
 
 
 class TestRankUserWithNoInfo(TestCase):
@@ -29,14 +29,17 @@ class TestRankUserWithNoInfo(TestCase):
         self.user = User.objects.create(username="Temporary")
 
     def test_recompute_ranks(self):
-        UserInfo.objects.recompute_ranks()
+        UserInfo.objects.recompute_points()
 
 
-class TestGetPublicTeams(TestCase):
+class TestTeams(TestCase):
     fixtures = ["initial"]
 
     def test_public_teams(self):
         assert User.objects.get(username="mdk").hkis.public_teams()
+
+    def test_team_by_rank(self):
+        assert len(list(Team.objects.first().members_by_rank()))
 
 
 class TestPages(TestCase):
@@ -71,6 +74,16 @@ class TestAdminSuperUser(TestCase):
     def test_get_admin_exercises_1(self):
         response = self.client.get("/admin/hkis/exercise/1/change/")
         assert b"Hello World" in response.content
+
+
+class TestProfile(TestCase):
+    fixtures = ["initial"]
+
+    def setUp(self):
+        self.client.force_login(User.objects.get(username="mdk"))
+
+    def test_get_profile(self):
+        self.client.get("/profile/1")
 
 
 # class TestStaffCanCreateExercise(LiveServerTestCase):

@@ -70,7 +70,12 @@ def db_update_answer(answer_id: int, is_valid: bool, correction_message: str):
     rank = None
     if answer.is_valid and answer.user_id:
         userinfo, _ = UserInfo.objects.get_or_create(user=answer.user)
-        rank = userinfo.recompute_rank()
+        userinfo.recompute_points()
+        try:
+            rank = UserInfo.with_rank.get(user=userinfo.user).rank
+        except UserInfo.DoesNotExist:
+            rank = None
+            # In case of show_in_leaderboard=False
         for team in answer.user.teams.all():
             team.recompute_rank()
     return answer, rank

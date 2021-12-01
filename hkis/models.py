@@ -17,6 +17,7 @@ from django.utils.timezone import now
 from django.utils.translation import gettext_lazy as _
 from django_extensions.db.fields import AutoSlugField
 
+from django_cte import CTEManager, With, CTEQuerySet
 
 logger = logging.getLogger(__name__)
 
@@ -24,34 +25,90 @@ logger = logging.getLogger(__name__)
 User = get_user_model()
 
 
-class UserInfoQuerySet(models.QuerySet):
-    def recompute_ranks(self):  # pylint: disable=no-self-use
-        for userinfo in UserInfo.objects.order_by("rank"):
-            userinfo.recompute_rank()
+class UserInfoCTEQuerySet(CTEQuerySet):
+    """QuerySet attached to the UserInfo.with_rank manager."""
 
     def with_rank(self):
-        return self.annotate(
-            r=Window(order_by=F("points").desc(), expression=DenseRank())
+        """Use a Common Table Expression to add rank to UserInfos.
+
+        The resulting query looks like:
+
+            WITH cte AS (
+                SELECT *, DENSE_RANK() OVER (ORDER BY hkis_userinfo.points DESC) AS r
+                FROM "hkis_userinfo")
+            SELECT * FROM cte
+
+        The idea is with_rank() can be chained with filters without
+        modifying the window, generating queries like:
+
+            WITH cte AS (
+                SELECT *, DENSE_RANK() OVER (ORDER BY hkis_userinfo.points DESC) AS r
+                FROM "hkis_userinfo")
+            SELECT * FROM cte
+            WHERE ...
+
+        Without a CTE,
+        `UserInfo.with_rank.filter(user__username="anyone")`
+        would always tell the user is ranked 1st (as the only one in its selection).
+        """
+        with_rank = With(
+            self.annotate(
+                rank=Window(order_by=F("points").desc(), expression=DenseRank())
+            ).filter(show_in_leaderboard=True)
         )
+        return with_rank.queryset().with_cte(with_rank).select_related("user")
+        # or if we need the FROM to be a table from an actual model:
+        # return (
+        #     with_rank.join(UserInfo, user_id=with_rank.col.user_id)
+        #     .with_cte(with_rank)
+        #     .annotate(rank=with_rank.col.rank)
+        # )
+
+
+class UserInfoQuerySet(CTEQuerySet):
+    def recompute_points(self):  # pylint: disable=no-self-use
+        """Recompute all user points, usefull after updating the points given
+        by an exercise.
+        """
+        for userinfo in UserInfo.objects.all():
+            userinfo.recompute_points()
+
+
+class UserInfoManager(CTEManager):
+    """UserInfo.with_rank manager, to get:
+
+    UserInfo.with_rank.first().rank
+
+    ⚠ Users with show_in_leaderboard=False are **excluded** from this manager.
+    ⚠ It also mean  it can't be used as a base_manager!
+    """
+
+    def get_queryset(self):
+        return UserInfoCTEQuerySet(self.model, using=self._db).with_rank()
 
 
 class UserInfo(models.Model):
     class Meta:
         indexes = [
             models.Index(fields=["-points"]),
+            models.Index(fields=["show_in_leaderboard", "-points"]),
         ]
 
     objects = UserInfoQuerySet.as_manager()
+    with_rank = UserInfoManager.from_queryset(UserInfoCTEQuerySet)()
     user = models.OneToOneField(to=User, on_delete=models.CASCADE, related_name="hkis")
     points = models.FloatField(default=0)  # Computed sum of solved exercise positions.
-    rank = models.PositiveIntegerField(blank=True, null=True)
     public_profile = models.BooleanField(default=True)
+    show_in_leaderboard = models.BooleanField(default=True)
+
+    def __str__(self):
+        return f"{self.user.username} {self.points}"
 
     def public_teams(self):
         return self.user.teams.filter(is_public=True)
 
-    def recompute_rank(self) -> int:
-        """Reconpute, and return, the user rank.
+    def recompute_points(self) -> None:
+        """Reconpute the number of points for this user.
 
         Points for one exercise done:
 
@@ -75,9 +132,7 @@ class UserInfo(models.Model):
                 ).total_seconds()
                 points += exercise.points - (time_to_solve ** 0.001 - 1)
         self.points = points
-        self.rank = UserInfo.objects.filter(points__gt=self.points).count() + 1
         self.save()
-        return self.rank
 
 
 class Page(models.Model):
@@ -276,10 +331,8 @@ class Answer(models.Model):
         return truncatechars(self.correction_message.strip().split("\n")[0], 100)
 
     def __str__(self):
-        return "{} on {}".format(
-            Truncator(self.user.username if self.user else "Anon").chars(30),
-            self.exercise.title,
-        )
+        username = Truncator(self.user.username if self.user else "Anon").chars(30)
+        return f"{username} on {self.exercise.title}"
 
     def get_absolute_url(self):
         return self.exercise.get_absolute_url() + "?view_as=" + str(self.user.id)
@@ -421,7 +474,7 @@ class Team(models.Model):
     def members_by_rank(self):
         return (
             self.membership_set.filter(user__hkis__isnull=False)
-            .order_by("user__hkis__rank")
+            .order_by("-user__hkis__points")
             .select_related("user__hkis")
         )
 

@@ -279,9 +279,15 @@ class AnswerAdmin(admin.ModelAdmin):
 
 
 class UserInfoAdmin(admin.ModelAdmin):
-    list_display = ("user", "points", "rank", "public_profile")
+    list_display = ("user", "points", "rank", "public_profile", "show_in_leaderboard")
     list_filter = (TeamFilter,)
     search_fields = ("teams__name",)
+
+    def rank(self, obj):  # pylint: disable=no-self-use
+        try:
+            return UserInfo.with_rank.get(pk=obj.pk).rank
+        except UserInfo.DoesNotExist:
+            return "(not ranked)"
 
 
 class CategoryAdmin(TranslationAdmin):

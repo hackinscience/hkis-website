@@ -191,7 +191,7 @@ class AnswerViewSet(viewsets.ModelViewSet):
     filterset_class = AnswerFilter
 
     def cb_new_answer(self, instance):  # pylint: disable=no-self-use
-        group = "answers.{}.{}".format(instance.user.id, instance.exercise.id)
+        group = f"answers.{instance.user.id}.{instance.exercise.id}"
         channel_layer = get_channel_layer()
         async_to_sync(channel_layer.group_send)(
             group,

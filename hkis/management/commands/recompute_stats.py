@@ -7,5 +7,5 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         Team.objects.recompute_ranks()
-        UserInfo.objects.recompute_ranks()
+        UserInfo.objects.recompute_points()
         self.stdout.write(self.style.SUCCESS("Successfully recomputed all stats"))

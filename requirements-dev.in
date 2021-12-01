@@ -1,9 +1,0 @@
--r requirements.txt
-black
-coverage
-flake8
-mypy
-pip-tools
-pylint
-pylint-django
-tox

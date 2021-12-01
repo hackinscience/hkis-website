@@ -30,7 +30,7 @@ def main():
             "wording_en.md",
             "initial_solution.py",
         ):
-            meta[file.split(".")[0]] = (exercise.parent / file).read_text()
+            meta[file.split(".", maxsplit=1)[0]] = (exercise.parent / file).read_text()
         print("Uploading ", meta["title"])
         response = requests.put(
             meta["url"], json=meta, auth=(args.username, args.password)

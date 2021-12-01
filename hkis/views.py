@@ -39,6 +39,10 @@ class ProfileView(LoginRequiredMixin, UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        try:
+            context["user_info"] = UserInfo.with_rank.get(user_id=self.request.user.pk)
+        except UserInfo.DoesNotExist:
+            context["user_info"] = None
         context["memberships"] = context["object"].membership_set.all()
         context["exercises"] = Exercise.objects.filter(
             is_published=True
@@ -70,11 +74,7 @@ class ProfileView(LoginRequiredMixin, UpdateView):
 
 
 class Leaderboard(ListView):
-    queryset = (
-        UserInfo.objects.with_rank()
-        .filter(user__is_superuser=False)
-        .select_related("user")
-    )
+    queryset = UserInfo.with_rank.all()
     paginate_by = 100
     template_name = "hkis/leaderboard.html"
     ordering = ["-points"]
@@ -141,17 +141,17 @@ class ExerciseView(DetailView):
             ).order_by("-id")
         context["answer_form"] = AnswerForm(
             initial={
-                "exercise": "/api/exercises/{}/".format(self.object.id),
+                "exercise": f"/api/exercises/{self.object.id}/",
                 "source_code": answers[0].source_code
                 if answers
                 else context["exercise"].initial_solution,
             }
         )
         context["object"].wording = gettext(context["object"].wording)
-        if user.is_anonymous or not hasattr(user, "hkis"):
-            context["current_rank"] = 999999
-        else:
-            context["current_rank"] = user.hkis.rank
+        try:
+            context["current_rank"] = UserInfo.with_rank.get(user=user).rank
+        except UserInfo.DoesNotExist:
+            context["current_rank"] = 999_999
         if user.is_anonymous:
             context["is_valid"] = False
         else:

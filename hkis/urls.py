@@ -3,7 +3,7 @@ from django.views.i18n import JavaScriptCatalog
 from django.shortcuts import redirect
 
 from hkis.api import router
-import hkis.views as views
+from hkis import views
 
 urlpatterns = [
     path("", views.index, name="index"),

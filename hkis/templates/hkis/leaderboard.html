@@ -21,7 +21,7 @@
         {% for player in page_obj %}
           <tr class="{% if player.user.username == user.username %}table-primary{% endif %}">
             <td scope="row">
-              {{ player.r }}
+              {{ player.rank }}
             </td>
             <td scope="row">
               {{ player.points|floatformat:"0" }}
