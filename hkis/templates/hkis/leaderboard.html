@@ -34,7 +34,7 @@
               {% endif %}
             </td>
             <td scope="row">
-              {% for team in player.public_teams %}{% if forloop.counter > 1 %},&nbsp;{% endif %}<a href="{% url 'team' team.slug %}">{{ team }}</a>{% endfor %}
+              {% for team in player.user.teams.all %}{% if team.is_public %}{% if forloop.counter > 1 %},&nbsp;{% endif %}<a href="{% url 'team' team.slug %}">{{ team }}</a>{% endif %}{% endfor %}
             </td>
           </tr>
         {% endfor %}

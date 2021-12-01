@@ -5,7 +5,8 @@
     "fields": {
         "user": 1,
         "points": 1.966561803920538,
-        "public_profile": true
+        "public_profile": true,
+        "show_in_leaderboard": true
     }
 },
 {
@@ -14,7 +15,28 @@
     "fields": {
         "user": 2,
         "points": 0.0,
-        "public_profile": true
+        "public_profile": true,
+        "show_in_leaderboard": true
+    }
+},
+{
+    "model": "hkis.userinfo",
+    "pk": 7,
+    "fields": {
+        "user": 3,
+        "points": 0.0,
+        "public_profile": true,
+        "show_in_leaderboard": true
+    }
+},
+{
+    "model": "hkis.userinfo",
+    "pk": 8,
+    "fields": {
+        "user": 4,
+        "points": 0.0,
+        "public_profile": true,
+        "show_in_leaderboard": true
     }
 },
 {
@@ -326,7 +348,7 @@
     "pk": 1,
     "fields": {
         "password": "pbkdf2_sha256$260000$fwLk6yN8ubsPnRaY4i6ipP$ynV6Hu+UbQMpavAnOgdj+4t0hRn8YvXTNmipNK8uihs=",
-        "last_login": "2021-11-29T22:39:09.351Z",
+        "last_login": "2021-12-01T10:44:04.800Z",
         "is_superuser": true,
         "username": "mdk",
         "first_name": "",
@@ -356,6 +378,42 @@
         "groups": [
             1
         ],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "pk": 3,
+    "fields": {
+        "password": "pbkdf2_sha256$260000$fIB6aW7iL02u6ga0S6lgS2$TvlKKjMmpq32M3ynneD20yh/m0pYn1sc0Rw4Hxz6tEo=",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "Bart",
+        "first_name": "",
+        "last_name": "",
+        "email": "",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2021-12-01T10:44:20.671Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "pk": 4,
+    "fields": {
+        "password": "pbkdf2_sha256$260000$HOmOmJkxAUh85CyE1g8Pkh$juDpxQtaKyRfmgup1MffQGzjXIakihIGYSrc5mML6Jc=",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "Homer",
+        "first_name": "",
+        "last_name": "",
+        "email": "",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2021-12-01T10:44:39.867Z",
+        "groups": [],
         "user_permissions": []
     }
 }

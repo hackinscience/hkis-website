@@ -74,7 +74,7 @@ class ProfileView(LoginRequiredMixin, UpdateView):
 
 
 class Leaderboard(ListView):
-    queryset = UserInfo.with_rank.all()
+    queryset = UserInfo.with_rank.all().prefetch_related("user__teams")
     paginate_by = 100
     template_name = "hkis/leaderboard.html"
     ordering = ["-points"]
