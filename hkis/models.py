@@ -306,6 +306,8 @@ class Answer(models.Model):
         indexes = [
             models.Index(fields=["exercise", "-votes"]),
             models.Index(fields=["is_valid", "is_safe"]),
+            models.Index(fields=["exercise", "is_valid"]),
+            models.Index(fields=["exercise", "user", "is_valid"]),
         ]
 
     exercise = models.ForeignKey(
