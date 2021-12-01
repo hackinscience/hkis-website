@@ -88,10 +88,11 @@ class PageView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         exercises = (
-            self.object.exercises.filter(is_published=True)
+            context["object"]
+            .exercises.filter(is_published=True)
             .with_global_stats()
             .with_user_stats(self.request.user)
-            .only("title", "category")
+            .only("title", "category", "page", "slug")
             .select_related("category")
         )
         context["by_category"] = [
