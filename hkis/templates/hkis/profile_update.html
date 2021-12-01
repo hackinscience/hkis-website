@@ -10,15 +10,15 @@
 
 <div class="col-md-8 offset-md-2">
   <h2>{% trans "Statistics" %}</h2>
-  {% comment %} <p>
+  <p>
     {% blocktrans with date_joined=user.date_joined trimmed %}
     You subscribed on {{ date_joined }}, and sent {{ submit_qty }}
     answers to the correction bot.
     {% endblocktrans %}
-  </p> {% endcomment %}
+  </p>
   <p>
     {% blocktrans trimmed %}
-    You resolved {{ done_qty }} exercises, that's {{ done_pct }} of all exercises.
+    You resolved {{ done_qty }} exercises.
     {% endblocktrans %}
   </p>
   <p>

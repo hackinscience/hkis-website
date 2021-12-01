@@ -91,7 +91,9 @@ class TestViews(TestCase):
         self.client.get("/teams/team-mdk/stats")
 
     def test_get_page(self):
+        self.client.get("/")
         self.client.get("/exercises/")
+        self.client.get("/help/")
 
     def test_get_exercise(self):
         self.client.get("/exercises/hello-world")

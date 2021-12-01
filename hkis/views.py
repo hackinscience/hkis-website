@@ -44,20 +44,13 @@ class ProfileView(LoginRequiredMixin, UpdateView):
         except UserInfo.DoesNotExist:
             context["user_info"] = None
         context["memberships"] = context["object"].membership_set.all()
-        context["exercises"] = Exercise.objects.filter(
-            is_published=True
-        ).with_user_stats(self.request.user)
-        context["done_qty"] = len(
-            [ex for ex in context["exercises"] if ex.user_successes]
+        context["done_qty"] = (
+            Answer.objects.filter(user=self.request.user, is_valid=True)
+            .values_list("exercise_id")
+            .distinct()
+            .count()
         )
-        context["done_pct"] = (
-            f"{context['done_qty'] / len(context['exercises']):.0%}"
-            if context["exercises"]
-            else "ø"
-        )
-        # context["submit_qty"] = sum(
-        #     exercise.user_tries for exercise in context["exercises"]
-        # )
+        context["submit_qty"] = Answer.objects.filter(user=self.request.user).count()
         context["participants"] = User.objects.count()
         context["languages"] = settings.LANGUAGES
 
