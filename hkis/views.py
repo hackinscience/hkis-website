@@ -150,7 +150,7 @@ class ExerciseView(DetailView):
         context["object"].wording = gettext(context["object"].wording)
         try:
             context["current_rank"] = UserInfo.with_rank.get(user=user).rank
-        except UserInfo.DoesNotExist:
+        except (UserInfo.DoesNotExist, TypeError):
             context["current_rank"] = 999_999
         if user.is_anonymous:
             context["is_valid"] = False
