@@ -234,6 +234,11 @@ class ExerciseQuerySet(models.QuerySet):
             ),
         )
 
+    def recompute_solved_by(self):
+        for exercise in self.with_global_stats():
+            exercise.solved_by = exercise.successes
+            exercise.save()
+
 
 class Exercise(models.Model):
     title = models.CharField(max_length=255)
@@ -260,6 +265,10 @@ class Exercise(models.Model):
         Category, on_delete=models.SET_NULL, blank=True, null=True
     )
     page = models.ForeignKey(Page, on_delete=models.RESTRICT, related_name="exercises")
+    # Number of users successfully solving the exercise.
+    # This could, or not, count solves by non-logged users
+    # I did not made my mind yet.
+    solved_by = models.IntegerField(default=0)
 
     def shared_solutions(self):
         return Answer.objects.filter(

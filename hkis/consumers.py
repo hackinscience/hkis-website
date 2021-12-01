@@ -69,8 +69,12 @@ def db_update_answer(answer_id: int, is_valid: bool, correction_message: str):
     answer.save()
     rank = None
     if answer.is_valid and answer.user_id:
+        exercise = answer.exercise
+        exercise.solved_by += 1
+        exercise.save()
         userinfo, _ = UserInfo.objects.get_or_create(user=answer.user)
-        userinfo.recompute_points()
+        userinfo.points += exercise.points
+        userinfo.save()
         try:
             rank = UserInfo.with_rank.get(user=userinfo.user).rank
         except UserInfo.DoesNotExist:

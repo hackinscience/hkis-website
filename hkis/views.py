@@ -99,8 +99,7 @@ class PageView(DetailView):
         exercises = (
             context["object"]
             .exercises.filter(is_published=True)
-            .with_global_stats()
-            .only("title", "category", "page", "slug")
+            .only("title", "category", "page", "slug", "solved_by")
             .select_related("category")
         )
         context["by_category"] = [
