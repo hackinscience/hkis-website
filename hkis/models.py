@@ -267,7 +267,7 @@ class Exercise(models.Model):
     def shared_solutions(self):
         return Answer.objects.filter(
             exercise=self, is_valid=True, is_shared=True
-        ).order_by("user__hkis__rank")
+        ).order_by("-user__hkis__points")
 
     def is_solved_by(self, user):
         return self.answers.filter(user=user, is_valid=True).exists()
