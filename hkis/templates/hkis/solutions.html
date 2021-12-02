@@ -34,7 +34,7 @@ data-csrf-token="{{ csrf_token }}"
                role="tab"
                aria-controls="sol-{{forloop.counter}}"
                aria-selected="{% if forloop.counter == 1 %}true{% else %}false{% endif %}">
-                  {{ forloop.counter }}
+                  {{ solution.user.username }}
               </button>
           </li>
           {% endfor %}
