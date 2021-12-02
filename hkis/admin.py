@@ -90,7 +90,6 @@ class ExerciseAdmin(TranslationAdmin):
     autocomplete_fields = ("author",)
     fields = (
         "title",
-        "slug",
         "author",
         "page",
         "category",
@@ -105,6 +104,7 @@ class ExerciseAdmin(TranslationAdmin):
     )
     form = AdminExerciseForm
     list_display = (
+        "exercise",
         "title",
         "formatted_position",
         "category",
@@ -154,6 +154,9 @@ class ExerciseAdmin(TranslationAdmin):
             f"{obj.last_month_successes} "
             f"({obj.last_month_successes - obj.prev_month_successes:+})"
         )
+
+    def exercise(self, obj):
+        return f"{obj.page.slug}/{obj.slug}"
 
     def monthly_success_ratio(self, obj):  # pylint: disable=no-self-use
         last_month_ratio = prev_month_ratio = None

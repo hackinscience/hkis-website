@@ -58,6 +58,7 @@ def main():
         path = Path(page) / exercise["slug"]
         path.mkdir(exist_ok=True, parents=True)
         del exercise["wording"]  # Only use _en and _fr.
+        del exercise["solved_by"]  # Change everytime :D
         print("Downloading", exercise["title"], "in", page)
         with suppress(FileNotFoundError):
             old_meta = json.loads((path / "meta").read_text(encoding="UTF-8"))
