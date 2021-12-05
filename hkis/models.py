@@ -322,7 +322,7 @@ class Answer(models.Model):
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, editable=False, null=True, blank=True
     )
-    source_code = models.TextField()
+    source_code = models.TextField(blank=True)
     is_corrected = models.BooleanField(default=False)
     is_valid = models.BooleanField(default=False)
     is_shared = models.BooleanField(default=False)
