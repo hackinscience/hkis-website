@@ -165,6 +165,11 @@ function lock_button(button_id, unlock_after_seconds) {
         setTimeout(function(){unlock_button(button_id);}, unlock_after_seconds * 1000);
 }
 
+function button_is_locked(button_id) {
+    return document.getElementById(button_id).hasAttribute("disabled");
+}
+
+
 function close_answer_box(event) {
     var instructions_tab = document.querySelector('#tab-instructions');
     var tab = new bootstrap.Tab(instructions_tab);
@@ -173,6 +178,10 @@ function close_answer_box(event) {
 
 function shortcuts_handler(event) {
     if (event.ctrlKey && event.code == "Enter") {
+        if (button_is_locked("submit_answer")) {
+            console.log("Enhance your calm.");
+            return ;
+        }
         console.log("Sending via Ctrl-enter");
         ws_submit_answer(document.getElementById("answer_form"));
         return ;
