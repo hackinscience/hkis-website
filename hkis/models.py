@@ -323,13 +323,15 @@ class Answer(models.Model):
         User, on_delete=models.CASCADE, editable=False, null=True, blank=True
     )
     source_code = models.TextField(blank=True)
-    is_corrected = models.BooleanField(default=False)
-    is_valid = models.BooleanField(default=False)
-    is_shared = models.BooleanField(default=False)
+    is_corrected = models.BooleanField(default=False, verbose_name="Corrected")
+    is_valid = models.BooleanField(default=False, verbose_name="Valid")
+    is_shared = models.BooleanField(default=False, verbose_name="Shared")
     correction_message = models.TextField(default="", blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     corrected_at = models.DateTimeField(blank=True, null=True)
-    is_unhelpfull = models.BooleanField(default=False, blank=True)
+    is_unhelpfull = models.BooleanField(
+        default=False, blank=True, verbose_name="Unhelpfull"
+    )
     votes = models.IntegerField(default=0, blank=True, null=False)  # Sum of Vote.value
     is_safe = models.BooleanField(
         default=False, blank=True
