@@ -267,7 +267,7 @@ class AnswerAdmin(admin.ModelAdmin):
             return super().has_view_permission(request, obj)
         return super().has_view_permission(request, obj) and (
             obj.exercise.author == request.user
-            or (obj.user.teams.all() & Team.objects.my_teams(request.user)).count()
+            or (obj.user.teams.all() & Team.objects.my_teams(request.user))
         )
 
     def has_change_permission(self, request, obj=None):
@@ -277,7 +277,10 @@ class AnswerAdmin(admin.ModelAdmin):
             return super().has_view_permission(request, obj)
         return super().has_change_permission(request, obj) and (
             obj.exercise.author == request.user
-            or (obj.user.teams.all() & Team.objects.my_teams(request.user)).count()
+            or (
+                obj.user is not None
+                and (obj.user.teams.all() & Team.objects.my_teams(request.user))
+            )
         )
 
 
