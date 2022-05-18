@@ -87,8 +87,15 @@ class PageView(DetailView):
                 .distinct()
                 .values_list("exercise_id")
             }
+            context["exercises_failed"] = {
+                row[0]
+                for row in Answer.objects.filter(user=self.request.user, is_valid=False)
+                .distinct()
+                .values_list("exercise_id")
+            }
         else:
             context["exercises_done"] = set()
+            context["exercises_failed"] = set()
         exercises = (
             context["object"]
             .exercises.filter(is_published=True)
