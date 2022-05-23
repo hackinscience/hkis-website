@@ -1,5 +1,11 @@
 # HackInScience
 
+HKIS is an open-source platform to practice any programming language
+with live feedback. The canonical instance of HKIS, to practice
+Python, is known as [HackInScience.org](https://hackinscience.org)
+had already been teaching Python to 25k+ users.
+
+
 ## Setup
 
 First `firejail` and `redis` (from your package manager), like:
