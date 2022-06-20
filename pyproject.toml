@@ -1,3 +1,75 @@
 [build-system]
 requires = ["setuptools", "wheel"]
 build-backend = "setuptools.build_meta"
+
+[project]
+name = "django-hkis"
+description = "Django HackInScience exercises app."
+authors = [
+    { name = "Julien Palard", email = "julien@palard.fr" },
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+]
+requires-python = ">= 3.7"
+dependencies = [
+    "bleach",
+    "celery[redis]",
+    "channels",
+    "channels-redis",
+    "django",
+    "django-ace",
+    "django-crispy-forms",
+    "django-cte",
+    "django-debug-toolbar",
+    "django-extensions",
+    "django-filter",
+    "django-model-utils",
+    "django-modeltranslation",
+    "django-registration-redux",
+    "djangorestframework",
+    "gunicorn",
+    "markdown",
+    "pygments",
+    "requests",
+]
+dynamic = [
+    "version",
+]
+
+[project.readme]
+file = "README.md"
+content-type = "text/markdown; charset=UTF-8"
+
+[project.license]
+text = "MIT License"
+
+[project.urls]
+Homepage = "https://framagit.org/hackinscience/hkis-website"
+
+[tool.flake8]
+ignore = "E501"
+
+[tool.setuptools]
+include-package-data = false
+
+[tool.setuptools.package-data]
+hkis = [
+    "templates/*/*.html",
+    "static/*",
+    "static/*/*",
+    "locale/*/*/*.po",
+    "fixtures/*.json",
+]
+
+[tool.setuptools.packages.find]
+exclude = [
+    "example",
+    "hackinscience_org",
+]
+namespaces = false
+
+[tool.setuptools.dynamic.version]
+attr = "hkis.__version__"
