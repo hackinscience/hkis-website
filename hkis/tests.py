@@ -36,7 +36,7 @@ class TestTeams(TestCase):
     fixtures = ["initial"]
 
     def test_public_teams(self):
-        assert User.objects.get(username="mdk").hkis.public_teams()
+        assert User.objects.get(username="a-superuser").hkis.public_teams()
 
     def test_team_by_rank(self):
         assert len(list(Team.objects.first().members_by_rank()))
@@ -65,7 +65,7 @@ class TestAdminSuperUser(TestCase):
     fixtures = ["initial"]
 
     def setUp(self):
-        self.client.force_login(User.objects.get(username="mdk"))
+        self.client.force_login(User.objects.get(username="a-superuser"))
 
     def test_get_admin_exercises(self):
         response = self.client.get("/admin/hkis/exercise/")
@@ -80,7 +80,7 @@ class TestViews(TestCase):
     fixtures = ["initial"]
 
     def setUp(self):
-        self.client.force_login(User.objects.get(username="mdk"))
+        self.client.force_login(User.objects.get(username="a-superuser"))
 
     def test_get_profile(self):
         self.client.get("/profile/1")
@@ -119,7 +119,7 @@ class TestViews(TestCase):
 #     def test_login(self):
 #         self.selenium.get("%s%s" % (self.live_server_url, "/accounts/login/"))
 #         username_input = self.selenium.find_element_by_name("username")
-#         username_input.send_keys("Lisa")
+#         username_input.send_keys("a-teacher")
 #         password_input = self.selenium.find_element_by_name("password")
 #         password_input.send_keys("boisminrosael")
 #         self.selenium.find_element_by_xpath('//button[text()="Sign in"]').click()
@@ -151,7 +151,7 @@ class TestAdminStaffWithTeacherGroup(TestCase):
     fixtures = ["initial"]
 
     def setUp(self):
-        self.user = User.objects.get(username="Lisa")
+        self.user = User.objects.get(username="a-teacher")
         set_teacher_permissions()
         self.client.force_login(self.user)
 
@@ -194,7 +194,7 @@ class TestAPIAnswerAuthed(APITestCase):
     fixtures = ["initial"]
 
     def setUp(self):
-        user = User.objects.get(username="mdk")
+        user = User.objects.get(username="a-superuser")
         self.client.force_authenticate(user=user)
 
     def test_get_answer(self):
