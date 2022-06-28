@@ -41,28 +41,11 @@ class TestTeachersCanCreateExerciseViaAPI(APITestCase):
         assert b"Test" in self.client.get(response.json()["url"]).content
 
 
-def set_teacher_permissions():
-    teacher = Group.objects.get(name="Teacher")
-    exercise_content_type = ContentType.objects.get_for_model(Exercise)
-    answer_content_type = ContentType.objects.get_for_model(Answer)
-    for content_type, perm in (
-        (answer_content_type, "view_answer"),
-        (answer_content_type, "change_answer"),
-        (exercise_content_type, "add_exercise"),
-        (exercise_content_type, "change_exercise"),
-        (exercise_content_type, "view_exercise"),
-        (exercise_content_type, "delete_exercise"),
-    ):
-        permission = Permission.objects.get(codename=perm)
-        teacher.permissions.add(permission)
-
-
 class TestAdminStaffWithTeacherGroup(TestCase):
     fixtures = ["initial"]
 
     def setUp(self):
         self.user = User.objects.get(username="a-teacher")
-        set_teacher_permissions()
         self.client.force_login(self.user)
 
     def test_get_admin_exercises(self):
