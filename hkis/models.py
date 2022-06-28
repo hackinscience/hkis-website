@@ -130,7 +130,7 @@ class UserInfo(models.Model):
                 time_to_solve = (
                     exercise.solved_at - exercise.created_at
                 ).total_seconds()
-                points += exercise.points - (time_to_solve ** 0.001 - 1)
+                points += exercise.points - (time_to_solve**0.001 - 1)
         self.points = points
         self.save()
 
@@ -244,15 +244,15 @@ class Exercise(models.Model):
     title = models.CharField(max_length=255)
     author = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True)
     slug = AutoSlugField(populate_from=["title"], editable=True)
-    # pre_check is ran out of the sandbox (with network access and
+    # pre_check_py is ran out of the sandbox (with network access and
     # all) before the check. It has the LANGUAGE env set to the user
     # preferences, and current working directory in a directory with
     # `check.py` and `solution` already present, but nothing more,
     # like when check runs.
-    pre_check = models.TextField(blank=True, null=True)
+    pre_check_py = models.TextField(blank=True, null=True)
     # check is ran inside the sandbox, in a `check.py` file, near a
     # `solution` file containing the student code.
-    check = models.TextField(blank=True, default="")
+    check_py = models.TextField(blank=True, default="")
     is_published = models.BooleanField(default=False)
     wording = models.TextField(blank=True, default="")
     initial_solution = models.TextField(blank=True, default="")
@@ -282,10 +282,10 @@ class Exercise(models.Model):
         """Clean windows-style newlines, maybe inserted by Ace editor, or
         other users.
         """
-        self.check = self.check.replace("\r\n", "\n")
+        self.check_py = self.check_py.replace("\r\n", "\n")
         self.wording = self.wording.replace("\r\n", "\n")
         if self.is_published:
-            if not self.check:
+            if not self.check_py:
                 raise ValidationError(
                     _("Exercises should have a check script in order to be published.")
                 )
@@ -358,8 +358,8 @@ class Answer(models.Model):
         sync_check_answer = async_to_sync(check_answer)
         is_valid, message = sync_check_answer(
             {
-                "check": self.exercise.check,
-                "pre_check": self.exercise.pre_check,
+                "check": self.exercise.check_py,
+                "pre_check": self.exercise.pre_check_py,
                 "source_code": self.source_code,
                 "language": lang,
             }

@@ -19,7 +19,7 @@ dependencies = [
     "celery[redis]",
     "channels",
     "channels-redis",
-    "django<4",
+    "django",
     "django-ace",
     "django-crispy-forms",
     "django-cte",

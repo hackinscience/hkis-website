@@ -36,8 +36,8 @@ class AdminExerciseForm(forms.ModelForm):
             "title",
             "author",
             "slug",
-            "pre_check",
-            "check",
+            "pre_check_py",
+            "check_py",
             "is_published",
             "wording",
             "initial_solution",
@@ -47,10 +47,10 @@ class AdminExerciseForm(forms.ModelForm):
             "page",
         )
         widgets = {
-            "check": AceWidget(
+            "check_py": AceWidget(
                 mode="python", theme="twilight", width="100%", height="400px"
             ),
-            "pre_check": AceWidget(
+            "pre_check_py": AceWidget(
                 mode="python", theme="twilight", width="100%", height="400px"
             ),
             "wording": AceWidget(
@@ -100,8 +100,8 @@ class ExerciseAdmin(TranslationAdmin):
         "points",
         "wording",
         "initial_solution",
-        "pre_check",
-        "check",
+        "pre_check_py",
+        "check_py",
     )
     form = AdminExerciseForm
     list_display = (
