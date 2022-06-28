@@ -75,8 +75,6 @@ ALLOWED_ATTRIBUTES = {
     "p": ["align", "class"],
 }
 
-ALLOWED_STYLES: List[str] = []
-
 
 def _set_target(attrs, new=False):
     if new:
@@ -103,7 +101,6 @@ def markdown_to_bootstrap(text):
         bleach.sanitizer.Cleaner(
             tags=getattr(settings, "ALLOWED_TAGS", ALLOWED_TAGS),
             attributes=getattr(settings, "ALLOWED_ATTRIBUTES", ALLOWED_ATTRIBUTES),
-            styles=getattr(settings, "ALLOWED_STYLES", ALLOWED_STYLES),
             filters=[
                 partial(
                     bleach.linkifier.LinkifyFilter,
